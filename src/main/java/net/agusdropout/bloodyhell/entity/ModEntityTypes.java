@@ -122,6 +122,12 @@ public class ModEntityTypes {
             () -> EntityType.Builder.<BloodPortalEntity>of(BloodPortalEntity::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_portal_entity").toString()));
 
+    public static final RegistryObject<EntityType<BlasphemousTwinDaggersCloneEntity>> BLASPHEMOUS_TWIN_DAGGERS_CLONE =
+            ENTITY_TYPES.register("blasphemous_twin_daggers_clone",
+                    () -> EntityType.Builder.of(BlasphemousTwinDaggersCloneEntity::new, MobCategory.MISC)
+                            .sized(0.6f, 1.8f)
+                            .build(new ResourceLocation(BloodyHell.MODID, "blasphemous_twin_daggers_clone").toString()));
+
     public static final RegistryObject<EntityType<VesperEntity>> VESPER = ENTITY_TYPES.register("vesper",
             () -> EntityType.Builder.<VesperEntity>of(VesperEntity::new,MobCategory.MONSTER).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID,
                     "vesper").toString()));

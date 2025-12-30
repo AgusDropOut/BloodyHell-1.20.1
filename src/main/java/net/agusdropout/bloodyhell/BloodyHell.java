@@ -2,6 +2,8 @@ package net.agusdropout.bloodyhell;
 
 import com.mojang.logging.LogUtils;
 
+import dev.kosmx.playerAnim.api.layered.ModifierLayer;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
@@ -435,6 +437,7 @@ public class BloodyHell
             event.accept(ModBlocks.SPIKY_GRASS);
             event.accept(ModBlocks.ROUNDED_GRASS);
             event.accept(ModBlocks.STING_FLOWER);
+            event.accept(ModItems.BLASPHEMOUS_TWIN_DAGGERS);
 
         }
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
@@ -495,7 +498,8 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), BloodPortalEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), BloodPortalEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_WHIRLWIND_ENTITY.get(), BlasphemousWhirlwindEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SMALL_WHIRLWIND_ENTITY.get(), BlasphemousSmallWhirlwindEntityRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_WHIRLWIND_ENTITY.get(), BlasphemousWhirlwindEntityRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_BUSH.get(), RenderType::canConsolidateConsecutiveGeometry);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_PETALS.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.SPIKY_GRASS.get(), RenderType.translucent());
@@ -509,6 +513,8 @@ public class BloodyHell
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_CON.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get(), RenderType.cutout());
             EntityRenderers.register(ModEntityTypes.CYCLOPS_ENTITY.get(), CyclopsRenderer::new);
+
+
 
 
 

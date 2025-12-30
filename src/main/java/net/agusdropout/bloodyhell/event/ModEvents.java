@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonVeil;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
+import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.networking.ModMessages;
@@ -90,6 +91,7 @@ public class ModEvents {
                 event.put(BLOODPIG.get(), BloodPigEntity.setAttributes());
                 event.put(ONI.get(), OniEntity.setAttributes());
                 event.put(VESPER.get(), VesperEntity.setAttributes());
+                event.put(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneEntity.createAttributes().build());
 
 
             }

@@ -213,6 +213,9 @@ public class ModItems {
     //Unknown Entity
     public static final RegistryObject<Item> UNKNOWN_ENTITY_FINGER = ITEMS.register("unknown_entity_finger", () -> new Item(
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLASPHEMOUS_TWIN_DAGGERS = ITEMS.register("blasphemous_twin_daggers", () -> new BlasphemousTwinDaggerItem(
+            new Item.Properties().stacksTo(1)));
+
 
     //Spell Books
     public static final RegistryObject<Item> BLOOD_SPELL_BOOK_SCRATCH = ITEMS.register("blood_spell_book_scratch", () -> new BloodSpellBookScratchItem(
