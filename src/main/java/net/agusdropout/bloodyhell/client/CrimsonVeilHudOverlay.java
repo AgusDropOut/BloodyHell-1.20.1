@@ -54,7 +54,8 @@ public class CrimsonVeilHudOverlay  {
         return heldItem.equals(ModItems.BLOOD_SPELL_BOOK_SCRATCH.get()) ||
                 heldItem.equals(ModItems.BLOOD_SPELL_BOOK_BLOODBALL.get()) ||
                 heldItem.equals(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA.get()) ||
-                heldItem.equals(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get());
+                heldItem.equals(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get()) ||
+                heldItem.equals(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get());
     }
 
     public static void renderOverlay(ForgeGui gui, GuiGraphics guiGraphics, float pt, int width, int height) {

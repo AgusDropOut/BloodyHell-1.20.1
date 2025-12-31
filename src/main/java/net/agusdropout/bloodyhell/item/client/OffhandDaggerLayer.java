@@ -33,11 +33,18 @@ public class OffhandDaggerLayer extends RenderLayer<AbstractClientPlayer, Player
             // Esto es crucial: Si Player Animator mueve el brazo, la daga se mueve con él.
             this.getParentModel().leftArm.translateAndRotate(matrixStack);
 
-            // 4. Ajustes de Posición y Rotación
-            // Estos valores son "a ojo", tendrás que ajustarlos ligeramente si la daga queda flotando o chueca.
-            matrixStack.translate(-0.04, 0.65, 0.1); // Mueve la daga hacia la palma
-            matrixStack.mulPose(Axis.XP.rotationDegrees(-90f)); // Rota para que apunte adelante
-            matrixStack.mulPose(Axis.YP.rotationDegrees(180f)); // Rota para que el filo mire afuera (si es necesario)
+            // Posición fina
+            matrixStack.translate(
+                    0.10,  // X → un poco hacia la palma (menos metida en el brazo)
+                    0.50,  // Y → más arriba (antes 0.65)
+                    -0.05   // Z → más adelante (antes 0.1)
+            );
+
+            // Rotaciones
+            matrixStack.mulPose(Axis.XP.rotationDegrees(-115f)); // menos hacia abajo (antes -90)
+            matrixStack.mulPose(Axis.YP.rotationDegrees(180f)); // filo hacia afuera
+            matrixStack.mulPose(Axis.ZP.rotationDegrees(10f));  // leve inclinación natural
+
 
             // 5. Renderizamos el ítem como si estuviera en la mano izquierda
             // Nota: Usamos THIRD_PERSON_LEFT_HAND para que el juego sepa cómo tratarlo

@@ -179,6 +179,24 @@
       "bloodyhell:horned_worm_burrowed"
     ]
   },
+  "dagger_attack_1": {
+    "subtitle": "sounds.bloodyhell.dagger_attack_1",
+    "sounds": [
+      "bloodyhell:dagger_attack_1"
+    ]
+  },
+  "dagger_attack_2": {
+    "subtitle": "sounds.bloodyhell.dagger_attack_2",
+    "sounds": [
+      "bloodyhell:dagger_attack_2"
+    ]
+  },
+  "dagger_attack_3": {
+    "subtitle": "sounds.bloodyhell.dagger_attack_3",
+    "sounds": [
+      "bloodyhell:dagger_attack_3"
+    ]
+  },
     "offspring_ambient": {
       "subtitle": "sounds.bloodyhell.offspring_ambient",
       "sounds": [

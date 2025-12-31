@@ -7,6 +7,8 @@ import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.animation.ModAnimations;
 import net.agusdropout.bloodyhell.block.ModBlocks;
@@ -35,19 +37,22 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientEvents {
 
-    // --- BUS DE FORGE (Eventos que ocurren DURANTE el juego: Clics, Ticks, Renderizado de Cámara) ---
+    // --- BUS DE FORGE ---
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
 
@@ -56,36 +61,100 @@ public class ClientEvents {
             if (event.phase == TickEvent.Phase.START) {
                 ClientTickHandler.ticksInGame++;
                 WindController.tick();
+
+                LocalPlayer player = Minecraft.getInstance().player;
+                if (player == null) return;
+
+                // Acceder al sistema de animación
+                var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
+                        .getPlayerAssociatedData((AbstractClientPlayer) player)
+                        .get(new ResourceLocation(BloodyHell.MODID, "animation"));
+
+                // Si no hay layer, no hacemos nada
+                if (animationLayer == null) return;
+
+                ItemStack stack = player.getMainHandItem();
+
+                // CASO 1: CAMBIO DE ÍTEM
+                // Si el jugador YA NO tiene las dagas en la mano...
+                if (!(stack.getItem() instanceof BlasphemousTwinDaggerItem)) {
+                    // ... y hay una animación sonando...
+                    if (animationLayer.getAnimation() != null) {
+                        // ... la borramos (null) para volver a la animación vanilla
+                        animationLayer.setAnimation(null);
+                    }
+                    return; // Salimos, no hace falta chequear tiempo
+                }
+
+                // CASO 2: TIEMPO DE COMBO EXPIRADO
+                // Si tiene las dagas, chequeamos si pasó mucho tiempo en "Hold"
+                CompoundTag tag = stack.getTag();
+                if (tag != null && tag.contains("LastHitTime")) {
+                    long lastHit = tag.getLong("LastHitTime");
+                    long resetTime = 2000; // Debe coincidir con COMBO_RESET_TIME_MS del Item
+
+                    if (System.currentTimeMillis() - lastHit > resetTime) {
+                        // Si pasó el tiempo y hay una animación activa (el Hold), la quitamos
+                        if (animationLayer.getAnimation() != null) {
+                            animationLayer.setAnimation(null);
+                        }
+                    }
+                }
             }
         }
 
         @SubscribeEvent
         public static void onKeyInput(InputEvent.MouseButton.Pre event) {
-            // 0 = Clic Izquierdo, 1 = Presionar
+            if (event.getAction() != 1) return; // Solo PRESS
 
-            if (event.getButton() == 0 && event.getAction() == 1) {
-                LocalPlayer player = Minecraft.getInstance().player;
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player == null) return;
 
-                if (player != null && player.getMainHandItem().getItem() instanceof BlasphemousTwinDaggerItem) {
+            ItemStack stack = player.getMainHandItem();
+            if (!(stack.getItem() instanceof BlasphemousTwinDaggerItem daggerItem)) {
+                return;
+            }
 
-                    // 1. Obtener la capa de animación
-                    var linkedLayer = PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer) player)
-                            .get(new ResourceLocation("bloodyhell", "animation"));
+            if (player.getCooldowns().isOnCooldown(player.getMainHandItem().getItem())) {
+                return;
+            }
 
-                    if (linkedLayer instanceof ModifierLayer<?>) {
-                        System.out.println("Triggering dagger attack animation");
-                        ModifierLayer<IAnimation> animationLayer = (ModifierLayer<IAnimation>) linkedLayer;
+            if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+                return;
+            }
 
-                        // 2. Obtener la animación
-                        var anim = ModAnimations.getAttackAnimation();
+            var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
+                    .getPlayerAssociatedData((AbstractClientPlayer) player)
+                    .get(new ResourceLocation(BloodyHell.MODID, "animation"));
 
-                        if (anim != null) {
-                            // 3. ¡ACCIÓN! (Faltaba esta línea)
-                            // Usamos fade de 5 ticks (0.25s) para que sea rápido y fluido
+            if (animationLayer == null) return;
 
-                            animationLayer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(5, Ease.CONSTANT), new KeyframeAnimationPlayer(anim));
-                        }
-                    }
+            // --- COMBO SYSTEM ---
+
+            // CLIC IZQUIERDO (0) -> Ataque Normal
+            if (event.getButton() == 0) {
+                int nextCombo = daggerItem.predictNextCombo(stack);
+                String animPath = "dagger_attack_" + nextCombo;
+
+                animationLayer.setAnimation(new KeyframeAnimationPlayer(
+                        PlayerAnimationRegistry.getAnimation(new ResourceLocation("bloodyhell", animPath))
+                ));
+
+                // Actualizamos el tiempo para que el TickEvent no borre la animación
+                stack.getOrCreateTag().putLong("LastHitTime", System.currentTimeMillis());
+            }
+
+            // CLIC DERECHO (1) -> Ataque Especial
+            else if (event.getButton() == 1) {
+                var specialAnim = PlayerAnimationRegistry.getAnimation(new ResourceLocation("bloodyhell", "dagger_special_attack"));
+                if (specialAnim != null) {
+                    animationLayer.setAnimation(new KeyframeAnimationPlayer(specialAnim));
+
+                    // --- AGREGA ESTO AQUÍ ---
+                    // Aunque no uses cooldown de combo, necesitas esto para que el
+                    // ClientTickEvent sepa que acabas de actuar y espere 2 segundos
+                    // antes de limpiar la animación (o el tiempo que dure).
+                    stack.getOrCreateTag().putLong("LastHitTime", System.currentTimeMillis());
                 }
             }
         }
@@ -148,6 +217,8 @@ public class ClientEvents {
                 renderer.addLayer(new OffhandDaggerLayer(renderer));
             }
         }
+
+
 
 
         @SubscribeEvent

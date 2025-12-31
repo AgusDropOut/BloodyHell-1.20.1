@@ -44,6 +44,10 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> NECK_SNAP_SOUND = registerSoundEvents("neck_snap_sound");
     public static final RegistryObject<SoundEvent> HORNED_WORM_BURROWED = registerSoundEvents("horned_worm_burrowed");
     public static final RegistryObject<SoundEvent> SONG3 = registerSoundEvents("song3");
+    public static final RegistryObject<SoundEvent> DAGGER_ATTACK_1 = registerSoundEvents("dagger_attack_1");
+    public static final RegistryObject<SoundEvent> DAGGER_ATTACK_2 = registerSoundEvents("dagger_attack_2");
+    public static final RegistryObject<SoundEvent> DAGGER_ATTACK_3 = registerSoundEvents("dagger_attack_3");
+
 
 
 
