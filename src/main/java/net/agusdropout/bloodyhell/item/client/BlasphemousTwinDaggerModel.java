@@ -1,7 +1,9 @@
 package net.agusdropout.bloodyhell.item.client;
 
 
+import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
@@ -20,5 +22,7 @@ public class BlasphemousTwinDaggerModel extends GeoModel<BlasphemousTwinDaggerIt
     public ResourceLocation getAnimationResource(BlasphemousTwinDaggerItem animatable) {
         return new ResourceLocation("bloodyhell", "animations/blasphemous_twin_daggers.animation.json");
     }
+
+
 
 }

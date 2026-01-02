@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class BlasphemousTwinDaggersRenderer extends GeoItemRenderer<BlasphemousTwinDaggerItem> {
     public BlasphemousTwinDaggersRenderer() {

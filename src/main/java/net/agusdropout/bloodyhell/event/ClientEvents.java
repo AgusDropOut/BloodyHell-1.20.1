@@ -24,6 +24,7 @@ import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.client.OffhandDaggerLayer;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
+import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.*;
 import net.agusdropout.bloodyhell.screen.BloodWorkBenchScreen;
@@ -76,88 +77,28 @@ public class ClientEvents {
                 ItemStack stack = player.getMainHandItem();
 
                 // CASO 1: CAMBIO DE ÍTEM
-                // Si el jugador YA NO tiene las dagas en la mano...
-                if (!(stack.getItem() instanceof BlasphemousTwinDaggerItem)) {
+                // Verificamos si el ítem NO es una IComboWeapon
+                if (!(stack.getItem() instanceof IComboWeapon comboWeapon)) {
                     // ... y hay una animación sonando...
                     if (animationLayer.getAnimation() != null) {
                         // ... la borramos (null) para volver a la animación vanilla
                         animationLayer.setAnimation(null);
                     }
-                    return; // Salimos, no hace falta chequear tiempo
+                    return;
                 }
 
                 // CASO 2: TIEMPO DE COMBO EXPIRADO
-                // Si tiene las dagas, chequeamos si pasó mucho tiempo en "Hold"
-                CompoundTag tag = stack.getTag();
-                if (tag != null && tag.contains("LastHitTime")) {
-                    long lastHit = tag.getLong("LastHitTime");
-                    long resetTime = 2000; // Debe coincidir con COMBO_RESET_TIME_MS del Item
-
-                    if (System.currentTimeMillis() - lastHit > resetTime) {
-                        // Si pasó el tiempo y hay una animación activa (el Hold), la quitamos
-                        if (animationLayer.getAnimation() != null) {
-                            animationLayer.setAnimation(null);
-                        }
+                // Como ya sabemos que es IComboWeapon (gracias al instanceof de arriba), usamos su método.
+                if (comboWeapon.isComboWindowExpired(stack, System.currentTimeMillis())) {
+                    // Si el arma dice que expiró y hay animación activa, la quitamos
+                    if (animationLayer.getAnimation() != null) {
+                        animationLayer.setAnimation(null);
                     }
                 }
             }
         }
 
-        @SubscribeEvent
-        public static void onKeyInput(InputEvent.MouseButton.Pre event) {
-            if (event.getAction() != 1) return; // Solo PRESS
 
-            LocalPlayer player = Minecraft.getInstance().player;
-            if (player == null) return;
-
-            ItemStack stack = player.getMainHandItem();
-            if (!(stack.getItem() instanceof BlasphemousTwinDaggerItem daggerItem)) {
-                return;
-            }
-
-            if (player.getCooldowns().isOnCooldown(player.getMainHandItem().getItem())) {
-                return;
-            }
-
-            if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
-                return;
-            }
-
-            var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
-                    .getPlayerAssociatedData((AbstractClientPlayer) player)
-                    .get(new ResourceLocation(BloodyHell.MODID, "animation"));
-
-            if (animationLayer == null) return;
-
-            // --- COMBO SYSTEM ---
-
-            // CLIC IZQUIERDO (0) -> Ataque Normal
-            if (event.getButton() == 0) {
-                int nextCombo = daggerItem.predictNextCombo(stack);
-                String animPath = "dagger_attack_" + nextCombo;
-
-                animationLayer.setAnimation(new KeyframeAnimationPlayer(
-                        PlayerAnimationRegistry.getAnimation(new ResourceLocation("bloodyhell", animPath))
-                ));
-
-                // Actualizamos el tiempo para que el TickEvent no borre la animación
-                stack.getOrCreateTag().putLong("LastHitTime", System.currentTimeMillis());
-            }
-
-            // CLIC DERECHO (1) -> Ataque Especial
-            else if (event.getButton() == 1) {
-                var specialAnim = PlayerAnimationRegistry.getAnimation(new ResourceLocation("bloodyhell", "dagger_special_attack"));
-                if (specialAnim != null) {
-                    animationLayer.setAnimation(new KeyframeAnimationPlayer(specialAnim));
-
-                    // --- AGREGA ESTO AQUÍ ---
-                    // Aunque no uses cooldown de combo, necesitas esto para que el
-                    // ClientTickEvent sepa que acabas de actuar y espere 2 segundos
-                    // antes de limpiar la animación (o el tiempo que dure).
-                    stack.getOrCreateTag().putLong("LastHitTime", System.currentTimeMillis());
-                }
-            }
-        }
 
         @SubscribeEvent
         public static void onComputeFov(ViewportEvent.ComputeFov event) {

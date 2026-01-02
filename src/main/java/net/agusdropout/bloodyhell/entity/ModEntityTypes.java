@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.entity;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
+
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.entity.projectile.*;
@@ -131,6 +132,14 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<VesperEntity>> VESPER = ENTITY_TYPES.register("vesper",
             () -> EntityType.Builder.<VesperEntity>of(VesperEntity::new,MobCategory.MONSTER).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID,
                     "vesper").toString()));
+
+    public static final RegistryObject<EntityType<SpecialSlashEntity>> SPECIAL_SLASH =
+            ENTITY_TYPES.register("special_slash",
+                    () -> EntityType.Builder.<SpecialSlashEntity>of(SpecialSlashEntity::new, MobCategory.MISC)
+                            .sized(5.0f, 5.0f) // Tamaño del hitbox lógico (aunque no tenga física)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build(new ResourceLocation(BloodyHell.MODID, "special_slash").toString()));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);

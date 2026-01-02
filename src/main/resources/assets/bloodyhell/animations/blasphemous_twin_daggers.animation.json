@@ -315,7 +315,6 @@
 			}
 		},
 		"attack_1": {
-			"loop": "hold_on_last_frame",
 			"animation_length": 1,
 			"bones": {
 				"right_dagger": {
@@ -365,7 +364,6 @@
 			}
 		},
 		"attack_2": {
-			"loop": "hold_on_last_frame",
 			"animation_length": 0.75,
 			"bones": {
 				"right_dagger": {

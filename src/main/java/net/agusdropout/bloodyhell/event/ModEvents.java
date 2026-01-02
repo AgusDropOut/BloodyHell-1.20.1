@@ -11,6 +11,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
+import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.BossSyncS2CPacket;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
@@ -24,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -33,6 +35,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,6 +67,8 @@ public class ModEvents {
                 Minecraft.getInstance().particleEngine.register(ModParticles.SLASH_PARTICLE.get(), SlashParticle.Provider::new);
                 event.registerSpriteSet(ModParticles.SLASH_PARTICLE.get(), SlashParticle.Provider::new);
             }
+
+
 
             @SubscribeEvent
             public static void onClientSetup(FMLClientSetupEvent event)
@@ -140,6 +145,32 @@ public class ModEvents {
                 if(event.getObject() instanceof Player) {
                     if(!event.getObject().getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).isPresent()) {
                         event.addCapability(new ResourceLocation(MODID, "properties"), new PlayerCrimsonveilProvider());
+                    }
+                }
+            }
+
+            @SubscribeEvent
+            public static void onLivingHurt(LivingHurtEvent event) {
+                // 1. Verificamos que el causante del daño sea un Jugador
+                // (getEntity() devuelve al atacante, incluso si es un proyectil, pero aquí nos centramos en melee)
+                if (event.getSource().getEntity() instanceof Player player) {
+
+                    // 2. Obtenemos el ítem que tiene en la mano principal
+                    ItemStack mainHandStack = player.getMainHandItem();
+
+                    // 3. MAGIA DE LA EXTENSIBILIDAD:
+                    // Verificamos si el ítem implementa nuestra interfaz genérica IComboWeapon.
+                    // No importa si es Daga, Espada, Hacha o un Pescado, si tiene la interfaz, funciona.
+                    if (mainHandStack.getItem() instanceof IComboWeapon comboWeapon) {
+
+                        // 4. Le pedimos al ítem que calcule su propio bonus
+                        // (El ítem revisará su NBT, su combo actual, etc. y nos dará un número)
+                        float bonusDamage = comboWeapon.getComboDamageBonus(mainHandStack);
+
+                        // 5. Si hay bonus, lo sumamos al daño total del evento
+                        if (bonusDamage > 0) {
+                            event.setAmount(event.getAmount() + bonusDamage);
+                        }
                     }
                 }
             }
