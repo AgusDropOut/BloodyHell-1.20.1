@@ -96,8 +96,7 @@ public class BloodSpellBookScratchItem extends Item implements GeoItem {
                     double rightX = baseX + offsetX;
                     double rightZ = baseZ + offsetZ;
 
-                    VirulentAnchorProjectileEntity virulentAnchorProjectile = new VirulentAnchorProjectileEntity(level, baseX, baseY, baseZ, 3.0F, player, yaw, pitch);
-                    player.level().addFreshEntity(virulentAnchorProjectile);
+
 
 
 

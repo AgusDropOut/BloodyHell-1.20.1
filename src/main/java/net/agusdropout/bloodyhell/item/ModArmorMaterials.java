@@ -11,8 +11,13 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterials implements ArmorMaterial {
 
+    // CAMBIO AQUÍ: Termina con coma (,) porque sigue otro elemento
     BLOOD("sanguinite", 26, new int[]{ 5, 7, 5, 4 }, 25,
-    SoundEvents.ARMOR_EQUIP_GOLD, 1f, 0f, () -> Ingredient.of(ModItems.SANGUINITE.get()));
+            SoundEvents.ARMOR_EQUIP_GOLD, 1f, 0f, () -> Ingredient.of(ModItems.SANGUINITE.get())),
+
+    // CAMBIO AQUÍ: Este es el último, así que termina con punto y coma (;)
+    BLASPHEMITE("blasphemite", 26, new int[]{ 5, 7, 5, 4 }, 25,
+            SoundEvents.ARMOR_EQUIP_GOLD, 1f, 0f, () -> Ingredient.of(ModItems.BLASPHEMITE.get()));
 
     private final String name;
     private final int durabilityMultiplier;

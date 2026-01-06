@@ -416,6 +416,8 @@ public class BloodyHell
             event.accept(ModItems.BLASPHEMOUS_RING);
 
             //Blasphemous Biome
+            event.accept(ModItems.BLASPHEMITE);
+            event.accept(ModItems.RAW_BLASPHEMITE);
             event.accept(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
             event.accept(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
             event.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
@@ -438,6 +440,11 @@ public class BloodyHell
             event.accept(ModBlocks.ROUNDED_GRASS);
             event.accept(ModBlocks.STING_FLOWER);
             event.accept(ModItems.BLASPHEMOUS_TWIN_DAGGERS);
+            event.accept(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON);
+            event.accept(ModItems.BLASPHEMITE_HELMET);
+            event.accept(ModItems.BLASPHEMITE_CHESTPLATE);
+            event.accept(ModItems.BLASPHEMITE_LEGGINGS);
+            event.accept(ModItems.BLASPHEMITE_BOOTS);
 
         }
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
@@ -514,6 +521,10 @@ public class BloodyHell
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get(), RenderType.cutout());
             EntityRenderers.register(ModEntityTypes.CYCLOPS_ENTITY.get(), CyclopsRenderer::new);
             EntityRenderers.register(ModEntityTypes.SPECIAL_SLASH.get(), SpecialSlashRenderer::new);
+            EntityRenderers.register(ModEntityTypes.ENTITY_CAMERA_SHAKE.get(), RenderNothing::new);
+            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SPINES.get(), BlasphemousSpinesRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SPEAR.get(), BlasphemousSpearRenderer::new);
+
         }
 
     }

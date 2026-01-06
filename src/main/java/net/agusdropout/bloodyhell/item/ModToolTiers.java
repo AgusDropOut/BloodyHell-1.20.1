@@ -20,6 +20,10 @@ public class ModToolTiers {
             new ForgeTier(6, 2000, 9f, 6f, 28,
                     ModTags.Blocks.NEEDS_RHNULL_TOOL, () -> Ingredient.of(ModItems.RHNULL.get())),
             new ResourceLocation(BloodyHell.MODID, "rhnull"), List.of(ModToolTiers.SANGUINITE), List.of());
+    public static final Tier BLASPHEMITE = TierSortingRegistry.registerTier(
+            new ForgeTier(7, 3000, 9f, 7f, 28,
+                    ModTags.Blocks.NEEDS_BLASPHEMITE_TOOL, () -> Ingredient.of(ModItems.BLASPHEMITE.get())),
+            new ResourceLocation(BloodyHell.MODID, "blasphemite"), List.of(ModToolTiers.RHNULL), List.of());
 
 
 }

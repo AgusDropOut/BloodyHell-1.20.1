@@ -1,0 +1,163 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 256,
+				"texture_height": 256,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 6,
+				"visible_bounds_offset": [0, -2, 0]
+			},
+			"bones": [
+				{
+					"name": "blasphemous_spines",
+					"pivot": [0, 0, 0],
+					"rotation": [0, 45, 0]
+				},
+				{
+					"name": "spine1",
+					"parent": "blasphemous_spines",
+					"pivot": [0, 26, 0.5],
+					"cubes": [
+						{"origin": [0, 0, -28], "size": [0, 64, 52], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "spine2",
+					"parent": "blasphemous_spines",
+					"pivot": [-0.5, 26, -1],
+					"cubes": [
+						{"origin": [-5, 0, -21], "size": [0, 52, 52], "pivot": [-6, 0, 0], "rotation": [0, 90, 0], "uv": [104, 0]}
+					]
+				},
+				{
+					"name": "arrow1",
+					"parent": "blasphemous_spines",
+					"pivot": [14.58579, 13.5, -15.17157],
+					"rotation": [0, 70, 0],
+					"cubes": [
+						{"origin": [9, 0, -17], "size": [8, 44, 0], "pivot": [16, 0, -18], "rotation": [0, 45, 0], "uv": [48, 116]}
+					]
+				},
+				{
+					"name": "arrow 15",
+					"parent": "blasphemous_spines",
+					"pivot": [23.81077, 7.65612, -10.18936],
+					"cubes": [
+						{"origin": [13, -5, -5], "size": [8, 27, 0], "pivot": [20, -5, -6], "rotation": [60.73729, 54.09859, 72.33608], "uv": [152, 131]}
+					]
+				},
+				{
+					"name": "arrow12",
+					"parent": "blasphemous_spines",
+					"pivot": [5.58579, 13.5, -6.17157],
+					"rotation": [0, -35, 0],
+					"cubes": [
+						{"origin": [0, 0, -8], "size": [8, 27, 0], "pivot": [7, 0, -9], "rotation": [0, 45, 0], "uv": [152, 104]}
+					]
+				},
+				{
+					"name": "arrow4",
+					"parent": "blasphemous_spines",
+					"pivot": [14.58579, 13.5, 6.82843],
+					"rotation": [0, -35, 0],
+					"cubes": [
+						{"origin": [9, 0, 5], "size": [8, 27, 0], "pivot": [16, 0, 4], "rotation": [0, 45, 0], "uv": [136, 140]}
+					]
+				},
+				{
+					"name": "arrow9",
+					"parent": "blasphemous_spines",
+					"pivot": [14.58579, 13.5, 15.82843],
+					"rotation": [0, -102.5, 0],
+					"cubes": [
+						{"origin": [9, 0, 14], "size": [8, 53, 0], "pivot": [16, 0, 13], "rotation": [0, 45, 0], "uv": [104, 104]}
+					]
+				},
+				{
+					"name": "arrow13",
+					"parent": "blasphemous_spines",
+					"pivot": [10.58579, 4.5, 15.82843],
+					"rotation": [-136.49878, -35.99077, 158.51634],
+					"cubes": [
+						{"origin": [5, -9, 14], "size": [8, 53, 0], "pivot": [12, -9, 13], "rotation": [0, 45, 0], "uv": [16, 116]}
+					]
+				},
+				{
+					"name": "arrow7",
+					"parent": "blasphemous_spines",
+					"pivot": [-6.62741, 13.5, 8.24264],
+					"rotation": [0, -110, 0],
+					"cubes": [
+						{"origin": [-12.2132, 0, 6.41421], "size": [8, 27, 0], "pivot": [-5.2132, 0, 5.41421], "rotation": [0, 45, 0], "uv": [80, 152]}
+					]
+				},
+				{
+					"name": "arrow11",
+					"parent": "blasphemous_spines",
+					"pivot": [-6.62741, 13.5, 23.24264],
+					"rotation": [0, -62.5, 0],
+					"cubes": [
+						{"origin": [-12.2132, 0, 21.41421], "size": [8, 47, 0], "pivot": [-5.2132, 0, 20.41421], "rotation": [0, 45, 0], "uv": [32, 116]}
+					]
+				},
+				{
+					"name": "arrow5",
+					"parent": "blasphemous_spines",
+					"pivot": [-9.45584, 13.5, -17.2132],
+					"rotation": [0, -35, 0],
+					"cubes": [
+						{"origin": [-15.04163, 0, -19.04163], "size": [8, 27, 0], "pivot": [-8.04163, 0, -20.04163], "rotation": [0, 45, 0], "uv": [64, 152]}
+					]
+				},
+				{
+					"name": "arrow10",
+					"parent": "blasphemous_spines",
+					"pivot": [-9.45584, 13.5, -10.2132],
+					"rotation": [0, 10, 0],
+					"cubes": [
+						{"origin": [-15.04163, 0, -12.04163], "size": [8, 53, 0], "pivot": [-8.04163, 0, -13.04163], "rotation": [0, 45, 0], "uv": [0, 116]}
+					]
+				},
+				{
+					"name": "arrow3",
+					"parent": "blasphemous_spines",
+					"pivot": [5.58579, 13.5, 10.82843],
+					"rotation": [0, 27.5, 0],
+					"cubes": [
+						{"origin": [0, 0, 9], "size": [8, 36, 0], "pivot": [7, 0, 8], "rotation": [0, 45, 0], "uv": [80, 116]}
+					]
+				},
+				{
+					"name": "arrow8",
+					"parent": "blasphemous_spines",
+					"pivot": [-15.62741, 13.5, 12.24264],
+					"rotation": [0, -47.5, 0],
+					"cubes": [
+						{"origin": [-21.2132, 0, 10.41421], "size": [8, 36, 0], "pivot": [-14.2132, 0, 9.41421], "rotation": [0, 45, 0], "uv": [136, 104]}
+					]
+				},
+				{
+					"name": "arrow6",
+					"parent": "blasphemous_spines",
+					"pivot": [-18.45584, 13.5, -13.2132],
+					"rotation": [0, 27.5, 0],
+					"cubes": [
+						{"origin": [-24.04163, 0, -15.04163], "size": [8, 36, 0], "pivot": [-17.04163, 0, -16.04163], "rotation": [0, 45, 0], "uv": [120, 104]}
+					]
+				},
+				{
+					"name": "arrow14",
+					"parent": "blasphemous_spines",
+					"pivot": [-2.45584, 10.5, -17.2132],
+					"rotation": [29.7808, 62.31006, 28.77261],
+					"cubes": [
+						{"origin": [-8.04163, -3, -19.04163], "size": [8, 36, 0], "pivot": [-1.04163, -3, -20.04163], "rotation": [0, 45, 0], "uv": [120, 140]}
+					]
+				}
+			]
+		}
+	]
+}

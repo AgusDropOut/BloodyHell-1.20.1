@@ -184,6 +184,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         normalItem(ModItems.DIRTY_BLOOD_FLOWER);
         normalItem(ModItems.BLOOD_ARROW);
+        normalItem(ModItems.BLASPHEMITE);
+        normalItem(ModItems.RAW_BLASPHEMITE);
+        normalItem(ModItems.BLASPHEMITE_BOOTS);
+        normalItem(ModItems.BLASPHEMITE_LEGGINGS);
+        normalItem(ModItems.BLASPHEMITE_CHESTPLATE);
+        normalItem(ModItems.BLASPHEMITE_HELMET);
 
         simpleBlockItemBlockTexture(ModBlocks.HANGING_BLOOD_TREE_LEAVES);
         simpleBlockItemBlockTexture(ModBlocks.GLOWING_CRYSTAL);

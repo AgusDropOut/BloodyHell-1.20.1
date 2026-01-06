@@ -25,6 +25,7 @@ public class ModTags {
 
         public static final TagKey<Block> BLOOD_SCRAPPER_PLANT_PLACEABLE_ON = tag("blood_scrapper_plant_placeable_on");
         public static final TagKey<Block> NEEDS_SANGUINITE_TOOL = tag("needs_sanguinite_tool");
+        public static final TagKey<Block> NEEDS_BLASPHEMITE_TOOL = tag("needs_blasphemite_tool");
         public static final TagKey<Block> NEEDS_RHNULL_TOOL = tag("needs_rhnull_tool");
         public static final TagKey<Block> BLOOD_ORE_REPLACEABLES = tag("blood_ore_replaceables");
 
@@ -55,8 +56,6 @@ public class ModTags {
     }
 
     public static class Biomes {
-
-
 
         private static TagKey<Biome> tag(String name) {
             return BiomeTags.create(new ResourceLocation(BloodyHell.MODID, name).toString());

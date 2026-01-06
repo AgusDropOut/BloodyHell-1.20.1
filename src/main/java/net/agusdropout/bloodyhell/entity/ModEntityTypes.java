@@ -141,6 +141,21 @@ public class ModEntityTypes {
                             .updateInterval(10)
                             .build(new ResourceLocation(BloodyHell.MODID, "special_slash").toString()));
 
+    public static final RegistryObject<EntityType<BlasphemousSpinesEntity>> BLASPHEMOUS_SPINES =
+            ENTITY_TYPES.register("blasphemous_spines",
+                    () -> EntityType.Builder.<BlasphemousSpinesEntity>of(BlasphemousSpinesEntity::new, MobCategory.MISC)
+                            .sized(0.8f, 1.5f)
+                            .build(new ResourceLocation(BloodyHell.MODID, "blasphemous_spines").toString()));
+
+    public static final RegistryObject<EntityType<BlasphemousSpearEntity>> BLASPHEMOUS_SPEAR =
+            ENTITY_TYPES.register("blasphemous_spear",
+                    () -> EntityType.Builder.<BlasphemousSpearEntity>of(BlasphemousSpearEntity::new, MobCategory.MISC)
+                            .sized(0.8f, 2.0f) // Hitbox más alta para una lanza
+                            .build(new ResourceLocation(BloodyHell.MODID, "blasphemous_spear").toString()));
+
+
+
+
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
     }

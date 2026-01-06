@@ -1,0 +1,123 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"rise": {
+			"animation_length": 0.5,
+			"bones": {
+				"blasphemous_spines": {
+					"position": {
+						"0.0": {
+							"vector": [0, -64, 0]
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInCirc"
+						}
+					}
+				}
+			}
+		},
+		"idle": {
+			"loop": true,
+			"bones": {
+				"spine1": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time*300)*3 -10", 0]
+					}
+				},
+				"spine2": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*300)*3 -10", 0]
+					}
+				},
+				"arrow1": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time*300+10)*3 -10", 0]
+					}
+				},
+				"arrow3": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*300+160)*6 -10", 0]
+					}
+				},
+				"arrow4": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time*300+40)*3 -10", 0]
+					}
+				},
+				"arrow5": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time*200+120)*6 -10", 0]
+					}
+				},
+				"arrow6": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*200+80)*15 -10", 0]
+					}
+				},
+				"arrow7": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*200)*10 -10", 0]
+					}
+				},
+				"arrow8": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time*500+40)*10 -10", 0]
+					}
+				},
+				"arrow9": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*300+80)*3 -10", 0]
+					}
+				},
+				"arrow10": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*500+180)*15 -10", 0]
+					}
+				},
+				"arrow11": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*400+270)*10 -10", 0]
+					}
+				},
+				"arrow12": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*300+40)*3 -10", 0]
+					}
+				},
+				"arrow13": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*200)*5", "math.cos(query.anim_time*200)*5"]
+					}
+				},
+				"arrow14": {
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*200)*5", "-math.sin(query.anim_time*200)*5 "]
+					}
+				},
+				"arrow 15": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time*200)*5", "-math.sin(query.anim_time*200)*5 "]
+					}
+				}
+			}
+		},
+		"retract": {
+			"animation_length": 0.5,
+			"bones": {
+				"blasphemous_spines": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"vector": [0, -67, 0],
+							"easing": "easeInExpo"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

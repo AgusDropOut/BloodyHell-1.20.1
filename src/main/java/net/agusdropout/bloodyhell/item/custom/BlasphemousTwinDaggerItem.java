@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom;
 
-// ... tus imports existentes ...
+// ... imports existentes ...
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.entity.projectile.SpecialSlashEntity;
 import net.agusdropout.bloodyhell.item.client.BlasphemousTwinDaggersRenderer;
@@ -11,8 +11,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,6 +26,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import software.bernie.geckolib.constant.DataTickets;
@@ -38,7 +42,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-// --- IMPORTS DE PLAYER ANIMATOR ---
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
@@ -46,20 +49,22 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.agusdropout.bloodyhell.BloodyHell;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, IComboWeapon {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    // --- VARIABLES ---
     public static final float COMBO_1_BONUS = 0.0f;
     public static final float COMBO_2_BONUS = 2.0f;
     public static final float COMBO_3_BONUS = 4.0f;
 
-    public boolean isSpecialAttackActive = false;
+    // Tags NBT para manejar el delay
+    private static final String DAMAGE_DELAY_TAG = "DamageDelay";
+    private static final String PENDING_COMBO_TAG = "PendingComboStep";
+    private static final int ATTACK_DELAY_TICKS = 18; // 4 ticks = 0.2 segundos de retraso (ajusta según la animación)
 
-    // --- ANIMACIONES GECKOLIB ---
     private static final RawAnimation ATTACK_1 = RawAnimation.begin().thenPlay("attack_1");
     private static final RawAnimation ATTACK_2 = RawAnimation.begin().thenPlay("attack_2");
     private static final RawAnimation ATTACK_3 = RawAnimation.begin().thenPlay("attack_3");
@@ -95,6 +100,7 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        // Lógica de offhand existente
         if (isSelected && entity instanceof Player player) {
             ItemStack offhandStack = player.getOffhandItem();
             if (!offhandStack.isEmpty()) {
@@ -103,10 +109,90 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
                 }
                 player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
+
+            // --- LÓGICA DE DELAY DE DAÑO (NUEVO) ---
+            if (!level.isClientSide) {
+                CompoundTag tag = stack.getOrCreateTag();
+                if (tag.contains(DAMAGE_DELAY_TAG)) {
+                    int delay = tag.getInt(DAMAGE_DELAY_TAG);
+                    if (delay > 0) {
+                        tag.putInt(DAMAGE_DELAY_TAG, delay - 1);
+                    } else {
+                        // El contador llegó a 0, ejecutamos el daño
+                        int comboStep = tag.getInt(PENDING_COMBO_TAG);
+                        executeAreaDamage(player, level, comboStep, stack);
+
+                        // Limpiamos los tags
+                        tag.remove(DAMAGE_DELAY_TAG);
+                        tag.remove(PENDING_COMBO_TAG);
+                    }
+                }
+            }
         }
     }
 
-    // --- COMBO LOGIC ---
+    // --- NUEVO MÉTODO: DAÑO EN ÁREA ---
+    private void executeAreaDamage(Player player, Level level, int comboStep, ItemStack stack) {
+        float baseDamage = this.getDamage();
+        float bonus = 0;
+
+        // Dimensiones del área de ataque
+        double rangeForward;
+        double width;
+
+        if (comboStep == 3) {
+            // Ataque 3: Estocada (Largo alcance, angosto)
+            rangeForward = 3.5;
+            width = 1.0;
+            bonus = COMBO_3_BONUS;
+            // Efecto visual extra para la estocada
+            if (level instanceof ServerLevel serverLevel) {
+                Vec3 look = player.getLookAngle();
+                for (int i = 0; i < 5; i++) {
+                    serverLevel.sendParticles(ParticleTypes.SWEEP_ATTACK,
+                            player.getX() + look.x * i * 0.5,
+                            player.getEyeY() + look.y * i * 0.5,
+                            player.getZ() + look.z * i * 0.5,
+                            1, 0.1, 0.1, 0.1, 0.0);
+                }
+            }
+        } else {
+            // Ataque 1 y 2: Barrido (Corto alcance, ancho)
+            rangeForward = 2.0;
+            width = 2.5;
+            bonus = (comboStep == 2) ? COMBO_2_BONUS : COMBO_1_BONUS;
+        }
+
+        float totalDamage = baseDamage + bonus;
+
+        // Vector de mirada y posición
+        Vec3 look = player.getLookAngle();
+        Vec3 origin = player.position().add(0, player.getEyeHeight() * 0.5, 0);
+
+        // Calculamos el centro de la caja de daño un poco adelante del jugador
+        Vec3 center = origin.add(look.scale(rangeForward * 0.5));
+
+        // Creamos la caja (AABB)
+        AABB damageBox = new AABB(center, center).inflate(width * 0.5, 1.0, rangeForward * 0.5);
+
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, damageBox);
+
+        for (LivingEntity target : targets) {
+            if (target != player && !target.isAlliedTo(player) && target.isAlive()) {
+                // Check opcional: Asegurar que esté "frente" al jugador (producto punto)
+                Vec3 dirToTarget = target.position().subtract(player.position()).normalize();
+                double dot = look.dot(dirToTarget);
+
+                // Si el producto punto es positivo, está enfrente (> 0.5 es aprox 60 grados)
+                if (dot > 0.3) {
+                    target.hurt(level.damageSources().playerAttack(player), totalDamage);
+                    // Empuje leve
+                    target.knockback(0.4F, -look.x, -look.z);
+                }
+            }
+        }
+    }
+
     private static final String COMBO_TAG = "CurrentCombo";
     private static final String LAST_HIT_TIME_TAG = "LastHitTime";
     private static final long COMBO_RESET_TIME_MS = 2000;
@@ -128,27 +214,17 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
         return currentCombo;
     }
 
-    // --- MÉTODO AUXILIAR PARA PLAYER ANIMATOR (CLIENTE) ---
-    // Centralizamos la lógica aquí para llamarla desde click izq y der
     private void playPlayerAnimatorAnim(Player player, String animName) {
-        // Doble chequeo de seguridad de cliente
+        var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
+                .getPlayerAssociatedData((AbstractClientPlayer) player)
+                .get(new ResourceLocation(BloodyHell.MODID, "animation"));
 
-            var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
-                    .getPlayerAssociatedData((AbstractClientPlayer) player)
-                    .get(new ResourceLocation(BloodyHell.MODID, "animation"));
-
-            if (animationLayer != null) {
-                var anim = PlayerAnimationRegistry.getAnimation(new ResourceLocation(BloodyHell.MODID, animName));
-                if (anim != null) {
-                    animationLayer.setAnimation(new KeyframeAnimationPlayer(anim));
-                    System.out.println("Playing player animator animation: " + animName);
-                } else {
-                    System.out.println("Animation not found in registry: " + animName);
-                }
-            } else {
-                System.out.println("Animation layer not found for player.");
+        if (animationLayer != null) {
+            var anim = PlayerAnimationRegistry.getAnimation(new ResourceLocation(BloodyHell.MODID, animName));
+            if (anim != null) {
+                animationLayer.setAnimation(new KeyframeAnimationPlayer(anim));
             }
-
+        }
     }
 
     // --- CLICK IZQUIERDO (ATAQUE) ---
@@ -160,14 +236,12 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
             CompoundTag tag = stack.getOrCreateTag();
             if (tag.contains("LastSpecialAtk")) {
                 long lastSpecialTime = tag.getLong("LastSpecialAtk");
-                // Si pasaron menos de 400ms (0.4s) desde el especial, IGNORAMOS este swing.
-                // Esto evita que el swing automático del click derecho active el combo normal.
                 if (System.currentTimeMillis() - lastSpecialTime < 400) {
-                    return true; // Retorna true para cancelar el procesado del golpe normal
+                    return true;
                 }
             }
 
-            // 1. Lógica Combo (Común)
+            // 1. Lógica Combo
             int comboStep = updateAndGetCombo(stack);
 
             int cooldownDuration = switch (comboStep) {
@@ -178,8 +252,13 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
             };
             player.getCooldowns().addCooldown(this, cooldownDuration);
 
-            // 2. Sonido (Server y Client predictivo)
+            // --- INICIAR DELAY DE DAÑO (Servidor) ---
             if (!player.level().isClientSide) {
+                // Establecemos el delay. Cuando inventoryTick lo baje a 0, se aplicará el daño.
+                tag.putInt(DAMAGE_DELAY_TAG, ATTACK_DELAY_TICKS);
+                tag.putInt(PENDING_COMBO_TAG, comboStep);
+
+                // Sonido
                 float volumen = 0.5f;
                 float pitch = 0.9f + (player.getRandom().nextFloat() * 0.2f);
                 player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -191,7 +270,6 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
                 boolean isFirstPerson = Minecraft.getInstance().options.getCameraType().isFirstPerson();
 
                 if (isFirstPerson) {
-                    // GeckoLib Primera Persona
                     String animName = switch (comboStep) {
                         case 2 -> "attack_2_trigger";
                         case 3 -> "attack_3_trigger";
@@ -199,36 +277,31 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
                     };
                     triggerAnim(player, GeoItem.getId(stack), "Controller", animName);
                 } else {
-                    // GeckoLib Tercera Persona (Item Idle)
                     triggerAnim(player, GeoItem.getId(stack), "Controller", "idle_trigger");
-
-                    // --- PLAYER ANIMATOR (CUERPO ENTERO) ---
-                    // Aquí llamamos a la animación de tercera persona del mod
                     playPlayerAnimatorAnim(player, "dagger_attack_" + comboStep);
                 }
             }
         }
-        return true;
+        return true; // Cancelamos el golpe vanilla porque nosotros manejamos el daño
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(net.minecraft.world.level.Level level, Player player, InteractionHand hand) {
-
+        // ... (Tu código de ataque especial se mantiene igual) ...
+        // Nota: Si quieres aplicar delay al especial también, deberías usar una lógica similar
+        // pero con un tag distinto (ej. SPECIAL_DAMAGE_DELAY), o simplemente instanciar
+        // la entidad SpecialSlashEntity con un delay interno si lo soporta.
 
         if (hand == InteractionHand.MAIN_HAND) {
             player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(playerCrimsonVeil -> {
                 if (playerCrimsonVeil.getCrimsonVeil() >= 5 && !player.getCooldowns().isOnCooldown(this)) {
 
-                    // 1. APLICAMOS COOLDOWN EN AMBOS LADOS (CLIENTE Y SERVIDOR)
-                    // Esto es CRUCIAL. Si solo lo haces en el server, el cliente no se entera
-                    // a tiempo y el 'onEntitySwing' sobrescribe la animación especial.
                     player.getCooldowns().addCooldown(this, 50);
 
-                    // Lógica Servidor (Datos, Daño, Entidad)
                     if (!level.isClientSide()) {
                         playerCrimsonVeil.subCrimsomveil(5);
                         ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(playerCrimsonVeil.getCrimsonVeil()), ((ServerPlayer) player));
-                        System.out.println("Subtracted 5 Crimson Veil from player for special dagger attack. New amount: " + playerCrimsonVeil.getCrimsonVeil());
+
                         float damage = 10.0f;
                         SpecialSlashEntity slash = new SpecialSlashEntity(level, player, damage);
                         level.addFreshEntity(slash);
@@ -237,22 +310,13 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
             });
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BLAZE_SHOOT, net.minecraft.sounds.SoundSource.PLAYERS, 0.5f, 0.8f + (player.getRandom().nextFloat() * 0.4f));
-            if(level.isClientSide()) {
-                System.out.println("Client-side special dagger attack triggered.");
-            }
+
             boolean isFirstPerson = Minecraft.getInstance().options.getCameraType().isFirstPerson();
             if (isFirstPerson) {
                 triggerAnim(player, GeoItem.getId(player.getItemInHand(hand)), "Controller", "special_attack_trigger");
-                System.out.println("Playing special dagger attack animation for 1st person");
             } else {
-                if (level.isClientSide){
-                    //triggerAnim(player, GeoItem.getId(player.getItemInHand(hand)), "Controller", "idle_trigger");
-                    System.out.println("Playing special dagger attack animation for 3rd person");
-                // --- PLAYER ANIMATOR (ESPECIAL) ---
                 playPlayerAnimatorAnim(player, "dagger_special_attack");
-                }
                 player.getItemInHand(hand).getOrCreateTag().putLong("LastSpecialAtk", System.currentTimeMillis());
-                // Actualizamos LastHitTime para evitar que el TickHandler borre la animación
                 player.getItemInHand(hand).getOrCreateTag().putLong(LAST_HIT_TIME_TAG, System.currentTimeMillis());
             }
             return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
@@ -260,22 +324,18 @@ public class BlasphemousTwinDaggerItem extends SwordItem implements GeoItem, ICo
         return super.use(level, player, hand);
     }
 
+    // ... Resto de métodos getters y setters (isComboWindowExpired, registerControllers, etc) iguales ...
+
     @Override
     public boolean isComboWindowExpired(ItemStack stack, long currentTime) {
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains(LAST_HIT_TIME_TAG)) {
             long lastHit = tag.getLong(LAST_HIT_TIME_TAG);
-            // Retorna true si pasó mas tiempo del permitido (2000ms)
             return (currentTime - lastHit > COMBO_RESET_TIME_MS);
         }
-        // Si no hay tag de tiempo, no hay combo activo que expirar, retornamos false
-        // (o true si quieres ser estricto, pero false mantiene la lógica anterior de "no hacer nada si no hay tag")
         return false;
     }
 
-
-
-    // ... Resto de métodos (registerControllers, predicate, renderer, getAttackSound) iguales ...
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Controller", 5, this::predicate)

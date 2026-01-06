@@ -215,6 +215,8 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLASPHEMOUS_TWIN_DAGGERS = ITEMS.register("blasphemous_twin_daggers", () -> new BlasphemousTwinDaggerItem(ModToolTiers.RHNULL,10,-2.4F,
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLASPHEMOUS_HULKING_MASS_OF_IRON = ITEMS.register("blasphemous_hulking_mass_of_iron", () -> new BlasphemousHulkingMassOfIronItem(ModToolTiers.RHNULL,10,-2.4F,
+            new Item.Properties().stacksTo(1)));
 
 
     //Spell Books
@@ -240,6 +242,19 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLASPHEMOUS_RING = ITEMS.register("blasphemous_ring", () -> new BlasphemousRing(
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLASPHEMITE = ITEMS.register("blasphemite", () -> new Item(
+            new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> RAW_BLASPHEMITE = ITEMS.register("raw_blasphemite", () -> new Item(
+            new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<Item> BLASPHEMITE_HELMET = ITEMS.register("blasphemite_helmet",
+            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> BLASPHEMITE_CHESTPLATE = ITEMS.register("blasphemite_chestplate",
+            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<Item> BLASPHEMITE_LEGGINGS = ITEMS.register("blasphemite_leggings",
+            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<Item> BLASPHEMITE_BOOTS = ITEMS.register("blasphemite_boots",
+            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.BOOTS, new Item.Properties()));
 
 
 

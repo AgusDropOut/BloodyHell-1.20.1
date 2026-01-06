@@ -1,0 +1,134 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 8.5,
+				"visible_bounds_offset": [0, 3.75, 0]
+			},
+			"bones": [
+				{
+					"name": "blasphemous_hulking_mass_of_iron",
+					"pivot": [0.10714, 3.64286, -0.00357],
+					"cubes": [
+						{"origin": [-5, 15, -1], "size": [11, 36, 2], "uv": [0, 0]},
+						{"origin": [-6, 12, -3], "size": [13, 3, 6], "uv": [26, 0]},
+						{"origin": [-3, 17, -3], "size": [7, 7, 3], "uv": [26, 29]},
+						{"origin": [-3, 17, 0], "size": [7, 7, 3], "uv": [31, 66]},
+						{"origin": [-3, 9, -3], "size": [7, 3, 6], "uv": [26, 20]},
+						{"origin": [-2, -2, -2], "size": [5, 3, 4], "uv": [40, 39]},
+						{"origin": [-1, -4, -1], "size": [3, 2, 2], "uv": [44, 53]},
+						{"origin": [-1, 1, -1], "size": [3, 8, 2], "uv": [14, 48]},
+						{"origin": [-4.5, 51, -1], "size": [10, 9, 2], "uv": [26, 9]},
+						{"origin": [-3.5, 60, -1], "size": [8, 7, 2], "uv": [20, 39]},
+						{"origin": [-1.5, 67, -1], "size": [4, 7, 2], "uv": [46, 29]}
+					]
+				},
+				{
+					"name": "eye1",
+					"parent": "blasphemous_hulking_mass_of_iron",
+					"pivot": [0, 15, 0]
+				},
+				{
+					"name": "lower",
+					"parent": "eye1",
+					"pivot": [0.5, 17.5, -3.15],
+					"cubes": [
+						{"origin": [-3, 17, -3.05], "size": [7, 1, 0], "uv": [52, 25]}
+					]
+				},
+				{
+					"name": "upper",
+					"parent": "eye1",
+					"pivot": [0.5, 23.5, -3.05],
+					"cubes": [
+						{"origin": [-3, 23, -3.05], "size": [7, 1, 0], "uv": [46, 38]}
+					]
+				},
+				{
+					"name": "eye2",
+					"parent": "blasphemous_hulking_mass_of_iron",
+					"pivot": [0, 15, 6.25]
+				},
+				{
+					"name": "lower2",
+					"parent": "eye2",
+					"pivot": [0.5, 17.5, 3.1],
+					"cubes": [
+						{"origin": [-3, 17, 3.05], "size": [7, 1, 0], "uv": [52, 26]}
+					]
+				},
+				{
+					"name": "upper2",
+					"parent": "eye2",
+					"pivot": [0.5, 23.5, 3.05],
+					"cubes": [
+						{"origin": [-3, 23, 3.05], "size": [7, 1, 0], "uv": [52, 27]}
+					]
+				},
+				{
+					"name": "hair",
+					"parent": "blasphemous_hulking_mass_of_iron",
+					"pivot": [0.5, 13.5, 3.05]
+				},
+				{
+					"name": "hair1",
+					"parent": "hair",
+					"pivot": [0.5, 17, 3.05],
+					"cubes": [
+						{"origin": [-3, 10, 3.05], "size": [7, 7, 0], "pivot": [0.5, 13.5, 3.05], "rotation": [0, 180, 0], "uv": [0, 48]}
+					]
+				},
+				{
+					"name": "hair2",
+					"parent": "hair",
+					"pivot": [0.5, 17, -3.05],
+					"cubes": [
+						{"origin": [-3, 10, -3.05], "size": [7, 7, 0], "uv": [40, 46]}
+					]
+				},
+				{
+					"name": "anim",
+					"parent": "blasphemous_hulking_mass_of_iron",
+					"pivot": [-5, 1, 0]
+				},
+				{
+					"name": "anim1",
+					"parent": "anim",
+					"pivot": [-2, 1, 0],
+					"cubes": [
+						{"origin": [-7, -7, 0], "size": [5, 8, 0], "uv": [24, 48]}
+					]
+				},
+				{
+					"name": "anim2",
+					"parent": "anim",
+					"pivot": [0.5, 1, -2],
+					"cubes": [
+						{"origin": [-1.5, -7, -5], "size": [5, 8, 0], "pivot": [0.5, 1, -5], "rotation": [0, -90, 0], "uv": [34, 53]}
+					]
+				},
+				{
+					"name": "anim3",
+					"parent": "anim",
+					"pivot": [0.5, 1, 2],
+					"cubes": [
+						{"origin": [-1.5, -7, 4], "size": [5, 8, 0], "pivot": [0.5, 1, 4], "rotation": [0, -90, 0], "uv": [52, 17]}
+					]
+				},
+				{
+					"name": "anim4",
+					"parent": "anim",
+					"pivot": [3, 1, 0],
+					"cubes": [
+						{"origin": [3, -7, 0], "size": [5, 8, 0], "uv": [50, 9]}
+					]
+				}
+			]
+		}
+	]
+}
