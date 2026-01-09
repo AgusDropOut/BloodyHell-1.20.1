@@ -180,6 +180,7 @@ public class ClientEvents {
             event.registerSpecial(ModParticles.SIMPLE_BLOCK_PARTICLE.get(), new SimpleBlockParticle.Provider());
             event.registerSpriteSet(ModParticles.CYCLOPS_HALO_PARTICLE.get(), CyclopsHaloParticle.Provider::new);
             event.registerSpriteSet(ModParticles.EYE_PARTICLE.get(), EyeParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.SHOCKWAVE_RING.get(), ShockwaveParticle.Provider::new);
         }
 
         @SubscribeEvent
@@ -192,6 +193,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
             event.registerLayerDefinition(ModModelLayers.CRYSTAL_PILLAR, CrystalPillarModel::createBodyLayer);
+            event.registerLayerDefinition(ModModelLayers.BLASPHEMOUS_IMPALER_ENTITY, BlasphemousImpalerEntityModel::createBodyLayer);
             event.registerLayerDefinition(ModModelLayers.VESPER, VesperModel::createBodyLayer);
         }
 

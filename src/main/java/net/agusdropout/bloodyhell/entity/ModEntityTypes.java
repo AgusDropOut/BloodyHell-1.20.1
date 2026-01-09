@@ -3,9 +3,11 @@ package net.agusdropout.bloodyhell.entity;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 
+
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.entity.projectile.*;
+import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -152,6 +154,13 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<BlasphemousSpearEntity>of(BlasphemousSpearEntity::new, MobCategory.MISC)
                             .sized(0.8f, 2.0f) // Hitbox más alta para una lanza
                             .build(new ResourceLocation(BloodyHell.MODID, "blasphemous_spear").toString()));
+
+    public static final RegistryObject<EntityType<BlasphemousImpalerEntity>> BLASPHEMOUS_IMPALER_ENTITY = ENTITY_TYPES.register("blasphemous_impaler_entity",
+            () -> EntityType.Builder.<BlasphemousImpalerEntity>of(BlasphemousImpalerEntity::new, MobCategory.MISC)
+                    .sized(0.8f, 0.8f)// Tamaño de la hitbox
+                    .clientTrackingRange(4) // Rango de visión (chunks)
+                    .updateInterval(20) // Actualización
+                    .build("blasphemous_impaler_entity"));
 
 
 

@@ -441,6 +441,7 @@ public class BloodyHell
             event.accept(ModBlocks.STING_FLOWER);
             event.accept(ModItems.BLASPHEMOUS_TWIN_DAGGERS);
             event.accept(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON);
+            event.accept(ModItems.BLASPHEMOUS_IMPALER);
             event.accept(ModItems.BLASPHEMITE_HELMET);
             event.accept(ModItems.BLASPHEMITE_CHESTPLATE);
             event.accept(ModItems.BLASPHEMITE_LEGGINGS);
@@ -524,6 +525,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.ENTITY_CAMERA_SHAKE.get(), RenderNothing::new);
             EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SPINES.get(), BlasphemousSpinesRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SPEAR.get(), BlasphemousSpearRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_IMPALER_ENTITY.get(), BlasphemousImpalerEntityRenderer::new);
 
         }
 

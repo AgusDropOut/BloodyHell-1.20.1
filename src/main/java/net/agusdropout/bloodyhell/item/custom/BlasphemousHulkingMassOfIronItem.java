@@ -547,14 +547,14 @@ public class BlasphemousHulkingMassOfIronItem extends SwordItem implements GeoIt
         }
     }
 
-    // --- CONTROLLERS ---
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Controller", 5, state -> PlayState.CONTINUE)
+        // CAMBIO AQUÍ: En lugar de 'state -> PlayState.CONTINUE', usamos 'state -> state.setAndContinue(IDLE)'
+        controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(IDLE))
                 .triggerableAnim("slam_1_trigger", SLAM_1)
                 .triggerableAnim("slam_2_trigger", SLAM_2)
                 .triggerableAnim("slam_3_trigger", SLAM_3)
-                .triggerableAnim("special_attack", SPECIAL_ATK) // Nuevo trigger
+                .triggerableAnim("special_attack", SPECIAL_ATK)
                 .triggerableAnim("idle_trigger", IDLE));
     }
     @Override

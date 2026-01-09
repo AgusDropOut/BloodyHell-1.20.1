@@ -1,0 +1,59 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"charge": {
+			"loop": true,
+			"animation_length": 0.5,
+			"bones": {
+				"torso": {
+					"rotation": {
+						"vector": [0, 12.5, 0]
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [47.5, 0, 152.5]
+						},
+						"0.1667": {
+							"vector": [52.5, 0, 152.5]
+						},
+						"0.3333": {
+							"vector": [42.5, 0, 152.5]
+						},
+						"0.5": {
+							"vector": [47.5, 0, 152.5]
+						}
+					}
+				},
+				"leftArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [-72.5, 0, 0]
+						},
+						"0.1667": {
+							"vector": [-65, 0, 0]
+						},
+						"0.3333": {
+							"vector": [-70, 0, 0]
+						},
+						"0.5": {
+							"vector": [-72.5, 0, 0]
+						}
+					}
+				},
+				"rightLeg": {
+					"rotation": {
+						"vector": [0, 0, 5]
+					}
+				},
+				"leftLeg": {
+					"rotation": {
+						"vector": [7.47178, 0.65182, -4.95744]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

@@ -54,6 +54,9 @@ public class ModParticles {
                         }
                     });
 
+    public static final RegistryObject<SimpleParticleType> SHOCKWAVE_RING = PARTICLE_TYPES.register("shockwave_ring",
+            () -> new SimpleParticleType(true));
+
     public static void register(IEventBus eventBus) {
         PARTICLE_TYPES.register(eventBus);
     }

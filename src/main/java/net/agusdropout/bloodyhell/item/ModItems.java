@@ -255,6 +255,13 @@ public class ModItems {
             () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> BLASPHEMITE_BOOTS = ITEMS.register("blasphemite_boots",
             () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> BLASPHEMOUS_IMPALER = ITEMS.register("blasphemous_impaler",
+            () -> new BlasphemousImpalerItem(
+                    ModToolTiers.BLASPHEMITE,
+                    10,    // Daño base (Alto)
+                    -3.0F,
+                    new Item.Properties().stacksTo(1)
+            ));
 
 
 
