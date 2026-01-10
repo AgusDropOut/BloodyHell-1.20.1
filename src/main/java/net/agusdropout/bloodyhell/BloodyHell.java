@@ -266,6 +266,10 @@ public class BloodyHell
             event.accept(ModItems.SELIORA_SPAWN_EGG);
             event.accept(ModItems.HORNED_WORM_SPAWN_EGG);
             event.accept(ModItems.VEIL_STALKER_SPAWN_EGG);
+            event.accept(ModItems.GRAVE_WALKER_SPAWN_EGG);
+            event.accept(ModItems.CYCLOPS_ENTITY_SPAWN_EGG);
+
+
 
             //Food Items
             event.accept(ModItems.Eyeball);

@@ -1,4 +1,4 @@
-// 1.20	2026-01-05T23:45:18.8806897	Item Models: bloodyhell
+// 1.20	2026-01-10T15:45:34.3796145	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 14a952b98c00afd133a0e452445054b35e60ecf8 assets/bloodyhell/models/item/ancient_gem.json
 f49a02ab718c1273b0986d09260a7eedd70e35a7 assets/bloodyhell/models/item/aureal_revenant_dagger.json
@@ -52,6 +52,7 @@ ab6939c6717581b28e5d5d1d393aab3decfaada9 assets/bloodyhell/models/item/crimson_i
 dea138f0ecc896706a9be7ba1dbaec5431c34b59 assets/bloodyhell/models/item/crimson_shell.json
 0ff686f00defb71cc68544ef6d8030fce2f02bf7 assets/bloodyhell/models/item/crimson_ward_ring.json
 f3b26716eb16d4c7e1060743bce2f6e342f06303 assets/bloodyhell/models/item/cut_blasphemous_sandstone_block.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/cyclops_entity_spawn_egg.json
 77c313c5cd8748df19f86deca8aad9cb23b999f8 assets/bloodyhell/models/item/dirty_blood_flower.json
 870ecccbc926884bf8c11c3f0b9760081830ca15 assets/bloodyhell/models/item/droopvine.json
 f5ff9ba8a120c615965a3f2a028ea27bf6213f6c assets/bloodyhell/models/item/droopvine_plant.json
@@ -65,6 +66,7 @@ a397b608816eda99958178fd959e947a9106c880 assets/bloodyhell/models/item/glow_frui
 635d595c3ea04fa1143a4d30583f8550008be757 assets/bloodyhell/models/item/glow_mushroom.json
 e637ce4d7504def3bcc70caf0f997cf4e759c27c assets/bloodyhell/models/item/gorehog_cooked_steak.json
 12e4beecfd107330dd5348b56a515eea6bdd6635 assets/bloodyhell/models/item/gorehog_raw_steak.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/grave_walker_entity_spawn_egg.json
 fba7ac8b0eaf78b398a28eca9c2ba8455ddd7893 assets/bloodyhell/models/item/great_amulet_of_ancestral_blood.json
 5200afc2caadb8de7936ce944b382d61f4f23c92 assets/bloodyhell/models/item/great_ancient_gem.json
 4c952dd758467b86eb9c5a5e36b2074800e74213 assets/bloodyhell/models/item/hanging_bloodtree_leaves.json

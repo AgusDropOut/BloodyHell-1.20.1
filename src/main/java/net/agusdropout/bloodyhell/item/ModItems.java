@@ -157,6 +157,9 @@ public class ModItems {
             new Item.Properties()));
     public static final RegistryObject<Item> CYCLOPS_ENTITY_SPAWN_EGG = ITEMS.register("cyclops_entity_spawn_egg",() -> new ForgeSpawnEggItem(ModEntityTypes.CYCLOPS_ENTITY,0x000000 ,0xd4a600,
             new Item.Properties()));
+    public static final RegistryObject<Item> GRAVE_WALKER_SPAWN_EGG = ITEMS.register("grave_walker_entity_spawn_egg",() -> new ForgeSpawnEggItem(ModEntityTypes.GRAVE_WALKER_ENTITY,0x000000 ,0xd4a600,
+            new Item.Properties()));
+
 
     //Mobs Drops
     public static final RegistryObject<Item> VEINREAVER_HORN = ITEMS.register("veinreaver_horn", () -> new Item(

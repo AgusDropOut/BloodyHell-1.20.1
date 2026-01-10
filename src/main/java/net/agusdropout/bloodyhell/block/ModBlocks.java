@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.block;
 
+
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
@@ -338,6 +339,8 @@ public class ModBlocks {
             BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
     public static final RegistryObject<Block> FORBIDDEN_BOOKSHELF_BLOCK = registerBlock("forbidden_bookshelf_block", () -> new Block(
             BlockBehaviour.Properties.copy(Blocks.BOOKSHELF)));
+    public static final RegistryObject<Block> TOMB_BLOCK = registerBlock("tomb_block", () -> new TombBlock(
+            BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
 
 
 

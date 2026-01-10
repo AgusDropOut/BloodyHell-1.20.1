@@ -2,12 +2,12 @@ package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag; // Import necesario
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,12 +22,10 @@ import net.minecraft.network.syncher.SynchedEntityData;
 
 public class CyclopsEntity extends Mob {
 
-
     private static final double AMBIENT_PARTICLE_RADIUS = 8.0;
     private static final double AMBIENT_PARTICLE_MIN_DISTANCE = 2.5;
     private static final int AMBIENT_PARTICLE_COUNT = 10;
     private static final int AMBIENT_PARTICLE_TICK_INTERVAL = 40;
-
 
     public static final int ATTACK_CHARGE_TIME_TICKS = 60;
     private static final int ATTACK_INTERVAL_TICKS = 10;
@@ -35,17 +33,35 @@ public class CyclopsEntity extends Mob {
 
     private static final EntityDataAccessor<Float> EYE_YAW = SynchedEntityData.defineId(CyclopsEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> EYE_PITCH = SynchedEntityData.defineId(CyclopsEntity.class, EntityDataSerializers.FLOAT);
-
     private static final EntityDataAccessor<Integer> SYNCED_LINE_OF_SIGHT_TICKS = SynchedEntityData.defineId(CyclopsEntity.class, EntityDataSerializers.INT);
 
-
     private int lineOfSightTicks;
-
 
     public CyclopsEntity(EntityType<? extends Mob> type, Level level) {
         super(type, level);
         this.lineOfSightTicks = 0;
+        // Forzamos persistencia al crear
+        this.setPersistenceRequired();
     }
+
+    // --- MÉTODOS AÑADIDOS PARA EVITAR DESPAWN ---
+    @Override
+    public void checkDespawn() {
+        // No hacer nada para evitar despawn natural
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        // Nunca remover por distancia
+        return false;
+    }
+
+    @Override
+    public boolean isPersistenceRequired() {
+        // Siempre guardar en el disco
+        return true;
+    }
+    // -------------------------------------------
 
     @Override
     protected void defineSynchedData() {
@@ -55,11 +71,11 @@ public class CyclopsEntity extends Mob {
         this.entityData.define(SYNCED_LINE_OF_SIGHT_TICKS, 0);
     }
 
-
     public int getClientSideAttackTicks() {
         return this.entityData.get(SYNCED_LINE_OF_SIGHT_TICKS);
     }
 
+    // ... [El resto de tus métodos spawnAmbientEyeParticles, spawnAttackBeamParticles se mantienen igual] ...
 
     private void spawnAmbientEyeParticles() {
         double centerX = this.getX();
@@ -98,7 +114,6 @@ public class CyclopsEntity extends Mob {
             }
         }
     }
-
 
     @Override
     public void tick() {
@@ -168,7 +183,6 @@ public class CyclopsEntity extends Mob {
         return result.getType() == BlockHitResult.Type.MISS;
     }
 
-
     public float getEyeYaw(float partialTicks) {
         float prevYaw = this.entityData.get(EYE_YAW);
         float currentYaw = this.entityData.get(EYE_YAW);
@@ -180,7 +194,6 @@ public class CyclopsEntity extends Mob {
         float currentPitch = this.entityData.get(EYE_PITCH);
         return Mth.lerp(partialTicks, prevPitch, currentPitch);
     }
-
 
     public static AttributeSupplier setAttributes() {
         return Mob.createMobAttributes()
@@ -203,7 +216,6 @@ public class CyclopsEntity extends Mob {
         return true;
     }
 
-
     @Override
     public boolean isPushable() {
         return false;
@@ -212,4 +224,3 @@ public class CyclopsEntity extends Mob {
     @Override
     protected void doPush(Entity entity) {}
 }
-

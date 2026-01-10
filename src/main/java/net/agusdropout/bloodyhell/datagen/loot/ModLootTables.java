@@ -456,6 +456,11 @@ public class ModLootTables extends LootTableProvider {
                     )
             )
             ;
+            this.add(ModEntityTypes.GRAVE_WALKER_ENTITY.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
 
 
         }

@@ -35,6 +35,9 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("star_lamp_block_entity", () ->
                     BlockEntityType.Builder.of(StarLampBlockEntity::new,
                             ModBlocks.STAR_LAMP_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TombBlockEntity>> TOMB_ENTITY =
+            BLOCK_ENTITIES.register("tomb_be",
+                    () -> BlockEntityType.Builder.of(TombBlockEntity::new, ModBlocks.TOMB_BLOCK.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {
