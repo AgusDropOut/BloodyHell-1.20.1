@@ -110,6 +110,7 @@ public class ModEvents {
                 event.put(OFFSPRING_OF_THE_UNKNOWN.get(), OffspringOfTheUnknownEntity.setAttributes());
                 event.put(SELIORA.get(), SelioraEntity.setAttributes());
                 event.put(BLASPHEMOUS_MALFORMATION.get(), BlasphemousMalformationEntity.setAttributes());
+                event.put(GRAVE_WALKER_ENTITY.get(), GraveWalkerEntity.setAttributes());
                 event.put(HORNED_WORM.get(), HornedWormEntity.setAttributes());
                 event.put(CYCLOPS_ENTITY.get(), CyclopsEntity.setAttributes());
                 event.put(VEIL_STALKER.get(), VeilStalkerEntity.setAttributes());

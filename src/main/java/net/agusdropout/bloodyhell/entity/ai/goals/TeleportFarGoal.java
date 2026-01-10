@@ -10,7 +10,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
@@ -25,104 +27,105 @@ public class TeleportFarGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return entity.canTeleportFar(); // define este método en tu entidad igual que canTeleportNear()
+        return entity.canTeleportFar();
     }
 
     @Override
     public void start() {
         LivingEntity target = entity.getTarget();
-        if (target == null) return;
-
-        Vec3 targetPos = target.position();
-        Vec3 entityPos = entity.position();
-
-        // Vector desde el target hacia la entidad (para alejarse en esa dirección)
-        Vec3 awayDir = entityPos.subtract(targetPos).normalize();
-
-        // Distancia base a la que se aleja (puedes ajustar)
-        double distance = 10 + random.nextInt(5); // entre 15 y 25 bloques
-
-        // Nueva posición tentativa lejos del target
-        Vec3 farPos = entityPos.add(awayDir.scale(distance));
-
-        // Agregamos algo de aleatoriedad para que no sea tan lineal
-        farPos = farPos.add(
-                (random.nextDouble() - 0.5) * 6.0, // ±3 bloques de desviación en X
-                0,
-                (random.nextDouble() - 0.5) * 6.0  // ±3 bloques en Z
-        );
-
-        BlockPos teleportPos = new BlockPos((int)farPos.x,(int) entity.getY(),(int) farPos.z);
-
-        // Aseguramos que esté en el nivel del suelo
-        teleportPos = findSafeTeleportPos(teleportPos);
-
-        if (teleportPos == null) {
+        if (target == null) {
+            stop();
             return;
         }
 
+        Vec3 targetPos = target.position();
+        Vec3 entityPos = entity.position();
+        Vec3 awayDir = entityPos.subtract(targetPos).normalize();
+        double distance = 10 + random.nextInt(5);
+
+        // Intentamos 10 veces encontrar un punto válido
+        for (int i = 0; i < 10; i++) {
+            Vec3 farPos = entityPos.add(awayDir.scale(distance));
+
+            // Variación aleatoria
+            farPos = farPos.add(
+                    (random.nextDouble() - 0.5) * 6.0,
+                    0,
+                    (random.nextDouble() - 0.5) * 6.0
+            );
+
+            BlockPos teleportPosCandidate = new BlockPos((int)farPos.x, (int)entity.getY(), (int)farPos.z);
+            BlockPos safePos = findSafeTeleportPos(teleportPosCandidate);
+
+            if (safePos != null) {
+                // CHECK RAYCAST: Verificar paredes entre la posición actual y la futura
+                if (canSeePosition(entity.position(), Vec3.atCenterOf(safePos))) {
+                    executeTeleport(safePos);
+                    break; // Éxito
+                }
+            }
+        }
+
+        stop();
+    }
+
+    // --- Nuevo Método para Raycasting ---
+    private boolean canSeePosition(Vec3 start, Vec3 end) {
+        HitResult result = entity.level().clip(new ClipContext(
+                start.add(0, entity.getEyeHeight(), 0),
+                end,
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                entity
+        ));
+        return result.getType() == HitResult.Type.MISS;
+    }
+
+    private void executeTeleport(BlockPos teleportPos) {
         if (entity.level() instanceof ServerLevel serverLevel) {
-            // Partículas de destino
             serverLevel.sendParticles(ModParticles.BLASPHEMOUS_MAGIC_RING.get(),
                     teleportPos.getX(), teleportPos.getY() + 0.1, teleportPos.getZ(),
                     1, 0.0, 0.0, 0.0, 0.0);
 
-            // Teletransporte real
             entity.teleportTo(teleportPos.getX(), teleportPos.getY(), teleportPos.getZ());
-
-            // Efecto visual post-teleport
             spawnBlasphemousParticles();
 
-            // Sonido de teletransporte
             entity.level().playSound(null, entity.blockPosition(),
                     SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 1.0F);
         }
-        stop();
     }
 
     private BlockPos findSafeTeleportPos(BlockPos pos) {
         ServerLevel level = (ServerLevel) entity.level();
 
-        for (int attempt = 0; attempt < 10; attempt++) {
-            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(
-                    pos.getX() + level.random.nextIntBetweenInclusive(-3, 3),
-                    pos.getY() + level.random.nextIntBetweenInclusive(-2, 2),
-                    pos.getZ() + level.random.nextIntBetweenInclusive(-3, 3)
-            );
+        // Pequeño ajuste para no iterar demasiado si el punto base es muy malo
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
 
-            // Bajar hasta encontrar un bloque sólido
-            while (mutable.getY() > level.getMinBuildHeight() && !level.getBlockState(mutable).blocksMotion()) {
-                mutable.move(Direction.DOWN);
-            }
+        // Bajar hasta encontrar suelo
+        while (mutable.getY() > level.getMinBuildHeight() && !level.getBlockState(mutable).blocksMotion()) {
+            mutable.move(Direction.DOWN);
+        }
 
-            BlockState ground = level.getBlockState(mutable);
-            if (!ground.blocksMotion() || ground.getFluidState().is(FluidTags.WATER)) continue;
+        BlockState ground = level.getBlockState(mutable);
+        if (!ground.blocksMotion() || ground.getFluidState().is(FluidTags.WATER)) return null;
 
-            boolean safe = true;
+        boolean safe = true;
+        // Check espacio arriba
+        for (int i = 1; i <= 3 && safe; i++) { // Reduje a 3 bloques de altura requerida para ser menos estricto pero seguro
+            if (!level.isEmptyBlock(mutable.above(i))) safe = false;
+        }
 
-            // 🔸 Chequear que el bloque base + 4 arriba estén libres
-            for (int i = 1; i <= 4 && safe; i++) {
-                if (!level.isEmptyBlock(mutable.above(i))) safe = false;
-            }
-
-            // 🔸 Chequear alrededores (9 bloques incluyendo diagonales)
-            for (int dx = -1; dx <= 1 && safe; dx++) {
-                for (int dz = -1; dz <= 1 && safe; dz++) {
-                    BlockPos baseAround = mutable.offset(dx, 0, dz);
-                    // Verificar 4 bloques hacia arriba también
-                    for (int i = 1; i <= 4 && safe; i++) {
-                        if (!level.isEmptyBlock(baseAround.above(i))) safe = false;
-                    }
-                }
-            }
-
-            if (safe) {
-                // Devuelve la posición donde puede pararse (1 arriba del suelo)
-                return mutable.above();
+        // Check alrededores inmediatos (para no quedar bugeado en una esquina)
+        for (int dx = -1; dx <= 1 && safe; dx++) {
+            for (int dz = -1; dz <= 1 && safe; dz++) {
+                BlockPos checkPos = mutable.offset(dx, 1, dz); // Verificar bloque donde estarán los pies
+                if (level.getBlockState(checkPos).blocksMotion()) safe = false;
             }
         }
 
-        // Si no encontró posición segura
+        if (safe) {
+            return mutable.above();
+        }
         return null;
     }
 
@@ -152,5 +155,3 @@ public class TeleportFarGoal extends Goal {
         entity.setTeleportCooldown(entity.getTeleportMaxCooldown());
     }
 }
-
-

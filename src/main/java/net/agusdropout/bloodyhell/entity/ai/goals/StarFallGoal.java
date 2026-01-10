@@ -1,7 +1,5 @@
 package net.agusdropout.bloodyhell.entity.ai.goals;
 
-import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.entity.custom.BlasphemousArmEntity;
 import net.agusdropout.bloodyhell.entity.custom.SelioraEntity;
 import net.agusdropout.bloodyhell.entity.projectile.StarfallProjectile;
 import net.agusdropout.bloodyhell.sound.ModSounds;
@@ -28,15 +26,20 @@ public class StarFallGoal extends Goal {
 
     @Override
     public void start() {
-            this.animationTicks = entity.getStarFallTicksDuration();
-            Level level = entity.level();
-            LivingEntity target = entity.getTarget();
-            if (target != null) {
-                entity.setStarFallActive(true);
-                entity.level().playSound(null, this.entity.blockPosition(), ModSounds.SELIORA_THROW_SOUND.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-                StarfallProjectile starfallProjectile = new StarfallProjectile(level, entity.getX(), entity.getY() + 4, entity.getZ(), 20, entity, entity.getTarget());
-                level.addFreshEntity(starfallProjectile);
-            }
+        this.animationTicks = entity.getStarFallTicksDuration();
+        Level level = entity.level();
+        LivingEntity target = entity.getTarget();
+        if (target != null) {
+            entity.setStarFallActive(true);
+            entity.level().playSound(null, this.entity.blockPosition(), ModSounds.SELIORA_THROW_SOUND.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+
+            StarfallProjectile starfallProjectile = new StarfallProjectile(level, entity.getX(), entity.getY() + 4, entity.getZ(), 20, entity, entity.getTarget());
+
+            // CONFIGURACIÓN IMPORTANTE: No romper bloques en la arena del jefe
+            starfallProjectile.setBreaksBlocks(false);
+
+            level.addFreshEntity(starfallProjectile);
+        }
     }
 
     @Override

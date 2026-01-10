@@ -79,6 +79,9 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<OffspringOfTheUnknownEntity>> OFFSPRING_OF_THE_UNKNOWN = ENTITY_TYPES.register("offspring_of_the_unknown",
             () -> EntityType.Builder.<OffspringOfTheUnknownEntity>of(OffspringOfTheUnknownEntity::new,MobCategory.MONSTER).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID,
                     "offspring_of_the_unknown").toString()));
+    public static final RegistryObject<EntityType<GraveWalkerEntity>> GRAVE_WALKER_ENTITY = ENTITY_TYPES.register("grave_walker_entity",
+            () -> EntityType.Builder.<GraveWalkerEntity>of(GraveWalkerEntity::new,MobCategory.MONSTER).sized(1.5f,2.0f).build(new ResourceLocation(BloodyHell.MODID,
+                    "grave_walker_entity").toString()));
     public static final RegistryObject<EntityType<HornedWormEntity>> HORNED_WORM = ENTITY_TYPES.register("horned_worm",
             () -> EntityType.Builder.<HornedWormEntity>of(HornedWormEntity::new,MobCategory.MONSTER).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID,
                     "horned_worm").toString()));

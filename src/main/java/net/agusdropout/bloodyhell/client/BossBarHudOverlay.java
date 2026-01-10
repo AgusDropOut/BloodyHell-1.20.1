@@ -23,7 +23,7 @@ public class BossBarHudOverlay {
     public static void renderOverlay(ForgeGui gui, GuiGraphics guiGraphics, float pt, int width, int height) {
         PoseStack ms = guiGraphics.pose();
 
-        if (ClientBossBarData.isDead() == false && !ClientBossBarData.isNear() ) return;
+        if (ClientBossBarData.isDead() || !ClientBossBarData.isNear()) return;
 
         int x = width / 2 - BAR_WIDTH / 2;
         int y = 10;
