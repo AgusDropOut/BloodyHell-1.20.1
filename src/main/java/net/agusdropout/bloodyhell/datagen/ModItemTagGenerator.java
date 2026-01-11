@@ -38,19 +38,24 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.BLOOD_ARROW.get());
         this.tag(ItemTags.SWORDS)
                 .add(ModItems.SANGUINITE_SWORD.get().asItem())
-                .add(ModItems.RHNULL_SWORD.get().asItem());
+                .add(ModItems.RHNULL_SWORD.get().asItem())
+                .add(ModItems.BLASPHEMITE_SWORD.get().asItem());
+        this.tag(ItemTags.AXES)
+                .add(ModItems.SANGUINITE_AXE.get().asItem())
+                .add(ModItems.RHNULL_AXE.get().asItem())
+                .add(ModItems.BLASPHEMITE_AXE.get().asItem());
         this.tag(ItemTags.PICKAXES)
                 .add(ModItems.SANGUINITE_PICKAXE.get().asItem())
-                .add(ModItems.RHNULL_PICKAXE.get().asItem());
+                .add(ModItems.RHNULL_PICKAXE.get().asItem())
+                .add(ModItems.BLASPHEMITE_PICKAXE.get().asItem());
         this.tag(ItemTags.SHOVELS)
                 .add(ModItems.SANGUINITE_SHOVEL.get().asItem())
-                .add(ModItems.RHNULL_SHOVEL.get().asItem());
-        this.tag(ItemTags.SWORDS)
-                .add(ModItems.SANGUINITE_AXE.get().asItem())
-                .add(ModItems.RHNULL_AXE.get().asItem());
+                .add(ModItems.RHNULL_SHOVEL.get().asItem())
+                .add(ModItems.BLASPHEMITE_SHOVEL.get().asItem());
         this.tag(ItemTags.HOES)
                 .add(ModItems.SANGUINITE_HOE.get().asItem())
-                .add(ModItems.RHNULL_HOE.get().asItem());
+                .add(ModItems.RHNULL_HOE.get().asItem())
+                 .add(ModItems.BLASPHEMITE_HOE.get().asItem());
         this.tag(ItemTags.STONE_CRAFTING_MATERIALS)
                 .add(ModBlocks.BLOODY_STONE_BLOCK.get().asItem());
         this.tag(ItemTags.STONE_TOOL_MATERIALS)

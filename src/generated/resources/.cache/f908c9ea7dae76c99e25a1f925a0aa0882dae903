@@ -1,11 +1,12 @@
-// 1.20	2024-10-14T14:46:49.1236898	Tags for minecraft:item mod id bloodyhell
+// 1.20	2026-01-11T14:09:30.5331211	Tags for minecraft:item mod id bloodyhell
 8808f43ca5a3dffc3abed5d5d5452614acdd8ba6 data/bloodyhell/tags/items/blood_logs.json
 2ae2294df205e3989ee75e74b69a64de09c90096 data/minecraft/tags/items/arrows.json
-8987aa90f22d7f4ec77658912f5dc3afc590f689 data/minecraft/tags/items/hoes.json
+f02c38005637db56a302ca765db7d2a21c07e650 data/minecraft/tags/items/axes.json
+8ab90b9820bc8f2f46255c9d82dae59ff5820130 data/minecraft/tags/items/hoes.json
 64291e02bfee7938ee203b9cacce4a11964f76fc data/minecraft/tags/items/logs_that_burn.json
-59608d73d929e23292004bf0bbe9043ceff68d83 data/minecraft/tags/items/pickaxes.json
+57a341310aa53309a2b9830654cd6413f0385cbc data/minecraft/tags/items/pickaxes.json
 8944d9ffbe0673ba207f4fc0a1dc9a0c000e7e9d data/minecraft/tags/items/planks.json
-6b1f07fbf56fedf32fe3c507f30e0c92efb7bf81 data/minecraft/tags/items/shovels.json
+08a29ba06b8bba0ff21841214417a701ff497e2d data/minecraft/tags/items/shovels.json
 7182fe8c05e70b77f178bc6b735292d640159bde data/minecraft/tags/items/stone_crafting_materials.json
 7182fe8c05e70b77f178bc6b735292d640159bde data/minecraft/tags/items/stone_tool_materials.json
-00f40423df9c89937d9c0e23a25a91e349ed4f4e data/minecraft/tags/items/swords.json
+0b5f9888f544a6e71305928a03be7b15bc06bb5e data/minecraft/tags/items/swords.json

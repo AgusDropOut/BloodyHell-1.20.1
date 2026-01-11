@@ -422,6 +422,12 @@ public class BloodyHell
             //Blasphemous Biome
             event.accept(ModItems.BLASPHEMITE);
             event.accept(ModItems.RAW_BLASPHEMITE);
+            event.accept(ModItems.BLASPHEMITE_NUGGET);
+            event.accept(ModItems.BLASPHEMITE_PICKAXE);
+            event.accept(ModItems.BLASPHEMITE_SWORD);
+            event.accept(ModItems.BLASPHEMITE_AXE);
+            event.accept(ModItems.BLASPHEMITE_SHOVEL);
+            event.accept(ModItems.BLASPHEMITE_HOE);
             event.accept(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
             event.accept(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
             event.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);

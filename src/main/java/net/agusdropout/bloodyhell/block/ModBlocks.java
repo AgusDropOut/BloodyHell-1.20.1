@@ -340,7 +340,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> FORBIDDEN_BOOKSHELF_BLOCK = registerBlock("forbidden_bookshelf_block", () -> new Block(
             BlockBehaviour.Properties.copy(Blocks.BOOKSHELF)));
     public static final RegistryObject<Block> TOMB_BLOCK = registerBlock("tomb_block", () -> new TombBlock(
-            BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().noLootTable()));
 
 
 

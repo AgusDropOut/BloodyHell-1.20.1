@@ -1,12 +1,18 @@
-// 1.20	2026-01-10T15:45:34.3796145	Item Models: bloodyhell
+// 1.20	2026-01-11T14:09:30.5411233	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 14a952b98c00afd133a0e452445054b35e60ecf8 assets/bloodyhell/models/item/ancient_gem.json
 f49a02ab718c1273b0986d09260a7eedd70e35a7 assets/bloodyhell/models/item/aureal_revenant_dagger.json
 199e5ae911cec144d1b4c62f8b20213884161214 assets/bloodyhell/models/item/blasphemite.json
+ae2588581a469b71948b31588492c54bc0258c34 assets/bloodyhell/models/item/blasphemite_axe.json
 0dad40cb8fd69307de2264108937afcd89997045 assets/bloodyhell/models/item/blasphemite_boots.json
 478a7f2ea93bc8f8c12a098a3fa3b11077b20f7c assets/bloodyhell/models/item/blasphemite_chestplate.json
 79155abc44f44ef73a2abd6a55d7050bd0d4a64c assets/bloodyhell/models/item/blasphemite_helmet.json
+db581b56bc7cc53f94f7b02531dc0fbfaf3033d2 assets/bloodyhell/models/item/blasphemite_hoe.json
 a70e6440a2609d11dc207b2506f6b06e8ad8fdaf assets/bloodyhell/models/item/blasphemite_leggings.json
+cccc1388fde1ae55c5ebacd400a4bb2a1093a648 assets/bloodyhell/models/item/blasphemite_nugget.json
+d1d631fda32903c17c836e23119caa375408c451 assets/bloodyhell/models/item/blasphemite_pickaxe.json
+68c1b267ef02371ee65c70166bce8668c1ce1663 assets/bloodyhell/models/item/blasphemite_shovel.json
+864b3edb5372ad87a4141c9ee155a26e081876c7 assets/bloodyhell/models/item/blasphemite_sword.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/blasphemous_malformation_spawn_egg.json
 d9b1928eed3676e2a3a445ba727c500867f7f66f assets/bloodyhell/models/item/blasphemous_ring.json
 308d8d7adde1dcbc5e4e0805c3865c81b98f8eec assets/bloodyhell/models/item/blasphemous_sandstone_block.json

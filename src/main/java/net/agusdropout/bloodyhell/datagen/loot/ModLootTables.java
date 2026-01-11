@@ -169,6 +169,7 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(ModBlocks.STAR_LAMP_BLOCK.get());
 
 
+
             ore(ModBlocks.SANGUINITE_ORE, ModItems.RAW_SANGUINITE);
 
 

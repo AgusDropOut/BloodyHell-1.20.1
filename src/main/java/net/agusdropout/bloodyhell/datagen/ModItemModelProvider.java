@@ -187,11 +187,22 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ModItems.DIRTY_BLOOD_FLOWER);
         normalItem(ModItems.BLOOD_ARROW);
         normalItem(ModItems.BLASPHEMITE);
+        normalItem(ModItems.BLASPHEMITE_NUGGET);
         normalItem(ModItems.RAW_BLASPHEMITE);
         normalItem(ModItems.BLASPHEMITE_BOOTS);
         normalItem(ModItems.BLASPHEMITE_LEGGINGS);
         normalItem(ModItems.BLASPHEMITE_CHESTPLATE);
         normalItem(ModItems.BLASPHEMITE_HELMET);
+        toolItem(ModItems.BLASPHEMITE_SWORD);
+        toolItem(ModItems.BLASPHEMITE_SHOVEL);
+        toolItem(ModItems.BLASPHEMITE_HOE);
+        toolItem(ModItems.BLASPHEMITE_AXE);
+        toolItem(ModItems.BLASPHEMITE_PICKAXE);
+
+        toolItem(ModItems.SANGUINITE_PICKAXE);
+        toolItem(ModItems.SANGUINITE_AXE);
+        toolItem(ModItems.SANGUINITE_SHOVEL);
+        toolItem(ModItems.SANGUINITE_HOE);
 
         simpleBlockItemBlockTexture(ModBlocks.HANGING_BLOOD_TREE_LEAVES);
         simpleBlockItemBlockTexture(ModBlocks.GLOWING_CRYSTAL);
