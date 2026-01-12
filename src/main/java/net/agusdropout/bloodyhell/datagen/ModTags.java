@@ -28,6 +28,7 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_BLASPHEMITE_TOOL = tag("needs_blasphemite_tool");
         public static final TagKey<Block> NEEDS_RHNULL_TOOL = tag("needs_rhnull_tool");
         public static final TagKey<Block> BLOOD_ORE_REPLACEABLES = tag("blood_ore_replaceables");
+        public static final TagKey<Block> BLASPHEMITE_ORE_REPLACEABLES = tag("blasphemite_ore_replaceables");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(BloodyHell.MODID, name));

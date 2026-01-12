@@ -278,6 +278,11 @@ public class ModItems {
                     -3.0F,
                     new Item.Properties().stacksTo(1)
             ));
+    public static final RegistryObject<Item> SELIORA_ESSENCE = ITEMS.register("seliora_essence",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .rarity(Rarity.EPIC)
+                    .fireResistant()));
 
 
 

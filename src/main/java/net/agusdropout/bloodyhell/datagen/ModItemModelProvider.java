@@ -127,6 +127,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
 
         normalItem(ModItems.BLOOD_LILY);
+        blockFlatWithItemTexture(ModBlocks.STAR_LAMP_BLOCK, "star_lamp_block");
 
 
         //Bloody stone
@@ -173,12 +174,14 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS);
         evenSimplerBlockItem(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB);
+        normalItem(ModItems.SELIORA_ESSENCE);
         evenSimplerBlockItem(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE);
         evenSimplerBlockItem(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE);
         evenSimplerBlockItem(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE);
+        evenSimplerBlockItem(ModBlocks.BLASPHEMITE_ORE);
         simpleBlockItemBlockTexture(ModBlocks.SPIKY_GRASS);
         simpleBlockItemBlockTexture(ModBlocks.ROUNDED_GRASS);
         simpleBlockItemBlockTexture(ModBlocks.STING_FLOWER);

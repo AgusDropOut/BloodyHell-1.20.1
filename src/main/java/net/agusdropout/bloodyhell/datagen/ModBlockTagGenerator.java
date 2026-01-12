@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -84,7 +85,8 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .add(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get())
                 .add(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get())
-                .add(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get());
+                .add(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get())
+                .add(ModBlocks.BLASPHEMITE_ORE.get());
 
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(ModBlocks.BLOOD_DIRT_BLOCK.get())
@@ -124,6 +126,11 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(ModTags.Blocks.BLOOD_ORE_REPLACEABLES)
                 .add(ModBlocks.BLOODY_STONE_BLOCK.get());
+
+        this.tag(ModTags.Blocks.BLASPHEMITE_ORE_REPLACEABLES)
+                .add(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
+
+
 
 
         this.tag(BlockTags.LEAVES)

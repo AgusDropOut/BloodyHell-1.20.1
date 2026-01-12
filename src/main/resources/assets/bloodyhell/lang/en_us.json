@@ -233,5 +233,67 @@
   "block.bloodyhell.cinder_bloom_cactus_con": "Cinder Bloom Cactus Connection",
   "block.bloodyhell.cinder_bloom_cactus_root": "Cinder Bloom Cactus Root",
   "block.bloodyhell.decorated_pot_block": "Decorated Pot",
-  "block.bloodyhell.forbidden_bookshelf_block": "Forbidden Bookshelf"
+  "block.bloodyhell.forbidden_bookshelf_block": "Forbidden Bookshelf",
+
+  "item.bloodyhell.blasphemous_twin_daggers": "Blasphemous Twin Daggers",
+  "item.bloodyhell.blasphemous_hulking_mass_of_iron": "Blasphemous Hulking Mass of Iron",
+
+  "item.bloodyhell.blasphemite": "Blasphemite",
+  "item.bloodyhell.raw_blasphemite": "Raw Blasphemite",
+  "item.bloodyhell.blasphemite_nugget": "Blasphemite Nugget",
+
+  "item.bloodyhell.blasphemite_sword": "Blasphemite Sword",
+  "item.bloodyhell.blasphemite_pickaxe": "Blasphemite Pickaxe",
+  "item.bloodyhell.blasphemite_axe": "Blasphemite Axe",
+  "item.bloodyhell.blasphemite_hoe": "Blasphemite Hoe",
+  "item.bloodyhell.blasphemite_shovel": "Blasphemite Shovel",
+
+  "item.bloodyhell.blasphemite_helmet": "Blasphemite Helmet",
+  "item.bloodyhell.blasphemite_chestplate": "Blasphemite Chestplate",
+  "item.bloodyhell.blasphemite_leggings": "Blasphemite Leggings",
+  "item.bloodyhell.blasphemite_boots": "Blasphemite Boots",
+
+  "item.bloodyhell.blasphemous_impaler": "Blasphemous Impaler",
+
+  "item.bloodyhell.cyclops_entity_spawn_egg": "Cyclops Spawn Egg",
+  "item.bloodyhell.grave_walker_entity_spawn_egg": "Grave Walker Spawn Egg",
+  "item.bloodyhell.seliora_spawn_egg": "Seliora Spawn Egg",
+
+
+  "block.bloodyhell.hanging_soultree_leaves": "Hanging Soultree Leaves",
+  "block.bloodyhell.small_blood_sapling": "Small Blood Sapling",
+  "block.bloodyhell.giant_blood_sapling": "Giant Blood Sapling",
+  "block.bloodyhell.blood_scrapper_plant_sapling": "Blood Scrapper Sapling",
+  "block.bloodyhell.blood_wood_chest": "Blood Wood Chest",
+  "block.bloodyhell.seliora_resting_block": "Seliora Resting Block",
+  "block.bloodyhell.star_lamp_block": "Star Lamp",
+  "block.bloodyhell.tomb_block": "Tomb",
+  "block.bloodyhell.blasphemite_ore": "Blasphemite Ore",
+
+
+  "entity.bloodyhell.cyclops_entity": "Cyclops",
+  "entity.bloodyhell.grave_walker_entity": "Grave Walker",
+  "entity.bloodyhell.horned_worm": "Horned Worm",
+  "entity.bloodyhell.veil_stalker": "Veil Stalker",
+  "entity.bloodyhell.seliora": "Seliora",
+  "entity.bloodyhell.unknown_eye_entity": "Unknown Eye",
+
+
+  "entity.bloodyhell.blasphemous_arm_entity": "Blasphemous Arm",
+  "entity.bloodyhell.blood_slash_entity": "Blood Slash",
+  "entity.bloodyhell.blood_projectile": "Blood Projectile",
+  "entity.bloodyhell.virulent_anchor_projectile": "Virulent Anchor",
+  "entity.bloodyhell.blood_nova_entity": "Blood Nova",
+  "entity.bloodyhell.small_crimson_dagger": "Small Crimson Dagger",
+  "entity.bloodyhell.visceral_projectile": "Visceral Projectile",
+  "entity.bloodyhell.starfall_projectile": "Starfall",
+  "entity.bloodyhell.blasphemous_whirlwind_entity": "Blasphemous Whirlwind",
+  "entity.bloodyhell.blasphemous_small_whirlwind_entity": "Small Blasphemous Whirlwind",
+  "entity.bloodyhell.blood_portal_entity": "Blood Portal",
+  "entity.bloodyhell.blasphemous_twin_daggers_clone": "Twin Daggers Clone",
+  "entity.bloodyhell.special_slash": "Special Slash",
+  "entity.bloodyhell.blasphemous_spines": "Blasphemous Spines",
+  "entity.bloodyhell.blasphemous_spear": "Blasphemous Spear",
+  "entity.bloodyhell.blasphemous_impaler_entity": "Blasphemous Impaler",
+  "item.bloodyhell.seliora_essence": "Essence of Seliora"
 }

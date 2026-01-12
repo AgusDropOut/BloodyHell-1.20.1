@@ -1,4 +1,5 @@
-// 1.20	2026-01-11T20:50:13.9321282	Loot Tables
+// 1.20	2026-01-12T11:53:46.2810194	Loot Tables
+85049b0f2e89f64b277b4e809849e080b1542d76 data/bloodyhell/loot_tables/blocks/blasphemite_ore.json
 da73374edf81bd9af2807a544c671f59ff189c2b data/bloodyhell/loot_tables/blocks/blasphemous_sandstone_block.json
 229b1eb908732b4a696cba8df148e473920cc13f data/bloodyhell/loot_tables/blocks/blasphemous_sand_block.json
 5cbea24dceea598b8613397f9ae1ed81629a267f data/bloodyhell/loot_tables/blocks/bleeding_block.json
@@ -126,7 +127,7 @@ ad1f2c670790c4885788fcae7c5e44efdcc800a4 data/bloodyhell/loot_tables/entities/ey
 5cf7c93bc0b9b76c44dc4ccb26e04aa332398e7c data/bloodyhell/loot_tables/entities/oni.json
 e16c99cff9556713f3a312b5a28b963fe857ff2d data/bloodyhell/loot_tables/entities/sanguine_sacrifice_entity.json
 d01fd441f22deb61cfaa67697e0b8eae7d305684 data/bloodyhell/loot_tables/entities/scarletspeckledfish.json
-f0f01be15570862d8995ac270b1bf81d987a4a0e data/bloodyhell/loot_tables/entities/seliora.json
+2f59792f316581107fa4a4bb4ad88def10f1d7c5 data/bloodyhell/loot_tables/entities/seliora.json
 a0b9b0834c7af1c258c45da6db8e9f55e9d1ec23 data/bloodyhell/loot_tables/entities/small_crimson_dagger.json
 13b5d6c62ba6d428ba0de70185f90a1f2b7b7281 data/bloodyhell/loot_tables/entities/starfall_projectile.json
 5d531eef87f48765d037849a1e6284f6ad654933 data/bloodyhell/loot_tables/entities/unknown_entity_arms.json

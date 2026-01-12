@@ -6,13 +6,17 @@ import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider; // IMPORT NECESARIO
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
 import net.agusdropout.bloodyhell.item.client.BlasphemousImpalerItemRenderer;
+import net.agusdropout.bloodyhell.networking.ModMessages; // IMPORT NECESARIO
+import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket; // IMPORT NECESARIO
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer; // IMPORT NECESARIO
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -45,9 +49,10 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
     private static final int COMBO_3_DURATION = 15;
     private static final long COMBO_RESET_MS = 2000;
 
-    // --- NOMBRES DE ANIMACIONES (Deben coincidir con Blockbench) ---
+    // COSTO DE MANA
+    private static final int SPECIAL_ATTACK_COST = 10;
 
-    // GECKOLIB (Item)
+    // --- NOMBRES DE ANIMACIONES ---
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation CHARGE = RawAnimation.begin().thenLoop("charge");
     private static final RawAnimation THROW_ANIM = RawAnimation.begin().thenPlay("throw");
@@ -55,7 +60,6 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
     private static final RawAnimation ATK_2_ANIM = RawAnimation.begin().thenPlay("spear_attack_2");
     private static final RawAnimation ATK_3_ANIM = RawAnimation.begin().thenPlay("spear_attack_3");
 
-    // PLAYER ANIMATOR (Jugador - Archivos .json)
     private static final String PA_CHARGE = "charge";
     private static final String PA_THROW = "throw";
     private static final String PA_ATK_1 = "spear_attack_1";
@@ -79,7 +83,6 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
         if (entity instanceof Player player) {
-            // Seguridad: Si hay cooldown o estamos lanzando, no atacar
             if (player.getCooldowns().isOnCooldown(this) || stack.getOrCreateTag().getBoolean("IsThrowing")) {
                 return true;
             }
@@ -92,22 +95,18 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
                 default -> 20;
             };
 
-            // Cooldown evita el spam y reinicios accidentales
             player.getCooldowns().addCooldown(this, duration);
 
-            // Servidor: Lógica de daño y estado
             if (!player.level().isClientSide) {
                 CompoundTag tag = stack.getOrCreateTag();
                 tag.putBoolean("IsAttacking", true);
                 tag.putInt("AttackCombo", currentCombo);
                 tag.putInt("AttackTickCounter", 0);
 
-                // Sonido Swing
                 player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                         SoundEvents.PLAYER_ATTACK_SWEEP, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 0.5f);
             }
 
-            // Cliente: Animaciones
             if (player.level().isClientSide) {
                 handleClientAnimations(player, stack, currentCombo, false);
             }
@@ -124,15 +123,12 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
 
         player.startUsingItem(hand);
 
-        // Cliente: Iniciar animación inmediatamente al click
         if (level.isClientSide) {
             playPlayerAnimatorAnim(player, PA_CHARGE);
         }
         return InteractionResultHolder.consume(stack);
     }
 
-    // --- MANTENER CLICK DERECHO (Tick Carga) ---
-    // Esto asegura que la animación de carga se mantenga y no se pierda por lag o glitches
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int count) {
         super.onUseTick(level, entity, stack, count);
@@ -147,17 +143,34 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
         if (entity instanceof Player player) {
             int duration = this.getUseDuration(stack) - timeLeft;
 
-            // Si cargó más de 0.5s (10 ticks)
             if (duration >= 10) {
                 CompoundTag tag = stack.getOrCreateTag();
+
+                // 1. INICIAR ESTADO DE LANZAMIENTO (SIEMPRE, para que haya animación)
                 tag.putBoolean("IsThrowing", true);
                 tag.putInt("ThrowTickCounter", 0);
 
+                // 2. ANIMACIÓN CLIENTE (SIEMPRE)
                 if (level.isClientSide) {
-                    // Forzamos la animación de lanzamiento.
-                    // Al ser distinta a 'charge', el método playPlayerAnimatorAnim la aceptará.
                     System.out.println("Releasing use - playing throw animation");
                     playPlayerAnimatorAnim(player, PA_THROW);
+                }
+
+                // 3. LÓGICA DE CRIMSON VEIL (SERVIDOR)
+                // Determina si realmente sale el proyectil o si es un "tiro falso"
+                if (!level.isClientSide) {
+                    player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(veil -> {
+                        // Verificamos si tiene mana
+                        if (veil.getCrimsonVeil() >= SPECIAL_ATTACK_COST) {
+                            // SI TIENE: Consumimos y marcamos que puede spawnear
+                            veil.subCrimsomveil(SPECIAL_ATTACK_COST);
+                            ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(veil.getCrimsonVeil()), (ServerPlayer) player);
+                            tag.putBoolean("CanSpawnProjectile", true);
+                        } else {
+                            // NO TIENE: Marcamos que NO puede spawnear (pero la animación ya arrancó)
+                            tag.putBoolean("CanSpawnProjectile", false);
+                        }
+                    });
                 }
             }
         }
@@ -167,7 +180,6 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
         if (!level.isClientSide && entity instanceof Player player) {
-            // Solo procesar si se tiene el item
             if (!isSelected && player.getOffhandItem() != stack) return;
 
             CompoundTag tag = stack.getOrCreateTag();
@@ -178,11 +190,23 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
                 counter++;
                 tag.putInt("ThrowTickCounter", counter);
 
-                // Tick 10: Aparece el proyectil
-                if (counter == 10) performThrowEntity(level, player, stack);
+                // Tick 10: Momento del spawn del proyectil
+                if (counter == 10) {
+                    // Verificar si tenía mana para disparar
+                    if (tag.getBoolean("CanSpawnProjectile")) {
+                        performThrowEntity(level, player, stack);
+                    } else {
+                        // NO TENÍA MANA: Solo sonido de aire (fallo visual)
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                                SoundEvents.PLAYER_ATTACK_SWEEP, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 0.5f);
+                    }
+                }
 
                 // Tick 20: Fin del estado
-                if (counter >= 20) tag.putBoolean("IsThrowing", false);
+                if (counter >= 20) {
+                    tag.putBoolean("IsThrowing", false);
+                    tag.putBoolean("CanSpawnProjectile", false); // Reset del flag
+                }
             }
 
             // 2. PROCESAR ATAQUE MELEE
@@ -192,8 +216,6 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
                 tag.putInt("AttackTickCounter", counter);
 
                 int combo = tag.getInt("AttackCombo");
-
-                // Verificar si toca hacer daño en este tick
                 checkAndDealDamage(level, player, stack, combo, counter);
 
                 int maxDuration = switch (combo) {
@@ -217,7 +239,7 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
         if (combo == 1 && timer == 15) performAreaDamage(level, player, 1.0f);
         if (combo == 2) {
             if (timer == 15) performAreaDamage(level, player, 1.0f);
-            if (timer == 22) performAreaDamage(level, player, 2.0f); // Doble daño
+            if (timer == 22) performAreaDamage(level, player, 2.0f);
         }
         if (combo == 3 && timer == 10) performAreaDamage(level, player, 1.5f);
     }
@@ -252,24 +274,17 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
         level.addFreshEntity(projectile);
         player.getCooldowns().addCooldown(this, 20);
 
-        // --- SONIDO EXAGERADO (LAYERING) ---
-
-        // 1. La base: Un lanzamiento de tridente muy grave (Pitch 0.5) para que suene pesado y grande
+        // Sonidos épicos
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.TRIDENT_THROW,
                 net.minecraft.sounds.SoundSource.PLAYERS, 2.0F, 0.5F);
-
-        // 2. El poder: Sonido de Wither disparando para dar sensación de energía oscura
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.WITHER_SHOOT,
                 net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 0.7F);
-
-        // 3. El detalle: Un crujido metálico agudo (Pitch 2.0) como si rompiera la barrera del sonido o cadenas
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.CHAIN_BREAK,
                 net.minecraft.sounds.SoundSource.PLAYERS, 1.5F, 2.0F);
 
-        // Tag para timestamp visual
         stack.getOrCreateTag().putLong("LastThrowTime", level.getGameTime());
     }
 
@@ -294,13 +309,11 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
         if (isThrow) {
             if (isFirstPerson) triggerAnim(player, GeoItem.getId(stack), "controller", "throw_trigger");
             else {
-                // En 3ra, GeckoLib en Idle, PlayerAnim hace el Throw
                 triggerAnim(player, GeoItem.getId(stack), "controller", "idle_trigger");
                 System.out.println("Handling throw animation - playing PA_THROW");
                 playPlayerAnimatorAnim(player, PA_THROW);
             }
         } else {
-            // MELEE
             if (isFirstPerson) {
                 String animName = switch (combo) {
                     case 2 -> "attack_2_trigger";
@@ -320,10 +333,6 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
         }
     }
 
-    /**
-     * Reproduce una animación de PlayerAnimator.
-     * INCLUYE PROTECCIÓN ANTI-REINICIO para que onUseTick no corte la animación.
-     */
     private void playPlayerAnimatorAnim(Player player, String animName) {
         var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
                 .getPlayerAssociatedData((AbstractClientPlayer) player)
@@ -331,31 +340,16 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
 
         if (animationLayer != null) {
             var anim = PlayerAnimationRegistry.getAnimation(new ResourceLocation(BloodyHell.MODID, animName));
-            System.out.println("Requested to play PlayerAnimator animation: " + animName);
             if (anim != null) {
-
-                // --- LA SOLUCIÓN MÁGICA ---
-                // Si ya se está reproduciendo ESTA animación exacta, no hacer nada.
                 if (animationLayer.getAnimation() instanceof KeyframeAnimationPlayer current) {
-                    // Comparamos el objeto de datos de la animación (KeyframeAnimation)
                     if (current.getData().equals(anim)) {
-                        return; // Ya está sonando, salir para evitar stuttering.
-                    } else {
-                        System.out.println("Current animation is different. Switching to new animation: " + animName);
+                        return;
                     }
-                } else {
-                    System.out.println("Current animation is not a KeyframeAnimationPlayer");
                 }
-
-                // Si es diferente (o no hay nada), reproducir la nueva.
                 animationLayer.setAnimation(new KeyframeAnimationPlayer(anim));
-            } else {
-                System.out.println("Animation not found in PlayerAnimationRegistry: " + animName);
             }
         }
     }
-
-
 
     // --- GECKOLIB CONTROLLERS (Item) ---
     @Override
@@ -364,18 +358,15 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
             Player player = Minecraft.getInstance().player;
             if (player == null) return PlayState.STOP;
 
-            // 1. En 3ra Persona -> Item siempre IDLE (lo mueve el brazo)
             boolean isFirstPerson = Minecraft.getInstance().options.getCameraType().isFirstPerson();
             if (!isFirstPerson) return state.setAndContinue(IDLE);
 
-            // 2. Si hay ataque en curso, NO interrumpir con Idle/Charge
             ItemStack stack = state.getData(DataTickets.ITEMSTACK);
             if (stack != null && stack.hasTag() &&
                     (stack.getTag().getBoolean("IsAttacking") || stack.getTag().getBoolean("IsThrowing"))) {
                 return PlayState.CONTINUE;
             }
 
-            // 3. En 1ra Persona -> Carga visual
             if (player.isUsingItem() && player.getUseItem().getItem() == this) {
                 return state.setAndContinue(CHARGE);
             }
@@ -404,6 +395,6 @@ public class BlasphemousImpalerItem extends SwordItem implements GeoItem, ICombo
     }
 
     @Override public int getUseDuration(ItemStack stack) { return 72000; }
-    @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.NONE; } // Vital para PlayerAnimator
+    @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.NONE; }
     @Override public AnimatableInstanceCache getAnimatableInstanceCache() { return cache; }
 }

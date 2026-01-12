@@ -461,6 +461,8 @@ public class BloodyHell
             event.accept(ModItems.BLASPHEMITE_CHESTPLATE);
             event.accept(ModItems.BLASPHEMITE_LEGGINGS);
             event.accept(ModItems.BLASPHEMITE_BOOTS);
+            event.accept(ModBlocks.BLASPHEMITE_ORE);
+            event.accept(ModItems.SELIORA_ESSENCE);
 
         }
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {

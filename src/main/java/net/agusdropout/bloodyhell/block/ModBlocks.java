@@ -349,6 +349,12 @@ public class ModBlocks {
     public static final RegistryObject<Block> TOMB_BLOCK = registerBlock("tomb_block", () -> new TombBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().noLootTable()));
 
+    public static final RegistryObject<Block> BLASPHEMITE_ORE = registerBlock("blasphemite_ore",
+            () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
+                    .strength(5f) // Dureza (Hierro es 3, Diamante es 3, Deepslate es 4.5)
+                    .requiresCorrectToolForDrops(),
+                    UniformInt.of(3, 7))); // Experiencia que suelta (entre 3 y 7)
+
 
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

@@ -22,6 +22,7 @@ public class ModPlacedFeatures {
 
 
     public static final ResourceKey<PlacedFeature> SANGUINE_ORE_PLACED_KEY = createKey("sanguine_ore_placed");
+    public static final ResourceKey<PlacedFeature> BLASPHEMITE_ORE_PLACED_KEY = createKey("blasphemite_ore_placed");
 
     public static final ResourceKey<PlacedFeature> BLOOD_TREE_PLACED_KEY = createKey("blood_tree_placed");
     public static final ResourceKey<PlacedFeature> GIANT_BLOOD_TREE_PLACED_KEY = createKey("giant_blood_tree_placed");
@@ -55,6 +56,9 @@ public class ModPlacedFeatures {
 
 
         register(context, SANGUINE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.SOUL_DIMENSION_SANGUINE_ORE_KEY),
+                commonOrePlacement(12, // VeinsPerChunk
+                        HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-10), VerticalAnchor.aboveBottom(100))));
+        register(context, BLASPHEMITE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.SOUL_DIMENSION_BLASPHEMITE_ORE_KEY),
                 commonOrePlacement(12, // VeinsPerChunk
                         HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-10), VerticalAnchor.aboveBottom(100))));
         register(context, BLEEDING_BLOCK_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.BLEEDING_BLOCK_KEY),

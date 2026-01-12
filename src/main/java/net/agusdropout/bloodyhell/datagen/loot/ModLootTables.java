@@ -167,6 +167,7 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(ModBlocks.SELIORA_RESTING_BLOCK.get());
             this.dropSelf(ModBlocks.FORBIDDEN_BOOKSHELF_BLOCK.get());
             this.dropSelf(ModBlocks.STAR_LAMP_BLOCK.get());
+            this.add(ModBlocks.BLASPHEMITE_ORE.get(), block -> createOreDrop(ModBlocks.BLASPHEMITE_ORE.get(), ModItems.RAW_BLASPHEMITE.get()));
 
 
 
@@ -336,9 +337,15 @@ public class ModLootTables extends LootTableProvider {
                             )
                     )
             );
+
             this.add(ModEntityTypes.SELIORA.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.SELIORA_ESSENCE.get())
+                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+
+                                    .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                            )
                     )
             );
             this.add(ModEntityTypes.HORNED_WORM.get(), LootTable.lootTable()

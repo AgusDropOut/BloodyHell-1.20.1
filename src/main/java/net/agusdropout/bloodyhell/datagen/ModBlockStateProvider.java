@@ -85,6 +85,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         //Blasphemous Biome
         rotatedCubeBlock(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
         blockWithItem(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
+        blockWithItem(ModBlocks.BLASPHEMITE_ORE);
         blockWithItem(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
         blockWithItem(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
         blockWithItem(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);

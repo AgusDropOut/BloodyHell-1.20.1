@@ -1,40 +1,40 @@
-[11ene.2026 20:50:07.145] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\AgusDropOut\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 46.0.14, --fml.mcVersion, 1.20, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230608.053357, --mod, bloodyhell, --all, --output, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\generated\resources, --existing, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\main\resources]
-[11ene.2026 20:50:07.149] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.17 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
-[11ene.2026 20:50:07.264] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/AgusDropOut/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23126!/ Service=ModLauncher Env=CLIENT
-[11ene.2026 20:50:07.512] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20-46.0.14\a6405744022dfa25d0b0b60fadee46538a162723\javafmllanguage-1.20-46.0.14.jar is missing mods.toml file
-[11ene.2026 20:50:07.515] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20-46.0.14\d85c3d3a835e85b26ebf1adf7604a180762119a7\lowcodelanguage-1.20-46.0.14.jar is missing mods.toml file
-[11ene.2026 20:50:07.518] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20-46.0.14\69e8fcee85250152d97775b0704885837b4b75fa\mclanguage-1.20-46.0.14.jar is missing mods.toml file
-[11ene.2026 20:50:07.521] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20-46.0.14\9d768efd192cfba2ab8d351cb392859ccf691710\fmlcore-1.20-46.0.14.jar is missing mods.toml file
-[11ene.2026 20:50:07.587] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
-[11ene.2026 20:50:09.091] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
-[11ene.2026 20:50:09.094] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\AgusDropOut\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, bloodyhell, --all, --output, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\generated\resources, --existing, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\main\resources]
-[11ene.2026 20:50:09.434] [main/INFO] [mixin/]: Remapping refMap geckolib.refmap.json using C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20/build/createSrgToMcp/output.srg
-[11ene.2026 20:50:09.444] [main/INFO] [mixin/]: Remapping refMap player-animation-lib-minecraft_common-refmap.json using C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20/build/createSrgToMcp/output.srg
-[11ene.2026 20:50:09.687] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [bloodyhell]
-[11ene.2026 20:50:12.708] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 46.0.14, for MC 1.20 with MCP 20230608.053357
-[11ene.2026 20:50:12.709] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v46.0.14 Initialized
-[11ene.2026 20:50:12.769] [modloading-worker-0/WARN] [software.bernie.geckolib.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners
-[11ene.2026 20:50:13.435] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/AgusDropOut/IdeaProjects/BloodyHell-1.20/build/fg_cache/net/minecraftforge/forge/1.20-46.0.14_mapped_official_1.20/forge-1.20-46.0.14_mapped_official_1.20-recomp.jar%23189!/assets/.mcassetsroot' uses unexpected schema
-[11ene.2026 20:50:13.435] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/AgusDropOut/IdeaProjects/BloodyHell-1.20/build/fg_cache/net/minecraftforge/forge/1.20-46.0.14_mapped_official_1.20/forge-1.20-46.0.14_mapped_official_1.20-recomp.jar%23189!/data/.mcassetsroot' uses unexpected schema
-[11ene.2026 20:50:13.604] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: bloodyhell
-[11ene.2026 20:50:13.745] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: bloodyhell finished after 139 ms
-[11ene.2026 20:50:13.745] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: bloodyhell
-[11ene.2026 20:50:13.777] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: bloodyhell finished after 31 ms
-[11ene.2026 20:50:13.777] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
-[11ene.2026 20:50:13.843] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 66 ms
-[11ene.2026 20:50:13.843] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
-[11ene.2026 20:50:13.867] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 24 ms
-[11ene.2026 20:50:13.868] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
-[11ene.2026 20:50:13.906] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 37 ms
-[11ene.2026 20:50:13.906] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id bloodyhell
-[11ene.2026 20:50:13.922] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id bloodyhell finished after 15 ms
-[11ene.2026 20:50:13.922] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:fluid mod id bloodyhell
-[11ene.2026 20:50:13.923] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:fluid mod id bloodyhell finished after 1 ms
-[11ene.2026 20:50:13.923] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:worldgen/structure mod id bloodyhell
-[11ene.2026 20:50:13.926] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:worldgen/structure mod id bloodyhell finished after 2 ms
-[11ene.2026 20:50:13.926] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: bloodyhell Entity Type Tags
-[11ene.2026 20:50:13.927] [main/INFO] [net.minecraft.data.DataGenerator/]: bloodyhell Entity Type Tags finished after 1 ms
-[11ene.2026 20:50:13.927] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:item mod id bloodyhell
-[11ene.2026 20:50:13.929] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:item mod id bloodyhell finished after 1 ms
-[11ene.2026 20:50:13.929] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 324 ms
-[11ene.2026 20:50:13.965] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 672, old count: 689, new count: 673, removed stale: 0, written: 2
+[12ene.2026 12:57:32.450] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\AgusDropOut\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 46.0.14, --fml.mcVersion, 1.20, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230608.053357, --mod, bloodyhell, --all, --output, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\generated\resources, --existing, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\main\resources]
+[12ene.2026 12:57:32.455] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.17 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[12ene.2026 12:57:32.567] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/AgusDropOut/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23126!/ Service=ModLauncher Env=CLIENT
+[12ene.2026 12:57:32.807] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20-46.0.14\a6405744022dfa25d0b0b60fadee46538a162723\javafmllanguage-1.20-46.0.14.jar is missing mods.toml file
+[12ene.2026 12:57:32.809] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20-46.0.14\d85c3d3a835e85b26ebf1adf7604a180762119a7\lowcodelanguage-1.20-46.0.14.jar is missing mods.toml file
+[12ene.2026 12:57:32.813] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20-46.0.14\69e8fcee85250152d97775b0704885837b4b75fa\mclanguage-1.20-46.0.14.jar is missing mods.toml file
+[12ene.2026 12:57:32.816] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\AgusDropOut\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20-46.0.14\9d768efd192cfba2ab8d351cb392859ccf691710\fmlcore-1.20-46.0.14.jar is missing mods.toml file
+[12ene.2026 12:57:32.888] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[12ene.2026 12:57:34.371] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[12ene.2026 12:57:34.375] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\AgusDropOut\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, bloodyhell, --all, --output, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\generated\resources, --existing, C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20\src\main\resources]
+[12ene.2026 12:57:34.718] [main/INFO] [mixin/]: Remapping refMap geckolib.refmap.json using C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20/build/createSrgToMcp/output.srg
+[12ene.2026 12:57:34.730] [main/INFO] [mixin/]: Remapping refMap player-animation-lib-minecraft_common-refmap.json using C:\Users\AgusDropOut\IdeaProjects\BloodyHell-1.20/build/createSrgToMcp/output.srg
+[12ene.2026 12:57:35.019] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [bloodyhell]
+[12ene.2026 12:57:38.096] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 46.0.14, for MC 1.20 with MCP 20230608.053357
+[12ene.2026 12:57:38.096] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v46.0.14 Initialized
+[12ene.2026 12:57:38.154] [modloading-worker-0/WARN] [software.bernie.geckolib.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners
+[12ene.2026 12:57:38.722] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/AgusDropOut/IdeaProjects/BloodyHell-1.20/build/fg_cache/net/minecraftforge/forge/1.20-46.0.14_mapped_official_1.20/forge-1.20-46.0.14_mapped_official_1.20-recomp.jar%23189!/assets/.mcassetsroot' uses unexpected schema
+[12ene.2026 12:57:38.722] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/AgusDropOut/IdeaProjects/BloodyHell-1.20/build/fg_cache/net/minecraftforge/forge/1.20-46.0.14_mapped_official_1.20/forge-1.20-46.0.14_mapped_official_1.20-recomp.jar%23189!/data/.mcassetsroot' uses unexpected schema
+[12ene.2026 12:57:38.815] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: bloodyhell
+[12ene.2026 12:57:38.955] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: bloodyhell finished after 139 ms
+[12ene.2026 12:57:38.955] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: bloodyhell
+[12ene.2026 12:57:38.986] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: bloodyhell finished after 30 ms
+[12ene.2026 12:57:38.986] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[12ene.2026 12:57:39.061] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 74 ms
+[12ene.2026 12:57:39.061] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
+[12ene.2026 12:57:39.087] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 25 ms
+[12ene.2026 12:57:39.087] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
+[12ene.2026 12:57:39.125] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 37 ms
+[12ene.2026 12:57:39.125] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id bloodyhell
+[12ene.2026 12:57:39.138] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id bloodyhell finished after 13 ms
+[12ene.2026 12:57:39.138] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:fluid mod id bloodyhell
+[12ene.2026 12:57:39.140] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:fluid mod id bloodyhell finished after 1 ms
+[12ene.2026 12:57:39.140] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:worldgen/structure mod id bloodyhell
+[12ene.2026 12:57:39.142] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:worldgen/structure mod id bloodyhell finished after 1 ms
+[12ene.2026 12:57:39.142] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: bloodyhell Entity Type Tags
+[12ene.2026 12:57:39.143] [main/INFO] [net.minecraft.data.DataGenerator/]: bloodyhell Entity Type Tags finished after 1 ms
+[12ene.2026 12:57:39.143] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:item mod id bloodyhell
+[12ene.2026 12:57:39.145] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:item mod id bloodyhell finished after 1 ms
+[12ene.2026 12:57:39.145] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 329 ms
+[12ene.2026 12:57:39.183] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 741, old count: 760, new count: 742, removed stale: 0, written: 2

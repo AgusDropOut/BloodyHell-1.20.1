@@ -7,11 +7,15 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SmokingRecipe;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ModRecipes extends ModRecipesProvider {
@@ -348,6 +352,164 @@ public class ModRecipes extends ModRecipesProvider {
         smeltingRecipe(ModItems.SCARLET_COOKED_CHICKEN.get(), ModItems.SCARLET_RAW_CHICKEN.get(), 0.35F).save(consumer, name("smelting_scarlet_raw_chicken"));
         campfireRecipe(ModItems.SCARLET_COOKED_CHICKEN.get(), ModItems.SCARLET_RAW_CHICKEN.get(), 0.35F).save(consumer, name("campfire_scarlet_raw_chicken"));
 
+        //---------------------------------BLASPHEMOUS BIOME RECIPES--------------------------------//
+
+        // --- BLASPHEMITE (Material) ---
+        // Nugget <-> Ingot/Item
+        makeIngotToNugget(ModItems.BLASPHEMITE_NUGGET, ModItems.BLASPHEMITE).save(consumer);
+        makeNuggetToIngot(ModItems.BLASPHEMITE, ModItems.BLASPHEMITE_NUGGET).save(consumer);
+
+        // Solo cocinamos el RAW, no el bloque
+        List<ItemLike> blasphemiteSmeltables = List.of(ModItems.RAW_BLASPHEMITE.get());
+
+        // Receta Horno Normal
+        oreSmelting(consumer, blasphemiteSmeltables, RecipeCategory.MISC, ModItems.BLASPHEMITE.get(),
+                0.7f, 200, "blasphemite");
+
+        // Receta Alto Horno (Blasting)
+        oreBlasting(consumer, blasphemiteSmeltables, RecipeCategory.MISC, ModItems.BLASPHEMITE.get(),
+                0.7f, 100, "blasphemite");
+
+        // --- BLASPHEMOUS SANDSTONE (Arenisca) ---
+
+        // Sand -> Sandstone (4 Arenas = 1 Arenisca)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .pattern("SS")
+                .pattern("SS")
+                .define('S', ModBlocks.BLASPHEMOUS_SAND_BLOCK.get())
+                .unlockedBy("has_blasphemous_sand", has(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get()))
+                .save(consumer, name("blasphemous_sandstone_from_sand"));
+
+        // Sandstone -> Smooth Sandstone (Horno)
+        smeltingRecipe(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get(), ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get(), 0.1f)
+                .save(consumer, name("smooth_blasphemous_sandstone_smelting"));
+
+        // Sandstone -> Cut Sandstone (4 Areniscas = 4 Areniscas Cortadas)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get(), 4)
+                .pattern("SS")
+                .pattern("SS")
+                .define('S', ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .save(consumer, name("cut_blasphemous_sandstone"));
+
+        // Sandstone Slab -> Chiseled Sandstone (2 Losas = 1 Cincelado)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .pattern("S")
+                .pattern("S")
+                .define('S', ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get()) // Usualmente se hace con slabs de arenisca
+                .unlockedBy("has_smooth_blasphemous_sandstone_slab", has(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get()))
+                .save(consumer, name("chiseled_blasphemous_sandstone"));
+
+        // --- ESCALERAS Y LOSAS (Smooth Sandstone) ---
+        // Ya tienes un helper makeStairs/makeSlab, úsalo:
+        makeStairs(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
+        makeSlab(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
+
+        // --- STONECUTTING (Cortapiedras) ---
+        // Permite convertir Sandstone normal en todas sus variantes decorativas
+
+        // Input: Blasphemous Sandstone
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .save(consumer, name("stonecutting_cut_blasphemous_sandstone"));
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .save(consumer, name("stonecutting_chiseled_blasphemous_sandstone"));
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .save(consumer, name("stonecutting_chiseled_detailed_blasphemous_sandstone"));
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .save(consumer, name("stonecutting_smooth_blasphemous_sandstone"));
+
+        // Variantes de Smooth en Cortapiedras
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get())
+                .unlockedBy("has_smooth_blasphemous_sandstone", has(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .save(consumer, name("stonecutting_smooth_blasphemous_sandstone_stairs"));
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get(), 2)
+                .unlockedBy("has_smooth_blasphemous_sandstone", has(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .save(consumer, name("stonecutting_smooth_blasphemous_sandstone_slab"));
+
+        // --- VASIIJA DECORADA (Decorated Pot) ---
+        // Requiere 4 ladrillos (o fragmentos de cerámica si tienes custom shards)
+        // Usamos Ladrillos de arcilla por defecto o algún material tuyo
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.DECORATED_POT_BLOCK.get())
+                .pattern("B B")
+                .pattern(" B ")
+                .define('B', Items.BRICK) // Puedes cambiar esto por ModItems.BLASPHEMITE_NUGGET si quieres que sea especial
+                .unlockedBy("has_brick", has(Items.BRICK))
+                .save(consumer, name("decorated_pot_block"));
+
+        // --- STAR LAMP (Lámpara Estrella) ---
+        // Crafteo: 1 Antorcha/Glowstone + 4 Blasphemous Sandstone o Cristal
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.STAR_LAMP_BLOCK.get())
+                .pattern(" S ")
+                .pattern("SLS")
+                .pattern(" S ")
+                .define('S', ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .define('L', ModBlocks.GLOWING_CRYSTAL_LANTERN.get()) // O Glowstone
+                .unlockedBy("has_glowing_lantern", has(ModBlocks.GLOWING_CRYSTAL_LANTERN.get()))
+                .save(consumer, name("star_lamp_block"));
+        //---------------------------------BLASPHEMITE GEAR--------------------------------//
+
+        // --- Herramientas (Usan Sticks normales por defecto según tus helpers) ---
+        makeSword(ModItems.BLASPHEMITE_SWORD, ModItems.BLASPHEMITE).save(consumer);
+        makePickaxe(ModItems.BLASPHEMITE_PICKAXE, ModItems.BLASPHEMITE).save(consumer);
+        makeAxe(ModItems.BLASPHEMITE_AXE, ModItems.BLASPHEMITE).save(consumer);
+        makeShovel(ModItems.BLASPHEMITE_SHOVEL, ModItems.BLASPHEMITE).save(consumer);
+        makeHoe(ModItems.BLASPHEMITE_HOE, ModItems.BLASPHEMITE).save(consumer);
+
+        // --- Armaduras ---
+        makeHelmet(ModItems.BLASPHEMITE_HELMET, ModItems.BLASPHEMITE).save(consumer);
+        makeChestplate(ModItems.BLASPHEMITE_CHESTPLATE, ModItems.BLASPHEMITE).save(consumer);
+        makeLeggings(ModItems.BLASPHEMITE_LEGGINGS, ModItems.BLASPHEMITE).save(consumer);
+        makeBoots(ModItems.BLASPHEMITE_BOOTS, ModItems.BLASPHEMITE).save(consumer);
+
+        // --- BLASPHEMOUS IMPALER (Lanza) ---
+        // Se hace con el Impaler normal + Blasphemite (Upgrade) o directo?
+        // Aquí lo hago directo. Crafteo caro.
+        // Diseño: Punta de Blasphemita + Esencia + Mango reforzado de Rhnull
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLASPHEMOUS_IMPALER.get())
+                .pattern("  B")
+                .pattern(" S ")
+                .pattern("R  ")
+                .define('B', ModItems.BLASPHEMITE.get())      // Punta
+                .define('S', ModItems.SELIORA_ESSENCE.get())  // Núcleo del Jefe
+                .define('R', ModItems.RHNULL.get())           // Mango fuerte
+                // EL TRUCO: La receta solo se desbloquea si tienes la Esencia
+                .unlockedBy("has_seliora_essence", has(ModItems.SELIORA_ESSENCE.get()))
+                .save(consumer, name("blasphemous_impaler"));
+
+        //---------------------------------BOSS WEAPONS (LOCKED)--------------------------------//
+
+        // --- BLASPHEMOUS TWIN DAGGERS (Dagas Gemelas) ---
+        // Diseño: Dos hojas de Blasphemita laterales, Esencia al centro, Mangos de Rhnull
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
+                .pattern("B B")
+                .pattern(" S ")
+                .pattern("R R")
+                .define('B', ModItems.BLASPHEMITE.get())
+                .define('S', ModItems.SELIORA_ESSENCE.get())
+                .define('R', ModItems.RHNULL.get())
+                .unlockedBy("has_seliora_essence", has(ModItems.SELIORA_ESSENCE.get()))
+                .save(consumer, name("blasphemous_twin_daggers"));
+
+        // --- BLASPHEMOUS HULKING MASS OF IRON (Espadón Gigante) ---
+        // Diseño: Mucho material arriba (pesado), Esencia uniendo, Mango abajo.
+        // Uso BLOQUES de Blasphemita o muchos items para simular el peso "Hulking".
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
+                .pattern("BBB")
+                .pattern("BSB") // Bordeado de metal con el alma en el centro
+                .pattern(" R ")
+                .define('B', ModItems.BLASPHEMITE.get())
+                .define('S', ModItems.SELIORA_ESSENCE.get())
+                .define('R', ModItems.RHNULL.get())
+                .unlockedBy("has_seliora_essence", has(ModItems.SELIORA_ESSENCE.get()))
+                .save(consumer, name("blasphemous_hulking_mass_of_iron"));
     }
 
 

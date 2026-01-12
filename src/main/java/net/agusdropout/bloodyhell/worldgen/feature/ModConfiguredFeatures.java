@@ -48,6 +48,7 @@ public class ModConfiguredFeatures {
 
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> SOUL_DIMENSION_SANGUINE_ORE_KEY = registerKey("soul_dimension_sanguinite_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SOUL_DIMENSION_BLASPHEMITE_ORE_KEY = registerKey("soul_dimension_blasphemite_ore");
     public static final ResourceKey<ConfiguredFeature<?,?>> GIANT_BLOOD_TREE_KEY = registerKey("giant_blood_tree");
     public static final ResourceKey<ConfiguredFeature<?,?>> BLOOD_TREE_KEY = registerKey("blood_tree");
     public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_BLOOD_TREE_KEY = registerKey("small_blood_tree");
@@ -80,6 +81,9 @@ public class ModConfiguredFeatures {
     public static final Supplier<List<OreConfiguration.TargetBlockState>> BLOOD_ORES = Suppliers.memoize(() -> List.of(
             OreConfiguration.target(new TagMatchTest(ModTags.Blocks.BLOOD_ORE_REPLACEABLES), ModBlocks.SANGUINITE_ORE.get().defaultBlockState())));
 
+    public static final Supplier<List<OreConfiguration.TargetBlockState>> BLASPHEMITE_ORES = Suppliers.memoize(() -> List.of(
+            OreConfiguration.target(new TagMatchTest(ModTags.Blocks.BLASPHEMITE_ORE_REPLACEABLES), ModBlocks.BLASPHEMITE_ORE.get().defaultBlockState())));
+
     public static final Supplier<List<OreConfiguration.TargetBlockState>> BLEEDING_BLOCK = Suppliers.memoize(() -> List.of(
            OreConfiguration.target(new TagMatchTest(BlockTags.DIRT), ModBlocks.BLEEDING_BLOCK.get().defaultBlockState())));
     public static final Supplier<List<OreConfiguration.TargetBlockState>> BLOOD_LIQUID = Suppliers.memoize(() -> List.of(
@@ -93,6 +97,7 @@ public class ModConfiguredFeatures {
 
 
         register(context, SOUL_DIMENSION_SANGUINE_ORE_KEY, Feature.ORE, new OreConfiguration(BLOOD_ORES.get(),12));
+        register(context, SOUL_DIMENSION_BLASPHEMITE_ORE_KEY, Feature.ORE, new OreConfiguration(BLASPHEMITE_ORES.get(),12));
         register(context, BLEEDING_BLOCK_KEY, Feature.ORE, new OreConfiguration(BLEEDING_BLOCK.get(),33));
         register(context, BLOOD_LIQUID_KEY, Feature.DELTA_FEATURE, new DeltaFeatureConfiguration(ModBlocks.BLOOD_FLUID_BLOCK.get().defaultBlockState(), ModBlocks.BLOODY_STONE_BLOCK.get().defaultBlockState(), UniformInt.of(6, 8), UniformInt.of(2, 4)));
 
