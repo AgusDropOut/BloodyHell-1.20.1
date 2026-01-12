@@ -64,6 +64,7 @@ public class ModTags {
     public static class Structures {
 
         public static final TagKey<Structure> MAUSOLEUM = tag("mausoleum");
+        public static final TagKey<Structure> POOL = tag("pool");
 
         private static TagKey<Structure> tag(String name) {
             return StructureTags.create(new ResourceLocation(BloodyHell.MODID, name).toString());

@@ -332,11 +332,18 @@ public class ModBlocks {
     public static final RegistryObject<Block> SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB = registerBlock("smooth_blasphemous_sandstone_slab", () -> new SlabBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SELIORA_RESTING_BLOCK = registerBlock("seliora_resting_block", () -> new SelioraRestingBlock(
-            BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().strength(2000f)));
     public static final RegistryObject<Block> STAR_LAMP_BLOCK = registerBlock("star_lamp_block", () -> new StarLampBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state)->15).noOcclusion()));
     public static final RegistryObject<Block> DECORATED_POT_BLOCK = registerBlock("decorated_pot_block", () -> new DetailedPotBlock(
-            BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            BlockBehaviour.Properties.of() // Usamos .of() para empezar de cero
+                    .mapColor(MapColor.STONE)
+                    .strength(0.2f) // Se rompe facil
+                    .sound(SoundType.DECORATED_POT) // Sonido de vasija
+                    .noOcclusion()
+                    .noCollission()
+            // IMPORTANTE: NO ponemos .requiresCorrectToolForDrops()
+    ));
     public static final RegistryObject<Block> FORBIDDEN_BOOKSHELF_BLOCK = registerBlock("forbidden_bookshelf_block", () -> new Block(
             BlockBehaviour.Properties.copy(Blocks.BOOKSHELF)));
     public static final RegistryObject<Block> TOMB_BLOCK = registerBlock("tomb_block", () -> new TombBlock(

@@ -1,4 +1,4 @@
-// 1.20	2026-01-11T14:13:35.500178	Loot Tables
+// 1.20	2026-01-11T20:50:13.9321282	Loot Tables
 da73374edf81bd9af2807a544c671f59ff189c2b data/bloodyhell/loot_tables/blocks/blasphemous_sandstone_block.json
 229b1eb908732b4a696cba8df148e473920cc13f data/bloodyhell/loot_tables/blocks/blasphemous_sand_block.json
 5cbea24dceea598b8613397f9ae1ed81629a267f data/bloodyhell/loot_tables/blocks/bleeding_block.json
@@ -52,7 +52,7 @@ c94f745285023da99f9a18edff15d1cc3cd8495e data/bloodyhell/loot_tables/blocks/cind
 19a07903f98396f715da5f726c59f10d04228963 data/bloodyhell/loot_tables/blocks/cinder_bloom_cactus_root.json
 eef1b121fe1816224fb22970cf62b256127c16e3 data/bloodyhell/loot_tables/blocks/cracked_blasphemous_sandstone.json
 fc94c5a736cc1eb037ca10a319d819f09ac856d1 data/bloodyhell/loot_tables/blocks/cut_blasphemous_sandstone_block.json
-8624229f6220acb5222cb8564ec7eb1f64bf7ff3 data/bloodyhell/loot_tables/blocks/decorated_pot_block.json
+25b25fc1f9542ccf72e6d272181a27708d5b06e3 data/bloodyhell/loot_tables/blocks/decorated_pot_block.json
 0a08bf636627d25d400b2c67c21d28b1bb63cf36 data/bloodyhell/loot_tables/blocks/droopvine.json
 c91d151b1cf46b5a4ca21b332809270475445b1a data/bloodyhell/loot_tables/blocks/droopvine_plant.json
 e17a06df6160f6e21dda5421fa10b846591b2f7c data/bloodyhell/loot_tables/blocks/eroded_blasphemous_sandstone.json

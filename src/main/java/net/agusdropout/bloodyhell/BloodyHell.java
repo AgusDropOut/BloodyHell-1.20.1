@@ -135,6 +135,7 @@ public class BloodyHell
 
 
 
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -166,11 +167,15 @@ public class BloodyHell
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE,
                     Animal::checkMobSpawnRules);
             SpawnPlacements.register(ModEntityTypes.OFFSPRING_OF_THE_UNKNOWN.get(),
-                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Monster::checkMonsterSpawnRules);
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, // O MOTION_BLOCKING si es interior con techo
+                    Monster::checkAnyLightMonsterSpawnRules); // <--- AQUÍ ESTÁ EL CAMBIO
+
+            // CAMBIO 2: Blasphemous Malformation
             SpawnPlacements.register(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(),
-                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Monster::checkMonsterSpawnRules);
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Monster::checkAnyLightMonsterSpawnRules); // <--- USA ESTA REGLA;
             SpawnPlacements.register(ModEntityTypes.HORNED_WORM.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Monster::checkMonsterSpawnRules);

@@ -1,0 +1,15 @@
+{
+  "name": "bloodyhell:pyramid/pool_parte_4",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "bloodyhell:pyramid/pool_parte_4",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}
