@@ -22,6 +22,7 @@ import net.agusdropout.bloodyhell.entity.client.*;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
+import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.client.OffhandDaggerLayer;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
 import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
@@ -34,6 +35,7 @@ import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.agusdropout.bloodyhell.util.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
@@ -41,6 +43,7 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -114,6 +117,66 @@ public class ClientEvents {
                     float chargeRatio = (float) chargeTicks / (float) CyclopsEntity.ATTACK_CHARGE_TIME_TICKS;
                     float zoomIntensity = Mth.lerp(chargeRatio, 1.0f, 0.85f);
                     event.setFOV(event.getFOV() * zoomIntensity);
+                }
+            }
+        }
+
+        @Mod.EventBusSubscriber(modid = BloodyHell.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+        public class ClientPlayerRenderEvents {
+
+            @SubscribeEvent
+            public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
+                // 1. Verificamos si la entidad es un Jugador
+                if (event.getEntity() instanceof Player player) {
+
+                    // 2. Obtenemos el renderizador y el modelo del jugador
+                    if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
+                        PlayerModel<?> model = playerRenderer.getModel();
+
+                        // 3. CASO: PECHERA (Chestplate)
+                        // Si lleva la Blasphemite Chestplate, ocultamos chaqueta y mangas
+                        if (player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLASPHEMITE_CHESTPLATE.get())) {
+                            model.jacket.visible = false;      // Capa del cuerpo
+                            model.leftSleeve.visible = false;  // Manga izquierda
+                            model.rightSleeve.visible = false; // Manga derecha
+                        }
+
+                        // 4. CASO: PANTALONES (Leggings) y BOTAS
+                        // Si lleva pantalones, ocultamos las perneras de la skin
+                        if (player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLASPHEMITE_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLASPHEMITE_BOOTS.get())) {
+                            model.leftPants.visible = false;
+                            model.rightPants.visible = false;
+                        }
+
+                        // 5. CASO: CASCO
+                        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLASPHEMITE_HELMET.get())) {
+                            model.hat.visible = false;
+                            model.head.visible = false;// La capa externa de la cabeza
+                        }
+                    }
+                }
+            }
+
+            @SubscribeEvent
+            public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
+                // IMPORTANTE: Restaurar la visibilidad después de renderizar
+                // Si no haces esto, ¡el jugador se quedará "delgado" para siempre hasta reiniciar!
+                if (event.getEntity() instanceof Player) {
+                    if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
+                        PlayerModel<?> model = playerRenderer.getModel();
+
+                        // Restauramos todo a true (o a lo que el jugador tenga configurado en opciones,
+                        // pero true suele ser seguro porque Minecraft lo reajusta luego)
+                        model.jacket.visible = true;
+                        model.leftSleeve.visible = true;
+                        model.rightSleeve.visible = true;
+                        model.leftPants.visible = true;
+                        model.rightPants.visible = true;
+                        model.hat.visible = true;
+                        model.head.visible = true;
+
+                    }
                 }
             }
         }
