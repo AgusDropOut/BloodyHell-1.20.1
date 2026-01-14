@@ -134,25 +134,38 @@ public class ClientEvents {
                         PlayerModel<?> model = playerRenderer.getModel();
 
                         // 3. CASO: PECHERA (Chestplate)
-                        // Si lleva la Blasphemite Chestplate, ocultamos chaqueta y mangas
-                        if (player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLASPHEMITE_CHESTPLATE.get())) {
+                        // Chequeamos si es Blasphemite O (||) Blood (Sanguinite)
+                        if (player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLASPHEMITE_CHESTPLATE.get()) ||
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLOOD_CHESTPLATE.get()) || player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.RHNULL_CHESTPLATE.get())) {
+
                             model.jacket.visible = false;      // Capa del cuerpo
                             model.leftSleeve.visible = false;  // Manga izquierda
                             model.rightSleeve.visible = false; // Manga derecha
                         }
 
                         // 4. CASO: PANTALONES (Leggings) y BOTAS
-                        // Si lleva pantalones, ocultamos las perneras de la skin
+                        // Chequeamos Blasphemite O Blood en piernas o pies
                         if (player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLASPHEMITE_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLASPHEMITE_BOOTS.get())) {
+                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLOOD_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLASPHEMITE_BOOTS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLOOD_BOOTS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.RHNULL_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.RHNULL_BOOTS.get())) {
+
                             model.leftPants.visible = false;
                             model.rightPants.visible = false;
                         }
 
                         // 5. CASO: CASCO
-                        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLASPHEMITE_HELMET.get())) {
-                            model.hat.visible = false;
-                            model.head.visible = false;// La capa externa de la cabeza
+                        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLASPHEMITE_HELMET.get()) ||
+                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLOOD_HELMET.get()) ||
+                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.RHNULL_HELMET.get())) {
+
+                            model.hat.visible = false; // La capa externa (Overlay)
+
+                            // NOTA: Solo deja esta línea si el casco tapa TODA la cara.
+                            // Si el casco deja ver la cara del jugador, borra 'model.head.visible = false'.
+                             model.head.visible = false;
                         }
                     }
                 }
@@ -160,22 +173,18 @@ public class ClientEvents {
 
             @SubscribeEvent
             public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
-                // IMPORTANTE: Restaurar la visibilidad después de renderizar
-                // Si no haces esto, ¡el jugador se quedará "delgado" para siempre hasta reiniciar!
+                // Restaurar visibilidad
                 if (event.getEntity() instanceof Player) {
                     if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
                         PlayerModel<?> model = playerRenderer.getModel();
 
-                        // Restauramos todo a true (o a lo que el jugador tenga configurado en opciones,
-                        // pero true suele ser seguro porque Minecraft lo reajusta luego)
                         model.jacket.visible = true;
                         model.leftSleeve.visible = true;
                         model.rightSleeve.visible = true;
                         model.leftPants.visible = true;
                         model.rightPants.visible = true;
                         model.hat.visible = true;
-                        model.head.visible = true;
-
+                        model.head.visible = true; // Restauramos la cabeza por si acaso
                     }
                 }
             }

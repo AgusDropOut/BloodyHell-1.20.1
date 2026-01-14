@@ -62,6 +62,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         toolItem(ModItems.RHNULL_HOE);
         normalItem(ModItems.RHNULL);
         normalItem(ModItems.RHNULL_NUGGET);
+        normalItem(ModItems.RHNULL_HELMET);
+        normalItem(ModItems.RHNULL_CHESTPLATE);
+        normalItem(ModItems.RHNULL_LEGGINGS);
+        normalItem(ModItems.RHNULL_BOOTS);
 
         //Mobs Drops
         normalItem(ModItems.AUREAL_REVENANT_DAGGER);

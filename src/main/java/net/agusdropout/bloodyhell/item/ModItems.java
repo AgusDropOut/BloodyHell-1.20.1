@@ -80,6 +80,15 @@ public class ModItems {
     public static final RegistryObject<Item> RHNULL_SHOVEL = ITEMS.register("rhnull_shovel",() -> new ShovelItem(ModToolTiers.RHNULL,1,-3F,
             new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> RHNULL_HELMET = ITEMS.register("rhnull_helmet",
+            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> RHNULL_CHESTPLATE = ITEMS.register("rhnull_chestplate",
+            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<Item> RHNULL_LEGGINGS = ITEMS.register("rhnull_leggings",
+            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<Item> RHNULL_BOOTS = ITEMS.register("rhnull_boots",
+            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.BOOTS, new Item.Properties()));
+
     //Food Items
     public static final RegistryObject<Item> GLOW_MUSHROOM = ITEMS.register("glow_mushroom", () -> new BlockItem( ModBlocks.LIGHT_MUSHROOM_BLOCK.get(),new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3)
             .effect(

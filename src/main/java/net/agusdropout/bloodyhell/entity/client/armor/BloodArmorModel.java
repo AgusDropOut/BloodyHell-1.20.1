@@ -7,9 +7,9 @@ import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.model.GeoModel;
 
 public class BloodArmorModel extends GeoModel<BloodArmorItem> {
-    private final ResourceLocation model = new ResourceLocation(BloodyHell.MODID, "geo/bloodarmor.geo.json");
-    private final ResourceLocation texture = new ResourceLocation(BloodyHell.MODID, "textures/armor/bloodarmor.png");
-    private final ResourceLocation animation = new ResourceLocation(BloodyHell.MODID, "animations/bloodarmor.animation.json");
+    private final ResourceLocation model = new ResourceLocation(BloodyHell.MODID, "geo/sanguinite_armor.geo.json");
+    private final ResourceLocation texture = new ResourceLocation(BloodyHell.MODID, "textures/armor/sanguinite_armor.png");
+    private final ResourceLocation animation = new ResourceLocation(BloodyHell.MODID, "animations/sanguinite_armor.animation.json");
     @Override
     public ResourceLocation getModelResource(BloodArmorItem bloodArmorItem) {
         return model;

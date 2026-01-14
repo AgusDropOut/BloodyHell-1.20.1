@@ -255,6 +255,11 @@ public class BloodyHell
             event.accept(ModItems.RHNULL_AXE);
             event.accept(ModItems.RHNULL_SHOVEL);
             event.accept(ModItems.RHNULL_HOE);
+            event.accept(ModItems.RHNULL_HELMET);
+            event.accept(ModItems.RHNULL_CHESTPLATE);
+            event.accept(ModItems.RHNULL_LEGGINGS);
+            event.accept(ModItems.RHNULL_BOOTS);
+
 
 
             //Spawn Eggs

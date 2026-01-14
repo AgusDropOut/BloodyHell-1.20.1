@@ -1,60 +1,48 @@
 package net.agusdropout.bloodyhell.item.custom;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.agusdropout.bloodyhell.entity.client.armor.BloodArmorRenderer;
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.entity.client.armor.BlasphemiteArmorRenderer;
+import net.agusdropout.bloodyhell.entity.client.armor.RhnullArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.Holder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.example.client.renderer.armor.GeckoArmorRenderer;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Set;
 import java.util.function.Consumer;
 
-public class BloodArmorItem extends ArmorItem implements GeoItem {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+public class RhnullArmorItem extends ArmorItem implements GeoItem {
+    // 1. Necesitas el cache OBLIGATORIAMENTE para que no crashee
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    public BloodArmorItem(ArmorMaterial material, Type type, Properties properties) {
+    public RhnullArmorItem(ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
     }
 
+    // 2. Esto es lo que hace que se vea el modelo 3D
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private BloodArmorRenderer renderer;
+            private RhnullArmorRenderer renderer;
 
             @Override
             public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack,
                                                                    EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                 if (this.renderer == null)
-                    this.renderer = new BloodArmorRenderer();
+                    this.renderer = new RhnullArmorRenderer();
 
                 this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
                 return this.renderer;
             }
         });
     }
-
 
     private PlayState predicate(AnimationState animationState) {
         animationState.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
@@ -68,6 +56,6 @@ public class BloodArmorItem extends ArmorItem implements GeoItem {
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
+        return this.cache;
     }
 }

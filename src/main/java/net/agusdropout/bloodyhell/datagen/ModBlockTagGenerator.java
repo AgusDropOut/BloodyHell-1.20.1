@@ -100,8 +100,47 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(ModBlocks.SANGUINITE_BLOCK.get())
+                .add(ModBlocks.SANGUINITE_ORE.get())
+                .add(ModBlocks.BLASPHEMITE_ORE.get())
+                .add(ModBlocks.Jumpy_Block.get())
+                .add(ModBlocks.BLEEDING_BLOCK.get())
+                .add(ModBlocks.SANGUINE_CRUCIBLE.get())
+                .add(ModBlocks.GLOWING_CRYSTAL.get());
+
+        this.tag(ModTags.Blocks.NEEDS_SANGUINITE_TOOL)
                 .add(ModBlocks.RHNULL_BLOCK.get())
-                .add(ModBlocks.SANGUINITE_ORE.get());
+                .add(ModBlocks.BLASPHEMITE_ORE.get());
+
+
+        this.tag(BlockTags.NEEDS_STONE_TOOL)
+                .add(ModBlocks.BLOODY_STONE_BLOCK.get())
+                .add(ModBlocks.BLOODY_STONE_SLAB.get())
+                .add(ModBlocks.BLOODY_STONE_STAIRS.get())
+                .add(ModBlocks.BLOODY_STONE_FENCE.get())
+                .add(ModBlocks.BLOODY_STONE_FENCE_GATE.get())
+                .add(ModBlocks.BLOODY_STONE_WALL.get())
+                .add(ModBlocks.BLOODY_STONE_BRICKS.get())
+                .add(ModBlocks.BLOODY_STONE_BRICKS_SLAB.get())
+                .add(ModBlocks.BLOODY_STONE_BRICKS_STAIRS.get())
+                .add(ModBlocks.BLOODY_STONE_BRICKS_FENCE.get())
+                .add(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get())
+                .add(ModBlocks.BLOODY_STONE_BRICKS_WALL.get())
+                .add(ModBlocks.BLOODY_STONE_TILES_SLAB.get())
+                .add(ModBlocks.BLOODY_STONE_TILES_STAIRS.get())
+                .add(ModBlocks.BLOODY_STONE_TILES_BLOCK.get())
+                .add(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get())
+                .add(ModBlocks.POLISHED_BLOODY_STONE_SLAB.get())
+                .add(ModBlocks.POLISHED_BLOODY_STONE_STAIRS.get())
+                .add(ModBlocks.POLISHED_BLOODY_STONE_FENCE.get())
+                .add(ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get())
+                .add(ModBlocks.POLISHED_BLOODY_STONE_WALL.get())
+                .add(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get())
+                .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get())
+                .add(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .add(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+
 
 
 

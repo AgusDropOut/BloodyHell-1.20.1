@@ -354,6 +354,11 @@ public class ModRecipes extends ModRecipesProvider {
 
         //---------------------------------BLASPHEMOUS BIOME RECIPES--------------------------------//
 
+        makeHelmet(ModItems.RHNULL_HELMET, ModItems.RHNULL).save(consumer);
+        makeChestplate(ModItems.RHNULL_CHESTPLATE, ModItems.RHNULL).save(consumer);
+        makeLeggings(ModItems.RHNULL_LEGGINGS, ModItems.RHNULL).save(consumer);
+        makeBoots(ModItems.RHNULL_BOOTS, ModItems.RHNULL).save(consumer);
+
         // --- BLASPHEMITE (Material) ---
         // Nugget <-> Ingot/Item
         makeIngotToNugget(ModItems.BLASPHEMITE_NUGGET, ModItems.BLASPHEMITE).save(consumer);

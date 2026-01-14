@@ -1,4 +1,4 @@
-// 1.20	2026-01-12T12:54:50.9690343	Item Models: bloodyhell
+// 1.20	2026-01-14T14:34:15.6313516	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 14a952b98c00afd133a0e452445054b35e60ecf8 assets/bloodyhell/models/item/ancient_gem.json
 f49a02ab718c1273b0986d09260a7eedd70e35a7 assets/bloodyhell/models/item/aureal_revenant_dagger.json
@@ -91,7 +91,11 @@ c951baf9982df7c980b0b30fb7dd648e39a27c21 assets/bloodyhell/models/item/raw_sangu
 1dc554db58365281c45ec60c22609b5b6e1d3f4b assets/bloodyhell/models/item/rhnull.json
 a9fc78917dd3aa77721f312d431f93d0eec2271b assets/bloodyhell/models/item/rhnull_axe.json
 bdbec5407e8139d2f8b4f1aa8429531ab03750e3 assets/bloodyhell/models/item/rhnull_block.json
+c064c61909d3ca89a204db776454ffbfb5666fdd assets/bloodyhell/models/item/rhnull_boots.json
+a8b8d72e29a7ca1c8adee5de427b3d864040a9b1 assets/bloodyhell/models/item/rhnull_chestplate.json
+a809e089ec88dc4a833da709a56b5dd024be47a7 assets/bloodyhell/models/item/rhnull_helmet.json
 dff1eafd178ad2f31834847098d01165ff91efcb assets/bloodyhell/models/item/rhnull_hoe.json
+b1f065eb7fafb52d0f81273fdc073491e78448b5 assets/bloodyhell/models/item/rhnull_leggings.json
 676b767bb1eab534a74026b9bb73ca1c92b499de assets/bloodyhell/models/item/rhnull_nugget.json
 cfb405d37848c044887fc36a0dc93a68bd064b9c assets/bloodyhell/models/item/rhnull_pickaxe.json
 342e670bcfb230e648da9b1a4ea74e79d3a15a51 assets/bloodyhell/models/item/rhnull_shovel.json

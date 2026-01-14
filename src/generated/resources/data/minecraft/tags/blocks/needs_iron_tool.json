@@ -1,7 +1,11 @@
 {
   "values": [
     "bloodyhell:sanguinite_block",
-    "bloodyhell:rhnull_block",
-    "bloodyhell:sanguinite_ore"
+    "bloodyhell:sanguinite_ore",
+    "bloodyhell:blasphemite_ore",
+    "bloodyhell:jumpy_block",
+    "bloodyhell:bleeding_block",
+    "bloodyhell:sanguine_crucible",
+    "bloodyhell:glowing_crystal"
   ]
 }
