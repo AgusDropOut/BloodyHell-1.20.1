@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.client;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.entity.projectile.BloodProjectileEntity;
+ 
 import net.agusdropout.bloodyhell.entity.projectile.VirulentAnchorProjectileEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;

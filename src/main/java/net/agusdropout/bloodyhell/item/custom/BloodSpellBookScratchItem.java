@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.entity.custom.BloodSlashEntity;
-import net.agusdropout.bloodyhell.entity.projectile.BloodProjectileEntity;
+ 
 import net.agusdropout.bloodyhell.entity.projectile.VirulentAnchorProjectileEntity;
 import net.agusdropout.bloodyhell.item.client.BloodSpellBookScratchItemRenderer;
 import net.agusdropout.bloodyhell.networking.ModMessages;

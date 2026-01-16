@@ -3,7 +3,8 @@ package net.agusdropout.bloodyhell.item.custom;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.entity.custom.BloodSlashEntity;
 import net.agusdropout.bloodyhell.entity.projectile.BloodNovaEntity;
-import net.agusdropout.bloodyhell.entity.projectile.BloodProjectileEntity;
+
+import net.agusdropout.bloodyhell.entity.projectile.BloodSphereEntity;
 import net.agusdropout.bloodyhell.item.client.BloodSpellBookBloodBallItemRenderer;
 import net.agusdropout.bloodyhell.item.client.BloodSpellBookScratchItemRenderer;
 import net.agusdropout.bloodyhell.networking.ModMessages;
@@ -89,7 +90,7 @@ public class BloodSpellBookBloodBallItem extends Item implements GeoItem {
                             double baseZ = player.getZ() + Math.cos(radians) * 1.0;
 
 
-                            BloodProjectileEntity projectile = new BloodProjectileEntity(level, baseX, baseY, baseZ, 10.0F, player, yaw, pitch);
+                            BloodSphereEntity projectile = new BloodSphereEntity(level , player, 5.0f);
                             level.addFreshEntity(projectile);
 
                                 playerCrimsonVeil.subCrimsomveil(10);

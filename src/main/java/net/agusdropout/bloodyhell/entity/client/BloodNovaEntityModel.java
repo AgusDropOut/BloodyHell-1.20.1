@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.client;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.projectile.BloodNovaEntity;
-import net.agusdropout.bloodyhell.entity.projectile.BloodProjectileEntity;
+
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;

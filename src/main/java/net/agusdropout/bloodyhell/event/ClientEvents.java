@@ -9,6 +9,7 @@ import net.agusdropout.bloodyhell.client.CrimsonVeilHudOverlay;
 
 import net.agusdropout.bloodyhell.client.VisceralEffectHudOverlay;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
+import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
@@ -227,6 +228,7 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.CYCLOPS_HALO_PARTICLE.get(), CyclopsHaloParticle.Provider::new);
             event.registerSpriteSet(ModParticles.EYE_PARTICLE.get(), EyeParticle.Provider::new);
             event.registerSpriteSet(ModParticles.SHOCKWAVE_RING.get(), ShockwaveParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.BLOOD_PULSE_PARTICLE.get(), BloodPulseParticle.Provider::new);
         }
 
         @SubscribeEvent
@@ -242,6 +244,7 @@ public class ClientEvents {
             event.registerLayerDefinition(ModModelLayers.BLASPHEMOUS_IMPALER_ENTITY, BlasphemousImpalerEntityModel::createBodyLayer);
             event.registerLayerDefinition(ModModelLayers.VESPER, VesperModel::createBodyLayer);
             event.registerLayerDefinition(TentacleEntityModel.LAYER_LOCATION, TentacleEntityModel::createBodyLayer);
+
         }
 
         @SubscribeEvent

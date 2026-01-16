@@ -30,6 +30,8 @@ public class ModParticles {
             PARTICLE_TYPES.register("magic_simple_particle_line", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> BLASPHEMOUS_BIOME_PARTICLE =
             PARTICLE_TYPES.register("blasphemous_biome_particle", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> BLOOD_PULSE_PARTICLE =
+            PARTICLE_TYPES.register("blood_pulse", () -> new SimpleParticleType(false));
 
     public static final RegistryObject<SimpleParticleType> SLASH_PARTICLE =
             PARTICLE_TYPES.register("slash_particle", () -> new SimpleParticleType(true));
