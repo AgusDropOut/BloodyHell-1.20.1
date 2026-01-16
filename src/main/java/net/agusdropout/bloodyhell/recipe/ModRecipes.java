@@ -14,6 +14,8 @@ public class ModRecipes {
 
     public static final RegistryObject<RecipeSerializer<BloodWorkBenchRecipe>> GEM_INFUSING_SERIALIZER =
             SERIALIZERS.register("blood_infusing", () -> BloodWorkBenchRecipe.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeSerializer<BloodAltarRecipe>> BLOOD_ALTAR_SERIALIZER =
+            SERIALIZERS.register("blood_altar", () -> BloodAltarRecipe.Serializer.INSTANCE);
 
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);

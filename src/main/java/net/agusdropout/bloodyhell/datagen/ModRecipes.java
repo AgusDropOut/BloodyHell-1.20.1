@@ -63,6 +63,87 @@ public class ModRecipes extends ModRecipesProvider {
                 .save(consumer, name("manin_blood_altar"));
 
 
+        // =================================================================
+        // RITUALES DEL ALTAR DE SANGRE (BLOOD ALTAR RECIPES)
+        // =================================================================
+
+        // 1. ANCIENT GEM
+        BloodAltarRecipeBuilder.ritual(ModItems.ANCIENT_GEM.get())
+                .requires(ModItems.VEINREAVER_HORN.get())
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModItems.SANGUINITE.get())
+                .unlockedBy("has_horn", has(ModItems.VEINREAVER_HORN.get()))
+                .save(consumer, name("ritual_ancient_gem"));
+
+        // 2. GREAT AMULET
+        BloodAltarRecipeBuilder.ritual(ModItems.GREAT_ANCIENT_GEM.get())
+                .requires(ModBlocks.GLOWING_CRYSTAL.get())
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.RHNULL.get())
+                .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
+                .save(consumer, name("ritual_great_amulet"));
+
+        // --- RITUALES ESPECIALES (Con items dummy/vanilla) ---
+
+        // 3. SUMMON COW -> Resultado: LEATHER
+        BloodAltarRecipeBuilder.ritual(Items.LEATHER)
+                .requires(Items.WHEAT)
+                .requires(Items.MILK_BUCKET)
+                .requires(Items.WHEAT)
+                .unlockedBy("has_milk", has(Items.MILK_BUCKET))
+                .save(consumer, name("ritual_summon_cow"));
+
+        // 4. FIND MAUSOLEUM -> Resultado: RECOVERY_COMPASS
+        BloodAltarRecipeBuilder.ritual(Items.RECOVERY_COMPASS)
+                .requires(ModItems.VEINREAVER_HORN.get())
+                .requires(ModItems.AUREAL_REVENANT_DAGGER.get())
+                .requires(ModItems.GLOW_MUSHROOM.get())
+                .unlockedBy("has_dagger", has(ModItems.AUREAL_REVENANT_DAGGER.get()))
+                .save(consumer, name("ritual_find_mausoleum"));
+
+        // 5. TURN BLOOD TO RHNULL -> Resultado: RED_DYE
+        BloodAltarRecipeBuilder.ritual(Items.RED_DYE)
+                .requires(ModItems.BLOODY_SOUL_DUST.get())
+                .requires(Items.GOLD_INGOT)
+                .requires(ModItems.GLOW_MUSHROOM.get())
+                .unlockedBy("has_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
+                .save(consumer, name("ritual_transmute_rhnull"));
+
+        // --- LIBROS DE HECHIZOS ---
+
+        // SCRATCH
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_SCRATCH.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModItems.VEINREAVER_HORN.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_scratch"));
+
+        // BLOOD BALL
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_BLOODBALL.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModItems.AUREAL_REVENANT_DAGGER.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_bloodball"));
+
+        // BLOOD NOVA
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.ANCIENT_GEM.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_bloodnova"));
+
+        // DAGGERS RAIN
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.VEINREAVER_HORN.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_daggersrain"));
+
+
 
 
 

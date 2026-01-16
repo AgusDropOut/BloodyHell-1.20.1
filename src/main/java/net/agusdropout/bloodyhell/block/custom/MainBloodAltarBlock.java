@@ -1,24 +1,31 @@
 package net.agusdropout.bloodyhell.block.custom;
 
+import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.entity.BloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.MainBloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.TentacleEntity;
-import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.recipe.BloodAltarRecipe;
 import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
-import net.agusdropout.bloodyhell.util.rituals.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -28,6 +35,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,6 +43,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainBloodAltarBlock extends BaseEntityBlock {
     private MainBloodAltarBlockEntity mainBloodAltarEntity;
@@ -48,13 +57,12 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ACTIVE);
-        super.createBlockStateDefinition(builder);
     }
 
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 35, 16);
 
     @Override
-    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
     }
 
@@ -81,6 +89,14 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 
+    // --- ESTO ES IMPORTANTE PARA EL HACK DEL BLOCK EVENT ---
+    @Override
+    public boolean triggerEvent(BlockState pState, Level pLevel, BlockPos pPos, int pId, int pParam) {
+        super.triggerEvent(pState, pLevel, pPos, pId, pParam);
+        BlockEntity blockentity = pLevel.getBlockEntity(pPos);
+        return blockentity != null && blockentity.triggerEvent(pId, pParam);
+    }
+
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!(level.getBlockEntity(blockPos) instanceof MainBloodAltarBlockEntity altar)) {
@@ -89,135 +105,167 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
 
         if (interactionHand == InteractionHand.MAIN_HAND) {
             ItemStack heldItem = player.getMainHandItem();
+
+            // 1. ACTIVACIÓN
             if (heldItem.is(ModItems.FILLED_BLOOD_FLASK.get())) {
-                altar.setActive(true);
-                player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.BLOOD_FLASK.get()));
-                VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
-                level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-                level.setBlock(blockPos, blockState.setValue(ACTIVE, true), 3);
+                if(!level.isClientSide()) {
+                    altar.setActive(true);
+                    if (!player.isCreative()) {
+                        heldItem.shrink(1);
+                        ItemStack emptyFlask = new ItemStack(ModItems.BLOOD_FLASK.get());
+                        if (heldItem.isEmpty()) {
+                            player.setItemInHand(InteractionHand.MAIN_HAND, emptyFlask);
+                        } else if (!player.getInventory().add(emptyFlask)) {
+                            player.drop(emptyFlask, false);
+                        }
+                    }
+                    VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
+                    level.setBlock(blockPos, blockState.setValue(ACTIVE, true), 3);
+                    level.playSound(null, blockPos, SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
                 return InteractionResult.sidedSuccess(level.isClientSide());
+
+                // 2. RITUAL
             } else if (altar.isActive() && isAltarSetupReady(level, blockPos)) {
 
-                // --- RITUALES ---
-                // Aquí pasamos el Item que queremos que el brazo entregue.
-                // Si pasamos ItemStack.EMPTY, solo salen los brazos destructores (ej. invocaciones de mobs).
+                // Lado Cliente: Solo predecir éxito si la estructura está bien. NO verificar receta.
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-                SummonCowRitual summonCowRitual = new SummonCowRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (summonCowRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, ItemStack.EMPTY); // No da item, spawnea vaca
+                // Lado Servidor:
+                List<List<Item>> itemsFromAltars = getItemsFromAltars(level, blockPos);
+                if (itemsFromAltars.size() != 4) return InteractionResult.FAIL;
 
-                TurnBloodIntoRhnullRitual turnBloodIntoRhnullRitual = new TurnBloodIntoRhnullRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (turnBloodIntoRhnullRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, ItemStack.EMPTY); // Asumo este item
+                List<Item> referenceSet = itemsFromAltars.get(0);
+                if (!isSetEqual(referenceSet, itemsFromAltars.get(1)) ||
+                        !isSetEqual(referenceSet, itemsFromAltars.get(2)) ||
+                        !isSetEqual(referenceSet, itemsFromAltars.get(3))) {
+                    player.sendSystemMessage(Component.literal("§cFailed ritual: All altars must contain the same set of items."));
+                    return InteractionResult.FAIL;
+                }
 
-                FindMausoleumRitual findMausoleumRitual = new FindMausoleumRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (findMausoleumRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, ItemStack.EMPTY); // Efecto, no item
+                SimpleContainer inventory = new SimpleContainer(3);
+                for (int i = 0; i < referenceSet.size(); i++) {
+                    inventory.setItem(i, new ItemStack(referenceSet.get(i)));
+                }
 
-                BloodAncientGemRitual bloodAncientGemRitual = new BloodAncientGemRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (bloodAncientGemRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, new ItemStack(ModItems.ANCIENT_GEM.get()));
+                Optional<BloodAltarRecipe> recipe = level.getRecipeManager()
+                        .getRecipeFor(BloodAltarRecipe.Type.INSTANCE, inventory, level);
 
-                // Para los libros de hechizos, si el ritual da un libro físico, ponlo aquí. Si solo desbloquea, usa EMPTY.
-                SpellBookScratchRitual spellBookScratchRitual = new SpellBookScratchRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (spellBookScratchRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, new ItemStack(ModItems.BLOOD_SPELL_BOOK_SCRATCH.get()));
+                if (recipe.isPresent()) {
+                    ItemStack result = recipe.get().getResultItem(level.registryAccess());
+                    Item resultItem = result.getItem();
+                    consumeItemsFromAltars(level, blockPos);
 
-                SpellBookBloodBallRitual spellBookBloodBallRitual = new SpellBookBloodBallRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (spellBookBloodBallRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, new ItemStack(ModItems.BLOOD_SPELL_BOOK_BLOODBALL.get()));
+                    if (resultItem == Items.LEATHER) {
+                        performSummonCow(level, blockPos);
+                        return finalizeRitualServer(level, blockPos, player, blockState, altar, ItemStack.EMPTY);
+                    }
+                    if (resultItem == Items.RECOVERY_COMPASS) {
+                        performFindMausoleum(level, blockPos, player);
+                        return finalizeRitualServer(level, blockPos, player, blockState, altar, ItemStack.EMPTY);
+                    }
+                    if (resultItem == Items.RED_DYE) {
+                        performBloodTransformation(level, blockPos);
+                        return finalizeRitualServer(level, blockPos, player, blockState, altar, ItemStack.EMPTY);
+                    }
 
-                SpellBookBloodNovaRitual spellBookBloodNovaRitual = new SpellBookBloodNovaRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (spellBookBloodNovaRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, new ItemStack(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA.get()));
+                    return finalizeRitualServer(level, blockPos, player, blockState, altar, result);
 
-                SpellBookDaggersRainRitual spellBookDaggersRainRitual = new SpellBookDaggersRainRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (spellBookDaggersRainRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, new ItemStack(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get()));
-
-                GreatBloodAncientGemRitual greatBloodAncientGemRitual = new GreatBloodAncientGemRitual(blockState, level, blockPos, player, interactionHand, blockHitResult, getItemsFromAltars(level, blockPos));
-                if (greatBloodAncientGemRitual.performRitual())
-                    return success(level, blockPos, player, blockState, altar, new ItemStack(ModItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD.get())); // Asumo este item
-
-            } else {
-
-                level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.BASALT_BREAK, SoundSource.BLOCKS, 0.5F, 0.5F, false);
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                } else {
+                    level.playSound(null, blockPos, SoundEvents.BASALT_BREAK, SoundSource.BLOCKS, 0.5F, 0.5F);
+                    ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.05);
+                    return InteractionResult.FAIL;
+                }
             }
         }
-
         return InteractionResult.PASS;
     }
 
-    // AHORA ACEPTA UN ITEMSTACK DE RECOMPENSA
-    private InteractionResult success(Level level, BlockPos blockPos, Player player, BlockState blockState, MainBloodAltarBlockEntity altar, ItemStack rewardStack) {
+    private InteractionResult finalizeRitualServer(Level level, BlockPos blockPos, Player player, BlockState blockState, MainBloodAltarBlockEntity altar, ItemStack rewardStack) {
         altar.setActive(false);
         level.setBlock(blockPos, blockState.setValue(ACTIVE, false), 3);
+        VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
 
+        // HACK: ENVIAR SEÑAL AL CLIENTE PARA ACTIVAR EL AMBIENCE
+        // ID 1 = Ejecutar efectos de ritual
+        level.blockEvent(blockPos, this, 1, 0);
 
-        if (level.isClientSide) {
-            RitualAmbienceHandler.triggerRitual(160);
-        }
-
-        if (!level.isClientSide) {
+        if (level instanceof ServerLevel serverLevel) {
             BlockPos center = blockPos;
             BlockPos[] targets = {
-                    center.north(4),
-                    center.east(4),
-                    center.south(4),
-                    center.west(4)
+                    center.north(4), center.east(4), center.south(4), center.west(4)
             };
 
-            // 1. VFX: Agujero Negro (Efecto Eldritch)
-            if(level instanceof ServerLevel serverLevel ) {
-                // Aparece arriba del altar (Y + 6.0 parece alto, ajústalo si queda muy lejos)
-                serverLevel.sendParticles(ModParticles.BLACK_HOLE_PARTICLE.get(),
-                        center.getX() + 0.5, center.getY() + 6, center.getZ() + 0.5,
-                        1, 0, 0, 0, 0.1);
-                level.playSound(null, center, SoundEvents.WARDEN_SONIC_CHARGE, SoundSource.BLOCKS, 2.0f, 0.5f); // Pitch bajo para que suene enorme
-            }
+            serverLevel.sendParticles(ModParticles.BLACK_HOLE_PARTICLE.get(),
+                    center.getX() + 0.5, center.getY() + 6, center.getZ() + 0.5,
+                    1, 0, 0, 0, 0.1);
+            level.playSound(null, center, SoundEvents.WARDEN_SONIC_CHARGE, SoundSource.BLOCKS, 2.0f, 0.5f);
 
-            // 2. TENTÁCULOS DE SACRIFICIO (Los 4 destructores)
             for (BlockPos targetAltar : targets) {
                 if (level.getBlockState(targetAltar).getBlock() instanceof BloodAltarBlock) {
                     TentacleEntity tentacle = new TentacleEntity(ModEntityTypes.TENTACLE_ENTITY.get(), level);
                     tentacle.setPos(center.getX() + 0.5, center.getY() + 1.5, center.getZ() + 0.5);
                     tentacle.setTargetAltar(targetAltar);
                     tentacle.setSummoner(player);
-
-                    // Delay aleatorio (0 - 2.5 seg)
-                    tentacle.setInitialDelay(level.random.nextInt(50));
-
+                    tentacle.setInitialDelay(level.random.nextInt(40));
                     level.addFreshEntity(tentacle);
                 }
             }
 
-            // 3. TENTÁCULO DE RECOMPENSA (El 5to brazo)
-            // Solo sale si hay una recompensa válida que entregar
             if (rewardStack != null && !rewardStack.isEmpty()) {
                 TentacleEntity rewardTentacle = new TentacleEntity(ModEntityTypes.TENTACLE_ENTITY.get(), level);
-
-                // Nace del mismo centro
                 rewardTentacle.setPos(center.getX() + 0.5, center.getY() + 1.5, center.getZ() + 0.5);
                 rewardTentacle.setSummoner(player);
-
-                // Configuración especial: Es Dador y tiene el item visual
                 rewardTentacle.setRewardItem(rewardStack.copy());
-
-                // Objetivo inicial: El jugador (para que el modelo se oriente bien al nacer)
                 rewardTentacle.setTargetAltar(player.blockPosition().above());
-
-                // --- TIMING ELDRITCH ---
-                // Los brazos destructores mueren en tick 120.
-                // Queremos que este salga cuando el caos está terminando para "entregar" el resultado.
-                // Tick 100 = 5 segundos.
-                rewardTentacle.setInitialDelay(100);
-
+                rewardTentacle.setInitialDelay(80);
                 level.addFreshEntity(rewardTentacle);
             }
         }
+        return InteractionResult.CONSUME;
+    }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+    private boolean isSetEqual(List<Item> setA, List<Item> setB) {
+        if (setA.size() != setB.size()) return false;
+        List<Item> copyB = new ArrayList<>(setB);
+        for (Item item : setA) {
+            if (!copyB.remove(item)) return false;
+        }
+        return copyB.isEmpty();
+    }
+
+    private void performSummonCow(Level level, BlockPos pos) {
+        Cow cow = new Cow(EntityType.COW, level);
+        cow.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        level.addFreshEntity(cow);
+    }
+
+    private void performFindMausoleum(Level level, BlockPos pos, Player player) {
+        if (level instanceof ServerLevel serverLevel) {
+            BlockPos location = serverLevel.findNearestMapStructure(ModTags.Structures.MAUSOLEUM, pos, 100, false);
+            if (location != null) {
+                BlockPos safePos = serverLevel.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, location);
+                player.teleportTo(safePos.getX(), safePos.getY() + 1, safePos.getZ());
+                serverLevel.sendParticles(ParticleTypes.PORTAL, player.getX(), player.getY(), player.getZ(), 50, 0.5, 1, 0.5, 0.1);
+                player.sendSystemMessage(Component.literal("§cYou have been summoned to the mausoleum..."));
+            }
+        }
+    }
+
+    private void performBloodTransformation(Level level, BlockPos pos) {
+        BlockPos below = pos.below();
+        BlockPos[] area = {
+                below.north(), below.east(), below.south(), below.west(),
+                below.north().east(), below.north().west(), below.south().east(), below.south().west()
+        };
+        for (BlockPos p : area) {
+            if (level.getBlockState(p).is(ModBlocks.BLOOD_FLUID_BLOCK.get())) {
+                level.setBlockAndUpdate(p, ModBlocks.RHNULL_BLOOD_FLUID_BLOCK.get().defaultBlockState());
+                if(level instanceof ServerLevel sl) {
+                    sl.sendParticles(ModParticles.BLOOD_PARTICLES.get(), p.getX()+0.5, p.getY()+1, p.getZ()+0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                }
+            }
+        }
     }
 
     @Override
@@ -225,19 +273,13 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
         if (random.nextInt(100) == 0 && state.getValue(ACTIVE)) {
             level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.WARDEN_AMBIENT, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
         }
-        super.animateTick(state, level, pos, random);
     }
 
-    // Helpers
     public boolean isAltarSetupReady(Level level, BlockPos pos) {
-        BlockPos smallAltarPos = pos.north(4);
-        if (!(level.getBlockState(smallAltarPos).getBlock() instanceof BloodAltarBlock)) return false;
-        smallAltarPos = pos.east(4);
-        if (!(level.getBlockState(smallAltarPos).getBlock() instanceof BloodAltarBlock)) return false;
-        smallAltarPos = pos.south(4);
-        if (!(level.getBlockState(smallAltarPos).getBlock() instanceof BloodAltarBlock)) return false;
-        smallAltarPos = pos.west(4);
-        if (!(level.getBlockState(smallAltarPos).getBlock() instanceof BloodAltarBlock)) return false;
+        BlockPos[] pillars = {pos.north(4), pos.east(4), pos.south(4), pos.west(4)};
+        for(BlockPos p : pillars) {
+            if (!(level.getBlockState(p).getBlock() instanceof BloodAltarBlock)) return false;
+        }
         return true;
     }
 
@@ -245,9 +287,12 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
         List<List<Item>> items = new ArrayList<>();
         BlockPos[] altarPositions = {pos.north(4), pos.east(4), pos.south(4), pos.west(4)};
         for (BlockPos altarPos : altarPositions) {
-            if (level.getBlockState(altarPos).getBlock() instanceof BloodAltarBlock) {
-                BloodAltarBlockEntity entity = (BloodAltarBlockEntity) level.getBlockEntity(altarPos);
-                if (entity != null && !entity.getItemsInside().isEmpty()) items.add(entity.getItemsInside());
+            if (level.getBlockEntity(altarPos) instanceof BloodAltarBlockEntity entity) {
+                if (!entity.getItemsInside().isEmpty()) {
+                    items.add(entity.getItemsInside());
+                } else {
+                    items.add(new ArrayList<>());
+                }
             }
         }
         return items;
@@ -256,33 +301,9 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
     public void consumeItemsFromAltars(Level level, BlockPos pos) {
         BlockPos[] posArr = {pos.north(4), pos.east(4), pos.south(4), pos.west(4)};
         for(BlockPos p : posArr) {
-            if (level.getBlockState(p).getBlock() instanceof BloodAltarBlock) {
-                BloodAltarBlockEntity entity = (BloodAltarBlockEntity) level.getBlockEntity(p);
-                if(entity != null) entity.clearItemsInside();
+            if (level.getBlockEntity(p) instanceof BloodAltarBlockEntity entity) {
+                entity.clearItemsInside();
             }
         }
-        level.destroyBlock(pos.east(), false);
-    }
-
-    public boolean rainRitual(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!(level.getBlockEntity(blockPos) instanceof MainBloodAltarBlockEntity altar)) {
-            return false;
-        }
-        List<List<Item>> items = getItemsFromAltars(level, blockPos);
-        if (items.size() == 4) {
-            for (List<Item> altarContainer : items) {
-                for (Item stack : altarContainer) {
-                    if (stack.equals(ModItems.BLOOD_FLASK.get())) {
-                        consumeItemsFromAltars(level, blockPos);
-                        altar.setActive(false);
-                        VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
-                        level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-                        level.setBlock(blockPos, blockState.setValue(ACTIVE, false), 3);
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 }
