@@ -1,11 +1,8 @@
 package net.agusdropout.bloodyhell.block.custom;
 
 import net.agusdropout.bloodyhell.block.entity.BloodAltarBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.BloodWorkbenchBlockEntity;
-import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -30,10 +27,12 @@ import java.util.List;
 public class BloodAltarBlock extends BaseEntityBlock {
     private BloodAltarBlockEntity mainBloodAltarEntity;
     public static final BooleanProperty ITEMINSIDE = BooleanProperty.create("iteminside");
+
     public BloodAltarBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(ITEMINSIDE, false));
     }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ITEMINSIDE);
@@ -69,7 +68,6 @@ public class BloodAltarBlock extends BaseEntityBlock {
             return InteractionResult.PASS;
         }
 
-
         if (interactionHand == InteractionHand.MAIN_HAND) {
             ItemStack heldItem = player.getMainHandItem();
 
@@ -82,7 +80,7 @@ public class BloodAltarBlock extends BaseEntityBlock {
                     VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
                     if (result) {
                         level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-                        level.setBlock(blockPos,blockState.setValue(ITEMINSIDE,true), 3);
+                        level.setBlock(blockPos, blockState.setValue(ITEMINSIDE, true), 3);
                         return InteractionResult.sidedSuccess(level.isClientSide());
                     }
                 }
@@ -93,8 +91,8 @@ public class BloodAltarBlock extends BaseEntityBlock {
                         player.getInventory().placeItemBackInInventory(retrievedItem);
                         VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
                         level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-                        if(!altar.isSomethingInside()){
-                            level.setBlock(blockPos,blockState.setValue(ITEMINSIDE,false), 3);
+                        if (!altar.isSomethingInside()) {
+                            level.setBlock(blockPos, blockState.setValue(ITEMINSIDE, false), 3);
                         }
                         return InteractionResult.sidedSuccess(level.isClientSide());
                     }
@@ -104,24 +102,20 @@ public class BloodAltarBlock extends BaseEntityBlock {
 
         return InteractionResult.PASS;
     }
+
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-
-
         if (random.nextInt(100) == 0 && state.getValue(ITEMINSIDE)) {
             level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.WARDEN_AMBIENT, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
         }
-
-
-
         super.animateTick(state, level, pos, random);
     }
 
-    public List<Item> getItemsInside(){
+    public List<Item> getItemsInside() {
         return mainBloodAltarEntity.getItemsInside();
     }
 
-    public boolean clearItemsInside(){
+    public boolean clearItemsInside() {
         return mainBloodAltarEntity.clearItemsInside();
     }
 }

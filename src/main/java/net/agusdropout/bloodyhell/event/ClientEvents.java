@@ -1,36 +1,23 @@
 package net.agusdropout.bloodyhell.event;
 
-import com.mojang.math.Axis;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
-import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
-import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.animation.ModAnimations;
-import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.client.BossBarHudOverlay;
 import net.agusdropout.bloodyhell.client.CrimsonVeilHudOverlay;
+
 import net.agusdropout.bloodyhell.client.VisceralEffectHudOverlay;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
-import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
-import net.agusdropout.bloodyhell.fluid.ModFluids;
+import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.client.OffhandDaggerLayer;
-import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
 import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.*;
-import net.agusdropout.bloodyhell.screen.BloodWorkBenchScreen;
-import net.agusdropout.bloodyhell.screen.ModMenuTypes;
-import net.agusdropout.bloodyhell.screen.VesperScreen;
 import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.agusdropout.bloodyhell.util.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
@@ -40,7 +27,6 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -52,11 +38,10 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientEvents {
 
-    // --- BUS DE FORGE ---
+    // --- FORGE BUS EVENTS ---
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
 
@@ -69,31 +54,28 @@ public class ClientEvents {
                 LocalPlayer player = Minecraft.getInstance().player;
                 if (player == null) return;
 
-                // Acceder al sistema de animación
+                // NOTA: No llamamos a RitualAmbienceHandler.tick() aquí porque
+                // esa clase tiene su propio @SubscribeEvent para el tick.
+
+                // --- PLAYER ANIMATION LOGIC ---
                 var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
                         .getPlayerAssociatedData((AbstractClientPlayer) player)
                         .get(new ResourceLocation(BloodyHell.MODID, "animation"));
 
-                // Si no hay layer, no hacemos nada
                 if (animationLayer == null) return;
 
                 ItemStack stack = player.getMainHandItem();
 
-                // CASO 1: CAMBIO DE ÍTEM
-                // Verificamos si el ítem NO es una IComboWeapon
+                // CASE 1: ITEM SWITCH
                 if (!(stack.getItem() instanceof IComboWeapon comboWeapon)) {
-                    // ... y hay una animación sonando...
                     if (animationLayer.getAnimation() != null) {
-                        // ... la borramos (null) para volver a la animación vanilla
                         animationLayer.setAnimation(null);
                     }
                     return;
                 }
 
-                // CASO 2: TIEMPO DE COMBO EXPIRADO
-                // Como ya sabemos que es IComboWeapon (gracias al instanceof de arriba), usamos su método.
+                // CASE 2: COMBO WINDOW EXPIRED
                 if (comboWeapon.isComboWindowExpired(stack, System.currentTimeMillis())) {
-                    // Si el arma dice que expiró y hay animación activa, la quitamos
                     if (animationLayer.getAnimation() != null) {
                         animationLayer.setAnimation(null);
                     }
@@ -101,13 +83,13 @@ public class ClientEvents {
             }
         }
 
-
-
         @SubscribeEvent
         public static void onComputeFov(ViewportEvent.ComputeFov event) {
             Player player = (Player) event.getCamera().getEntity();
             if (player == null) return;
 
+            // 1. CYCLOPS ZOOM LOGIC (Multiplicative)
+            float cyclopsZoomMultiplier = 1.0f;
             CyclopsEntity cyclops = player.level().getEntitiesOfClass(CyclopsEntity.class, player.getBoundingBox().inflate(64.0))
                     .stream().findFirst().orElse(null);
 
@@ -115,10 +97,17 @@ public class ClientEvents {
                 int chargeTicks = cyclops.getClientSideAttackTicks();
                 if (chargeTicks > 0) {
                     float chargeRatio = (float) chargeTicks / (float) CyclopsEntity.ATTACK_CHARGE_TIME_TICKS;
-                    float zoomIntensity = Mth.lerp(chargeRatio, 1.0f, 0.85f);
-                    event.setFOV(event.getFOV() * zoomIntensity);
+                    cyclopsZoomMultiplier = Mth.lerp(chargeRatio, 1.0f, 0.85f);
                 }
             }
+
+            // 2. RITUAL ELDRITCH LOGIC (Additive / Distortion)
+            // Llamamos al helper estático de la nueva clase externa
+            float ritualFovDistortion = RitualAmbienceHandler.getFovModifier(player);
+
+            // 3. COMBINE BOTH WITHOUT CONFLICT
+            // Formula: (BaseFOV * Multiplier) + AdditiveDistortion
+            event.setFOV((event.getFOV() * cyclopsZoomMultiplier) + ritualFovDistortion);
         }
 
         @Mod.EventBusSubscriber(modid = BloodyHell.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -126,25 +115,21 @@ public class ClientEvents {
 
             @SubscribeEvent
             public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
-                // 1. Verificamos si la entidad es un Jugador
                 if (event.getEntity() instanceof Player player) {
-
-                    // 2. Obtenemos el renderizador y el modelo del jugador
                     if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
                         PlayerModel<?> model = playerRenderer.getModel();
 
-                        // 3. CASO: PECHERA (Chestplate)
-                        // Chequeamos si es Blasphemite O (||) Blood (Sanguinite)
+                        // 3. CASE: CHESTPLATE
                         if (player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLASPHEMITE_CHESTPLATE.get()) ||
-                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLOOD_CHESTPLATE.get()) || player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.RHNULL_CHESTPLATE.get())) {
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLOOD_CHESTPLATE.get()) ||
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.RHNULL_CHESTPLATE.get())) {
 
-                            model.jacket.visible = false;      // Capa del cuerpo
-                            model.leftSleeve.visible = false;  // Manga izquierda
-                            model.rightSleeve.visible = false; // Manga derecha
+                            model.jacket.visible = false;
+                            model.leftSleeve.visible = false;
+                            model.rightSleeve.visible = false;
                         }
 
-                        // 4. CASO: PANTALONES (Leggings) y BOTAS
-                        // Chequeamos Blasphemite O Blood en piernas o pies
+                        // 4. CASE: LEGGINGS and BOOTS
                         if (player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLASPHEMITE_LEGGINGS.get()) ||
                                 player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLOOD_LEGGINGS.get()) ||
                                 player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLASPHEMITE_BOOTS.get()) ||
@@ -156,16 +141,13 @@ public class ClientEvents {
                             model.rightPants.visible = false;
                         }
 
-                        // 5. CASO: CASCO
+                        // 5. CASE: HELMET
                         if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLASPHEMITE_HELMET.get()) ||
                                 player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLOOD_HELMET.get()) ||
                                 player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.RHNULL_HELMET.get())) {
 
-                            model.hat.visible = false; // La capa externa (Overlay)
-
-                            // NOTA: Solo deja esta línea si el casco tapa TODA la cara.
-                            // Si el casco deja ver la cara del jugador, borra 'model.head.visible = false'.
-                             model.head.visible = false;
+                            model.hat.visible = false;
+                            model.head.visible = false;
                         }
                     }
                 }
@@ -173,24 +155,21 @@ public class ClientEvents {
 
             @SubscribeEvent
             public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
-                // Restaurar visibilidad
                 if (event.getEntity() instanceof Player) {
                     if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
                         PlayerModel<?> model = playerRenderer.getModel();
-
                         model.jacket.visible = true;
                         model.leftSleeve.visible = true;
                         model.rightSleeve.visible = true;
                         model.leftPants.visible = true;
                         model.rightPants.visible = true;
                         model.hat.visible = true;
-                        model.head.visible = true; // Restauramos la cabeza por si acaso
+                        model.head.visible = true;
                     }
                 }
             }
         }
 
-        // El evento de CameraShake (lo dejé tal cual estaba)
         @SubscribeEvent
         public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
             Player player = Minecraft.getInstance().player;
@@ -214,25 +193,19 @@ public class ClientEvents {
         }
     }
 
-    // --- BUS DEL MOD (Eventos de INICIALIZACIÓN: Registro de Layers, Partículas, Overlays) ---
+    // --- MOD BUS EVENTS ---
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
 
-        // --- MOVÍ ESTO AQUÍ PORQUE ES UN EVENTO DE RENDERIZADO INICIAL ---
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
-            // Capa para Steve (Default)
             if (event.getSkin("default") instanceof PlayerRenderer renderer) {
                 renderer.addLayer(new OffhandDaggerLayer(renderer));
             }
-            // Capa para Alex (Slim)
             if (event.getSkin("slim") instanceof PlayerRenderer renderer) {
                 renderer.addLayer(new OffhandDaggerLayer(renderer));
             }
         }
-
-
-
 
         @SubscribeEvent
         public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
@@ -248,6 +221,7 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.BLASPHEMOUS_BIOME_PARTICLE.get(), BlasphemousBiomeParticle.Provider::new);
             event.registerSpecial(ModParticles.CYLINDER_PARTICLE.get(), new CylinderParticle.Provider());
             event.registerSpecial(ModParticles.STAR_EXPLOSION_PARTICLE.get(), new StarExplosionParticle.Provider());
+            event.registerSpecial(ModParticles.BLACK_HOLE_PARTICLE.get(), new BlackHoleParticle.Provider());
             event.registerSpecial(ModParticles.MAGIC_WAVE_PARTICLE.get(), new MagicWaveParticle.Provider());
             event.registerSpecial(ModParticles.SIMPLE_BLOCK_PARTICLE.get(), new SimpleBlockParticle.Provider());
             event.registerSpriteSet(ModParticles.CYCLOPS_HALO_PARTICLE.get(), CyclopsHaloParticle.Provider::new);
@@ -267,6 +241,7 @@ public class ClientEvents {
             event.registerLayerDefinition(ModModelLayers.CRYSTAL_PILLAR, CrystalPillarModel::createBodyLayer);
             event.registerLayerDefinition(ModModelLayers.BLASPHEMOUS_IMPALER_ENTITY, BlasphemousImpalerEntityModel::createBodyLayer);
             event.registerLayerDefinition(ModModelLayers.VESPER, VesperModel::createBodyLayer);
+            event.registerLayerDefinition(TentacleEntityModel.LAYER_LOCATION, TentacleEntityModel::createBodyLayer);
         }
 
         @SubscribeEvent
@@ -275,5 +250,4 @@ public class ClientEvents {
                     new BloodDimensionRenderInfo(-189.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
         }
     }
-
 }

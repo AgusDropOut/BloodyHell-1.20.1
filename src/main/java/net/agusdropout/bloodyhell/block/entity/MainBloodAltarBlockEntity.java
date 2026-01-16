@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,10 +32,21 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.util.RenderUtils;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.UUID;
+
 public class MainBloodAltarBlockEntity extends BlockEntity implements GeoBlockEntity {
 
     private boolean active;
     public final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
+
+    // --- LÓGICA DE SPAWNEO SECUENCIAL ---
+    private final Queue<BlockPos> pendingTentacles = new LinkedList<>();
+    private int spawnCooldown = 0;
+    private UUID summonerUUID; // Guardamos el UUID para persistencia básica
+    private Player cachedSummoner;
 
     public MainBloodAltarBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.MAIN_BLOOD_ALTAR.get(), blockPos, blockState);
@@ -99,6 +111,15 @@ public class MainBloodAltarBlockEntity extends BlockEntity implements GeoBlockEn
             return;
         }
         setChanged(level, pos, state);
+    }
+
+    // Este método lo llamarás desde el Bloque cuando el ritual termine
+    public void triggerTentacleSequence(List<BlockPos> targets, Player player) {
+        this.pendingTentacles.clear();
+        this.pendingTentacles.addAll(targets);
+        this.summonerUUID = player.getUUID();
+        this.cachedSummoner = player;
+        this.spawnCooldown = 0; // El primero sale instantáneo (o pon un delay si quieres)
     }
 
     @Nullable

@@ -19,7 +19,6 @@ public class ItemResultRitual extends Ritual {
     }
     @Override
     public void applyResults() {
-        ItemEntity itemEntity = new ItemEntity(level, blockPos.getX(), blockPos.getY() + 0.5, blockPos.getZ(), result);
-        level.addFreshEntity(itemEntity);
+
     }
 }

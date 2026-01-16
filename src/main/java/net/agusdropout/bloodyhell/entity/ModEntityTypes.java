@@ -164,6 +164,12 @@ public class ModEntityTypes {
                     .clientTrackingRange(4) // Rango de visión (chunks)
                     .updateInterval(20) // Actualización
                     .build("blasphemous_impaler_entity"));
+    public static final RegistryObject<EntityType<TentacleEntity>> TENTACLE_ENTITY = ENTITY_TYPES.register("tentacle_entity",
+            () -> EntityType.Builder.<TentacleEntity>of(TentacleEntity::new, MobCategory.MISC)
+                    .sized(0.8f, 0.8f)// Tamaño de la hitbox
+                    .clientTrackingRange(4) // Rango de visión (chunks)
+                    .updateInterval(20) // Actualización
+                    .build("tentacle_entity"));
 
 
 
