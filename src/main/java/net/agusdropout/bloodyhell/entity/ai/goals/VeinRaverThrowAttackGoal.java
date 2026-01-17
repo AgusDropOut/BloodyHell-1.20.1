@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.entity.ai.goals;
 
-import net.agusdropout.bloodyhell.entity.custom.BloodSlashEntity;
 import net.agusdropout.bloodyhell.entity.custom.VeinraverEntity;
 import net.agusdropout.bloodyhell.entity.projectile.VisceralProjectile;
 import net.agusdropout.bloodyhell.particle.ModParticles;

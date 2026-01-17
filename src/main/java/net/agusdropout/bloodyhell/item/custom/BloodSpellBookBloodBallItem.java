@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
-import net.agusdropout.bloodyhell.entity.custom.BloodSlashEntity;
+
 import net.agusdropout.bloodyhell.entity.projectile.BloodNovaEntity;
 
 import net.agusdropout.bloodyhell.entity.projectile.BloodSphereEntity;

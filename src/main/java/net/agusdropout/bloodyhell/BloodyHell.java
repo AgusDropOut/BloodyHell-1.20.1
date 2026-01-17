@@ -523,11 +523,10 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLOOD_PROJECTILE.get(), BloodSphereRenderer::new);
             EntityRenderers.register(ModEntityTypes.VIRULENT_ANCHOR_PROJECTILE.get(), VirulentAnchorProjectileEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_NOVA_ENTITY.get(), BloodNovaRenderer::new);
-            EntityRenderers.register(ModEntityTypes.SMALL_CRIMSON_DAGGER.get(), SmallCrimsonDaggerEntityRenderer::new);
+            EntityRenderers.register(ModEntityTypes.SMALL_CRIMSON_DAGGER.get(), SmallCrimsonDaggerRenderer::new);
             EntityRenderers.register(ModEntityTypes.VISCERAL_PROJECTILE.get(), VisceralProjectileEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.STARFALL_PROJECTILE.get(), StarfallProjectileEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), BloodPortalEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), BloodPortalEntityRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), BloodPortalRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SMALL_WHIRLWIND_ENTITY.get(), BlasphemousSmallWhirlwindEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_WHIRLWIND_ENTITY.get(), BlasphemousWhirlwindEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneRenderer::new);
@@ -552,6 +551,8 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.GRAVE_WALKER_ENTITY.get(), GraveWalkerEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.TENTACLE_ENTITY.get(), TentacleEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_DECAL.get(), BloodSlashDecalRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_STAIN_ENTITY.get(), BloodStainRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_CLOT_PROJECTILE.get(), BloodClotRenderer::new);
 
 
         }

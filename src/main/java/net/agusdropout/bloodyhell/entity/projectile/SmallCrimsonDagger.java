@@ -1,257 +1,214 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.entity.custom.UnknownEyeEntity;
+import net.agusdropout.bloodyhell.entity.custom.BloodStainEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
-import java.util.Random;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.UUID;
 
+public class SmallCrimsonDagger extends Projectile {
 
-public class SmallCrimsonDagger extends Entity implements GeoEntity, TraceableEntity {
-    private int lifeTicks = 60;
-    private int ticksOnTheGround = 0;
-    private boolean isOnGround = false;
-    private float damage;
-    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final EntityDataAccessor<Boolean> STUCK = SynchedEntityData.defineId(SmallCrimsonDagger.class, EntityDataSerializers.BOOLEAN);
 
-    @Nullable
-    private LivingEntity owner;
-    @Nullable
-    private UUID ownerUUID;
+    // Trail History: Stores the last 12 positions (World Space)
+    private final Deque<Vec3> trailHistory = new ArrayDeque<>();
 
-    private static final EntityDataAccessor<Float> LOOK_YAW = SynchedEntityData.defineId(SmallCrimsonDagger.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> LOOK_PITCH = SynchedEntityData.defineId(SmallCrimsonDagger.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> ON_GROUND = SynchedEntityData.defineId(SmallCrimsonDagger.class, EntityDataSerializers.BOOLEAN);
+    private int lifeTicks = 120;
+    private int fadeTimer = 0;
+    private float damage = 4.0f;
+    @Nullable private UUID ownerUUID;
 
-    public void setOwner(@Nullable LivingEntity livingEntity) {
-        this.owner = livingEntity;
-        this.ownerUUID = livingEntity == null ? null : livingEntity.getUUID();
-    }
-
-    @Override
-    @Nullable
-    public LivingEntity getOwner() {
-        Entity entity;
-        if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel && (entity = ((ServerLevel)this.level()).getEntity(this.ownerUUID)) instanceof LivingEntity) {
-            this.owner = (LivingEntity)entity;
-        }
-        return this.owner;
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag compoundTag) {
-        if (compoundTag.hasUUID("Owner")) {
-            this.ownerUUID = compoundTag.getUUID("Owner");
-        }
-
-    }
-
-
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag compoundTag) {
-        if (this.ownerUUID != null) {
-            compoundTag.putUUID("Owner", this.ownerUUID);
-        }
-    }
-
-    public SmallCrimsonDagger(EntityType<? extends SmallCrimsonDagger> type, Level level) {
+    public SmallCrimsonDagger(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
     }
 
-    public SmallCrimsonDagger(Level level, double x, double y, double z,double sx,double sy,double sz, float damage, LivingEntity owner) {
+    public SmallCrimsonDagger(Level level, double x, double y, double z, LivingEntity owner) {
         this(ModEntityTypes.SMALL_CRIMSON_DAGGER.get(), level);
-        this.damage = damage;
         this.setOwner(owner);
         this.setPos(x, y, z);
-        this.setDeltaMovement(new Vec3(sx, sy, sz));
-        initializeRotation();
-    }
-    public float getPitch() {
-        return entityData.get(LOOK_PITCH);
-    }
-    public float getYaw() {
-        return entityData.get(LOOK_YAW);
-    }
-    public boolean getIsOnGround() {
-        return entityData.get(ON_GROUND);
-    }
-
-
-    private void initializeRotation() {
-        Vec3 motion = this.getDeltaMovement();
-        float yaw = (float) Math.toDegrees(Math.atan2(motion.x, motion.z));
-        float pitch = (float) Math.toDegrees(Math.atan2(motion.y, Math.sqrt(motion.x * motion.x + motion.z * motion.z)));
-
-        pitch -= 40;
-        yaw += 180;
-
-            this.setYRot(yaw);
-            this.setXRot(pitch);
-        //if (!this.level().isClientSide) {
-        //    this.entityData.set(LOOK_YAW, yaw);
-        //    this.entityData.set(LOOK_PITCH, pitch);
-        //}
-
-
-    }
-
-    @Override
-    public void tick() {
-        if(!level().isClientSide) {
-            if (this.owner == null || !this.owner.isAlive()) {
-                this.discard();
-                return;
-            }
-        }
-        if(!level().isClientSide){
-            entityData.set(ON_GROUND, this.onGround());
-            this.isOnGround = this.onGround();
-        } else {
-            this.isOnGround = entityData.get(ON_GROUND);
-        }
-
-        if(!this.isOnGround){
-            this.move(MoverType.SELF, this.getDeltaMovement());
-        }
-        if (ticksOnTheGround == 5){
-            this.discard();
-        }
-        if (ticksOnTheGround == 3){
-            checkExplosionCollisions();
-        }
-        if (this.isOnGround) {
-            this.setDeltaMovement(0,0,0);
-            this.ticksOnTheGround++;
-            System.out.println("On ground");
-            this.spawnImpactParticles();
-            this.playSound(SoundEvents.ALLAY_THROW, 1.0F, 1.0F);
-        }
-        lifeTicks--;
-        if (lifeTicks <= 0) {
-            this.discard();
-        }
-
-        checkCollisions();
-    }
-
-    private void checkCollisions() {
-        if (!this.level().isClientSide) {
-            AABB boundingBox = this.getBoundingBox().inflate(0.3);
-            List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, boundingBox,
-                    e -> e != this.getOwner() && e.isAlive());
-
-            for (LivingEntity entity : entities) {
-                entity.hurt(this.damageSources().generic(), this.damage);
-                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
-                this.discard();
-                return;
-            }
-        }
-
-    }
-    private void checkExplosionCollisions() {
-        if (!this.level().isClientSide) {
-            AABB boundingBox = this.getBoundingBox().inflate(3);
-            List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, boundingBox,
-                    e -> e != this.getOwner() && e.isAlive());
-
-            for (LivingEntity entity : entities) {
-                entity.hurt(this.damageSources().generic(), this.damage);
-                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
-            }
-        }
-
-    }
-
-
-
-
-    private void spawnImpactParticles() {
-        if (this.level().isClientSide) {
-            for (int i = 0; i < 100; i++) {
-                double speed = 0.2 + this.random.nextDouble() * 0.2;
-                double angle = this.random.nextDouble() * Math.PI * 2;
-                double vx = Math.cos(angle) * speed;
-                double vy = (this.random.nextDouble() - 0.5) * 0.4;
-                double vz = Math.sin(angle) * speed;
-
-                this.level().addParticle(ModParticles.BLOOD_PARTICLES.get(),
-                        this.getX(), this.getY(), this.getZ(), vx, vy, vz);
-            }
-        }
     }
 
     @Override
     protected void defineSynchedData() {
-        //this.entityData.define(LOOK_YAW, 0f);
-        //this.entityData.define(LOOK_PITCH, 0f);
-        this.entityData.define(ON_GROUND, false);
-    }
-    public float getLookYaw() {
-        return this.entityData.get(LOOK_YAW);
-    }
-    public float getLookPitch() {
-        return this.entityData.get(LOOK_PITCH);
+        this.entityData.define(STUCK, false);
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController(this, "controller",
-                0, this::predicate));
+    public void tick() {
+        super.tick();
+
+        // --- TRAIL LOGIC ---
+        // Only record history on client, while moving, and not stuck
+        if (this.level().isClientSide) {
+            if (!this.isStuckInGround() && this.getVehicle() == null) {
+                trailHistory.addFirst(this.position());
+                if (trailHistory.size() > 12) {
+                    trailHistory.removeLast();
+                }
+            } else if (!trailHistory.isEmpty()) {
+                // If stuck, shrink the trail so it catches up and disappears
+                trailHistory.removeLast();
+            }
+        }
+
+        // 1. Stuck in Ground
+        if (this.entityData.get(STUCK)) {
+            this.setDeltaMovement(Vec3.ZERO);
+            if (fadeTimer++ > 60) {
+                this.discard();
+            }
+            return;
+        }
+
+        // 2. Riding Entity
+        if (this.getVehicle() != null) {
+            if (!this.getVehicle().isAlive() || this.lifeTicks-- <= 0) {
+                this.discard();
+            }
+            return;
+        }
+
+        // 3. Flight
+        if (this.lifeTicks-- <= 0) {
+            this.discard();
+            return;
+        }
+
+        // Spawn Pop (Visual)
+        if (this.tickCount == 1 && this.level().isClientSide) {
+            for (int i = 0; i < 3; i++) {
+                this.level().addParticle(ModParticles.BLOOD_PARTICLES.get(),
+                        this.getX(), this.getY(), this.getZ(),
+                        (random.nextDouble()-0.5)*0.1, 0.1, (random.nextDouble()-0.5)*0.1);
+            }
+        }
+
+        Vec3 motion = this.getDeltaMovement();
+        HitResult result = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (result.getType() != HitResult.Type.MISS) {
+            this.onHit(result);
+        }
+
+        double nextX = this.getX() + motion.x;
+        double nextY = this.getY() + motion.y;
+        double nextZ = this.getZ() + motion.z;
+
+        this.updateRotation();
+        this.setPos(nextX, nextY, nextZ);
+
+        if (!this.isNoGravity()) {
+            this.setDeltaMovement(motion.scale(0.99).subtract(0, 0.05, 0));
+        }
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return factory;
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        if (!this.level().isClientSide) {
+            Entity target = result.getEntity();
+            if (target == this.getOwner()) return;
+
+            target.hurt(this.level().damageSources().mobProjectile(this, (LivingEntity) this.getOwner()), this.damage);
+            this.startRiding(target, true);
+            this.playSound(SoundEvents.TRIDENT_HIT, 1.0f, 1.0f);
+            this.lifeTicks = 60;
+        }
     }
+
     @Override
-    public boolean onGround() {
-        // Verificar si la entidad tiene colisiones debajo
-        Vec3 position = this.position();
-        BlockPos belowPos = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ()); // Chequea justo debajo de la entidad
-        BlockState blockBelow = level().getBlockState(belowPos);
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        this.entityData.set(STUCK, true);
+        this.playSound(SoundEvents.CHAIN_HIT, 0.5f, 1.2f);
 
-        // Si el bloque debajo no es aire, entonces la entidad está en el suelo
-        return !blockBelow.isAir();
+        if (level().isClientSide) {
+            for(int i=0; i<3; i++) {
+                this.level().addParticle(ModParticles.BLOOD_PARTICLES.get(),
+                        this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            }
+        }
+        if (!this.level().isClientSide) {
+            // Calculate spawn position relative to the hit face
+            Direction face = result.getDirection();
+            BlockPos hitPos = result.getBlockPos();
+
+            // Move slightly out of the block so it isn't inside
+            double spawnX = hitPos.getX() + 0.5 + (face.getStepX() * 0.05);
+            double spawnY = hitPos.getY() + 0.5 + (face.getStepY() * 0.05); // Center of block face
+            double spawnZ = hitPos.getZ() + 0.5 + (face.getStepZ() * 0.05);
+
+            // If hitting the top of a block (Floor), we usually want it exactly on top
+            if (face == Direction.UP) spawnY = hitPos.getY() + 1.0;
+            if (face == Direction.DOWN) spawnY = hitPos.getY();
+            if (face == Direction.NORTH) spawnZ = hitPos.getZ();
+            if (face == Direction.SOUTH) spawnZ = hitPos.getZ() + 1.0;
+            if (face == Direction.WEST) spawnX = hitPos.getX();
+            if (face == Direction.EAST) spawnX = hitPos.getX() + 1.0;
+
+            // Ideally, pass the exact hit location from result.getLocation()
+            // but aligning to the block grid often looks cleaner for decals.
+            // Let's use the exact hit location for accuracy:
+            Vec3 exactHit = result.getLocation();
+
+            // Spawn the Stain
+            BloodStainEntity stain = new BloodStainEntity(this.level(),
+                    exactHit.x, exactHit.y, exactHit.z, face);
+
+            this.level().addFreshEntity(stain);
+        }
     }
 
-    private PlayState predicate(software.bernie.geckolib.core.animation.AnimationState animationState) {
-
-        return PlayState.STOP;
+    public   void updateRotation() {
+        Vec3 motion = this.getDeltaMovement();
+        if (motion.lengthSqr() > 0.001) {
+            double hDist = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
+            this.setYRot((float) (Mth.atan2(motion.x, motion.z) * (180F / (float) Math.PI)));
+            this.setXRot((float) (Mth.atan2(motion.y, hDist) * (180F / (float) Math.PI)));
+            this.yRotO = this.getYRot();
+            this.xRotO = this.getXRot();
+        }
     }
+
+    public boolean isStuckInGround() { return this.entityData.get(STUCK); }
+
+    public float getFadeAlpha(float partialTicks) {
+        if (!isStuckInGround()) return 1.0f;
+        return Mth.clamp(1.0f - ((fadeTimer + partialTicks) / 60.0f), 0.0f, 1.0f);
+    }
+
+    // Accessor for Renderer
+    public Deque<Vec3> getTrailHistory() {
+        return this.trailHistory;
+    }
+
+    @Override public void setOwner(@Nullable Entity entity) { if (entity != null) this.ownerUUID = entity.getUUID(); }
+    @Override @Nullable public Entity getOwner() { return ownerUUID != null && level() instanceof ServerLevel s ? s.getEntity(ownerUUID) : null; }
+    @Override protected void readAdditionalSaveData(CompoundTag tag) { this.entityData.set(STUCK, tag.getBoolean("Stuck")); if(tag.hasUUID("Owner")) ownerUUID = tag.getUUID("Owner"); }
+    @Override protected void addAdditionalSaveData(CompoundTag tag) { tag.putBoolean("Stuck", this.entityData.get(STUCK)); if(ownerUUID != null) tag.putUUID("Owner", ownerUUID); }
+    @Override public Packet<ClientGamePacketListener> getAddEntityPacket() { return NetworkHooks.getEntitySpawningPacket(this); }
 }
-
-
-

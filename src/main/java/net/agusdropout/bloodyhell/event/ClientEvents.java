@@ -224,6 +224,7 @@ public class ClientEvents {
             event.registerSpecial(ModParticles.STAR_EXPLOSION_PARTICLE.get(), new StarExplosionParticle.Provider());
             event.registerSpecial(ModParticles.BLACK_HOLE_PARTICLE.get(), new BlackHoleParticle.Provider());
             event.registerSpecial(ModParticles.MAGIC_WAVE_PARTICLE.get(), new MagicWaveParticle.Provider());
+            event.registerSpecial(ModParticles.BLOOD_RUNE_PARTICLE.get(), new BloodRuneParticle.Provider());
             event.registerSpecial(ModParticles.SIMPLE_BLOCK_PARTICLE.get(), new SimpleBlockParticle.Provider());
             event.registerSpriteSet(ModParticles.CYCLOPS_HALO_PARTICLE.get(), CyclopsHaloParticle.Provider::new);
             event.registerSpriteSet(ModParticles.EYE_PARTICLE.get(), EyeParticle.Provider::new);
@@ -244,6 +245,7 @@ public class ClientEvents {
             event.registerLayerDefinition(ModModelLayers.BLASPHEMOUS_IMPALER_ENTITY, BlasphemousImpalerEntityModel::createBodyLayer);
             event.registerLayerDefinition(ModModelLayers.VESPER, VesperModel::createBodyLayer);
             event.registerLayerDefinition(TentacleEntityModel.LAYER_LOCATION, TentacleEntityModel::createBodyLayer);
+            event.registerLayerDefinition(SmallCrimsonDaggerModel.LAYER_LOCATION, SmallCrimsonDaggerModel::createBodyLayer);
 
         }
 

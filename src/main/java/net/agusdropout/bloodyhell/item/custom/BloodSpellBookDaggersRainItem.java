@@ -1,11 +1,9 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
-import net.agusdropout.bloodyhell.entity.custom.BloodPortalEntity;
-import net.agusdropout.bloodyhell.entity.custom.BloodSlashEntity;
-import net.agusdropout.bloodyhell.entity.projectile.SmallCrimsonDagger;
+import net.agusdropout.bloodyhell.entity.projectile.BloodPortalEntity;
+
 import net.agusdropout.bloodyhell.item.client.BloodSpellBookDaggersRainItemRenderer;
-import net.agusdropout.bloodyhell.item.client.BloodSpellBookScratchItemRenderer;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -30,7 +28,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Random;
 import java.util.function.Consumer;
 
 public class BloodSpellBookDaggersRainItem extends Item implements GeoItem {

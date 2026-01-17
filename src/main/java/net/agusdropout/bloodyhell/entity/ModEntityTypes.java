@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 
 
+import net.agusdropout.bloodyhell.entity.custom.BloodStainEntity;
 import net.agusdropout.bloodyhell.entity.effects.BloodNovaDebrisEntity;
 import net.agusdropout.bloodyhell.entity.effects.BloodSlashDecalEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
@@ -182,6 +183,20 @@ public class ModEntityTypes {
                     .clientTrackingRange(4) // Rango de visión (chunks)
                     .updateInterval(20) // Actualización
                     .build("tentacle_entity"));
+    public static final RegistryObject<EntityType<BloodStainEntity>> BLOOD_STAIN_ENTITY = ENTITY_TYPES.register("blood_stain",
+            () -> EntityType.Builder.<BloodStainEntity>of(BloodStainEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f) // Small logical hitbox
+                    .clientTrackingRange(10) // Visible from 160 blocks
+                    .updateInterval(Integer.MAX_VALUE) // Optimization: Never sends position updates (it's static)
+                    .setShouldReceiveVelocityUpdates(false)
+                    .build(new ResourceLocation(BloodyHell.MODID, "blood_stain").toString()));
+
+    public static final RegistryObject<EntityType<BloodClotProjectile>> BLOOD_CLOT_PROJECTILE = ENTITY_TYPES.register("blood_clot_projectile",
+            () -> EntityType.Builder.<BloodClotProjectile>of(BloodClotProjectile::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(new ResourceLocation(BloodyHell.MODID, "blood_clot_projectile").toString()));
 
 
 

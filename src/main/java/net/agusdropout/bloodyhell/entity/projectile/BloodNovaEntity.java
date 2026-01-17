@@ -97,13 +97,9 @@ public class BloodNovaEntity extends Projectile {
 
     private void explode() {
         if (!this.level().isClientSide) {
-            // A. Physical Explosion
             this.level().explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, Level.ExplosionInteraction.NONE);
-
-            // B. Visual Sync (Crucial: Tells client to run particle logic immediately)
             this.level().broadcastEntityEvent(this, (byte) 3);
 
-            // C. Damage Enemies
             AABB explosionArea = this.getBoundingBox().inflate(6);
             List<LivingEntity> victims = this.level().getEntitiesOfClass(LivingEntity.class, explosionArea, e -> e != this.getOwner());
 
@@ -111,12 +107,10 @@ public class BloodNovaEntity extends Projectile {
                 double dist = victim.distanceTo(this);
                 float dmgScale = (float) Math.max(0.5, 1.0 - (dist / 10.0));
                 victim.hurt(this.level().damageSources().explosion(this, this.getOwner()), this.damage * 2.5f * dmgScale);
-
                 Vec3 away = victim.position().subtract(this.position()).normalize();
                 victim.knockback(1.8, -away.x, -away.z);
             }
 
-            // D. Fling Debris
             AABB area = this.getBoundingBox().inflate(12);
             List<BloodNovaDebrisEntity> blocks = this.level().getEntitiesOfClass(BloodNovaDebrisEntity.class, area);
             for(BloodNovaDebrisEntity b : blocks) {
@@ -125,9 +119,32 @@ public class BloodNovaEntity extends Projectile {
             }
 
             EntityCameraShake.cameraShake(level(), position(), 30, 2.5f, 10, 15);
+
+            // --- NEW: SPAWN VISCOUS SHRAPNEL ---
+            spawnClots();
+
             this.discard();
         }
-        // Client side logic handled via handleEntityEvent now
+    }
+
+    private void spawnClots() {
+        // Spawn 12 clots radiating outward
+        for (int i = 0; i < 12; i++) {
+            // Spawn slightly above the center
+            BloodClotProjectile clot = new BloodClotProjectile(this.level(), this.getX(), this.getY() + 1.0, this.getZ());
+            if (this.getOwner() instanceof LivingEntity l) clot.setOwner(l);
+
+            // Random angle circle
+            double angle = random.nextDouble() * Math.PI * 2;
+            double speed = 0.8 + random.nextDouble() * 0.8;
+
+            double vx = Math.cos(angle) * speed;
+            double vy = (random.nextDouble() - 0.5) * 0.8; // Vertical spread
+            double vz = Math.sin(angle) * speed;
+
+            clot.setDeltaMovement(vx, vy, vz);
+            this.level().addFreshEntity(clot);
+        }
     }
 
     @Override

@@ -110,43 +110,51 @@ public class BloodSphereEntity extends Projectile {
     }
 
     private void explode() {
-        // --- MODIFICATION: Increased Radius ---
         float radius = 6.0f;
         float dmg = getDamage();
 
-        // 1. AREA DAMAGE
+        // 1. DAMAGE
         AABB area = this.getBoundingBox().inflate(radius);
         List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, area);
-
         for (LivingEntity target : targets) {
             if (target != this.getOwner()) {
                 target.hurt(this.damageSources().magic(), dmg);
                 double dx = target.getX() - this.getX();
                 double dz = target.getZ() - this.getZ();
-                // Increased knockback for the larger explosion
                 target.knockback(1.5, -dx, -dz);
             }
         }
 
-        // 2. SOUNDS
+        // 2. SOUNDS & PARTICLES
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 1.0f, 1.5f);
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ZOMBIE_VILLAGER_CURE, SoundSource.HOSTILE, 1.0f, 0.5f);
 
         if (!this.level().isClientSide) {
             ServerLevel serverLevel = (ServerLevel) this.level();
-
-            // 3. VISUAL EFFECTS (Particles)
             serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
-            serverLevel.sendParticles(ModParticles.BLOOD_PULSE_PARTICLE.get(),
-                    this.getX(), this.getY(), this.getZ(),
-                    60, 1.0, 1.0, 1.0, 0.2); // Increased particle count and spread
+            serverLevel.sendParticles(ModParticles.BLOOD_PULSE_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 60, 1.0, 1.0, 1.0, 0.2);
 
-            // --- CAMERA SHAKE ---
-            // Radius: 20 blocks, Magnitude: 2.0 (very strong), Duration: 15 ticks, Fade: 5 ticks
             EntityCameraShake.cameraShake(this.level(), this.position(), 20.0f, 2.0f, 15, 5);
-
-            // --- DEBRIS ---
             spawnDebris(serverLevel);
+
+            // --- NEW: SPAWN VISCOUS SHRAPNEL ---
+            spawnClots();
+        }
+    }
+
+    private void spawnClots() {
+        // Spawn 8 clots flying in random directions
+        for (int i = 0; i < 8; i++) {
+            BloodClotProjectile clot = new BloodClotProjectile(this.level(), this.getX(), this.getY(), this.getZ());
+            if (this.getOwner() instanceof LivingEntity l) clot.setOwner(l);
+
+            // Velocity: Random burst
+            double vx = (random.nextDouble() - 0.5) * 1.5;
+            double vy = random.nextDouble() * 0.8 + 0.2; // Tend upwards slightly
+            double vz = (random.nextDouble() - 0.5) * 1.5;
+
+            clot.setDeltaMovement(vx, vy, vz);
+            this.level().addFreshEntity(clot);
         }
     }
 
