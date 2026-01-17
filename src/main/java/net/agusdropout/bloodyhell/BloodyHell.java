@@ -515,13 +515,14 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_ENTITY.get(), BloodSlashEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_ARROW.get(), BloodArrowRenderer::new);
             EntityRenderers.register(ModEntityTypes.ENTITY_FALLING_BLOCK.get(), EntityFallingBlockRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_NOVA_DEBRIS_ENTITY.get(), EntityFallingBlockRenderer::new);
             EntityRenderers.register(ModEntityTypes.ENTITY_CAMERA_SHAKE.get(), RenderNothing::new);
             BlockEntityRenderers.register(ModBlockEntities.BH_CHEST.get(),BHChestRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_ARROW.get(), BloodArrowRenderer::new);
             EntityRenderers.register(ModEntityTypes.VESPER.get(), VesperRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_PROJECTILE.get(), BloodSphereRenderer::new);
             EntityRenderers.register(ModEntityTypes.VIRULENT_ANCHOR_PROJECTILE.get(), VirulentAnchorProjectileEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_NOVA_ENTITY.get(), BloodNovaEntityRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_NOVA_ENTITY.get(), BloodNovaRenderer::new);
             EntityRenderers.register(ModEntityTypes.SMALL_CRIMSON_DAGGER.get(), SmallCrimsonDaggerEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.VISCERAL_PROJECTILE.get(), VisceralProjectileEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.STARFALL_PROJECTILE.get(), StarfallProjectileEntityRenderer::new);

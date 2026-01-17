@@ -48,7 +48,7 @@ public class BloodSlashEntity extends Projectile {
 
     public BloodSlashEntity(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
-        this.noPhysics = true;
+        this.noPhysics = false;
     }
 
     public BloodSlashEntity(Level level, double x, double y, double z, float damage, LivingEntity owner, float yaw, float pitch) {

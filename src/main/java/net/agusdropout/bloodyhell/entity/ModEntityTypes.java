@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 
 
+import net.agusdropout.bloodyhell.entity.effects.BloodNovaDebrisEntity;
 import net.agusdropout.bloodyhell.entity.effects.BloodSlashDecalEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
@@ -62,6 +63,9 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<EntityFallingBlock>> ENTITY_FALLING_BLOCK = ENTITY_TYPES.register("entity_falling_block",
             () -> EntityType.Builder.<EntityFallingBlock>of(EntityFallingBlock::new,MobCategory.MISC).sized(1f,1f).build(new ResourceLocation(BloodyHell.MODID,
                     "entity_falling_block").toString()));
+    public static final RegistryObject<EntityType<BloodNovaDebrisEntity>> BLOOD_NOVA_DEBRIS_ENTITY = ENTITY_TYPES.register("blood_nova_debris_entity",
+            () -> EntityType.Builder.<BloodNovaDebrisEntity>of(BloodNovaDebrisEntity::new,MobCategory.MISC).sized(1f,1f).build(new ResourceLocation(BloodyHell.MODID,
+                    "blood_nova_debris_entity").toString()));
     public static final RegistryObject<EntityType<EntityCameraShake>> ENTITY_CAMERA_SHAKE = ENTITY_TYPES.register("entity_camera_shake",
             () -> EntityType.Builder.<EntityCameraShake>of(EntityCameraShake::new,MobCategory.MISC).sized(1f,1f).setUpdateInterval(Integer.MAX_VALUE).build(new ResourceLocation(BloodyHell.MODID,
                     "entity_camera_shake").toString()));

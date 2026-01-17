@@ -160,7 +160,7 @@ public class EntityFallingBlock extends Entity {
         return getEntityData().get(ANIM_V_Y);
     }
 
-    private void setAnimVY(float vy) {
+    protected void setAnimVY(float vy) {
         getEntityData().set(ANIM_V_Y, vy);
     }
 }

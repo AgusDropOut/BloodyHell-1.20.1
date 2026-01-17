@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
-import net.agusdropout.bloodyhell.entity.custom.BloodSlashEntity;
 import net.agusdropout.bloodyhell.entity.projectile.BloodNovaEntity;
 import net.agusdropout.bloodyhell.item.client.BloodSpellBookBloodNovaItemRenderer;
 import net.agusdropout.bloodyhell.item.client.BloodSpellBookScratchItemRenderer;
@@ -98,7 +97,7 @@ public class BloodSpellBookBloodNovaItem extends Item implements GeoItem {
                             double rightZ = baseZ + offsetZ;
 
 
-                            BloodNovaEntity projectile = new BloodNovaEntity(level, baseX, baseY, baseZ, 30.0F, player, yaw, pitch);
+                            BloodNovaEntity projectile = new BloodNovaEntity(level, baseX, baseY+5, baseZ, 30.0F, player, yaw, pitch);
                             level.addFreshEntity(projectile);
 
                             playerCrimsonVeil.subCrimsomveil(10);
