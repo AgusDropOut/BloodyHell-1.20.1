@@ -1,16 +1,11 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
-import net.agusdropout.bloodyhell.entity.custom.BloodSlashEntity;
- 
-import net.agusdropout.bloodyhell.entity.projectile.VirulentAnchorProjectileEntity;
+import net.agusdropout.bloodyhell.entity.projectile.BloodSlashEntity;
 import net.agusdropout.bloodyhell.item.client.BloodSpellBookScratchItemRenderer;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
-import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -35,9 +31,8 @@ import java.util.function.Consumer;
 public class BloodSpellBookScratchItem extends Item implements GeoItem {
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation CLOSE_ANIM = RawAnimation.begin().thenPlay("close");
-    private int useTicks = 0;
-    private boolean open = false;
 
+    private boolean open = false;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BloodSpellBookScratchItem(Properties properties) {
@@ -46,8 +41,8 @@ public class BloodSpellBookScratchItem extends Item implements GeoItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) {
-        super.inventoryTick(p_41404_, p_41405_, p_41406_, p_41407_, p_41408_);
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, level, entity, slot, selected);
     }
 
     @Override
@@ -75,66 +70,76 @@ public class BloodSpellBookScratchItem extends Item implements GeoItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (level instanceof ServerLevel serverLevel) {
-                if(open) {
-                    // 🔹 Obtener el yaw del jugador
-                    float yaw = player.getYRot();
-                    float pitch = player.getXRot();
-                    double radians = Math.toRadians(-yaw);
+            if (open) {
+                // Get player rotation
+                float yaw = player.getYRot();
+                float pitch = player.getXRot();
 
-                    // 🔹 Posición base (frontal)
-                    double baseX = player.getX() + Math.sin(radians) * 1.0;
-                    double baseY = player.getY() + 0.5;
-                    double baseZ = player.getZ() + Math.cos(radians) * 1.0;
+                // Math helper for spawn positions
+                double radians = Math.toRadians(-yaw);
+                double xDir = Math.sin(radians);
+                double zDir = Math.cos(radians);
 
-                    // 🔹 Calcular desplazamientos laterales
-                    double offsetX = Math.sin(radians + Math.PI / 2) * 1.0; // Lado derecho
-                    double offsetZ = Math.cos(radians + Math.PI / 2) * 1.0; // Lado derecho
+                // Base position (1.5 blocks in front of player to avoid clipping)
+                double baseX = player.getX() + xDir * 1.5;
+                double baseY = player.getEyeY() - 0.4; // Slightly below eye level
+                double baseZ = player.getZ() + zDir * 1.5;
 
-                    double leftX = baseX - offsetX;
-                    double leftZ = baseZ - offsetZ;
+                // Calculate perpendicular vector for lateral offsets
+                // (Rotate 90 degrees)
+                double offsetRadians = Math.toRadians(-yaw + 90);
+                double offsetX = Math.sin(offsetRadians) * 1.2; // 1.2 blocks separation
+                double offsetZ = Math.cos(offsetRadians) * 1.2;
 
-                    double rightX = baseX + offsetX;
-                    double rightZ = baseZ + offsetZ;
+                // Position calculations
+                double leftX = baseX - offsetX;
+                double leftZ = baseZ - offsetZ;
 
+                double rightX = baseX + offsetX;
+                double rightZ = baseZ + offsetZ;
 
+                player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(playerCrimsonVeil -> {
+                    if (playerCrimsonVeil.getCrimsonVeil() >= 5 && !player.getCooldowns().isOnCooldown(this)) {
 
+                        player.getCooldowns().addCooldown(this, 30); // Reduced cooldown slightly for better feel
+                        playerCrimsonVeil.subCrimsomveil(10);
 
+                        // --- CENTER SLASH ---
+                        // Goes straight
+                        BloodSlashEntity centerSlash = new BloodSlashEntity(level, baseX, baseY, baseZ, 10.0F, player, yaw, pitch);
 
-                    player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(playerCrimsonVeil -> {
+                        float spreadAngle = 10.0f; // Reduced spread to prevent "entangling"
 
-                        if(playerCrimsonVeil.getCrimsonVeil() >= 5 && !player.getCooldowns().isOnCooldown(this)){
+                        // --- RIGHT SLASH ---
+                        BloodSlashEntity rightSlash = new BloodSlashEntity(level, leftX, baseY, leftZ, 10.0F, player, yaw + spreadAngle, pitch);
 
-                            player.getCooldowns().addCooldown(this, 50);
+                        // --- LEFT SLASH ---
+                        // We want it to spawn on the left, but angle slightly outwards so they fan out
+                        // If we just change position but keep Yaw, they fly parallel.
+                        // If we change Yaw by -15, it flies to the left.
 
+                        BloodSlashEntity leftSlash = new BloodSlashEntity(level, rightX, baseY, rightZ, 10.0F, player, yaw - spreadAngle, pitch);
 
-                            playerCrimsonVeil.subCrimsomveil(10);
+                        // Add entities to world
+                        level.addFreshEntity(centerSlash);
+                        level.addFreshEntity(leftSlash);
+                        level.addFreshEntity(rightSlash);
 
-                            BloodSlashEntity centerSlash = new BloodSlashEntity(level, baseX, baseY, baseZ, 30.0F, player, -yaw, pitch);
-                            BloodSlashEntity leftSlash = new BloodSlashEntity(level, leftX, baseY, leftZ, 30.0F, player, -yaw - 15, pitch);  // Izquierda
-                            BloodSlashEntity rightSlash = new BloodSlashEntity(level, rightX, baseY, rightZ, 30.0F, player, -yaw + 15, pitch); // Derecha
-
-                            level.addFreshEntity(centerSlash);
-                            level.addFreshEntity(leftSlash);
-                            level.addFreshEntity(rightSlash);
-
-                            if (!level.isClientSide()) {
-                                ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(playerCrimsonVeil.getCrimsonVeil()), ((ServerPlayer) player));
-                            }
+                        if (!level.isClientSide()) {
+                            ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(playerCrimsonVeil.getCrimsonVeil()), ((ServerPlayer) player));
                         }
-                    });
+                    }
+                });
 
-
-                    triggerAnim(player, GeoItem.getOrAssignId(player.getItemInHand(hand), serverLevel), "Controller", "idle");
-                    open = false;
-                } else {
-                    triggerAnim(player, GeoItem.getOrAssignId(player.getItemInHand(hand), serverLevel), "Controller", "close");
-                    open = true;
-                }
-
-
-
+                triggerAnim(player, GeoItem.getOrAssignId(player.getItemInHand(hand), serverLevel), "Controller", "idle");
+                open = false;
+            } else {
+                triggerAnim(player, GeoItem.getOrAssignId(player.getItemInHand(hand), serverLevel), "Controller", "close");
+                open = true;
+            }
         }
-        if (open){
+
+        if (open) {
             level.playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.EVOKER_CAST_SPELL, player.getSoundSource(), 1.0f, 1.0f, false);
         }
         return super.use(level, player, hand);
@@ -146,10 +151,7 @@ public class BloodSpellBookScratchItem extends Item implements GeoItem {
         if (level instanceof ServerLevel serverLevel) {
             Player player = (Player) entity;
             triggerAnim(player, GeoItem.getOrAssignId(player.getItemInHand(player.getUsedItemHand()), serverLevel), "Controller", "close");
-
         }
-
-
     }
 
     @Override
@@ -158,12 +160,8 @@ public class BloodSpellBookScratchItem extends Item implements GeoItem {
         if (entity.level() instanceof ServerLevel serverLevel) {
             Player player = (Player) entity;
             triggerAnim(player, GeoItem.getOrAssignId(player.getItemInHand(player.getUsedItemHand()), serverLevel), "Controller", "close");
-
         }
-
     }
-
-
 
     @Override
     public double getTick(Object itemStack) {

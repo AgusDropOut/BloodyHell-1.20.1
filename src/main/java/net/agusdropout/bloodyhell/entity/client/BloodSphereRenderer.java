@@ -9,9 +9,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -20,39 +23,36 @@ import org.joml.Vector3f;
 public class BloodSphereRenderer extends EntityRenderer<BloodSphereEntity> {
 
     // ==========================================
-    // CONFIGURACIÓN VISUAL
+    // VISUAL CONFIG
     // ==========================================
     private static final float GLOBAL_SCALE = 1.8f;
     private static final float CORE_RADIUS = 0.3f;
     private static final float HALO_RADIUS = 0.85f;
 
-    // --- COLORES ---
+    // --- COLORS ---
     private static final int COLOR_CORE = 0x440000;
     private static final int COLOR_HALO = 0xBB0000;
-
-    // Rayos: Rojo Oscuro / Carmesí Eléctrico
     private static final int COLOR_ARC = 0xFF990000;
-
-    // Spots: AHORA MÁS BRILLANTES (Rojo claro casi naranja)
-    // Antes: 0xFFCC0000 -> Ahora: 0xFFFF4444
     private static final int COLOR_SPOT = 0xFFFF4444;
+    private static final int COLOR_GROUND_WAVE = 0xFF0000; // Bright pure red for the floor wave
 
-    // Transparencias
+    // Transparencies
     private static final int ALPHA_HALO = 120;
-
-    // Alpha Spot: AHORA MÁS ALTO (Para que no se vea transparente/lavado)
-    // Antes: 100 -> Ahora: 240 (Casi sólido en el centro)
     private static final int ALPHA_SPOT = 240;
 
-    // Rayos
+    // Arcs
     private static final int ARC_COUNT = 10;
     private static final float ARC_WIDTH = 0.04f;
     private static final float ARC_SPEED = 0.15f;
     private static final float SPOT_SIZE = 0.15f;
 
-    // Pulso
+    // Pulse
     private static final float PULSE_SPEED = 0.3f;
     private static final float PULSE_AMOUNT = 0.05f;
+
+    // Ground Effect Config
+    private static final float MAX_GROUND_DIST = 6.0f; // Max distance to show effect
+    private static final float WAVE_MAX_SIZE = 3.5f;
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/misc/white.png");
 
@@ -72,31 +72,132 @@ public class BloodSphereRenderer extends EntityRenderer<BloodSphereEntity> {
         float currentScale = GLOBAL_SCALE * pulse;
         poseStack.scale(currentScale, currentScale, currentScale);
 
-        // 1. SINGULARIDAD (Portal al Vacío)
+        // 1. SINGULARITY (Void Portal)
         VertexConsumer portalConsumer = buffer.getBuffer(RenderType.endPortal());
         renderSphere(poseStack, portalConsumer, CORE_RADIUS * 0.8f, 0xFFFFFF, 255);
 
-        // 2. NÚCLEO SANGRIENTO
+        // 2. BLOODY CORE
         VertexConsumer coreConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
         renderSphere(poseStack, coreConsumer, CORE_RADIUS, COLOR_CORE, 200);
 
-        // 3. RAYOS Y SPOTS
+        // 3. ARCS AND SPOTS
         VertexConsumer lightningConsumer = buffer.getBuffer(RenderType.lightning());
         VertexConsumer spotConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
         renderHypnoticPlasma(entity, poseStack, lightningConsumer, spotConsumer, time);
 
-        // 4. MANTO EXTERIOR
+        // 4. OUTER MANTLE
         VertexConsumer haloConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
         renderSphere(poseStack, haloConsumer, HALO_RADIUS, COLOR_HALO, ALPHA_HALO);
 
-        // 5. AURA DE OSCURIDAD
+        // 5. DARKNESS AURA
         renderSphere(poseStack, haloConsumer, HALO_RADIUS * 1.05f, 0x000000, 40);
 
         poseStack.popPose();
+
+        // ---------------------------------------------------------
+        // 6. NEW GROUND ENERGY WAVE EFFECT
+        // ---------------------------------------------------------
+        renderGroundEffect(entity, partialTick, poseStack, buffer);
+
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
 
-    // --- GEOMETRÍA ESFERA ---
+    private void renderGroundEffect(BloodSphereEntity entity, float partialTick, PoseStack poseStack, MultiBufferSource buffer) {
+        Level level = entity.level();
+        Vec3 pos = entity.getPosition(partialTick);
+        BlockPos blockPos = BlockPos.containing(pos);
+
+        // Raycast downwards to find ground distance
+        double groundY = -999;
+        // Check 6 blocks down
+        for (int i = 0; i <= (int)MAX_GROUND_DIST; i++) {
+            BlockPos checkPos = blockPos.below(i);
+            if (!level.getBlockState(checkPos).isAir() && level.getBlockState(checkPos).isSolidRender(level, checkPos)) {
+                groundY = checkPos.getY() + 1.01; // Just above the block
+                break;
+            }
+        }
+
+        // If ground found and within range
+        if (groundY != -999) {
+            double dist = pos.y - groundY;
+            if (dist >= 0 && dist <= MAX_GROUND_DIST) {
+                float intensity = 1.0f - ((float)dist / MAX_GROUND_DIST); // 1.0 close, 0.0 far
+                float time = entity.tickCount + partialTick;
+
+                poseStack.pushPose();
+                // Move poseStack relative to entity to position it on the floor
+                // Entity render translates to entity pos (0,0,0 local). We need to move down.
+                poseStack.translate(0, -dist, 0);
+
+                // Rotate to lie flat on floor (X axis 90 deg)
+                poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+
+                // Rotating effect
+                poseStack.mulPose(Axis.ZP.rotationDegrees(time * 5.0f));
+
+                // Pulsating size
+                float waveScale = WAVE_MAX_SIZE * (0.8f + 0.2f * (float)Math.sin(time * 0.2f));
+                poseStack.scale(waveScale, waveScale, waveScale);
+
+                // Alpha based on distance
+                int alpha = (int)(150 * intensity);
+
+                // Render the Ring/Disk
+                VertexConsumer waveConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
+                renderEnergyRing(poseStack, waveConsumer, COLOR_GROUND_WAVE, alpha);
+
+                poseStack.popPose();
+            }
+        }
+    }
+
+    private void renderEnergyRing(PoseStack poseStack, VertexConsumer consumer, int color, int alpha) {
+        Matrix4f m = poseStack.last().pose();
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = color & 0xFF;
+
+        // Draw a flat ring/disk using a triangle fan approximation
+        // Inner radius 0.5, Outer radius 1.0
+        float innerR = 0.4f;
+        float outerR = 1.0f;
+        int segments = 16;
+
+        for (int i = 0; i < segments; i++) {
+            float angle1 = (float) (i * 2 * Math.PI / segments);
+            float angle2 = (float) ((i + 1) * 2 * Math.PI / segments);
+
+            float x1_in = (float)Math.cos(angle1) * innerR;
+            float y1_in = (float)Math.sin(angle1) * innerR;
+            float x1_out = (float)Math.cos(angle1) * outerR;
+            float y1_out = (float)Math.sin(angle1) * outerR;
+
+            float x2_in = (float)Math.cos(angle2) * innerR;
+            float y2_in = (float)Math.sin(angle2) * innerR;
+            float x2_out = (float)Math.cos(angle2) * outerR;
+            float y2_out = (float)Math.sin(angle2) * outerR;
+
+            // Quad for this segment
+            // Inner vertices are more opaque, outer are transparent to create a soft edge
+            addVertexRaw(consumer, m, x1_in, y1_in, r, g, b, alpha);
+            addVertexRaw(consumer, m, x1_out, y1_out, r, g, b, 0); // Fade out edge
+            addVertexRaw(consumer, m, x2_out, y2_out, r, g, b, 0); // Fade out edge
+            addVertexRaw(consumer, m, x2_in, y2_in, r, g, b, alpha);
+        }
+    }
+
+    private void addVertexRaw(VertexConsumer consumer, Matrix4f m, float x, float y, int r, int g, int b, int a) {
+        consumer.vertex(m, x, y, 0)
+                .color(r, g, b, a)
+                .uv(0, 0) // UV doesn't matter much for white texture
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(15728880) // Max brightness
+                .normal(0, 0, 1)
+                .endVertex();
+    }
+
+    // --- SPHERE GEOMETRY ---
     private void renderSphere(PoseStack poseStack, VertexConsumer consumer, float radius, int color, int alpha) {
         Matrix4f m = poseStack.last().pose();
         Matrix3f n = poseStack.last().normal();
@@ -187,14 +288,10 @@ public class BloodSphereRenderer extends EntityRenderer<BloodSphereEntity> {
         int edgeAlpha = 0;
         int segments = 8;
 
-        // Offset de altura (Y en espacio local) aumentado para evitar "borrado" visual
-        // al mezclarse con la capa de la esfera.
         float offsetY = 0.05f;
 
-        // Centro (Opaco)
         addSimpleVertex(consumer, m, 0, offsetY, 0, r, g, b, centerAlpha);
 
-        // Borde (Transparente)
         for (int i = 0; i <= segments; i++) {
             float angle = (float) (i * 2 * Math.PI / segments);
             float dx = (float) Math.cos(angle) * size;
@@ -202,7 +299,6 @@ public class BloodSphereRenderer extends EntityRenderer<BloodSphereEntity> {
             addSimpleVertex(consumer, m, dx, offsetY, dz, r, g, b, edgeAlpha);
         }
 
-        // Relleno manual
         for (int i = 0; i < segments; i++) {
             float angle1 = (float) (i * 2 * Math.PI / segments);
             float angle2 = (float) ((i + 1) * 2 * Math.PI / segments);

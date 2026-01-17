@@ -512,7 +512,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.HORNED_WORM.get(), HornedWormRenderer::new);
             EntityRenderers.register(ModEntityTypes.VEIL_STALKER.get(), VeilStalkerRenderer::new);
             EntityRenderers.register(ModEntityTypes.SANGUINE_SACRIFICE_ENTITY.get(), SanguineSacrificeEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_ENTITY.get(), BloodSlashRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_ENTITY.get(), BloodSlashEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_ARROW.get(), BloodArrowRenderer::new);
             EntityRenderers.register(ModEntityTypes.ENTITY_FALLING_BLOCK.get(), EntityFallingBlockRenderer::new);
             EntityRenderers.register(ModEntityTypes.ENTITY_CAMERA_SHAKE.get(), RenderNothing::new);
@@ -550,6 +550,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_IMPALER_ENTITY.get(), BlasphemousImpalerEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.GRAVE_WALKER_ENTITY.get(), GraveWalkerEntityRenderer::new);
             EntityRenderers.register(ModEntityTypes.TENTACLE_ENTITY.get(), TentacleEntityRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_DECAL.get(), BloodSlashDecalRenderer::new);
 
 
         }

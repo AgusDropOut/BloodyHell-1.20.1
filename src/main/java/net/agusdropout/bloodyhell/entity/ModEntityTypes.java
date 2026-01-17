@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 
 
+import net.agusdropout.bloodyhell.entity.effects.BloodSlashDecalEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.entity.projectile.*;
@@ -98,8 +99,15 @@ public class ModEntityTypes {
             () -> EntityType.Builder.<SanguineSacrificeEntity>of(SanguineSacrificeEntity::new,MobCategory.AMBIENT).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID,
                     "sanguine_sacrifice_entity").toString()));
     public static final RegistryObject<EntityType<BloodSlashEntity>> BLOOD_SLASH_ENTITY = ENTITY_TYPES.register("blood_slash_entity",
-            () -> EntityType.Builder.<BloodSlashEntity>of(BloodSlashEntity::new,MobCategory.AMBIENT).sized(1.2f,1.2f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
+            () -> EntityType.Builder.<BloodSlashEntity>of(BloodSlashEntity::new,MobCategory.AMBIENT).sized(2f,5f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_slash_entity").toString()));
+    public static final RegistryObject<EntityType<BloodSlashDecalEntity>> BLOOD_SLASH_DECAL = ENTITY_TYPES.register("blood_slash_decal",
+            () -> EntityType.Builder.<BloodSlashDecalEntity>of(BloodSlashDecalEntity::new, MobCategory.MISC)
+                    .sized(3.0f, 0.1f) // 3 blocks wide (X/Z), very thin height (Y)
+                    .clientTrackingRange(10) // Visible from 160 blocks away (10 chunks)
+                    .updateInterval(Integer.MAX_VALUE) // Optimization: Never needs position updates after spawn
+                    .setShouldReceiveVelocityUpdates(false) // Optimization: It is static
+                    .build(new ResourceLocation(BloodyHell.MODID, "blood_slash_decal").toString()));
     public static final RegistryObject<EntityType<BloodSphereEntity>> BLOOD_PROJECTILE = ENTITY_TYPES.register("blood_projectile",
             () -> EntityType.Builder.<BloodSphereEntity>of(BloodSphereEntity::new,MobCategory.AMBIENT).sized(1.2f,1.2f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_projectile").toString()));

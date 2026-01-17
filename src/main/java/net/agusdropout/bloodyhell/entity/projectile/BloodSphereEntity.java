@@ -46,7 +46,7 @@ public class BloodSphereEntity extends Projectile {
         this.setDamage(damage);
         this.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
         Vec3 look = owner.getLookAngle();
-        // Velocidad del proyectil (0.5 es lento y amenazante)
+        // Projectile speed (0.5 is slow and threatening)
         this.setDeltaMovement(look.scale(0.5));
     }
 
@@ -87,15 +87,15 @@ public class BloodSphereEntity extends Projectile {
             }
         }
 
-        // Rastro de partículas mientras viaja (Cliente)
+        // Particle trail while traveling (Client only)
         if (this.level().isClientSide) {
             for(int i=0; i<2; i++) {
-                // Usamos la partícula animada también para el rastro, pero con poca velocidad
+                // Using animated particle for trail too, but with low speed
                 this.level().addParticle(ModParticles.BLOOD_PULSE_PARTICLE.get(),
                         this.getX() + (random.nextDouble()-0.5)*0.3,
                         this.getY() + (random.nextDouble()-0.5)*0.3,
                         this.getZ() + (random.nextDouble()-0.5)*0.3,
-                        0, 0, 0); // Velocidad 0 para que queden flotando
+                        0, 0, 0); // Zero velocity to float
             }
         }
     }
@@ -110,10 +110,11 @@ public class BloodSphereEntity extends Projectile {
     }
 
     private void explode() {
-        float radius = 3.0f;
+        // --- MODIFICATION: Increased Radius ---
+        float radius = 6.0f;
         float dmg = getDamage();
 
-        // 1. DAÑO EN ÁREA (Igual que antes)
+        // 1. AREA DAMAGE
         AABB area = this.getBoundingBox().inflate(radius);
         List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, area);
 
@@ -122,58 +123,55 @@ public class BloodSphereEntity extends Projectile {
                 target.hurt(this.damageSources().magic(), dmg);
                 double dx = target.getX() - this.getX();
                 double dz = target.getZ() - this.getZ();
-                target.knockback(0.8, -dx, -dz); // Aumenté un poco el knockback
+                // Increased knockback for the larger explosion
+                target.knockback(1.5, -dx, -dz);
             }
         }
 
-        // 2. SONIDOS
+        // 2. SOUNDS
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 1.0f, 1.5f);
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ZOMBIE_VILLAGER_CURE, SoundSource.HOSTILE, 1.0f, 0.5f);
 
         if (!this.level().isClientSide) {
             ServerLevel serverLevel = (ServerLevel) this.level();
 
-            // 3. EFECTOS VISUALES (Partículas)
-            serverLevel.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
+            // 3. VISUAL EFFECTS (Particles)
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
             serverLevel.sendParticles(ModParticles.BLOOD_PULSE_PARTICLE.get(),
                     this.getX(), this.getY(), this.getZ(),
-                    40, 0.5, 0.5, 0.5, 0.15);
+                    60, 1.0, 1.0, 1.0, 0.2); // Increased particle count and spread
 
-            // --- NUEVO: CAMERA SHAKE ---
-            // Radio: 15 bloques, Magnitud: 1.5 (fuerte), Duración: 10 ticks, Fade: 5 ticks
-            EntityCameraShake.cameraShake(this.level(), this.position(), 15.0f, 1.5f, 10, 5);
+            // --- CAMERA SHAKE ---
+            // Radius: 20 blocks, Magnitude: 2.0 (very strong), Duration: 15 ticks, Fade: 5 ticks
+            EntityCameraShake.cameraShake(this.level(), this.position(), 20.0f, 2.0f, 15, 5);
 
-            // --- NUEVO: DEBRIS (Escombros Visuales) ---
+            // --- DEBRIS ---
             spawnDebris(serverLevel);
         }
     }
 
     private void spawnDebris(ServerLevel level) {
-        BlockPos impactPos = this.blockPosition().below(); // Miramos el bloque bajo la explosión
-        int debrisCount = 6; // Cantidad de bloques que saltan
+        BlockPos impactPos = this.blockPosition().below(); // Check block below impact
+        int debrisCount = 10; // Increased debris count
 
         for (int i = 0; i < debrisCount; i++) {
-            // Elegimos una posición aleatoria cerca del impacto (radio 2)
-            double offsetX = (random.nextDouble() - 0.5) * 2.0;
-            double offsetZ = (random.nextDouble() - 0.5) * 2.0;
+            // Random position near impact (radius 3)
+            double offsetX = (random.nextDouble() - 0.5) * 3.0;
+            double offsetZ = (random.nextDouble() - 0.5) * 3.0;
             BlockPos targetPos = impactPos.offset((int)offsetX, 0, (int)offsetZ);
 
             BlockState state = level.getBlockState(targetPos);
 
-            // Solo generamos escombros si el bloque no es aire y es sólido
+            // Only spawn debris if block is not air and is solid
             if (!state.isAir() && state.isSolidRender(level, targetPos)) {
-
-                // IMPORTANTE: Asumo que tienes registrado "FALLING_BLOCK" en ModEntityTypes.
-                // Si tienes otro nombre, cámbialo aquí.
                 EntityFallingBlock debris = new EntityFallingBlock(ModEntityTypes.ENTITY_FALLING_BLOCK.get(), level);
 
                 debris.setPos(targetPos.getX() + 0.5, targetPos.getY() + 1, targetPos.getZ() + 0.5);
-                debris.setBlock(state); // Copia la textura del suelo
-                debris.setDuration(40); // Dura 2 segundos antes de desaparecer
+                debris.setBlock(state); // Copy texture
+                debris.setDuration(40); // Lasts 2 seconds
 
-                // Velocidad: Hacia arriba y alejándose del centro
-                double speed = 0.3 + random.nextDouble() * 0.3;
-                debris.setDeltaMovement(offsetX * 0.2, 0.4 + random.nextDouble() * 0.3, offsetZ * 0.2);
+                // Velocity: Upwards and away from center
+                debris.setDeltaMovement(offsetX * 0.3, 0.5 + random.nextDouble() * 0.4, offsetZ * 0.3);
 
                 level.addFreshEntity(debris);
             }
