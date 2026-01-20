@@ -51,6 +51,10 @@ public class BloodPulseParticle extends TextureSheetParticle {
             this.quadSize *= 0.9f;
         }
     }
+    @Override
+    public int getLightColor(float partialTick) {
+        return 15728880;
+    }
 
     @Override
     public ParticleRenderType getRenderType() {

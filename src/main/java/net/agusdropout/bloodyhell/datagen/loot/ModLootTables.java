@@ -469,6 +469,12 @@ public class ModLootTables extends LootTableProvider {
                             .setRolls(ConstantValue.exactly(1))
                     )
             );
+            this.add(ModEntityTypes.RITEKEEPER.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+
 
 
         }

@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonVeil;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
+import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.item.ModItems;
@@ -15,6 +16,7 @@ import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.BossSyncS2CPacket;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
+import net.agusdropout.bloodyhell.networking.packet.SyncRemoveBloodFirePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.*;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
@@ -24,6 +26,7 @@ import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
@@ -36,6 +39,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -121,6 +125,7 @@ public class ModEvents {
                 event.put(BLOODPIG.get(), BloodPigEntity.setAttributes());
                 event.put(ONI.get(), OniEntity.setAttributes());
                 event.put(VESPER.get(), VesperEntity.setAttributes());
+                event.put(ModEntityTypes.RITEKEEPER.get(), RitekeeperEntity.createAttributes().build());
                 event.put(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneEntity.createAttributes().build());
 
 
@@ -246,6 +251,25 @@ public class ModEvents {
                             }
                         }
                     });
+                }
+            }
+
+            @SubscribeEvent
+            public static void onEffectRemove(MobEffectEvent.Remove event) {
+                // Check if the effect being removed is OUR effect
+                if (event.getEffect() == ModEffects.BLOOD_FIRE_EFFECT.get()) {
+                    LivingEntity entity = event.getEntity();
+
+                    // Ensure we are on the Server
+                    if (!entity.level().isClientSide) {
+                        // Send packet to all players watching this entity
+                        ModMessages.sendToPlayersTrackingEntity(new SyncRemoveBloodFirePacket(entity.getId()), entity);
+
+                        // If the entity itself is a player, send to them too
+                        if (entity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                            ModMessages.sendToPlayer(new SyncRemoveBloodFirePacket(entity.getId()), serverPlayer);
+                        }
+                    }
                 }
             }
 

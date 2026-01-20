@@ -283,13 +283,13 @@ public class ModItems {
     public static final RegistryObject<Item> BLASPHEMOUS_IMPALER = ITEMS.register("blasphemous_impaler",
             () -> new BlasphemousImpalerItem(
                     ModToolTiers.BLASPHEMITE,
-                    10,    // Daño base (Alto)
+                    10,
                     -3.0F,
-                    new Item.Properties().stacksTo(1)
+                    new Item.Properties().stacksTo(0)
             ));
     public static final RegistryObject<Item> SELIORA_ESSENCE = ITEMS.register("seliora_essence",
             () -> new Item(new Item.Properties()
-                    .stacksTo(64)
+                    .stacksTo(1)
                     .rarity(Rarity.EPIC)
                     .fireResistant()));
 

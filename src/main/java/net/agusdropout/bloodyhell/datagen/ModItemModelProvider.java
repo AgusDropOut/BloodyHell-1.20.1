@@ -136,6 +136,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         //Bloody stone
         evenSimplerBlockItem(ModBlocks.BLOODY_STONE_BLOCK);
+
+        simpleBlockItemBlockTexture(ModBlocks.BLOOD_FIRE);
         fenceItem(ModBlocks.BLOODY_STONE_FENCE, ModBlocks.BLOODY_STONE_BLOCK);
         wallItem(ModBlocks.BLOODY_STONE_WALL, ModBlocks.BLOODY_STONE_BLOCK);
         evenSimplerBlockItem(ModBlocks.BLOODY_STONE_STAIRS);

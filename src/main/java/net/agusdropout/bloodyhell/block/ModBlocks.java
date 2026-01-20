@@ -40,6 +40,17 @@ public class ModBlocks {
         registerBlockItem(name, toReturn);
         return toReturn;
     }
+
+    // Define a custom sound type with 0.0F volume
+    public static final SoundType SILENT = new SoundType(
+            0.0F, // Volume (0 = Silent)
+            0.0F, // Pitch
+            SoundEvents.WOOL_BREAK, // These sounds won't play because volume is 0
+            SoundEvents.WOOL_STEP,
+            SoundEvents.WOOL_PLACE,
+            SoundEvents.WOOL_HIT,
+            SoundEvents.WOOL_FALL
+    );
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
@@ -348,6 +359,16 @@ public class ModBlocks {
             BlockBehaviour.Properties.copy(Blocks.BOOKSHELF)));
     public static final RegistryObject<Block> TOMB_BLOCK = registerBlock("tomb_block", () -> new TombBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().noLootTable()));
+
+    public static final RegistryObject<Block> BLOOD_FIRE = BLOCKS.register("blood_fire",
+            () -> new BloodFireBlock(
+                    BlockBehaviour.Properties.copy(Blocks.FIRE)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SILENT) // <--- APPLY THE FIX HERE
+                            .lightLevel(state -> 15) // Ensure it still emits light if needed
+                            .replaceable()
+            ));
 
     public static final RegistryObject<Block> BLASPHEMITE_ORE = registerBlock("blasphemite_ore",
             () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)

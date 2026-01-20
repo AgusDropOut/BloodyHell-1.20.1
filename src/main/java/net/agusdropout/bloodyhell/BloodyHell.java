@@ -25,6 +25,7 @@ import net.agusdropout.bloodyhell.potion.ModPotions;
 import net.agusdropout.bloodyhell.recipe.ModRecipes;
 import net.agusdropout.bloodyhell.registry.BloodCapabilities;
 import net.agusdropout.bloodyhell.screen.BloodWorkBenchScreen;
+import net.agusdropout.bloodyhell.screen.ModCreativeModeTabs;
 import net.agusdropout.bloodyhell.screen.ModMenuTypes;
 import net.agusdropout.bloodyhell.screen.VesperScreen;
 import net.agusdropout.bloodyhell.sound.ModSounds;
@@ -86,7 +87,7 @@ public class BloodyHell
 {
     public static final String MODID = "bloodyhell";
 
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     
     public BloodyHell()
@@ -94,7 +95,7 @@ public class BloodyHell
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::addCreative);
+
         MinecraftForge.EVENT_BUS.addListener(this::registerDimEffects);
 
         MinecraftForge.EVENT_BUS.addListener(this::portalTick);
@@ -103,7 +104,6 @@ public class BloodyHell
         ModPOIs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        //ModVillagers.register(modEventBus);
         ModSounds.register(modEventBus);
         ModPaintings.register(modEventBus);
         ModParticles.register(modEventBus);
@@ -119,6 +119,7 @@ public class BloodyHell
         ModStructures.register(modEventBus);
         ModFeatures.register(modEventBus);
         ModPotions.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
 
 
 
@@ -223,258 +224,8 @@ public class BloodyHell
     private void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
         event.register(ModDimensions.DIMENSION_RENDERER, new BloodDimensionRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
     }
-    private void addCreative(BuildCreativeModeTabContentsEvent event){
-
-        if(event.getTab() == ModCreativeModeTab.FIRST_TAB.get()){
-            //Sanguinite Items
-            event.accept(ModItems.RAW_SANGUINITE);
-            event.accept(ModItems.SANGUINITE);
-            event.accept(ModItems.SANGUINITE_NUGGET);
-            event.accept(ModItems.SANGUINITE_PICKAXE);
-            event.accept(ModItems.SANGUINITE_SWORD);
-            event.accept(ModItems.SANGUINITE_AXE);
-            event.accept(ModItems.SANGUINITE_SHOVEL);
-            event.accept(ModItems.SANGUINITE_HOE);
-            event.accept(ModItems.BLOOD_BOW);
-            event.accept(ModItems.BLOOD_ARROW);
-            event.accept(ModItems.BLOOD_HELMET);
-            event.accept(ModItems.BLOOD_CHESTPLATE);
-            event.accept(ModItems.BLOOD_LEGGINGS);
-            event.accept(ModItems.BLOOD_BOOTS);
-            event.accept(ModItems.BLOOD_BUCKET);
-            event.accept(ModItems.RHNULL_BLOOD_BUCKET);
-            event.accept(ModItems.BLOOD_SCYTHE);
 
 
-            //Rhnull Items
-            event.accept(ModItems.RHNULL);
-            event.accept(ModItems.RHNULL_NUGGET);
-            event.accept(ModBlocks.RHNULL_BLOCK);
-            event.accept(ModItems.RHNULL_PICKAXE);
-            event.accept(ModItems.RHNULL_SWORD);
-            event.accept(ModItems.RHNULL_AXE);
-            event.accept(ModItems.RHNULL_SHOVEL);
-            event.accept(ModItems.RHNULL_HOE);
-            event.accept(ModItems.RHNULL_HELMET);
-            event.accept(ModItems.RHNULL_CHESTPLATE);
-            event.accept(ModItems.RHNULL_LEGGINGS);
-            event.accept(ModItems.RHNULL_BOOTS);
-
-
-
-            //Spawn Eggs
-            event.accept(ModItems.BLOODTHIRSTYBEAST_SPAWN_EGG);
-            event.accept(ModItems.BLOOD_SEEKER_SPAWN_EGG);
-            event.accept(ModItems.CRIMSON_RAVEN_SPAWN_EGG);
-            event.accept(ModItems.EYESHELLSNAIL_SPAWN_EGG);
-            event.accept(ModItems.BLOOD_PIG_SPAWN_EGG);
-            event.accept(ModItems.SCARLETSPECKLED_FISH_SPAWN_EGG);
-            event.accept(ModItems.OMEN_GAZER_ENTITY_SPAWN_EGG);
-            event.accept(ModItems.VEINRAVER_ENTITY_SPAWN_EGG);
-            event.accept(ModItems.OFFSPRING_OF_THE_UNKNOWN_SPAWN_EGG);
-            event.accept(ModItems.BLASPHEMOUS_MALFORMATION_SPAWN_EGG);
-            event.accept(ModItems.SELIORA_SPAWN_EGG);
-            event.accept(ModItems.HORNED_WORM_SPAWN_EGG);
-            event.accept(ModItems.VEIL_STALKER_SPAWN_EGG);
-            event.accept(ModItems.GRAVE_WALKER_SPAWN_EGG);
-            event.accept(ModItems.CYCLOPS_ENTITY_SPAWN_EGG);
-
-
-
-            //Food Items
-            event.accept(ModItems.Eyeball);
-            event.accept(ModItems.Eyeball_seed);
-            event.accept(ModItems.GLOW_FRUIT);
-            event.accept(ModItems.GLOW_MUSHROOM);
-            event.accept(ModItems.SCARLET_RAW_CHICKEN);
-            event.accept(ModItems.SCARLET_COOKED_CHICKEN);
-            event.accept(ModItems.GOREHOG_RAW_STEAK);
-            event.accept(ModItems.GOREHOG_COOKED_STEAK);
-
-            //Mob Drops
-            event.accept(ModItems.AUREAL_REVENANT_DAGGER);
-            event.accept(ModItems.VEINREAVER_HORN);
-            event.accept(ModItems.CRIMSON_SHELL);
-            event.accept(ModItems.SCARLET_FEATHER);
-
-            //Misc Items
-            event.accept(ModItems.BLOODY_SOUL_DUST);
-            event.accept(ModItems.MATERIALIZED_SOUL);
-            event.accept(ModItems.CRIMSON_IDOL_COIN);
-            event.accept(ModItems.CHALICE_OF_THE_DAMMED);
-            event.accept(ModItems.Eight_ball);
-            event.accept(ModItems.DIRTY_BLOOD_FLOWER);
-            event.accept(ModItems.BLOOD_LILY);
-            event.accept(ModItems.SANGUINE_CRUCIBLE_CORE);
-
-            //Sanguinite
-            event.accept(ModBlocks.SANGUINE_CRUCIBLE);
-            event.accept(ModBlocks.SANGUINITE_BLOCK);
-
-            //Ores
-            event.accept(ModBlocks.SANGUINITE_ORE);
-            event.accept(ModBlocks.Jumpy_Block);
-
-            //Vegetation
-            event.accept(ModBlocks.BLOOD_SAPLING);
-            event.accept(ModBlocks.SOUL_SAPLING);
-            event.accept(ModBlocks.HANGING_BLOOD_TREE_LEAVES);
-            event.accept(ModBlocks.HANGING_SOUL_TREE_LEAVES);
-            event.accept(ModBlocks.BLOOD_FLOWER);
-            event.accept(ModBlocks.BLOOD_GRASS);
-            event.accept(ModBlocks.BLOOD_BUSH);
-            event.accept(ModBlocks.BLOOD_PETALS);
-            event.accept(ModBlocks.BLOOD_WALL_MUSHROOM_BLOCK);
-            event.accept(ModBlocks.LIGHT_MUSHROOM_BLOCK);
-
-            //Dirt
-            event.accept(ModBlocks.BLOOD_GRASS_BLOCK);
-            event.accept(ModBlocks.BLOOD_DIRT_BLOCK);
-            event.accept(ModBlocks.BLOOD_SCRAPPER_PLANT);
-
-
-            //Bloody Stone
-            event.accept(ModBlocks.BLOODY_STONE_BLOCK);
-            event.accept(ModBlocks.BLOODY_STONE_STAIRS);
-            event.accept(ModBlocks.BLOODY_STONE_WALL);
-            event.accept(ModBlocks.BLOODY_STONE_FENCE);
-            event.accept(ModBlocks.BLOODY_STONE_FENCE_GATE);
-            event.accept(ModBlocks.BLOODY_STONE_SLAB);
-
-            //Polished Bloody Stone
-            event.accept(ModBlocks.POLISHED_BLOODY_STONE_BLOCK);
-            event.accept(ModBlocks.POLISHED_BLOODY_STONE_STAIRS);
-            event.accept(ModBlocks.POLISHED_BLOODY_STONE_WALL);
-            event.accept(ModBlocks.POLISHED_BLOODY_STONE_FENCE);
-            event.accept(ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE);
-            event.accept(ModBlocks.POLISHED_BLOODY_STONE_SLAB);
-
-            //Bloody Stone Tiles
-            event.accept(ModBlocks.BLOODY_STONE_TILES_BLOCK);
-            event.accept(ModBlocks.BLOODY_STONE_TILES_STAIRS);
-            event.accept(ModBlocks.BLOODY_STONE_TILES_WALL);
-            event.accept(ModBlocks.BLOODY_STONE_TILES_FENCE);
-            event.accept(ModBlocks.BLOODY_STONE_FENCE_TILES_GATE);
-            event.accept(ModBlocks.BLOODY_STONE_TILES_SLAB);
-
-            //Bloody Stone Bricks
-            event.accept(ModBlocks.BLOODY_STONE_BRICKS);
-            event.accept(ModBlocks.BLOODY_STONE_BRICKS_STAIRS);
-            event.accept(ModBlocks.BLOODY_STONE_BRICKS_WALL);
-            event.accept(ModBlocks.BLOODY_STONE_BRICKS_FENCE);
-            event.accept(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE);
-            event.accept(ModBlocks.BLOODY_STONE_BRICKS_SLAB);
-
-            //Wood
-            event.accept(ModBlocks.BLOOD_LOG);
-            event.accept(ModBlocks.STRIPPED_BLOOD_LOG);
-            event.accept(ModBlocks.BLOOD_PLANKS);
-            event.accept(ModBlocks.BLOOD_PLANKS_STAIRS);
-            event.accept(ModBlocks.BLOOD_PLANKS_SLAB);
-            event.accept(ModBlocks.BLOOD_PLANKS_FENCE);
-            event.accept(ModBlocks.BLOOD_PLANKS_FENCE_GATE);
-            event.accept(ModBlocks.BLOOD_LEAVES);
-            event.accept(ModBlocks.SOUL_LOG);
-            event.accept(ModBlocks.STRIPPED_SOUL_LOG);
-            event.accept(ModBlocks.SOUL_PLANKS);
-            event.accept(ModBlocks.SOUL_LEAVES);
-
-            //Glowing
-            event.accept(ModBlocks.GLOWING_CRYSTAL);
-            event.accept(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
-            event.accept(ModBlocks.GLOWING_CRYSTAL_LANTERN);
-            event.accept(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
-            event.accept(ModBlocks.SOUL_LAMP);
-            event.accept(ModBlocks.BLOOD_GLOW_STONE);
-
-            //Mob Generated
-            event.accept(ModBlocks.EYEBALLSHELL_SNAIL_GOO_BLOCK);
-            event.accept(ModBlocks.EYEBALLSHELL_SNAIL_GOO);
-
-            //Misc
-            event.accept(ModBlocks.SMALL_ROCKS);
-            event.accept(ModBlocks.BLEEDING_BLOCK);
-            event.accept(ModBlocks.ONI_STATUE);
-
-            //Animated Block Items
-            event.accept(ModItems.BLOOD_ALTAR);
-            event.accept(ModBlocks.BLOOD_ALTAR);
-            event.accept(ModItems.MAIN_BLOOD_ALTAR);
-            event.accept(ModBlocks.MAIN_BLOOD_ALTAR);
-
-            //Potions
-            event.accept(ModItems.BLOOD_FLASK);
-            event.accept(ModItems.CORRUPTED_BLOOD_FLASK);
-            event.accept(ModItems.FILLED_BLOOD_FLASK);
-            event.accept(ModItems.FILLED_RHNULL_BLOOD_FLASK);
-
-            //Dagger
-            event.accept(ModItems.SACRIFICIAL_DAGGER);
-            event.accept(ModItems.HERETIC_SACRIFICIAL_DAGGER);
-
-            //Unknown Entity
-            event.accept(ModItems.UNKNOWN_ENTITY_FINGER);
-
-            //Spell Book
-            event.accept(ModItems.BLOOD_SPELL_BOOK_SCRATCH);
-            event.accept(ModItems.BLOOD_SPELL_BOOK_BLOODBALL);
-            event.accept(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA);
-            event.accept(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN);
-
-            //Crimson Blood Items
-            event.accept(ModItems.AMULET_OF_ANCESTRAL_BLOOD);
-            event.accept(ModItems.ANCIENT_GEM);
-            event.accept(ModItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD);
-            event.accept(ModItems.GREAT_ANCIENT_GEM);
-            event.accept(ModItems.CRIMSON_WARD_RING);
-            event.accept(ModItems.BLASPHEMOUS_RING);
-
-            //Blasphemous Biome
-            event.accept(ModItems.BLASPHEMITE);
-            event.accept(ModItems.RAW_BLASPHEMITE);
-            event.accept(ModItems.BLASPHEMITE_NUGGET);
-            event.accept(ModItems.BLASPHEMITE_PICKAXE);
-            event.accept(ModItems.BLASPHEMITE_SWORD);
-            event.accept(ModItems.BLASPHEMITE_AXE);
-            event.accept(ModItems.BLASPHEMITE_SHOVEL);
-            event.accept(ModItems.BLASPHEMITE_HOE);
-            event.accept(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
-            event.accept(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
-            event.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
-            event.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS);
-            event.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB);
-            event.accept(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
-            event.accept(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
-            event.accept(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);
-            event.accept(ModBlocks.CINDER_BLOOM_CACTUS_ROOT);
-            event.accept(ModBlocks.CINDER_BLOOM_CACTUS_CON);
-            event.accept(ModBlocks.CINDER_BLOOM_CACTUS_CENTER);
-            event.accept(ModBlocks.CINDER_BLOOM_CACTUS_FLOWER);
-            event.accept(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE);
-            event.accept(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE);
-            event.accept(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE);
-            event.accept(ModBlocks.DECORATED_POT_BLOCK);
-            event.accept(ModBlocks.FORBIDDEN_BOOKSHELF_BLOCK);
-            event.accept(ModBlocks.STAR_LAMP_BLOCK);
-            event.accept(ModBlocks.SPIKY_GRASS);
-            event.accept(ModBlocks.ROUNDED_GRASS);
-            event.accept(ModBlocks.STING_FLOWER);
-            event.accept(ModItems.BLASPHEMOUS_TWIN_DAGGERS);
-            event.accept(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON);
-            event.accept(ModItems.BLASPHEMOUS_IMPALER);
-            event.accept(ModItems.BLASPHEMITE_HELMET);
-            event.accept(ModItems.BLASPHEMITE_CHESTPLATE);
-            event.accept(ModItems.BLASPHEMITE_LEGGINGS);
-            event.accept(ModItems.BLASPHEMITE_BOOTS);
-            event.accept(ModBlocks.BLASPHEMITE_ORE);
-            event.accept(ModItems.SELIORA_ESSENCE);
-
-        }
-        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ModItems.SANGUINITE);
-            event.accept(ModItems.RAW_SANGUINITE);
-        }
-    }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -553,6 +304,8 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_DECAL.get(), BloodSlashDecalRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_STAIN_ENTITY.get(), BloodStainRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_CLOT_PROJECTILE.get(), BloodClotRenderer::new);
+            EntityRenderers.register(ModEntityTypes.RITEKEEPER.get(), RitekeeperRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_SOUL.get(), BloodFireSoulRenderer::new);
 
 
         }

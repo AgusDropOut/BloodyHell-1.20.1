@@ -2,7 +2,10 @@ package net.agusdropout.bloodyhell.particle;
 
 import com.mojang.serialization.Codec;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SimpleBlockParticleOptions;
+
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,6 +29,8 @@ public class ModParticles {
             PARTICLE_TYPES.register("blasphemous_magic_ring", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> MAGIC_LINE_PARTICLE =
             PARTICLE_TYPES.register("magic_particle_line", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> BLOOD_SIGIL_PARTICLE =
+            PARTICLE_TYPES.register("blood_sigil_particle", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> MAGIC_SIMPLE_LINE_PARTICLE =
             PARTICLE_TYPES.register("magic_simple_particle_line", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> BLASPHEMOUS_BIOME_PARTICLE =
@@ -51,6 +56,8 @@ public class ModParticles {
             PARTICLE_TYPES.register("cyclops_halo_particle", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> EYE_PARTICLE =
             PARTICLE_TYPES.register("eye_particle", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> CHILL_FLAME_PARTICLE =
+            PARTICLE_TYPES.register("chill_flame_particle", () -> new SimpleParticleType(false));
     public static final RegistryObject<ParticleType<SimpleBlockParticleOptions>> SIMPLE_BLOCK_PARTICLE =
             PARTICLE_TYPES.register("simple_block_particle", () ->
                     new ParticleType<SimpleBlockParticleOptions>(false, SimpleBlockParticleOptions.DESERIALIZER) {
@@ -59,9 +66,28 @@ public class ModParticles {
                             return SimpleBlockParticleOptions.CODEC;
                         }
                     });
+    public static final RegistryObject<ParticleType<MagicParticleOptions>> MAGIC_PARTICLE =
+            PARTICLE_TYPES.register("magic_particle",
+                    () -> new ParticleType<MagicParticleOptions>(false, MagicParticleOptions.DESERIALIZER) {
+                        @Override
+                        public Codec<MagicParticleOptions> codec() {
+                            return MagicParticleOptions.CODEC;
+                        }
+                    });
+    public static final RegistryObject<ParticleType<MagicFloorParticleOptions>> MAGIC_FLOOR_PARTICLE =
+            PARTICLE_TYPES.register("magic_floor_particle",
+                    () -> new ParticleType<MagicFloorParticleOptions>(false, MagicFloorParticleOptions.DESERIALIZER) {
+                        @Override
+                        public Codec<MagicFloorParticleOptions> codec() {
+                            return MagicFloorParticleOptions.CODEC;
+                        }
+                    });
 
     public static final RegistryObject<SimpleParticleType> SHOCKWAVE_RING = PARTICLE_TYPES.register("shockwave_ring",
             () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> BLOOD_FLAME =
+            PARTICLE_TYPES.register("blood_flame", () -> new SimpleParticleType(true));
+
 
     public static void register(IEventBus eventBus) {
         PARTICLE_TYPES.register(eventBus);

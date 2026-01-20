@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-16T12:11:02.0521387	Block States: bloodyhell
+// 1.20.1	2026-01-18T21:48:29.6190544	Block States: bloodyhell
 87e9bd973f74b4bed4a63e96477146eb770ce9ca assets/bloodyhell/blockstates/blasphemite_ore.json
 0a2ca3984900b2df13ea38d4cecf2e4d359b56da assets/bloodyhell/blockstates/blasphemous_sandstone_block.json
 3c910197f8aa9d8f6cf260c791e3db11d08db103 assets/bloodyhell/blockstates/blasphemous_sand_block.json
@@ -21,6 +21,7 @@ ffc0597076927c79e5644517870809acb8b1c7b5 assets/bloodyhell/blockstates/bloody_st
 e788718724ec719d88fe565664e68d1623434c4f assets/bloodyhell/blockstates/bloody_stone_tiles_stairs.json
 75f7953330e958c9e317cad323451e0f4ec79637 assets/bloodyhell/blockstates/bloody_stone_tiles_wall.json
 289ad7a41aae6e47d251bd7d3543e227558f9035 assets/bloodyhell/blockstates/bloody_stone_wall.json
+3c7c0e32e38189895ac925315e15bd30fba254e7 assets/bloodyhell/blockstates/blood_fire.json
 e77f394973fa2435f469a3d40714351a200aae95 assets/bloodyhell/blockstates/blood_flower.json
 6d68be2b1522bec231a586199f5fbdb6b3492723 assets/bloodyhell/blockstates/blood_glowing_chains_block.json
 489ef17ee03fa636da6f0203a92084ab1cf2581e assets/bloodyhell/blockstates/blood_glow_stone.json
@@ -101,6 +102,7 @@ a31e609aee73ee94e4249edfa74b84e1d9c4e558 assets/bloodyhell/models/block/bloody_s
 7a0bc83c74b0af205b58c56997c31b79a6b63691 assets/bloodyhell/models/block/bloody_stone_wall_post.json
 1fdcc1f9a6aaf41609a7375e4bd8ef916d93752d assets/bloodyhell/models/block/bloody_stone_wall_side.json
 ea42033b0994823592f63bb52adb2c65ce4f2578 assets/bloodyhell/models/block/bloody_stone_wall_side_tall.json
+2604da35c9df93b082bd9c0771845a4c63e4245d assets/bloodyhell/models/block/blood_fire.json
 21f86554fe0bcf63a0d3392dffcb110a39ef6be6 assets/bloodyhell/models/block/blood_flower.json
 df8c646559d02b4135bd6d25c377eab0797b6749 assets/bloodyhell/models/block/blood_glowing_chains_block.json
 5e43d06c6e172332d55bc9d43d9cccffdc42a70c assets/bloodyhell/models/block/blood_glow_stone.json

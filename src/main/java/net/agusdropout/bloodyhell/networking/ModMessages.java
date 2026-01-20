@@ -1,10 +1,7 @@
 package net.agusdropout.bloodyhell.networking;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.networking.packet.BossSyncS2CPacket;
-import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilC2SPacket;
-import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
-import net.agusdropout.bloodyhell.networking.packet.EnergySyncS2CPacket;
+import net.agusdropout.bloodyhell.networking.packet.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -52,9 +49,23 @@ public class ModMessages {
                 .encoder(BossSyncS2CPacket::toBytes)
                 .consumerMainThread(BossSyncS2CPacket::handle)
                 .add();
+        net.messageBuilder(SyncBloodFireEffectPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncBloodFireEffectPacket::new)
+                .encoder(SyncBloodFireEffectPacket::toBytes)
+                .consumerMainThread(SyncBloodFireEffectPacket::handle)
+                .add();
+        net.messageBuilder(SyncRemoveBloodFirePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncRemoveBloodFirePacket::new)
+                .encoder(SyncRemoveBloodFirePacket::toBytes)
+                .consumerMainThread(SyncRemoveBloodFirePacket::handle)
+                .add();
     }
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);
+    }
+    // Helper to send to all players watching a specific entity
+    public static <MSG> void sendToPlayersTrackingEntity(MSG message, net.minecraft.world.entity.Entity entity) {
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
     }
 
     public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {

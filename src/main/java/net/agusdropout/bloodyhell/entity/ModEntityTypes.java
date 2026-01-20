@@ -140,6 +140,9 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<BloodPortalEntity>> BLOOD_PORTAL_ENTITY = ENTITY_TYPES.register("blood_portal_entity",
             () -> EntityType.Builder.<BloodPortalEntity>of(BloodPortalEntity::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_portal_entity").toString()));
+    public static final RegistryObject<EntityType<BloodFireSoulProjectile>> BLOOD_FIRE_SOUL = ENTITY_TYPES.register("blood_fire_soul",
+            () -> EntityType.Builder.<BloodFireSoulProjectile>of(BloodFireSoulProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
+                    "blood_fire_soul").toString()));
 
     public static final RegistryObject<EntityType<BlasphemousTwinDaggersCloneEntity>> BLASPHEMOUS_TWIN_DAGGERS_CLONE =
             ENTITY_TYPES.register("blasphemous_twin_daggers_clone",
@@ -197,6 +200,10 @@ public class ModEntityTypes {
                     .clientTrackingRange(4)
                     .updateInterval(10)
                     .build(new ResourceLocation(BloodyHell.MODID, "blood_clot_projectile").toString()));
+    public static final RegistryObject<EntityType<RitekeeperEntity>> RITEKEEPER = ENTITY_TYPES.register("ritekeeper",
+            () -> EntityType.Builder.of(RitekeeperEntity::new, MobCategory.MONSTER)
+                    .sized(1.0f, 2.0f) // Adjust size based on model
+                    .build(new ResourceLocation(BloodyHell.MODID, "ritekeeper").toString()));
 
 
 

@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.event;
 
+import com.google.common.collect.ImmutableList;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
@@ -11,6 +12,7 @@ import net.agusdropout.bloodyhell.client.VisceralEffectHudOverlay;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
+import net.agusdropout.bloodyhell.entity.client.layer.BloodFireLayer;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
@@ -23,14 +25,19 @@ import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.agusdropout.bloodyhell.util.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,13 +46,17 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientEvents {
 
     // --- FORGE BUS EVENTS ---
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
-
+        // ... (Keep existing ClientForgeEvents code exactly as is) ...
         @SubscribeEvent
         public static void clientTickEvent(TickEvent.ClientTickEvent event) {
             if (event.phase == TickEvent.Phase.START) {
@@ -83,6 +94,8 @@ public class ClientEvents {
                 }
             }
         }
+
+
 
         @SubscribeEvent
         public static void onComputeFov(ViewportEvent.ComputeFov event) {
@@ -197,6 +210,7 @@ public class ClientEvents {
     // --- MOD BUS EVENTS ---
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
+        // ... (Keep existing registration events) ...
 
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
@@ -230,6 +244,12 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.EYE_PARTICLE.get(), EyeParticle.Provider::new);
             event.registerSpriteSet(ModParticles.SHOCKWAVE_RING.get(), ShockwaveParticle.Provider::new);
             event.registerSpriteSet(ModParticles.BLOOD_PULSE_PARTICLE.get(), BloodPulseParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.BLOOD_FLAME.get(), BloodFlameParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.CHILL_FLAME_PARTICLE.get(), ChillFlameParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.MAGIC_PARTICLE.get(), MagicParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.MAGIC_FLOOR_PARTICLE.get(), MagicFloorParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.BLOOD_SIGIL_PARTICLE.get(), BloodSigilParticle.Provider::new);
+
         }
 
         @SubscribeEvent
@@ -253,6 +273,52 @@ public class ClientEvents {
         public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
             event.register(ModDimensions.DIMENSION_RENDERER,
                     new BloodDimensionRenderInfo(-189.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+        }
+
+        @SubscribeEvent
+        public static void addEntityLayers(EntityRenderersEvent.AddLayers event) {
+            System.out.println("DEBUG: Starting AddLayers event...");
+
+            // 1. PLAYERS
+            for (String skinType : event.getSkins()) {
+                LivingEntityRenderer<Player, EntityModel<Player>> renderer = event.getSkin(skinType);
+                if (renderer != null) {
+                    renderer.addLayer(new BloodFireLayer<>(renderer));
+                    System.out.println("DEBUG: Added BloodFireLayer to Player skin: " + skinType);
+                }
+            }
+
+            // 2. MOBS
+            List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(
+                    ForgeRegistries.ENTITY_TYPES.getValues().stream()
+                            .filter(DefaultAttributes::hasSupplier)
+                            .map(entityType -> (EntityType<? extends LivingEntity>) entityType)
+                            .collect(Collectors.toList())
+            );
+
+            System.out.println("DEBUG: Found " + entityTypes.size() + " applicable living entities.");
+            entityTypes.forEach(entityType -> addLayerIfApplicable(entityType, event));
+        }
+
+        private static void addLayerIfApplicable(EntityType<? extends LivingEntity> entityType, EntityRenderersEvent.AddLayers event) {
+            LivingEntityRenderer renderer = null;
+            if (entityType != EntityType.ENDER_DRAGON) {
+                try {
+                    renderer = event.getRenderer(entityType);
+                } catch (Exception e) {
+                    System.out.println("DEBUG: Failed to get renderer for " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+                }
+
+                if (renderer != null) {
+                    try {
+                        renderer.addLayer(new BloodFireLayer<>(renderer));
+                        // DEBUG: Success for specific mob
+                         System.out.println("DEBUG: Added BloodFireLayer to: " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+                    } catch (Exception e) {
+                        System.out.println("DEBUG: Error adding layer to " + ForgeRegistries.ENTITY_TYPES.getKey(entityType) + ": " + e.getMessage());
+                    }
+                }
+            }
         }
     }
 }

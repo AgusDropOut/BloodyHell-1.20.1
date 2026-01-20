@@ -51,6 +51,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockTranslucent(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
 
         crossBlock(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
+        crossBlock(ModBlocks.BLOOD_FIRE);
 
         //Bloody Stone
         stairsBlock(((StairBlock) ModBlocks.BLOODY_STONE_STAIRS.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));

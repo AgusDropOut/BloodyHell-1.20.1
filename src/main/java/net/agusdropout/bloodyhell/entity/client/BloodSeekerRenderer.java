@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.entity.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.entity.client.layer.BloodFireGeoLayer;
 import net.agusdropout.bloodyhell.entity.custom.BloodSeekerEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -17,6 +18,7 @@ public class BloodSeekerRenderer extends GeoEntityRenderer<BloodSeekerEntity> {
         super(renderManager, new BloodSeekerModel());
         this.shadowRadius = 0.8f;
         addRenderLayer(new AutoGlowingGeoLayer<>(this));
+        addRenderLayer(new BloodFireGeoLayer<>(this));
 
     }
 
