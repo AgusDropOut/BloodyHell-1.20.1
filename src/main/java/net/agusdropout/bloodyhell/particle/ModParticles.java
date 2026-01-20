@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.particle;
 
 import com.mojang.serialization.Codec;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.ImpactParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SimpleBlockParticleOptions;
@@ -23,8 +24,7 @@ public class ModParticles {
             PARTICLE_TYPES.register("light_particles", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> DIRTY_BLOOD_FLOWER_PARTICLE =
             PARTICLE_TYPES.register("dirty_blood_flower_particle", () -> new SimpleParticleType(true));
-    public static final RegistryObject<SimpleParticleType> IMPACT_PARTICLE =
-            PARTICLE_TYPES.register("impact_particle", () -> new SimpleParticleType(true));
+
     public static final RegistryObject<SimpleParticleType> BLASPHEMOUS_MAGIC_RING =
             PARTICLE_TYPES.register("blasphemous_magic_ring", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> MAGIC_LINE_PARTICLE =
@@ -87,6 +87,18 @@ public class ModParticles {
             () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> BLOOD_FLAME =
             PARTICLE_TYPES.register("blood_flame", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> SMALL_BLOOD_FLAME_PARTICLE =
+            PARTICLE_TYPES.register("small_blood_flame_particle", () -> new SimpleParticleType(true));
+
+    public static final RegistryObject<ParticleType<ImpactParticleOptions>> IMPACT_PARTICLE =
+            PARTICLE_TYPES.register("impact_particle",
+                    () -> new ParticleType<ImpactParticleOptions>(false, ImpactParticleOptions.DESERIALIZER) {
+                        @Override
+                        public Codec<ImpactParticleOptions> codec() {
+                            return ImpactParticleOptions.CODEC;
+                        }
+                    });
+
 
 
     public static void register(IEventBus eventBus) {

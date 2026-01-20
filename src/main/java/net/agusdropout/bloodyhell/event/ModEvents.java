@@ -66,7 +66,6 @@ public class ModEvents {
                 event.registerSpriteSet(ModParticles.DIRTY_BLOOD_FLOWER_PARTICLE.get(), DirtyBloodFlowerParticle.Provider::new);
                 Minecraft.getInstance().particleEngine.register(ModParticles.IMPACT_PARTICLE.get(), ImpactParticle.Provider::new);
                 event.registerSpriteSet(ModParticles.IMPACT_PARTICLE.get(), ImpactParticle.Provider::new);
-                Minecraft.getInstance().particleEngine.register(ModParticles.BLASPHEMOUS_MAGIC_RING.get(), ImpactParticle.Provider::new);
                 event.registerSpriteSet(ModParticles.BLASPHEMOUS_MAGIC_RING.get(), BlasphemousMagicCircleParticle.Provider::new);
                 Minecraft.getInstance().particleEngine.register(ModParticles.SLASH_PARTICLE.get(), SlashParticle.Provider::new);
                 event.registerSpriteSet(ModParticles.SLASH_PARTICLE.get(), SlashParticle.Provider::new);

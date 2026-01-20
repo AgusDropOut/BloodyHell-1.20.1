@@ -249,6 +249,7 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.MAGIC_PARTICLE.get(), MagicParticle.Provider::new);
             event.registerSpriteSet(ModParticles.MAGIC_FLOOR_PARTICLE.get(), MagicFloorParticle.Provider::new);
             event.registerSpriteSet(ModParticles.BLOOD_SIGIL_PARTICLE.get(), BloodSigilParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(), SmallBloodFlameParticle.Provider::new);
 
         }
 

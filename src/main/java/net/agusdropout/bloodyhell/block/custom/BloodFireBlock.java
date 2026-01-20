@@ -4,7 +4,6 @@ import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,11 +13,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -31,7 +28,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.joml.Vector3f;
+import org.jetbrains.annotations.Nullable;
 
 public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -42,8 +39,6 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
-
-
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -60,11 +55,9 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
         return DOWN_AABB;
     }
 
-    // --- WATER LOGGING LOGIC (Standard) ---
-
+    // --- WATER LOGGING LOGIC ---
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-        // Just handle the fluid tick, do not destroy water
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -77,7 +70,6 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     // --- ENTITY & DAMAGE LOGIC ---
-
     @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide()) {
@@ -89,86 +81,76 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide && !entity.fireImmune() && entity instanceof LivingEntity living) {
-
-            // Damage is slightly reduced underwater (optional choice)
-            // or keep it full damage if it's "magical" fire.
             living.hurt(level.damageSources().inFire(), 2.0F);
-
             MobEffectInstance currentEffect = living.getEffect(ModEffects.BLOOD_FIRE_EFFECT.get());
 
             if (currentEffect == null || currentEffect.getDuration() < 40) {
-                living.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), 100, 0));
-
-                // Sync Packets
-                ModMessages.sendToPlayersTrackingEntity(new SyncBloodFireEffectPacket(living.getId(), 100, 0), living);
+                living.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), 500, 0));
+                ModMessages.sendToPlayersTrackingEntity(new SyncBloodFireEffectPacket(living.getId(), 500, 0), living);
                 if (living instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                    ModMessages.sendToPlayer(new SyncBloodFireEffectPacket(living.getId(), 100, 0), serverPlayer);
+                    ModMessages.sendToPlayer(new SyncBloodFireEffectPacket(living.getId(), 500, 0), serverPlayer);
                 }
             }
         }
+
+
     }
 
     // --- VISUALS (ANIMATION TICK) ---
-
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         double x = pos.getX() + 0.5D;
         double y = pos.getY() + 0.5D;
         double z = pos.getZ() + 0.5D;
-
-
+        //rarely remove block
+        if(random.nextInt(0,1000)< 10){
+            level.removeBlock(pos, false);
+            return;
+        }
 
         if (state.getValue(WATERLOGGED)) {
-            // --- UNDERWATER BEHAVIOR ---
-
-            // 1. Sizzling Sound (Frequent)
+            // --- UNDERWATER ---
             if (random.nextInt(10) == 0) {
                 level.playLocalSound(x, y, z, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
             }
-
-            // 2. Rising Bubbles (Boiling Effect)
-            // Spawn 2-4 bubbles per tick that shoot upwards
             for (int i = 0; i < 4; ++i) {
                 level.addParticle(ParticleTypes.BUBBLE_COLUMN_UP,
-                        pos.getX() + random.nextDouble(),
-                        pos.getY() + 0.5D,
-                        pos.getZ() + random.nextDouble(),
-                        0.0D, 0.1D + random.nextDouble() * 0.1D, 0.0D); // Upward velocity
+                        pos.getX() + random.nextDouble(), pos.getY() + 0.5D, pos.getZ() + random.nextDouble(),
+                        0.0D, 0.1D + random.nextDouble() * 0.1D, 0.0D);
             }
-
-            // 3. Steam/Cloud (Resisting extinction)
             if (random.nextInt(3) == 0) {
                 level.addParticle(ParticleTypes.CLOUD,
-                        pos.getX() + random.nextDouble(),
-                        pos.getY() + 0.8D,
-                        pos.getZ() + random.nextDouble(),
+                        pos.getX() + random.nextDouble(), pos.getY() + 0.8D, pos.getZ() + random.nextDouble(),
                         0.0D, 0.05D, 0.0D);
             }
-
-            // 4. Occasional Blood Flame (Still visible but rare)
+            // Occasional Underwater Flame
             if (random.nextInt(10) == 0) {
                 level.addParticle(ModParticles.BLOOD_FLAME.get(),
-                        pos.getX() + random.nextDouble(),
-                        pos.getY() + 0.2D,
-                        pos.getZ() + random.nextDouble(),
-                        0.0D, 0.05D, 0.0D);
+                        pos.getX() + random.nextDouble(), pos.getY() + 0.2D, pos.getZ() + random.nextDouble(),
+                        0.0D, 0.02D, 0.0D); // Gentle rise
             }
 
         } else {
-            // --- NORMAL SURFACE BEHAVIOR ---
-
-            // Standard Fire Sound
+            // --- SURFACE ---
             if (random.nextInt(24) == 0) {
                 level.playLocalSound(x, y, z, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
             }
 
-            // Standard Blood Flames
+            // Standard Blood Flames (Spawn more frequently)
             for (int i = 0; i < 3; ++i) {
                 level.addParticle(ModParticles.BLOOD_FLAME.get(),
                         pos.getX() + random.nextDouble(),
-                        pos.getY() + 0.2D + random.nextDouble() * 0.5D,
+                        pos.getY() + 0.1D + random.nextDouble() * 0.3D,
                         pos.getZ() + random.nextDouble(),
-                        0.0D, 0.05D, 0.0D);
+                        0.0D, 0.03D + random.nextDouble() * 0.02D, 0.0D); // Natural flame rise velocity
+            }
+
+            for (int i = 0; i < 3; ++i) {
+                level.addParticle(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(),
+                        pos.getX() + random.nextDouble(),
+                        pos.getY() + 0.1D + random.nextDouble() * 0.3D,
+                        pos.getZ() + random.nextDouble(),
+                        0.0D, 0, 0.0D); // Natural flame rise velocity
             }
 
             // Smoke
@@ -177,12 +159,19 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
             }
         }
     }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState p_49921_) {
+        return true;
+    }
+
+
+
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
-        // Return FALSE if the block below is also Blood Fire
-        if (belowState.is(this) || belowState.is(Blocks.AIR) ) {
+        if (belowState.is(this) || belowState.is(Blocks.AIR)) {
             return false;
         }
         return super.canSurvive(state, level, pos);

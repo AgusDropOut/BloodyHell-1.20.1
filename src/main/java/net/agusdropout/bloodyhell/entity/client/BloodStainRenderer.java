@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.entity.custom.BloodStainEntity;
+import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -30,8 +30,7 @@ public class BloodStainRenderer extends EntityRenderer<BloodStainEntity> {
 
         Direction face = entity.getAttachFace();
 
-        // --- 1. ALIGN TO SURFACE ---
-        // Rotates the quad to lie flat against the attached block face
+        // 1. ALIGN TO SURFACE
         switch (face) {
             case UP:    poseStack.translate(0, 0.01, 0); break;
             case DOWN:  poseStack.translate(0, 0.99, 0); poseStack.mulPose(Axis.XP.rotationDegrees(180)); break;
@@ -41,30 +40,27 @@ public class BloodStainRenderer extends EntityRenderer<BloodStainEntity> {
             case EAST:  poseStack.translate(0.01, 0.5, 0); poseStack.mulPose(Axis.ZP.rotationDegrees(-90)); break;
         }
 
-        // Random rotation (0-360) so stains don't look identical
+        // Random rotation
         float randomRot = (entity.getId() * 1337) % 360;
         poseStack.mulPose(Axis.YP.rotationDegrees(randomRot));
 
-        float size = 1.0f;
+        // --- NEW: APPLY SIZE SCALING ---
+        float size = entity.getSize();
         poseStack.scale(size, size, size);
 
-        // --- 2. RENDER LAYERS ---
+        // 2. RENDER LAYERS
         float alpha = entity.getAlpha();
 
-        // A. Base Texture (Standard lighting)
+        // A. Base Texture
         VertexConsumer baseConsumer = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
         renderQuad(poseStack, baseConsumer, packedLight, alpha);
 
-        // B. Glowmask (Pulsating)
-        // Calculate heartbeat pulse (0.5 to 1.0) based on time
+        // B. Glowmask
         float time = entity.tickCount + partialTicks;
         float heartbeat = (float) Math.sin(time * 0.15f) * 0.5f + 0.5f;
-
-        // Combine base fade alpha with heartbeat pulse
         float glowAlpha = alpha * (0.5f + (heartbeat * 0.5f));
 
         VertexConsumer glowConsumer = buffer.getBuffer(RenderType.entityTranslucent(GLOWMASK));
-        // Use full brightness (15728880) so it glows in the dark
         renderQuad(poseStack, glowConsumer, 15728880, glowAlpha);
 
         poseStack.popPose();
@@ -75,7 +71,7 @@ public class BloodStainRenderer extends EntityRenderer<BloodStainEntity> {
         PoseStack.Pose pose = poseStack.last();
         Matrix4f p = pose.pose();
         Matrix3f n = pose.normal();
-        float s = 0.5f;
+        float s = 0.5f; // Half-size for unit quad centered at 0
 
         consumer.vertex(p, -s, 0, -s).color(1f, 1f, 1f, alpha).uv(0, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(n, 0, 1, 0).endVertex();
         consumer.vertex(p, -s, 0, s).color(1f, 1f, 1f, alpha).uv(0, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(n, 0, 1, 0).endVertex();

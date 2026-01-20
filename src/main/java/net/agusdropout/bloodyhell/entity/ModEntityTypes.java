@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 
 
-import net.agusdropout.bloodyhell.entity.custom.BloodStainEntity;
+import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
 import net.agusdropout.bloodyhell.entity.effects.BloodNovaDebrisEntity;
 import net.agusdropout.bloodyhell.entity.effects.BloodSlashDecalEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
@@ -143,6 +143,9 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<BloodFireSoulProjectile>> BLOOD_FIRE_SOUL = ENTITY_TYPES.register("blood_fire_soul",
             () -> EntityType.Builder.<BloodFireSoulProjectile>of(BloodFireSoulProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_fire_soul").toString()));
+    public static final RegistryObject<EntityType<BloodFireColumnProjectile>> BLOOD_FIRE_COLUMN_PROJECTILE = ENTITY_TYPES.register("blood_fire_column_proyectile",
+            () -> EntityType.Builder.<BloodFireColumnProjectile>of(BloodFireColumnProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
+                    "blood_fire_column_proyectile").toString()));
 
     public static final RegistryObject<EntityType<BlasphemousTwinDaggersCloneEntity>> BLASPHEMOUS_TWIN_DAGGERS_CLONE =
             ENTITY_TYPES.register("blasphemous_twin_daggers_clone",

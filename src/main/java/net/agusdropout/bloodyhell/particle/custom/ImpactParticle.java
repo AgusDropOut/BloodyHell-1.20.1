@@ -1,80 +1,128 @@
 package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.ImpactParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-@OnlyIn(Dist.CLIENT)
+import java.awt.Color;
+
 public class ImpactParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
 
-    public ImpactParticle(ClientLevel clientLevel, double d, double e, double f, SpriteSet sprites) {
-        super(clientLevel, d, e, f);
-        this.alpha = 0.8F;
-        this.quadSize = 1.3F;
-        this.lifetime = 48;
+    private final float expansionSpeed;
+    private final boolean jitter;
+    private final float targetSize;
+
+    // Jitter Bases
+    private final float baseHue;
+    private final float baseSat;
+    private final float baseBri;
+
+    public ImpactParticle(ClientLevel level, double x, double y, double z, ImpactParticleOptions options, SpriteSet sprites) {
+        super(level, x, y, z);
         this.sprites = sprites;
-        this.rCol = 1.0F;
-        this.gCol = 1.0F;
-        this.bCol = 1.0F;
+
+        // 1. Apply Options (Individual RGB)
+        this.rCol = options.getR();
+        this.gCol = options.getG();
+        this.bCol = options.getB();
+
+        this.targetSize = options.getSize();
+        this.lifetime = options.getLifetime();
+        this.jitter = options.shouldJitter();
+        this.expansionSpeed = options.getExpansionSpeed();
+
+        // 2. Physics
+        this.gravity = 0.0F;
+        this.quadSize = 0.25F;
+
+        // 3. Jitter Calculation
+        if (this.jitter) {
+            float[] hsb = Color.RGBtoHSB((int)(rCol*255), (int)(gCol*255), (int)(bCol*255), null);
+            this.baseHue = hsb[0];
+            this.baseSat = hsb[1];
+            this.baseBri = hsb[2];
+        } else {
+            this.baseHue = 0; this.baseSat = 0; this.baseBri = 0;
+        }
+
         this.setSpriteFromAge(sprites);
     }
 
     @Override
     public void tick() {
-        quadSize = Mth.lerp(0.25F, quadSize, 6);
-        if (age++ >= lifetime) {
-            remove();
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
+
+        // Expansion
+        this.quadSize = Mth.lerp(this.expansionSpeed, this.quadSize, this.targetSize);
+
+        if (this.age++ >= this.lifetime) {
+            this.remove();
         } else {
-            alpha = Mth.lerp(0.08F, alpha, 0);
+            // Fade
+            float lifeRatio = (float)this.age / (float)this.lifetime;
+            if (lifeRatio > 0.7f) {
+                this.alpha = 1.0f - ((lifeRatio - 0.7f) * 3.3f);
+            }
         }
-        if (alpha <= 0.01F) remove();
-        setSpriteFromAge(sprites);
+
+        // Jitter
+        if (this.jitter) {
+            float hueShift = Mth.sin(this.age * 0.2f) * 0.05f;
+            int rgb = Color.HSBtoRGB(this.baseHue + hueShift, this.baseSat, this.baseBri);
+            this.rCol = ((rgb >> 16) & 0xFF) / 255.0F;
+            this.gCol = ((rgb >> 8) & 0xFF) / 255.0F;
+            this.bCol = (rgb & 0xFF) / 255.0F;
+        }
+
+        if (this.alpha <= 0.01F) this.remove();
+        this.setSpriteFromAge(this.sprites);
     }
 
     @Override
-    public void render(VertexConsumer consumer, Camera camera, float delta) {
-        float rotation = (age + delta) * 0.1f; // velocidad del giro
-        renderParticle(consumer, camera, delta, Axis.XP.rotation(Mth.PI / 2).rotateY(rotation));
-    }
+    public void render(VertexConsumer consumer, Camera camera, float partialTick) {
+        Vec3 camPos = camera.getPosition();
+        float x = (float) (Mth.lerp(partialTick, this.xo, this.x) - camPos.x());
+        float y = (float) (Mth.lerp(partialTick, this.yo, this.y) - camPos.y());
+        float z = (float) (Mth.lerp(partialTick, this.zo, this.z) - camPos.z());
 
-    private void renderParticle(VertexConsumer consumer, Camera camera, float delta, Quaternionf quaternion) {
-        Vec3 vec3 = camera.getPosition();
+        float rotation = (this.age + partialTick) * 0.1f;
+        Quaternionf quaternion = new Quaternionf().rotateY(rotation);
 
-        Vector3f[] veca = new Vector3f[]{new Vector3f(-1, -1, 0), new Vector3f(-1, 1, 0), new Vector3f(1, 1, 0), new Vector3f(1, -1, 0)};
+        Vector3f[] vertices = new Vector3f[]{
+                new Vector3f(-1.0F, 0.0F, -1.0F),
+                new Vector3f(-1.0F, 0.0F, 1.0F),
+                new Vector3f(1.0F, 0.0F, 1.0F),
+                new Vector3f(1.0F, 0.0F, -1.0F)
+        };
+
+        float scale = this.getQuadSize(partialTick);
 
         for(int i = 0; i < 4; ++i) {
-            Vector3f vec = veca[i];
-            quaternion.transform(vec);
-            vec.mul(getQuadSize(delta));
-            float f = (float) (Mth.lerp(delta, xo, x) - vec3.x());
-            float f1 = (float) (Mth.lerp(delta, yo, y) - vec3.y());
-            float f2 = (float) (Mth.lerp(delta, zo, z) - vec3.z());
-            vec.add(f, f1, f2);
+            Vector3f vertex = vertices[i];
+            vertex.rotate(quaternion);
+            vertex.mul(scale);
+            vertex.add(x, y, z);
         }
 
-        float u0 = getU0();
-        float u1 = getU1();
-        float v0 = getV0();
-        float v1 = getV1();
+        float u0 = this.getU0(); float u1 = this.getU1();
+        float v0 = this.getV0(); float v1 = this.getV1();
+        int light = this.getLightColor(partialTick);
 
-        int j = getLightColor(delta);
-
-        consumer.vertex(veca[0].x(), veca[0].y(), veca[0].z()).uv(u1, v1).color(rCol, gCol, bCol, this.alpha).uv2(j).endVertex();
-        consumer.vertex(veca[1].x(), veca[1].y(), veca[1].z()).uv(u1, v0).color(rCol, gCol, bCol, this.alpha).uv2(j).endVertex();
-        consumer.vertex(veca[2].x(), veca[2].y(), veca[2].z()).uv(u0, v0).color(rCol, gCol, bCol, this.alpha).uv2(j).endVertex();
-        consumer.vertex(veca[3].x(), veca[3].y(), veca[3].z()).uv(u0, v1).color(rCol, gCol, bCol, this.alpha).uv2(j).endVertex();
+        consumer.vertex(vertices[0].x(), vertices[0].y(), vertices[0].z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+        consumer.vertex(vertices[1].x(), vertices[1].y(), vertices[1].z()).uv(u1, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+        consumer.vertex(vertices[2].x(), vertices[2].y(), vertices[2].z()).uv(u0, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+        consumer.vertex(vertices[3].x(), vertices[3].y(), vertices[3].z()).uv(u0, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
     }
 
     @Override
@@ -83,12 +131,11 @@ public class ImpactParticle extends TextureSheetParticle {
     }
 
     @Override
-    protected int getLightColor(float tint) {
-        return Math.max(50, super.getLightColor(tint));
+    protected int getLightColor(float partialTick) {
+        return 240;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<ImpactParticleOptions> {
         private final SpriteSet sprites;
 
         public Provider(SpriteSet sprites) {
@@ -97,9 +144,8 @@ public class ImpactParticle extends TextureSheetParticle {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType particleOptions, @NotNull ClientLevel clientLevel, double d, double e, double f, double g, double h, double i) {
-            return new ImpactParticle(clientLevel, d, e, f, this.sprites);
+        public Particle createParticle(ImpactParticleOptions options, @NotNull ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
+            return new ImpactParticle(level, x, y, z, options, this.sprites);
         }
     }
-
 }

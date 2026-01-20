@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.entity.custom.BloodStainEntity;
+import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;

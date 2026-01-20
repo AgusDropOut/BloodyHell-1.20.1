@@ -306,6 +306,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLOOD_CLOT_PROJECTILE.get(), BloodClotRenderer::new);
             EntityRenderers.register(ModEntityTypes.RITEKEEPER.get(), RitekeeperRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_SOUL.get(), BloodFireSoulRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(), BloodFireColumnRenderer::new);
 
 
         }

@@ -136,7 +136,6 @@ public class OniEntity extends Monster implements GeoEntity {
                BlockPos blockPos = this.getOnPos();
                state.getController().forceAnimationReset();
                state.getController().setAnimation(RawAnimation.begin().then("animation.oni.baseattack", Animation.LoopType.PLAY_ONCE));
-               this.level().addParticle(ModParticles.IMPACT_PARTICLE.get(), blockPos.getX() + 0.5D, blockPos.getY() + 1.15, blockPos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
                this.swinging = false;
         } else if(this.swinging && this.getPhase() == Phase.CRYSTAL_ATTACK && state.getController().getAnimationState().equals(AnimationController.State.STOPPED)) {
             state.getController().forceAnimationReset();

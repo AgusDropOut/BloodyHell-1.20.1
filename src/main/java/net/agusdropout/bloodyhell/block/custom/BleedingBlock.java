@@ -78,7 +78,7 @@ public class BleedingBlock extends Block {
                     zSpeed = random.nextFloat() * 1.0F * (float) j;
                 }
 
-                level.addParticle(ModParticles.BLOOD_PARTICLES.get(), x, y, z, xSpeed, ySpeed, zSpeed);
+                level.addParticle(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(), x, y, z, xSpeed, ySpeed, zSpeed);
             }
         }
 
