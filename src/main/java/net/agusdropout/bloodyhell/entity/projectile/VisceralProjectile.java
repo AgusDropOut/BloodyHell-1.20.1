@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.entity.projectile;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -179,46 +180,11 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
 
 
     private void spawnFlyingParticles() {
-        if (this.level() instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 5; i++) { // Más partículas en el aire
-                double offsetX = (this.random.nextDouble() - 0.5) * 0.1;
-                double offsetY = (this.random.nextDouble() - 0.5) * 0.1 + 0.02; // Ligera elevación
-                double offsetZ = (this.random.nextDouble() - 0.5) * 0.1;
-
-                // Velocidad aleatoria
-                double speed = 1 + this.random.nextDouble() * 0.05;
-                double vx = (this.random.nextDouble() - 0.5) * speed;
-                double vy = (this.random.nextDouble() - 0.5) * speed;
-                double vz = (this.random.nextDouble() - 0.5) * speed;
-
-                serverLevel.sendParticles(ModParticles.VICERAL_PARTICLE.get(),
-                        this.getX() + offsetX,
-                        this.getY() + offsetY + 1,
-                        this.getZ() + offsetZ, 1,
-                        vx, vy, vz, 0.1);
-            }
-        }
-
+        ParticleHelper.spawnSphereVolume(level(), ModParticles.VICERAL_PARTICLE.get(), position().add(0, 1, 0), 0.1, 5, getDeltaMovement().scale(-1));
     }
 
     private void spawnImpactParticles() {
-        if (this.level() instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 100; i++) {
-                double speed = 0.2 + this.random.nextDouble() * 0.2;
-                double angle = this.random.nextDouble() * Math.PI * 2;
-                double vx = Math.cos(angle) * speed;
-                double vy = (this.random.nextDouble() - 0.5) * 0.4;
-                double vz = Math.sin(angle) * speed;
-
-                serverLevel.sendParticles(
-                        ModParticles.VICERAL_PARTICLE.get(),
-                        this.getX(), this.getY(), this.getZ(),
-                        1,
-                        vx, vy, vz,
-                        0.1
-                );
-            }
-        }
+        ParticleHelper.spawnHollowSphere(level(), ModParticles.VICERAL_PARTICLE.get(), position(), 3.0, 100, 0);
     }
 
     @Override

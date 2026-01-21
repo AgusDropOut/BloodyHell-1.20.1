@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag; // Import necesario
 import net.minecraft.server.level.ServerLevel;
@@ -78,41 +79,12 @@ public class CyclopsEntity extends Mob {
     // ... [El resto de tus métodos spawnAmbientEyeParticles, spawnAttackBeamParticles se mantienen igual] ...
 
     private void spawnAmbientEyeParticles() {
-        double centerX = this.getX();
-        double centerY = this.getY() + this.getBbHeight() / 2.0;
-        double centerZ = this.getZ();
-
-        for (int i = 0; i < AMBIENT_PARTICLE_COUNT; ++i) {
-            double offsetX, offsetY, offsetZ, distanceSq;
-            do {
-                offsetX = (this.random.nextDouble() * 2.0 - 1.0) * AMBIENT_PARTICLE_RADIUS;
-                offsetY = (this.random.nextDouble() * 2.0 - 1.0) * AMBIENT_PARTICLE_RADIUS;
-                offsetZ = (this.random.nextDouble() * 2.0 - 1.0) * AMBIENT_PARTICLE_RADIUS;
-                distanceSq = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
-            } while (distanceSq > AMBIENT_PARTICLE_RADIUS * AMBIENT_PARTICLE_RADIUS ||
-                    distanceSq < AMBIENT_PARTICLE_MIN_DISTANCE * AMBIENT_PARTICLE_MIN_DISTANCE);
-
-            this.level().addParticle(ModParticles.EYE_PARTICLE.get(),
-                    centerX + offsetX,
-                    centerY + offsetY,
-                    centerZ + offsetZ,
-                    0.0, 0.0, 0.0);
-        }
+        ParticleHelper.spawnHollowSphere(level(), ModParticles.EYE_PARTICLE.get(),
+                position().add(0, getBbHeight()/2.0, 0), 8.0, 10, 0);
     }
 
     private void spawnAttackBeamParticles(Vec3 startPos, Vec3 endPos) {
-        if (!this.level().isClientSide) {
-            ServerLevel serverLevel = (ServerLevel) this.level();
-            Vec3 direction = endPos.subtract(startPos).normalize();
-            double distance = startPos.distanceTo(endPos);
-
-            for (double d = 0; d < distance; d += 0.25) {
-                double x = startPos.x + direction.x * d;
-                double y = startPos.y + direction.y * d;
-                double z = startPos.z + direction.z * d;
-                serverLevel.sendParticles(ParticleTypes.FLAME, x, y, z, 1, 0.0, 0.0, 0.0, 0.0);
-            }
-        }
+        ParticleHelper.spawnLine(level(), ParticleTypes.FLAME, startPos, endPos, (int)(startPos.distanceTo(endPos) * 4), Vec3.ZERO);
     }
 
     @Override

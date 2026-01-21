@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -310,34 +311,11 @@ public class SanguineSacrificeEntity extends Entity implements TraceableEntity, 
         return factory;
     }
     public void spawnExpandingCircleParticles(Level level, Entity entity, double radius, int particleCount, double speed) {
-        for (int i = 0; i < particleCount; i++) {
-            double angle = 2 * Math.PI * i / particleCount; // Ángulo para cada partícula
-            double offsetX = radius * Math.cos(angle);
-            double offsetZ = radius * Math.sin(angle);
-
-            double particleX = entity.getX() + offsetX;
-            double particleY = entity.getY() + 1.0; // Un poco arriba de la entidad
-            double particleZ = entity.getZ() + offsetZ;
-
-            // Velocidad radial (dirigida hacia afuera)
-            double velocityX = speed * Math.cos(angle);
-            double velocityZ = speed * Math.sin(angle);
-
-            level.addParticle(ParticleTypes.FIREWORK, particleX, particleY-1, particleZ, velocityX, 0, velocityZ);
-        }
+        ParticleHelper.spawnRing(level, ParticleTypes.FIREWORK, entity.position().add(0, 1.0, 0), radius, particleCount, speed);
     }
     public void spawnImpactParticles(Level level, Entity entity) {
-        BlockState blockState = Blocks.DIRT.defaultBlockState(); // Simula partículas de tierra
-
-        for (int i = 0; i < 30; i++) {
-            double offsetX = (random.nextDouble() - 0.5) * 1.5;
-            double offsetZ = (random.nextDouble() - 0.5) * 1.5;
-            double velocityY = random.nextDouble() * 0.5 + 0.2;
-
-            level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockState),
-                    entity.getX() + offsetX, entity.getY(), entity.getZ() + offsetZ,
-                    0, velocityY, 0);
-        }
+        ParticleHelper.spawnExplosion(level, new BlockParticleOption(ParticleTypes.BLOCK, Blocks.DIRT.defaultBlockState()),
+                entity.position(), 30, 0.2, 1.5);
     }
 
 

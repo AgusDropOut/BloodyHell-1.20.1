@@ -146,6 +146,9 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<BloodFireColumnProjectile>> BLOOD_FIRE_COLUMN_PROJECTILE = ENTITY_TYPES.register("blood_fire_column_proyectile",
             () -> EntityType.Builder.<BloodFireColumnProjectile>of(BloodFireColumnProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_fire_column_proyectile").toString()));
+    public static final RegistryObject<EntityType<BloodFireMeteorProjectile>> BLOOD_FIRE_METEOR_PROJECTILE = ENTITY_TYPES.register("blood_fire_meteor_projectile",
+            () -> EntityType.Builder.<BloodFireMeteorProjectile>of(BloodFireMeteorProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
+                    "blood_fire_meteor_projectile").toString()));
 
     public static final RegistryObject<EntityType<BlasphemousTwinDaggersCloneEntity>> BLASPHEMOUS_TWIN_DAGGERS_CLONE =
             ENTITY_TYPES.register("blasphemous_twin_daggers_clone",

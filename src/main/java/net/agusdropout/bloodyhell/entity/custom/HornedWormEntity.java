@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.entity.ai.goals.OffspringOfTheUnknownAttack;
 import net.agusdropout.bloodyhell.sound.ModSounds;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -279,18 +280,15 @@ public class HornedWormEntity extends Monster implements GeoEntity {
 
     public void burrowingAndRisingEffects() {
 
-            BlockPos belowPos = this.blockPosition().below();
-            BlockState belowBlock = level().getBlockState(belowPos);
+        BlockPos belowPos = this.blockPosition().below();
+        BlockState belowBlock = level().getBlockState(belowPos);
+        if (level() instanceof ServerLevel serverLevel) {
+            serverLevel.playSound(null, this.blockPosition(), belowBlock.getSoundType().getHitSound(), SoundSource.HOSTILE, 1.0F, 1.0F);
 
-            if (level() instanceof ServerLevel serverLevel) {
-                serverLevel.playSound(null, this.blockPosition(), belowBlock.getSoundType().getHitSound(), SoundSource.HOSTILE, 1.0F, 1.0F);
-                serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, belowBlock),
-                        this.getX(), this.getY(), this.getZ(),
-                        10,
-                        0.5, 0.1, 0.5,
-                        0.1
-                );
-            }
+            // Use Explosion helper for block debris
+            ParticleHelper.spawnExplosion(level(), new BlockParticleOption(ParticleTypes.BLOCK, belowBlock),
+                    position(), 10, 0.1, 0.5);
+        }
     }
 
     public void spawnMovingWhileBurrowedParticles() {

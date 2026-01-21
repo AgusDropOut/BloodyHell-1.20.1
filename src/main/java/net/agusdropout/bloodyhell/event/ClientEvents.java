@@ -22,6 +22,7 @@ import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.*;
 import net.agusdropout.bloodyhell.util.ClientTickHandler;
+import net.agusdropout.bloodyhell.util.ShaderUtils;
 import net.agusdropout.bloodyhell.util.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.client.Minecraft;
@@ -168,6 +169,13 @@ public class ClientEvents {
             }
 
             @SubscribeEvent
+            public static void onRenderDebugText(CustomizeGuiOverlayEvent.DebugText event) {
+                // Add a line to the LEFT side of the F3 screen
+                event.getLeft().add(String.format("[BloodyHell] Shaders Active: %s",
+                        ShaderUtils.areShadersActive() ? "§aTRUE" : "§cFALSE"));
+            }
+
+            @SubscribeEvent
             public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
                 if (event.getEntity() instanceof Player) {
                     if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
@@ -267,6 +275,7 @@ public class ClientEvents {
             event.registerLayerDefinition(ModModelLayers.VESPER, VesperModel::createBodyLayer);
             event.registerLayerDefinition(TentacleEntityModel.LAYER_LOCATION, TentacleEntityModel::createBodyLayer);
             event.registerLayerDefinition(SmallCrimsonDaggerModel.LAYER_LOCATION, SmallCrimsonDaggerModel::createBodyLayer);
+            event.registerLayerDefinition(BloodFireMeteorModel.LAYER_LOCATION, BloodFireMeteorModel::createBodyLayer);
 
         }
 

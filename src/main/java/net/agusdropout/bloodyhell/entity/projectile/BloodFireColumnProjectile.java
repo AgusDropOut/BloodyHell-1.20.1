@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ImpactParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -182,89 +184,41 @@ public class BloodFireColumnProjectile extends Projectile {
             }
         }
 
-        // 3. PULSE RING (Warning)
+
+
+        // Pulse Ring
         if (this.tickCount % 5 == 0) {
-            double r = COLUMN_RADIUS * (1.0f - progress); // Shrinks
-            for(int i = 0; i < 8; i++) {
-                double angle = (Math.PI * 2 * i) / 8;
-                this.level().addParticle(ModParticles.BLOOD_PULSE_PARTICLE.get(),
-                        this.getX() + Math.cos(angle) * r, this.getY() + 0.1, this.getZ() + Math.sin(angle) * r,
-                        0, 0, 0);
-            }
+            double r = COLUMN_RADIUS * (1.0f - progress);
+            ParticleHelper.spawnRing(level(), ModParticles.BLOOD_PULSE_PARTICLE.get(),
+                    position().add(0, 0.1, 0), r, 8, 0);
         }
     }
 
     private void spawnEruptionParticles() {
+        Vec3 pos = position();
 
+        // COLORS
+        Vector3f core = new Vector3f(1.0f, 0.9f, 0.9f);
+        Vector3f mid = new Vector3f(1.0f, 0.1f, 0.0f);
+        Vector3f edge = new Vector3f(0.05f, 0.0f, 0.0f);
 
-        // 2. MAIN COLUMN (Gradient Core)
-        int density = 20;
-        if (this.tickCount > CHARGE_TIME + LINGER_TIME - 10) density = 5;
+        // GRADIENT PILLAR
+        // Density: 30 particles per tick
+        ParticleHelper.spawnCylinderGradient(level(), pos, COLUMN_RADIUS * 1.2, COLUMN_HEIGHT, 30, 0.4, (ratio) -> {
 
-        for (int i = 0; i < density; i++) {
-            double h = this.random.nextDouble() * COLUMN_HEIGHT;
-            double r = this.random.nextDouble() * COLUMN_RADIUS;
-            double angle = this.random.nextDouble() * Math.PI * 2;
+            // Color Gradient
+            Vector3f color = ParticleHelper.gradient3(ratio, core, mid, edge);
 
-            double x = this.getX() + Math.cos(angle) * r;
-            double z = this.getZ() + Math.sin(angle) * r;
-            double y = this.getY() + h;
+            // Size Gradient (Center = small/tight, Edge = large/wispy)
+            float pSize = 0.5f + (ratio * 0.8f);
 
-            Vector3f color;
-            float ratio = (float) (r / COLUMN_RADIUS);
-            if (ratio < 0.3f) color = new Vector3f(1.0f, 0.9f, 0.9f);
-            else if (ratio < 0.7f) color = new Vector3f(1.0f, 0.1f, 0.0f);
-            else color = new Vector3f(0.4f, 0.0f, 0.0f);
+            return new MagicParticleOptions(color, pSize, false, 40);
+        });
 
-            double vy = 0.4 + (h / COLUMN_HEIGHT) * 0.5; // Faster eruption speed
-
-            this.level().addParticle(new MagicParticleOptions(
-                            color, 0.6f + this.random.nextFloat() * 0.4f, false, 30),
-                    x, y, z, 0, vy, 0);
-        }
-
-        // 3. NEW LAYER: OUTER DARK MAGIC SHELL
-        // This creates a dark, ominous border around the fire column
-        for (int i = 0; i < 10; i++) {
-            // Spawn mostly at the edge (Radius 0.8 to 1.2)
-            double r = COLUMN_RADIUS * (0.8 + this.random.nextDouble() * 0.4);
-            double angle = this.random.nextDouble() * Math.PI * 2;
-            double h = this.random.nextDouble() * (COLUMN_HEIGHT * 0.8); // Slightly shorter
-
-            this.level().addParticle(new MagicParticleOptions(
-                            new Vector3f(0.1f, 0.0f, 0.0f), // Very Dark Red / Black
-                            0.8f + this.random.nextFloat() * 0.5f, // Larger Particles
-                            false,
-                            40), // Lasts longer
-                    this.getX() + Math.cos(angle) * r,
-                    this.getY() + h,
-                    this.getZ() + Math.sin(angle) * r,
-                    0, 0.1, 0); // Slow rising smoke effect
-        }
-
-        // 4. FIRE (Small Blood Flames)
-        for (int i = 0; i < 8; i++) {
-            double r = this.random.nextDouble() * COLUMN_RADIUS;
-            double angle = this.random.nextDouble() * Math.PI * 2;
-
-            this.level().addParticle(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(),
-                    this.getX() + Math.cos(angle) * r,
-                    this.getY(),
-                    this.getZ() + Math.sin(angle) * r,
-                    0, 0.2 + this.random.nextDouble() * 0.3, 0);
-        }
-
-        // 5. LOOSE FRAGMENTS (Explosive Burst)
+        // Impact Ring (Standard)
         if (this.tickCount == CHARGE_TIME) {
-            for (int i = 0; i < 30; i++) { // More fragments
-                double vx = (this.random.nextDouble() - 0.5) * 1.0;
-                double vy = 0.6 + this.random.nextDouble() * 0.8;
-                double vz = (this.random.nextDouble() - 0.5) * 1.0;
-
-                this.level().addParticle(ModParticles.BLOOD_PARTICLES.get(),
-                        this.getX(), this.getY() + 0.5, this.getZ(),
-                        vx, vy, vz);
-            }
+            ParticleHelper.spawnRing(level(), ImpactParticleOptions.create(255, 50, 0, 4.0f, 40, false, 0.2f),
+                    pos.add(0, 0.1, 0), COLUMN_RADIUS * 2.0, 40, 0);
         }
     }
 }

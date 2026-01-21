@@ -5,6 +5,7 @@ import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -114,11 +115,10 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
         }
     }
 
-    // --- NUEVO MODULO: EFECTOS EN SUELO (AoE & Partículas) ---
     private void tickGroundEffects() {
-        // Ejecutar cada 5 ticks (4 veces por segundo) para no saturar daño
+        // --- A. AREA OF EFFECT DAMAGE ---
+        // Runs every 5 ticks (4 times/sec)
         if (this.tickCount % 5 == 0) {
-            // A. ÁREA DE DAÑO
             AABB area = this.getBoundingBox().inflate(AOE_RADIUS, 1.0D, AOE_RADIUS);
             List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, area);
 
@@ -128,56 +128,35 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
                     target.hurt(this.damageSources().magic(), AOE_DAMAGE);
                 }
             }
+
+            // --- B. VISUALS: EXPANDING WAVE ---
+            // Using Helper: Ring Shape
+            // Radius starts at 0.5, expands outward at speed 0.35
+            ParticleHelper.spawnRing(this.level(), ModParticles.MAGIC_LINE_PARTICLE.get(),
+                    this.position().add(0, 0.1, 0), 0.5, 16, 0.35);
         }
 
-        // B. EFECTOS VISUALES (SERVER SIDE SPAWNING)
-        if (this.level() instanceof ServerLevel serverLevel) {
-
-            // 1. ONDA EXPANSIVA GRANDE (Cubre el área de daño)
-            // Aumentamos la frecuencia para que se vea continuo
-            if (this.tickCount % 5 == 0) {
-                int particleCount = 16; // Más partículas para cubrir el radio grande
-                for (int i = 0; i < particleCount; i++) {
-                    double angle = (Math.PI * 2 * i) / particleCount;
-
-                    // Empezamos un poco separados del centro (0.5)
-                    double startX = Math.cos(angle) * 0.5;
-                    double startZ = Math.sin(angle) * 0.5;
-
-                    // Calculamos velocidad para que llegue hasta el borde del radio
-                    // Si la partícula vive ~1 segundo, necesita velocidad X para recorrer 3 bloques.
-                    // Ajusta 'speedFactor' si se quedan cortas o se pasan.
-                    double speedFactor = 0.35;
-
-                    serverLevel.sendParticles(ModParticles.MAGIC_LINE_PARTICLE.get(),
-                            this.getX() + startX, this.getY() + 0.1, this.getZ() + startZ,
-                            0, // Count 0 para modo velocidad manual
-                            startX * speedFactor, 0.0, startZ * speedFactor, // Velocidad radial
-                            1.0);
-                }
-            }
-
-            // 2. ESPIRALES (Mantenemos esto porque pediste que giren alrededor)
-            // Usamos la MISMA partícula (MAGIC_LINE) para unificar el estilo visual
+        // --- C. VISUALS: SPIRALS ---
+        // Specific animation logic kept here, but spawning delegated to helper
+        if (!this.level().isClientSide) {
             double spiralRadius = 0.8;
             double angle = (this.tickCount * 0.2) % (Math.PI * 2);
 
-            // Espiral 1
-            serverLevel.sendParticles(ModParticles.MAGIC_LINE_PARTICLE.get(),
-                    this.getX() + Math.cos(angle) * spiralRadius,
-                    this.getY() + 0.2 + (Math.sin(this.tickCount * 0.1) * 0.5 + 0.5),
-                    this.getZ() + Math.sin(angle) * spiralRadius,
-                    1, 0, 0, 0, 0);
+            // Bobbing Y offset calculation
+            double yOffset1 = 0.2 + (Math.sin(this.tickCount * 0.1) * 0.5 + 0.5);
+            double yOffset2 = 0.2 + (Math.cos(this.tickCount * 0.1) * 0.5 + 0.5);
 
-            // Espiral 2 (Opuesta)
-            serverLevel.sendParticles(ModParticles.MAGIC_LINE_PARTICLE.get(),
-                    this.getX() + Math.cos(angle + Math.PI) * spiralRadius,
-                    this.getY() + 0.2 + (Math.cos(this.tickCount * 0.1) * 0.5 + 0.5),
-                    this.getZ() + Math.sin(angle + Math.PI) * spiralRadius,
-                    1, 0, 0, 0, 0);
+            // Spiral 1
+            double x1 = this.getX() + Math.cos(angle) * spiralRadius;
+            double z1 = this.getZ() + Math.sin(angle) * spiralRadius;
+            ParticleHelper.spawn(this.level(), ModParticles.MAGIC_LINE_PARTICLE.get(), x1, this.getY() + yOffset1, z1, 0, 0, 0);
+
+            // Spiral 2 (Opposite side)
+            double x2 = this.getX() + Math.cos(angle + Math.PI) * spiralRadius;
+            double z2 = this.getZ() + Math.sin(angle + Math.PI) * spiralRadius;
+            ParticleHelper.spawn(this.level(), ModParticles.MAGIC_LINE_PARTICLE.get(), x2, this.getY() + yOffset2, z2, 0, 0, 0);
         }
     }
-
     // --- MÓDULOS DE LÓGICA EXISTENTES (Refactorizados para limpieza) ---
 
     private void handleReturnLogic() {
