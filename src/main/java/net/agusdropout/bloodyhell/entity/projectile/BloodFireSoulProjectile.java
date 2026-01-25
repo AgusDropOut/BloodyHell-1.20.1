@@ -3,9 +3,13 @@ package net.agusdropout.bloodyhell.entity.projectile;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
+import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
+import net.agusdropout.bloodyhell.networking.ModMessages;
+import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,7 +28,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class BloodFireSoulProjectile extends Projectile {
+public class BloodFireSoulProjectile extends Projectile implements BloodFlammable {
 
     public BloodFireSoulProjectile(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
@@ -152,7 +156,8 @@ public class BloodFireSoulProjectile extends Projectile {
         Entity target = result.getEntity();
         target.hurt(this.damageSources().magic(), 8.0F);
         if (target instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), 200, 1));
+            setOnBloodFire( living,200,0);
+
         }
     }
 
@@ -198,23 +203,7 @@ public class BloodFireSoulProjectile extends Projectile {
                     tailDir.z * 0.15 + oz * 0.1);
         }
 
-       // // 3. OUTER LAYER (Dark Red)
-       // for (int i = 0; i < 8; i++) {
-       //     double spread = 0.6;
-       //     double ox = (this.random.nextDouble() - 0.5D) * spread;
-       //     double oy = (this.random.nextDouble() - 0.5D) * spread;
-       //     double oz = (this.random.nextDouble() - 0.5D) * spread;
-//
-       //     float darkness = 0.5f + this.random.nextFloat() * 0.2f;
-       //     Vector3f color = new Vector3f(darkness, 0.0f, 0.0f);
-//
-       //     this.level().addParticle(new MagicParticleOptions(
-       //                     color, 0.5f, false, 30),
-       //             baseX + ox, baseY + oy, baseZ + oz,
-       //             tailDir.x * 0.05,
-       //             tailDir.y * 0.05,
-       //             tailDir.z * 0.05);
-       // }
+
 
 
 
@@ -223,5 +212,10 @@ public class BloodFireSoulProjectile extends Projectile {
             this.level().addParticle(ModParticles.CHILL_FLAME_PARTICLE.get(),
                     baseX, baseY, baseZ, 0, 0, 0);
         }
+    }
+
+    @Override
+    public Level getLevel() {
+        return this.level();
     }
 }

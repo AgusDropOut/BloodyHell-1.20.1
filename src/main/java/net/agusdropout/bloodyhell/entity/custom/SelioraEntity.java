@@ -136,7 +136,7 @@ public class SelioraEntity extends Monster implements GeoEntity{
 
     public static AttributeSupplier setAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 500)
+                .add(Attributes.MAX_HEALTH, 750)
                 .add(Attributes.ATTACK_DAMAGE, 7.0f)
                 .add(Attributes.ATTACK_SPEED, 0.8F)
                 .add(Attributes.MOVEMENT_SPEED, 0.2D)

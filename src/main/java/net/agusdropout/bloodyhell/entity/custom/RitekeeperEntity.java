@@ -57,7 +57,7 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 250.0D)
+                .add(Attributes.MAX_HEALTH, 600.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ATTACK_DAMAGE, 10.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
@@ -78,6 +78,8 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
     }
+
+
 
     @Override
     protected void defineSynchedData() {
@@ -108,7 +110,7 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
 
         // Ambient Particles (Only if NOT evading, to avoid clutter)
         if (this.level().isClientSide && !this.isEvading() && this.tickCount % 5 == 0) {
-            this.level().addParticle(ModParticles.CHILL_FLAME_PARTICLE.get(),
+            this.level().addParticle(ModParticles.BLOOD_SIGIL_PARTICLE.get(),
                     this.getX() + (random.nextDouble() - 0.5),
                     this.getY() + 1.5,
                     this.getZ() + (random.nextDouble() - 0.5),

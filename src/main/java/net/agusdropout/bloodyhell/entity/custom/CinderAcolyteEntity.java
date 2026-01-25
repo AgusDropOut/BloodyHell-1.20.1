@@ -3,12 +3,16 @@ package net.agusdropout.bloodyhell.entity.custom;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ai.goals.CinderAcolyteFlameAttackGoal;
 import net.agusdropout.bloodyhell.entity.ai.goals.CinderAcolyteMeleeGoal;
+import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
+import net.agusdropout.bloodyhell.networking.ModMessages;
+import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -37,7 +41,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class CinderAcolyteEntity extends Monster implements GeoEntity {
+public class CinderAcolyteEntity extends Monster implements GeoEntity , BloodFlammable {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     // Synced Data for Animations
@@ -159,7 +163,7 @@ public class CinderAcolyteEntity extends Monster implements GeoEntity {
                             e.hurt(this.damageSources().mobAttack(this), 3.0f); // Fast tick damage
 
                             // E. APPLY EFFECT
-                            e.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), 60, 0));
+                            setOnBloodFire(e,200,0);
                         }
                     }
                 }
@@ -235,5 +239,10 @@ public class CinderAcolyteEntity extends Monster implements GeoEntity {
     @Override protected SoundEvent getDeathSound() { return SoundEvents.PHANTOM_DEATH; }
     @Override protected void playStepSound(BlockPos pos, BlockState block) {
         this.playSound(SoundEvents.CHAIN_STEP, 0.5F, 1.0F);
+    }
+
+    @Override
+    public Level getLevel() {
+        return this.level();
     }
 }

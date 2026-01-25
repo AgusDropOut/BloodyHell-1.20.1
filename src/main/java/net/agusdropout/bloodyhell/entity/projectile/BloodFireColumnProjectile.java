@@ -3,6 +3,9 @@ package net.agusdropout.bloodyhell.entity.projectile;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
+import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
+import net.agusdropout.bloodyhell.networking.ModMessages;
+import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ImpactParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
@@ -15,6 +18,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,7 +34,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class BloodFireColumnProjectile extends Projectile {
+public class BloodFireColumnProjectile extends Projectile implements BloodFlammable {
 
     private static final EntityDataAccessor<Boolean> ERUPTED = SynchedEntityData.defineId(BloodFireColumnProjectile.class, EntityDataSerializers.BOOLEAN);
 
@@ -89,7 +93,9 @@ public class BloodFireColumnProjectile extends Projectile {
             );
             BloodStainEntity stain = new BloodStainEntity(this.level(), this.getX(), this.getY(), this.getZ(), Direction.UP, 3.0f);
             this.level().addFreshEntity(stain);
-            stain.setOwner((LivingEntity) this.getOwner());
+            if (this.getOwner() instanceof LivingEntity owner) {
+                stain.setOwner(owner);
+            }
             if (!this.level().isClientSide) {
                 this.entityData.set(ERUPTED, true);
                 EntityCameraShake.cameraShake(this.level(), this.position(), 20.0f, 2f, 5, 12); // Massive shake
@@ -113,14 +119,15 @@ public class BloodFireColumnProjectile extends Projectile {
     }
 
     private void damageArea(float damage) {
-        AABB area = this.getBoundingBox().inflate(COLUMN_RADIUS, 1.0, COLUMN_RADIUS);
-        List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, area,
-                e -> e != this.getOwner() && e.isAlive());
 
-        for (LivingEntity target : targets) {
-            target.hurt(this.damageSources().magic(), damage);
-            target.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), 40, 0));
-        }
+            AABB area = this.getBoundingBox().inflate(COLUMN_RADIUS, 1.0, COLUMN_RADIUS);
+            List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, area,
+                    e -> e != this.getOwner() && e.isAlive());
+
+            for (LivingEntity target : targets) {
+                target.hurt(this.damageSources().magic(), damage);
+            }
+
     }
 
     private void explode() {
@@ -132,6 +139,7 @@ public class BloodFireColumnProjectile extends Projectile {
             target.hurt(this.damageSources().explosion(this, this.getOwner()), 16.0f); // Higher Damage
             target.setDeltaMovement(target.getDeltaMovement().add(0, 1.2, 0)); // Higher Launch
             target.hurtMarked = true;
+            setOnBloodFire(target,200, 0);
         }
 
 
@@ -221,5 +229,10 @@ public class BloodFireColumnProjectile extends Projectile {
             ParticleHelper.spawnRing(level(), ImpactParticleOptions.create(255, 50, 0, 4.0f, 40, false, 0.2f),
                     pos.add(0, 0.1, 0), COLUMN_RADIUS * 2.0, 40, 0);
         }
+    }
+
+    @Override
+    public Level getLevel() {
+        return this.level();
     }
 }

@@ -143,7 +143,7 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock, Ent
                         0.0D, 0.05D, 0.0D);
             }
             if (random.nextInt(10) == 0) {
-                level.addParticle(ModParticles.BLOOD_FLAME.get(),
+                level.addParticle(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(),
                         pos.getX() + random.nextDouble(), pos.getY() + 0.2D, pos.getZ() + random.nextDouble(),
                         0.0D, 0.02D, 0.0D);
             }
@@ -154,13 +154,7 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock, Ent
                 level.playLocalSound(x, y, z, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
             }
 
-            for (int i = 0; i < 3; ++i) {
-                level.addParticle(ModParticles.BLOOD_FLAME.get(),
-                        pos.getX() + random.nextDouble(),
-                        pos.getY() + 0.1D + random.nextDouble() * 0.3D,
-                        pos.getZ() + random.nextDouble(),
-                        0.0D, 0.03D + random.nextDouble() * 0.02D, 0.0D);
-            }
+
 
             for (int i = 0; i < 3; ++i) {
                 level.addParticle(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(),

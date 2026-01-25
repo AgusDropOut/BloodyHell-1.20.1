@@ -7,6 +7,9 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
+import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
+import net.agusdropout.bloodyhell.networking.ModMessages;
+import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ImpactParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
@@ -17,6 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -35,7 +39,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class BloodFireMeteorProjectile extends Projectile {
+public class BloodFireMeteorProjectile extends Projectile implements BloodFlammable {
 
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(BloodFireMeteorProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(BloodFireMeteorProjectile.class, EntityDataSerializers.FLOAT);
@@ -157,7 +161,10 @@ public class BloodFireMeteorProjectile extends Projectile {
 
         BloodStainEntity stain = new BloodStainEntity(this.level(), getX(), getY(), getZ(), Direction.UP, size * 2.5f);
         this.level().addFreshEntity(stain);
-        stain.setOwner((LivingEntity) this.getOwner());
+        // Check if owner exists and is Living before setting
+        if (this.getOwner() instanceof LivingEntity owner) {
+            stain.setOwner(owner);
+        }
 
         placeFire(size);
         damageArea(size);
@@ -219,12 +226,14 @@ public class BloodFireMeteorProjectile extends Projectile {
     private void damageArea(float size) {
         AABB area = this.getBoundingBox().inflate(explosionRadius * size);
         List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, area);
-        for(LivingEntity e : list) {
-            if (e != this.getOwner()) {
-                e.hurt(this.damageSources().explosion(this, this.getOwner()), this.damage);
-                e.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), 100, 1, false, false, true));
+
+            for (LivingEntity e : list) {
+                if (e != this.getOwner()) {
+                    e.hurt(this.damageSources().explosion(this, this.getOwner()), this.damage);
+                    setOnBloodFire(e, 200, 0);
+                }
             }
-        }
+
     }
 
     @Override
@@ -311,5 +320,10 @@ public class BloodFireMeteorProjectile extends Projectile {
                 30,
                 0.1
         );
+    }
+
+    @Override
+    public Level getLevel() {
+        return this.level();
     }
 }
