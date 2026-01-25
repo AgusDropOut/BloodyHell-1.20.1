@@ -1,6 +1,11 @@
 package net.agusdropout.bloodyhell.util;
 
-import net.minecraftforge.fml.ModList; // Or Fabric equivalent
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 import java.lang.reflect.Field;
 
 public class ShaderUtils {
@@ -9,11 +14,39 @@ public class ShaderUtils {
     private static Boolean hasOptifine = null;
     private static Field ofShadersField = null;
 
-    /**
-     * Checks if any shader pack is currently active.
-     */
     public static boolean areShadersActive() {
         return isIrisShaderActive() || isOptifineShaderActive();
+    }
+
+    // ==========================================
+    //           RENDER TYPE PROXY
+    // ==========================================
+
+    /**
+     * PROXY METHOD: Acts as a switch.
+     * Use this in your EntityRenderers when selecting a RenderType.
+     * * @param texture The texture you want to use.
+     * @param original The custom RenderType you normally use (e.g., your ADDITIVE blend type).
+     * @return The original type if Vanilla, or a "Shader-Safe" type (Translucent Emissive) if Shaders are on.
+     */
+    public static RenderType getRenderType(ResourceLocation texture, RenderType original) {
+        if (areShadersActive()) {
+            // "entity_translucent_emissive" is the Gold Standard for shaders.
+            // Shaders recognize it as: "This object has texture + transparency + ignores light map".
+            return RenderType.entityTranslucentEmissive(texture);
+        }
+        return original;
+    }
+
+    /**
+     * PROXY METHOD: For untextured shapes (Beams, Lightning).
+     */
+    public static RenderType getShapeRenderType(RenderType original) {
+        if (areShadersActive()) {
+            // "lightning" is the safest bet for untextured glowing shapes in shaders.
+            return RenderType.lightning();
+        }
+        return original;
     }
 
     // ==========================================
@@ -21,20 +54,14 @@ public class ShaderUtils {
     // ==========================================
     private static boolean isIrisShaderActive() {
         if (hasIris == null) {
-            // Check if the mod "iris" (or "oculus" on Forge) is loaded
             hasIris = ModList.get().isLoaded("iris") || ModList.get().isLoaded("oculus");
         }
-
         if (hasIris) {
             try {
-
-
-                // Reflection version to avoid hard crashes if API changes/missing:
                 Class<?> apiClass = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
                 Object instance = apiClass.getMethod("getInstance").invoke(null);
                 return (boolean) apiClass.getMethod("isShaderPackInUse").invoke(instance);
             } catch (Exception e) {
-                // Fail silently
                 return false;
             }
         }
@@ -53,10 +80,8 @@ public class ShaderUtils {
                 hasOptifine = false;
             }
         }
-
         if (hasOptifine) {
             try {
-                // We look for net.optifine.shaders.Shaders.shaderPackLoaded
                 if (ofShadersField == null) {
                     Class<?> shadersClass = Class.forName("net.optifine.shaders.Shaders");
                     ofShadersField = shadersClass.getDeclaredField("shaderPackLoaded");
@@ -64,7 +89,6 @@ public class ShaderUtils {
                 }
                 return (boolean) ofShadersField.get(null);
             } catch (Exception e) {
-                // If reflection fails, assume no shaders
                 return false;
             }
         }

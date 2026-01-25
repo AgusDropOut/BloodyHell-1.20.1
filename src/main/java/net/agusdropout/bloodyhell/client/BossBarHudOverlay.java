@@ -27,9 +27,11 @@ public class BossBarHudOverlay {
             case 2 :
                 BOSS_BAR_BASE = new ResourceLocation(BloodyHell.MODID, "textures/gui/seliora_boss_bar_base.png");
                 BOSS_BAR_FILL = new ResourceLocation(BloodyHell.MODID, "textures/gui/seliora_boss_bar_fill.png");
+                break;
             case 1 :
                 BOSS_BAR_BASE = new ResourceLocation(BloodyHell.MODID, "textures/gui/ritekeeper_boss_bar_base.png");
                 BOSS_BAR_FILL = new ResourceLocation(BloodyHell.MODID, "textures/gui/ritekeeper_boss_bar_fill.png");
+                break;
         }
 
         PoseStack ms = guiGraphics.pose();
@@ -60,7 +62,7 @@ public class BossBarHudOverlay {
                 int nameYRitekeeper = y - 10;
 
                 guiGraphics.drawString(mc.font, nameRitekeeper, nameXRitekeeper, nameYRitekeeper, 0xb50c00, true);
-                return;
+                break;
             case 2 :
                 String name = "Seliora, the first Archbishop";
 
@@ -69,6 +71,7 @@ public class BossBarHudOverlay {
                 int nameY = y - 10;
 
                 guiGraphics.drawString(mc.font, name, nameX, nameY, 0xFFCB5C, true);
+                break;
 
         }
 

@@ -122,7 +122,7 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock, Ent
         double y = pos.getY() + 0.5D;
         double z = pos.getZ() + 0.5D;
         //rarely remove block
-        if(random.nextInt(0,1000)< 10){
+        if(random.nextInt(0,1000)< 50){
             level.removeBlock(pos, false);
             return;
         }

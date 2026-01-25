@@ -5,6 +5,8 @@ import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.agusdropout.bloodyhell.BloodyHell;
+
+import net.agusdropout.bloodyhell.client.BloodFireOverlay;
 import net.agusdropout.bloodyhell.client.BossBarHudOverlay;
 import net.agusdropout.bloodyhell.client.CrimsonVeilHudOverlay;
 
@@ -171,8 +173,8 @@ public class ClientEvents {
             @SubscribeEvent
             public static void onRenderDebugText(CustomizeGuiOverlayEvent.DebugText event) {
                 // Add a line to the LEFT side of the F3 screen
-                event.getLeft().add(String.format("[BloodyHell] Shaders Active: %s",
-                        ShaderUtils.areShadersActive() ? "§aTRUE" : "§cFALSE"));
+               // event.getLeft().add(String.format("[BloodyHell] Shaders Active: %s",
+               //         ShaderUtils.areShadersActive() ? "§aTRUE" : "§cFALSE"));
             }
 
             @SubscribeEvent
@@ -268,6 +270,8 @@ public class ClientEvents {
             event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "mana_hud", CrimsonVeilHudOverlay.OVERLAY);
             event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), "visceral_overlay", VisceralEffectHudOverlay.OVERLAY);
             event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "boss_bar", BossBarHudOverlay.OVERLAY);
+            event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "blood_fire", BloodFireOverlay.HUD_BLOOD_FIRE);
+
         }
 
         @SubscribeEvent

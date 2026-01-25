@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.joml.Matrix3f; // Import Matrix3f
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -47,7 +48,9 @@ public class BloodNovaRenderer extends EntityRenderer<BloodNovaEntity> {
         RenderSystem.depthMask(false);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
+        // --- IMPORTANT: Get both Pose and Normal matrices ---
         Matrix4f matrix = poseStack.last().pose();
+        Matrix3f normals = poseStack.last().normal(); // FIX: Capture the Normal Matrix
 
         // 1. JETS (Restored Fidelity)
         RenderSystem.enableBlend();
@@ -55,14 +58,15 @@ public class BloodNovaRenderer extends EntityRenderer<BloodNovaEntity> {
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         float jetRot = age * 0.2f;
-        // Use Flared Cylinder (Power 2.0 = Quadratic Trumpet shape)
-        // Rotation = jetRot * 2.0 (Spinning)
-        // Twist = 2.0 (Static structural twist)
-        RenderHelper.renderFlaredCylinder(buffer, matrix, null, 4.0f, 0.2f, 1.2f, jetRot * 2.0f, 2.0f, 10, 12, 2.0f, 0.8f, 0f, 0.1f, 0.7f, 0f, 15728880);
+
+        // PASS THE 'normals' OBJECT HERE (Instead of null)
+        RenderHelper.renderFlaredCylinder(buffer, matrix, normals, 4.0f, 0.2f, 1.2f, jetRot * 2.0f, 2.0f, 10, 64, 2.0f, 0.8f, 0f, 0.1f, 0.7f, 0f, 15728880);
 
         poseStack.pushPose();
         poseStack.scale(1, -1, 1);
-        RenderHelper.renderFlaredCylinder(buffer, poseStack.last().pose(), null, 4.0f, 0.2f, 1.2f, jetRot * 2.0f, 2.0f, 10, 12, 2.0f, 0.8f, 0f, 0.1f, 0.7f, 0f, 15728880);
+
+        // Pass normals here too (PoseStack tracks the negative scale automatically)
+        RenderHelper.renderFlaredCylinder(buffer, poseStack.last().pose(), poseStack.last().normal(), 4.0f, 0.2f, 1.2f, jetRot * 2.0f, 2.0f, 10, 64, 2.0f, 0.8f, 0f, 0.1f, 0.7f, 0f, 15728880);
         poseStack.popPose();
 
         tess.end();
@@ -70,12 +74,11 @@ public class BloodNovaRenderer extends EntityRenderer<BloodNovaEntity> {
         // 2. CORE
         RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        RenderHelper.renderSphere(buffer, matrix, null, 0.4f, 8, 12, COL_CORE.x, COL_CORE.y, COL_CORE.z, 1.0f, 15728880);
-        RenderHelper.renderSphere(buffer, matrix, null, 0.45f, 8, 12, COL_RIM.x, COL_RIM.y, COL_RIM.z, 0.6f, 15728880);
-        tess.end();
 
-        // 3. SPARKLES (Procedural logic kept local as it depends on entity UUID seed)
-        // (Assuming you kept renderProceduralSparkles from previous refactor if you want them back)
+        // Pass 'normals' to spheres (crucial for roundness)
+        RenderHelper.renderSphere(buffer, matrix, normals, 0.4f, 8, 12, COL_CORE.x, COL_CORE.y, COL_CORE.z, 1.0f, 15728880);
+        RenderHelper.renderSphere(buffer, matrix, normals, 0.45f, 8, 12, COL_RIM.x, COL_RIM.y, COL_RIM.z, 0.6f, 15728880);
+        tess.end();
 
         // 4. DISK
         RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE);
@@ -84,12 +87,15 @@ public class BloodNovaRenderer extends EntityRenderer<BloodNovaEntity> {
         float[] cIn = {COL_DISK_IN.x, COL_DISK_IN.y, COL_DISK_IN.z, 0.9f};
         float[] cOut = {COL_DISK_OUT.x, COL_DISK_OUT.y, COL_DISK_OUT.z, 0.0f};
 
-        RenderHelper.renderDisk(buffer, matrix, null, 0.5f, 1.3f, 24, age * 0.05f, cIn, cOut, 15728880);
+        // Pass 'normals' to disks
+        RenderHelper.renderDisk(buffer, matrix, normals, 0.5f, 1.3f, 24, age * 0.05f, cIn, cOut, 15728880);
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.XP.rotationDegrees(65));
         poseStack.mulPose(Axis.ZP.rotationDegrees(age * 2.0f));
-        RenderHelper.renderDisk(buffer, poseStack.last().pose(), null, 0.6f, 1.1f, 24, 0, cIn, cOut, 15728880);
+
+        // And here
+        RenderHelper.renderDisk(buffer, poseStack.last().pose(), poseStack.last().normal(), 0.6f, 1.1f, 24, 0, cIn, cOut, 15728880);
         poseStack.popPose();
 
         tess.end();

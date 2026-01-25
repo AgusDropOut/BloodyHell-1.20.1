@@ -394,7 +394,9 @@ public class RenderHelper {
     public static void renderDisk(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                   float innerRad, float outerRad, int segments, float rotation,
                                   float[] cInner, float[] cOuter, int light) {
-
+        if (ShaderUtils.areShadersActive()) {
+            segments *= 6;
+        }
         for (int i = 0; i < segments; i++) {
             float a1 = (float) (Math.PI * 2 * i / segments) + rotation;
             float a2 = (float) (Math.PI * 2 * (i + 1) / segments) + rotation;
@@ -418,6 +420,9 @@ public class RenderHelper {
                                              float rotation, float twist,
                                              int layers, int segments,
                                              float r, float g, float b, float alphaBase, float alphaTop, int light) {
+        if (ShaderUtils.areShadersActive()) {
+            segments *= 6;
+        }
 
         for (int i = 0; i < layers; i++) {
             float progress1 = (float) i / layers;
@@ -439,15 +444,30 @@ public class RenderHelper {
                 float ang1 = (float) j / segments * Mth.TWO_PI;
                 float ang2 = (float) (j + 1) / segments * Mth.TWO_PI;
 
-                float x1a = Mth.cos(ang1 + twist1) * r1; float z1a = Mth.sin(ang1 + twist1) * r1;
-                float x1b = Mth.cos(ang2 + twist1) * r1; float z1b = Mth.sin(ang2 + twist1) * r1;
-                float x2a = Mth.cos(ang1 + twist2) * r2; float z2a = Mth.sin(ang1 + twist2) * r2;
-                float x2b = Mth.cos(ang2 + twist2) * r2; float z2b = Mth.sin(ang2 + twist2) * r2;
+                float cos1a = Mth.cos(ang1 + twist1); float sin1a = Mth.sin(ang1 + twist1);
+                float cos1b = Mth.cos(ang2 + twist1); float sin1b = Mth.sin(ang2 + twist1);
+                float cos2a = Mth.cos(ang1 + twist2); float sin2a = Mth.sin(ang1 + twist2);
+                float cos2b = Mth.cos(ang2 + twist2); float sin2b = Mth.sin(ang2 + twist2);
 
-                vertex(consumer, pose, normal, x1a, y1, z1a, new float[]{r,g,b,a1}, light);
-                vertex(consumer, pose, null, x1b, y1, z1b, new float[]{r,g,b,a1}, light);
-                vertex(consumer, pose, null, x2b, y2, z2b, new float[]{r,g,b,a2}, light);
-                vertex(consumer, pose, null, x2a, y2, z2a, new float[]{r,g,b,a2}, light);
+                float x1a = cos1a * r1; float z1a = sin1a * r1;
+                float x1b = cos1b * r1; float z1b = sin1b * r1;
+                float x2a = cos2a * r2; float z2a = sin2a * r2;
+                float x2b = cos2b * r2; float z2b = sin2b * r2;
+
+                // FIX: Calculate Smooth Normals (Pointing Outward)
+                // If normals are UP (0,1,0), shaders make the side walls look dark/flat.
+                // We use the cosine/sine directly as the normal X/Z components.
+
+                float n1ax = cos1a; float n1az = sin1a;
+                float n1bx = cos1b; float n1bz = sin1b;
+                float n2ax = cos2a; float n2az = sin2a;
+                float n2bx = cos2b; float n2bz = sin2b;
+
+                // Pass normals to the vertex consumer
+                vertex(consumer, pose, normal, x1a, y1, z1a, new float[]{r,g,b,a1}, light, 0, 0, n1ax, 0, n1az);
+                vertex(consumer, pose, null, x1b, y1, z1b, new float[]{r,g,b,a1}, light, 1, 0, n1bx, 0, n1bz);
+                vertex(consumer, pose, null, x2b, y2, z2b, new float[]{r,g,b,a2}, light, 1, 1, n2bx, 0, n2bz);
+                vertex(consumer, pose, null, x2a, y2, z2a, new float[]{r,g,b,a2}, light, 0, 1, n2ax, 0, n2az);
             }
         }
     }
@@ -573,4 +593,239 @@ public class RenderHelper {
         // Back Face (Swap v1 and v3 to flip normal)
         addTri(c, p, n, v3, v2, v1, r, g, b, a, light);
     }
+
+    // =========================================================================================
+    //                                  PROCEDURAL RINGS (New)
+    // =========================================================================================
+
+    @FunctionalInterface
+    public interface RingNoiseProvider {
+        float getNoise(double angle);
+    }
+
+    public static void renderProceduralRing(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
+                                            float baseRadius, float width, int segments, float rotation,
+                                            float[] cInner, float[] cOuter, int light,
+                                            RingNoiseProvider noiseFunc,
+                                            float innerNoiseStrength, float outerNoiseStrength) {
+
+        if (ShaderUtils.areShadersActive()) {
+            segments *= 6;
+        }
+
+        float maxR = baseRadius + Math.max(width, Math.abs(outerNoiseStrength));
+
+        for (int i = 0; i < segments; i++) {
+            double ang1_raw = (2 * Math.PI * i) / segments;
+            double ang2_raw = (2 * Math.PI * (i + 1)) / segments;
+
+            float a1 = (float) (ang1_raw + rotation);
+            float a2 = (float) (ang2_raw + rotation);
+
+            float cos1 = Mth.cos(a1), sin1 = Mth.sin(a1);
+            float cos2 = Mth.cos(a2), sin2 = Mth.sin(a2);
+
+            float n1 = noiseFunc.getNoise(ang1_raw);
+            float n2 = noiseFunc.getNoise(ang2_raw);
+
+            float rInner1 = (baseRadius - width) + (n1 * innerNoiseStrength);
+            float rOuter1 = baseRadius + (n1 * outerNoiseStrength);
+
+            float rInner2 = (baseRadius - width) + (n2 * innerNoiseStrength);
+            float rOuter2 = baseRadius + (n2 * outerNoiseStrength);
+
+            float x1_in = cos1 * rInner1; float z1_in = sin1 * rInner1;
+            float x1_out = cos1 * rOuter1; float z1_out = sin1 * rOuter1;
+            float x2_out = cos2 * rOuter2; float z2_out = sin2 * rOuter2;
+            float x2_in = cos2 * rInner2; float z2_in = sin2 * rInner2;
+
+            float u1_in = (x1_in / maxR + 1) * 0.5f; float v1_in = (z1_in / maxR + 1) * 0.5f;
+            float u1_out = (x1_out / maxR + 1) * 0.5f; float v1_out = (z1_out / maxR + 1) * 0.5f;
+            float u2_out = (x2_out / maxR + 1) * 0.5f; float v2_out = (z2_out / maxR + 1) * 0.5f;
+            float u2_in = (x2_in / maxR + 1) * 0.5f; float v2_in = (z2_in / maxR + 1) * 0.5f;
+
+            vertex(consumer, pose, normal, x1_in, 0, z1_in, cInner, light, u1_in, v1_in, 0, 1, 0);
+            vertex(consumer, pose, normal, x1_out, 0, z1_out, cOuter, light, u1_out, v1_out, 0, 1, 0);
+            vertex(consumer, pose, normal, x2_out, 0, z2_out, cOuter, light, u2_out, v2_out, 0, 1, 0);
+            vertex(consumer, pose, normal, x2_in, 0, z2_in, cInner, light, u2_in, v2_in, 0, 1, 0);
+        }
+    }
+    // =========================================================================================
+    //                            SIMPLE SHADER-PROOF RENDERING
+    // =========================================================================================
+
+    // =========================================================================================
+    //                            SMOOTH SHADING CYLINDER (Shader Compatible)
+    // =========================================================================================
+
+    /**
+     * Renders a Cylinder using POSITION_COLOR only.
+     * <br>
+     * <b>Spike Fix:</b> If shaders are active, this method multiplies segments by 6.
+     * Since we cannot use Smooth Normals with POSITION_COLOR, we use high-density geometry
+     * to force the shader to render a smooth curve.
+     */
+    public static void renderSimpleGradientCylinder(VertexConsumer consumer, Matrix4f pose,
+                                                    float height, float radBase, float radTop,
+                                                    int segments, float rotation,
+                                                    float r, float g, float b, float alphaBase, float alphaTop) {
+
+        // 1. BRUTE FORCE SMOOTHNESS
+        if (ShaderUtils.areShadersActive()) {
+            segments *= 12; // 32 -> 192 segments. Smooths out the "face normals".
+
+            // 2. ALPHA COMPENSATION
+            // Shaders often render untextured transparency too faintly. We boost it.
+            alphaBase = Math.min(1.0f, alphaBase * 1.5f);
+            if (alphaTop > 0) alphaTop = Math.min(1.0f, alphaTop * 1.5f);
+        }
+
+        for (int j = 0; j < segments; j++) {
+            float ang1 = (float) j / segments * Mth.TWO_PI;
+            float ang2 = (float) (j + 1) / segments * Mth.TWO_PI;
+
+            // Apply Rotation
+            float a1 = ang1 + rotation;
+            float a2 = ang2 + rotation;
+
+            float cos1 = Mth.cos(a1); float sin1 = Mth.sin(a1);
+            float cos2 = Mth.cos(a2); float sin2 = Mth.sin(a2);
+
+            // Positions
+            float x1_base = cos1 * radBase; float z1_base = sin1 * radBase;
+            float x2_base = cos2 * radBase; float z2_base = sin2 * radBase;
+            float x1_top  = cos1 * radTop;  float z1_top  = sin1 * radTop;
+            float x2_top  = cos2 * radTop;  float z2_top  = sin2 * radTop;
+
+            // Render Quad (Double Sided to ensure visibility)
+            // Note: We DO NOT pass 'normal' here. We only pass Pos + Color.
+
+            // Side A (Outside)
+            simpleVertex(consumer, pose, x1_base, 0, z1_base, r, g, b, alphaBase);
+            simpleVertex(consumer, pose, x1_top, height, z1_top, r, g, b, alphaTop);
+            simpleVertex(consumer, pose, x2_top, height, z2_top, r, g, b, alphaTop);
+            simpleVertex(consumer, pose, x2_base, 0, z2_base, r, g, b, alphaBase);
+
+            // Side B (Inside - to fix holes)
+            simpleVertex(consumer, pose, x2_base, 0, z2_base, r, g, b, alphaBase);
+            simpleVertex(consumer, pose, x2_top, height, z2_top, r, g, b, alphaTop);
+            simpleVertex(consumer, pose, x1_top, height, z1_top, r, g, b, alphaTop);
+            simpleVertex(consumer, pose, x1_base, 0, z1_base, r, g, b, alphaBase);
+        }
+    }
+
+    // INTERNAL HELPER (Full Vertex Format)
+    private static void vertex(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
+                               float x, float y, float z,
+                               float r, float g, float b, float a,
+                               float u, float v,
+                               float nx, float ny, float nz) {
+        consumer.vertex(pose, x, y, z)
+                .color(r, g, b, a)
+                .uv(u, v)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(15728880) // Full Brightness
+                .normal(normal, nx, ny, nz) // TRANSFORM NORMAL
+                .endVertex();
+    }
+
+    /**
+     * Renders a noise-distorted ring using POSITION_COLOR.
+     * Safe for shaders (no spike artifacts).
+     */
+    public static void renderSimpleProceduralRing(VertexConsumer consumer, Matrix4f pose,
+                                                  float baseRadius, float width, int segments, float rotation,
+                                                  float r, float g, float b, float alphaInner, float alphaOuter,
+                                                  RingNoiseProvider noiseFunc, float innerNoiseStrength, float outerNoiseStrength) {
+
+        if (ShaderUtils.areShadersActive()) {
+            segments *= 12;
+            // Boost alpha for rings too
+            alphaOuter = Math.min(1.0f, alphaOuter * 1.5f);
+        }
+
+        for (int j = 0; j < segments; j++) {
+            float ang1 = (float) j / segments * Mth.TWO_PI;
+            float ang2 = (float) (j + 1) / segments * Mth.TWO_PI;
+
+            float a1 = ang1 + rotation;
+            float a2 = ang2 + rotation;
+
+            float cos1 = Mth.cos(a1); float sin1 = Mth.sin(a1);
+            float cos2 = Mth.cos(a2); float sin2 = Mth.sin(a2);
+
+            float n1 = noiseFunc.getNoise(ang1);
+            float n2 = noiseFunc.getNoise(ang2);
+
+            float rInner1 = (baseRadius - width) + (n1 * innerNoiseStrength);
+            float rOuter1 = baseRadius + (n1 * outerNoiseStrength);
+            float rInner2 = (baseRadius - width) + (n2 * innerNoiseStrength);
+            float rOuter2 = baseRadius + (n2 * outerNoiseStrength);
+
+            float x1_in = cos1 * rInner1; float z1_in = sin1 * rInner1;
+            float x1_out = cos1 * rOuter1; float z1_out = sin1 * rOuter1;
+            float x2_out = cos2 * rOuter2; float z2_out = sin2 * rOuter2;
+            float x2_in = cos2 * rInner2; float z2_in = sin2 * rInner2;
+
+            simpleVertex(consumer, pose, x1_in, 0, z1_in, r, g, b, alphaInner);
+            simpleVertex(consumer, pose, x1_out, 0, z1_out, r, g, b, alphaOuter);
+            simpleVertex(consumer, pose, x2_out, 0, z2_out, r, g, b, alphaOuter);
+            simpleVertex(consumer, pose, x2_in, 0, z2_in, r, g, b, alphaInner);
+        }
+    }
+
+    // INTERNAL HELPER: Strictly Pos + Color
+    private static void simpleVertex(VertexConsumer consumer, Matrix4f pose, float x, float y, float z, float r, float g, float b, float a) {
+        consumer.vertex(pose, x, y, z).color(r, g, b, a).endVertex();
+    }
+
+    // =========================================================================================
+    //                                      NOISE MATH
+    // =========================================================================================
+
+    public static class Perlin {
+        private static final int[] perm = new int[512];
+        private static final int[] p = new int[256];
+
+        static {
+            for (int i = 0; i < 256; i++) p[i] = i;
+            java.util.Random rand = new java.util.Random(1234);
+            for (int i = 0; i < 256; i++) {
+                int j = rand.nextInt(256 - i) + i;
+                int tmp = p[i];
+                p[i] = p[j];
+                p[j] = tmp;
+                perm[i] = perm[i + 256] = p[i];
+            }
+        }
+
+        private static double fade(double t) {
+            return t * t * t * (t * (t * 6 - 15) + 10);
+        }
+
+        private static double lerp(double t, double a, double b) {
+            return a + t * (b - a);
+        }
+
+        private static double grad(int hash, double x, double y) {
+            int h = hash & 15;
+            double u = h < 8 ? x : y;
+            double v = h < 4 ? y : h == 12 || h == 14 ? x : 0;
+            return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
+        }
+
+        public static double noise(double x, double y) {
+            int X = (int) Math.floor(x) & 255;
+            int Y = (int) Math.floor(y) & 255;
+            x -= Math.floor(x);
+            y -= Math.floor(y);
+            double u = fade(x);
+            double v = fade(y);
+            int A = perm[X] + Y, B = perm[X + 1] + Y;
+            return lerp(v, lerp(u, grad(perm[A], x, y), grad(perm[B], x - 1, y)),
+                    lerp(u, grad(perm[A + 1], x, y - 1), grad(perm[B + 1], x - 1, y - 1)));
+        }
+    }
+
+
 }
