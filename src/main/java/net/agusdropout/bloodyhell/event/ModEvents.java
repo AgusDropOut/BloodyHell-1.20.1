@@ -124,8 +124,10 @@ public class ModEvents {
                 event.put(BLOODPIG.get(), BloodPigEntity.setAttributes());
                 event.put(ONI.get(), OniEntity.setAttributes());
                 event.put(VESPER.get(), VesperEntity.setAttributes());
+                event.put(CINDER_ACOLYTE.get(), CinderAcolyteEntity.setAttributes());
                 event.put(ModEntityTypes.RITEKEEPER.get(), RitekeeperEntity.createAttributes().build());
                 event.put(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneEntity.createAttributes().build());
+                event.put(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantEntity.setAttributes().build());
 
 
             }
@@ -221,7 +223,7 @@ public class ModEvents {
                         player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(crimsonVeil -> {
                             ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(crimsonVeil.getCrimsonVeil()), player);
                         });
-                        ModMessages.sendToPlayer(new BossSyncS2CPacket(0,0,false,false), player);
+                        //ModMessages.sendToPlayer(new BossSyncS2CPacket(0,0,false,false), player);
                     }
                 }
             }
@@ -230,7 +232,7 @@ public class ModEvents {
             public static void onPlayerAbandonWorld(EntityLeaveLevelEvent event) {
                 if(!event.getLevel().isClientSide()) {
                     if(event.getEntity() instanceof ServerPlayer player) {
-                        ModMessages.sendToPlayer(new BossSyncS2CPacket(0,0,false,false), player);
+                        //ModMessages.sendToPlayer(new BossSyncS2CPacket(0,0,false,false), player);
                     }
                 }
             }

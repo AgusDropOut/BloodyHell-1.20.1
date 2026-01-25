@@ -38,6 +38,10 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<TombBlockEntity>> TOMB_ENTITY =
             BLOCK_ENTITIES.register("tomb_be",
                     () -> BlockEntityType.Builder.of(TombBlockEntity::new, ModBlocks.TOMB_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BloodFireBlockEntity>> BLOOD_FIRE_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("blood_fire_block_entity",
+                    () -> BlockEntityType.Builder.of(BloodFireBlockEntity::new,
+                            ModBlocks.BLOOD_FIRE.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {

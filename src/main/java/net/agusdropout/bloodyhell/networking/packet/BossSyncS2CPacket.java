@@ -11,12 +11,15 @@ public class BossSyncS2CPacket {
     private final int maxHealth;
     private final boolean dead;
     private final boolean isNear;
+    private final int bossID;
 
-    public BossSyncS2CPacket(int health, int maxHealth, boolean dead, boolean isNear) {
+    public BossSyncS2CPacket(int health, int maxHealth, boolean dead, boolean isNear, int bossID) {
         this.health = health;
         this.maxHealth = maxHealth;
         this.dead = dead;
         this.isNear = isNear;
+        this.bossID = bossID;
+
     }
 
     public BossSyncS2CPacket(FriendlyByteBuf buf) {
@@ -24,6 +27,7 @@ public class BossSyncS2CPacket {
         this.maxHealth = buf.readInt();
         this.dead = buf.readBoolean();
         this.isNear = buf.readBoolean();
+        this.bossID = buf.readInt();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -31,12 +35,13 @@ public class BossSyncS2CPacket {
         buf.writeInt(maxHealth);
         buf.writeBoolean(dead);
         buf.writeBoolean(isNear);
+        buf.writeInt(bossID);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ClientBossBarData.setCurrentBoss(health, maxHealth, dead,isNear);
+            ClientBossBarData.setCurrentBoss(health, maxHealth, dead,isNear, bossID);
         });
         return true;
     }

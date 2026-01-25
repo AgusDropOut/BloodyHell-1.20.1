@@ -58,6 +58,8 @@ public class ModParticles {
             PARTICLE_TYPES.register("eye_particle", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> CHILL_FLAME_PARTICLE =
             PARTICLE_TYPES.register("chill_flame_particle", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> CHILL_BLACK_PARTICLE =
+            PARTICLE_TYPES.register("chill_black_particle", () -> new SimpleParticleType(false));
     public static final RegistryObject<ParticleType<SimpleBlockParticleOptions>> SIMPLE_BLOCK_PARTICLE =
             PARTICLE_TYPES.register("simple_block_particle", () ->
                     new ParticleType<SimpleBlockParticleOptions>(false, SimpleBlockParticleOptions.DESERIALIZER) {

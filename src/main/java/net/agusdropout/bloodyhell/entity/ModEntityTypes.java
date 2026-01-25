@@ -211,6 +211,17 @@ public class ModEntityTypes {
                     .sized(1.0f, 2.0f) // Adjust size based on model
                     .build(new ResourceLocation(BloodyHell.MODID, "ritekeeper").toString()));
 
+    public static final RegistryObject<EntityType<CinderAcolyteEntity>> CINDER_ACOLYTE =
+            ENTITY_TYPES.register("cinder_acolyte",
+                    () -> EntityType.Builder.of(CinderAcolyteEntity::new, MobCategory.MONSTER)
+                            .sized(0.8f, 2.1f) // Tall and thin
+                            .build(new ResourceLocation(BloodyHell.MODID, "cinder_acolyte").toString()));
+    public static final RegistryObject<EntityType<FailedRemnantEntity>> FAILED_REMNANT =
+            ENTITY_TYPES.register("failed_remnant",
+                    () -> EntityType.Builder.of(FailedRemnantEntity::new, MobCategory.MONSTER)
+                            .sized(1.5f, 2f) // Wide but flat (Crawling)
+                            .build(new ResourceLocation(BloodyHell.MODID, "failed_remnant").toString()));
+
 
 
 

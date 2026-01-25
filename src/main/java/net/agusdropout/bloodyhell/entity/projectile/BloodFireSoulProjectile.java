@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -106,6 +108,7 @@ public class BloodFireSoulProjectile extends Projectile {
         super.onHit(result);
         if (this.level().isClientSide) return;
 
+        // Visual Explosion
         this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1.5F, Level.ExplosionInteraction.NONE);
 
         BlockPos impactPos = this.blockPosition();
@@ -115,12 +118,26 @@ public class BloodFireSoulProjectile extends Projectile {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -fireRadius; z <= fireRadius; z++) {
                     if (x*x + y*y + z*z <= fireRadius*fireRadius) {
+
                         BlockPos targetPos = impactPos.offset(x, y, z);
+
+                        // Check if space is valid for fire
                         if (this.level().getBlockState(targetPos).isAir()) {
                             BlockState belowState = this.level().getBlockState(targetPos.below());
-                            // Fix: Don't place on top of existing Blood Fire
+
+                            // Ensure there is a solid block below and we aren't replacing existing fire
                             if (!belowState.isAir() && !belowState.is(ModBlocks.BLOOD_FIRE.get())) {
+
+                                // 1. Place the Fire Block
                                 this.level().setBlockAndUpdate(targetPos, ModBlocks.BLOOD_FIRE.get().defaultBlockState());
+
+                                // 2. Get the Block Entity from the NEW FIRE POSITION (Not below!)
+                                BlockEntity be = this.level().getBlockEntity(targetPos);
+
+                                // 3. Set the Owner
+                                if (be instanceof BloodFireBlockEntity fireBe && this.getOwner() instanceof LivingEntity livingOwner) {
+                                    fireBe.setOwner(livingOwner);
+                                }
                             }
                         }
                     }
@@ -181,23 +198,23 @@ public class BloodFireSoulProjectile extends Projectile {
                     tailDir.z * 0.15 + oz * 0.1);
         }
 
-        // 3. OUTER LAYER (Dark Red)
-        for (int i = 0; i < 8; i++) {
-            double spread = 0.6;
-            double ox = (this.random.nextDouble() - 0.5D) * spread;
-            double oy = (this.random.nextDouble() - 0.5D) * spread;
-            double oz = (this.random.nextDouble() - 0.5D) * spread;
-
-            float darkness = 0.5f + this.random.nextFloat() * 0.2f;
-            Vector3f color = new Vector3f(darkness, 0.0f, 0.0f);
-
-            this.level().addParticle(new MagicParticleOptions(
-                            color, 0.5f, false, 30),
-                    baseX + ox, baseY + oy, baseZ + oz,
-                    tailDir.x * 0.05,
-                    tailDir.y * 0.05,
-                    tailDir.z * 0.05);
-        }
+       // // 3. OUTER LAYER (Dark Red)
+       // for (int i = 0; i < 8; i++) {
+       //     double spread = 0.6;
+       //     double ox = (this.random.nextDouble() - 0.5D) * spread;
+       //     double oy = (this.random.nextDouble() - 0.5D) * spread;
+       //     double oz = (this.random.nextDouble() - 0.5D) * spread;
+//
+       //     float darkness = 0.5f + this.random.nextFloat() * 0.2f;
+       //     Vector3f color = new Vector3f(darkness, 0.0f, 0.0f);
+//
+       //     this.level().addParticle(new MagicParticleOptions(
+       //                     color, 0.5f, false, 30),
+       //             baseX + ox, baseY + oy, baseZ + oz,
+       //             tailDir.x * 0.05,
+       //             tailDir.y * 0.05,
+       //             tailDir.z * 0.05);
+       // }
 
 
 

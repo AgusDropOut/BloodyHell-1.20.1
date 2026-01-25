@@ -10,6 +10,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel; // Needed for owner lookup
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,34 +21,59 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable; // Good practice
 
 import java.util.List;
+import java.util.UUID;
 
 public class BloodStainEntity extends Entity {
 
     private static final EntityDataAccessor<Direction> ATTACH_FACE = SynchedEntityData.defineId(BloodStainEntity.class, EntityDataSerializers.DIRECTION);
     private static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(BloodStainEntity.class, EntityDataSerializers.FLOAT);
 
-    private static final int MAX_LIFE = 600; // 30 Seconds
+    private static final int MAX_LIFE = 600;
     private int lifeTicks = MAX_LIFE;
+
+    @Nullable
+    private UUID ownerUUID; // Store the owner's ID
 
     public BloodStainEntity(EntityType<?> type, Level level) {
         super(type, level);
         this.noPhysics = true;
     }
 
-    // Original Constructor (Default Size 1.0)
     public BloodStainEntity(Level level, double x, double y, double z, Direction face) {
         this(level, x, y, z, face, 1.0f);
     }
 
-    // New Constructor (Custom Size)
     public BloodStainEntity(Level level, double x, double y, double z, Direction face, float size) {
         this(ModEntityTypes.BLOOD_STAIN_ENTITY.get(), level);
         this.setPos(x, y, z);
         this.setAttachFace(face);
         this.setSize(size);
     }
+
+    // --- OWNER LOGIC ---
+    public void setOwner(LivingEntity owner) {
+        this.ownerUUID = owner.getUUID();
+    }
+
+    public boolean isSafe(LivingEntity entity) {
+        if (this.ownerUUID == null) return false;
+
+        // 1. Is it the owner?
+        if (entity.getUUID().equals(this.ownerUUID)) return true;
+
+        // 2. Is it an ally? (Server only check)
+        if (!this.level().isClientSide && this.level() instanceof ServerLevel serverLevel) {
+            Entity owner = serverLevel.getEntity(this.ownerUUID);
+            if (owner != null) {
+                return entity.isAlliedTo(owner) || owner.isAlliedTo(entity);
+            }
+        }
+        return false;
+    }
+    // -------------------
 
     @Override
     protected void defineSynchedData() {
@@ -59,30 +85,30 @@ public class BloodStainEntity extends Entity {
     public void tick() {
         super.tick();
 
-        // --- 1. SPAWN AUDIO (First Tick) ---
-        if (this.tickCount == 1) {
-            this.level().playSound(null, this.blockPosition(), SoundEvents.SLIME_BLOCK_BREAK, SoundSource.AMBIENT, 1.0f, 0.5f);
-        }
+       // if (this.tickCount == 1) {
+       //     this.level().playSound(null, this.blockPosition(), SoundEvents.SLIME_BLOCK_BREAK, SoundSource.AMBIENT, 1.0f, 0.5f);
+       // }
 
-        // --- 2. CLIENT VISUALS (Dripping) ---
         if (this.level().isClientSide && this.tickCount % 15 == 0) {
             spawnDrippingParticles();
         }
 
-        // --- 3. SERVER LOGIC ---
         if (!this.level().isClientSide) {
             if (this.lifeTicks-- <= 0) {
                 this.discard();
                 return;
             }
 
-            // Collision / Mechanic Logic (Every 5 ticks)
             if (this.tickCount % 5 == 0) {
-                // Inflate box based on size so larger stains catch more entities
                 AABB box = this.getBoundingBox().inflate(0.2 * getSize());
                 List<LivingEntity> victims = this.level().getEntitiesOfClass(LivingEntity.class, box);
 
                 for (LivingEntity victim : victims) {
+
+                    // --- SAFETY CHECK ---
+                    if (isSafe(victim)) continue;
+                    // --------------------
+
                     victim.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 100, 0));
 
                     if (this.getAttachFace() == Direction.UP) {
@@ -96,7 +122,6 @@ public class BloodStainEntity extends Entity {
     private void spawnDrippingParticles() {
         Direction face = this.getAttachFace();
         if (face != Direction.UP) {
-            // Scale drip spawn area by size
             double range = 0.6 * getSize();
             double x = this.getX() + (random.nextDouble() - 0.5) * range;
             double y = this.getY() + (random.nextDouble() - 0.5) * range;
@@ -106,7 +131,6 @@ public class BloodStainEntity extends Entity {
         }
     }
 
-    // --- GETTERS / SETTERS ---
     public void setAttachFace(Direction face) { this.entityData.set(ATTACH_FACE, face); }
     public Direction getAttachFace() { return this.entityData.get(ATTACH_FACE); }
 
@@ -126,6 +150,10 @@ public class BloodStainEntity extends Entity {
         if (tag.contains("Size")) {
             this.setSize(tag.getFloat("Size"));
         }
+        // Load Owner
+        if (tag.hasUUID("Owner")) {
+            this.ownerUUID = tag.getUUID("Owner");
+        }
     }
 
     @Override
@@ -133,6 +161,10 @@ public class BloodStainEntity extends Entity {
         tag.putInt("Life", lifeTicks);
         tag.putInt("Face", getAttachFace().get3DDataValue());
         tag.putFloat("Size", getSize());
+        // Save Owner
+        if (this.ownerUUID != null) {
+            tag.putUUID("Owner", this.ownerUUID);
+        }
     }
 
     @Override

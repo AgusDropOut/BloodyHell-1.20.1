@@ -1,5 +1,5 @@
 package net.agusdropout.bloodyhell.block.custom;
-
+import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
@@ -13,12 +13,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock; // Import EntityBlock
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,7 +31,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
+// Implements EntityBlock now
+public class BloodFireBlock extends Block implements SimpleWaterloggedBlock, EntityBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape DOWN_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
@@ -38,6 +40,13 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
     public BloodFireBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+    }
+
+    // --- BLOCK ENTITY LOGIC ---
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BloodFireBlockEntity(pos, state);
     }
 
     @Override
@@ -81,6 +90,17 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide && !entity.fireImmune() && entity instanceof LivingEntity living) {
+
+            // --- NEW OWNER CHECK LOGIC ---
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof BloodFireBlockEntity fireEntity) {
+                // If it's safe (Owner or Ally), STOP here.
+                if (fireEntity.isSafe(living)) {
+                    return;
+                }
+            }
+            // -----------------------------
+
             living.hurt(level.damageSources().inFire(), 2.0F);
             MobEffectInstance currentEffect = living.getEffect(ModEffects.BLOOD_FIRE_EFFECT.get());
 
@@ -92,11 +112,10 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
                 }
             }
         }
-
-
     }
 
     // --- VISUALS (ANIMATION TICK) ---
+    // (Kept exactly the same as your code)
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         double x = pos.getX() + 0.5D;
@@ -123,11 +142,10 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
                         pos.getX() + random.nextDouble(), pos.getY() + 0.8D, pos.getZ() + random.nextDouble(),
                         0.0D, 0.05D, 0.0D);
             }
-            // Occasional Underwater Flame
             if (random.nextInt(10) == 0) {
                 level.addParticle(ModParticles.BLOOD_FLAME.get(),
                         pos.getX() + random.nextDouble(), pos.getY() + 0.2D, pos.getZ() + random.nextDouble(),
-                        0.0D, 0.02D, 0.0D); // Gentle rise
+                        0.0D, 0.02D, 0.0D);
             }
 
         } else {
@@ -136,13 +154,12 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
                 level.playLocalSound(x, y, z, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
             }
 
-            // Standard Blood Flames (Spawn more frequently)
             for (int i = 0; i < 3; ++i) {
                 level.addParticle(ModParticles.BLOOD_FLAME.get(),
                         pos.getX() + random.nextDouble(),
                         pos.getY() + 0.1D + random.nextDouble() * 0.3D,
                         pos.getZ() + random.nextDouble(),
-                        0.0D, 0.03D + random.nextDouble() * 0.02D, 0.0D); // Natural flame rise velocity
+                        0.0D, 0.03D + random.nextDouble() * 0.02D, 0.0D);
             }
 
             for (int i = 0; i < 3; ++i) {
@@ -150,10 +167,9 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
                         pos.getX() + random.nextDouble(),
                         pos.getY() + 0.1D + random.nextDouble() * 0.3D,
                         pos.getZ() + random.nextDouble(),
-                        0.0D, 0, 0.0D); // Natural flame rise velocity
+                        0.0D, 0, 0.0D);
             }
 
-            // Smoke
             if (random.nextInt(5) == 0) {
                 level.addParticle(ParticleTypes.LARGE_SMOKE, x, y + 0.5D, z, 0.0D, 0.05D, 0.0D);
             }
@@ -164,8 +180,6 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock {
     public boolean isRandomlyTicking(BlockState p_49921_) {
         return true;
     }
-
-
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {

@@ -180,6 +180,7 @@ public class SmallCrimsonDagger extends Projectile {
                     exactHit.x, exactHit.y, exactHit.z, face);
 
             this.level().addFreshEntity(stain);
+            stain.setOwner((LivingEntity) this.getOwner());
         }
     }
 

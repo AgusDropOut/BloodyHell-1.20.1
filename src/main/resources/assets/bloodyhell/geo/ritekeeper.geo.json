@@ -280,9 +280,9 @@
 					]
 				},
 				{
-					"name": "lefthand",
+					"name": "leftCastParticle",
 					"parent": "leftArm",
-					"pivot": [6.5, 17.25, 4]
+					"pivot": [6.37923, 17.22235, 3.98438]
 				},
 				{
 					"name": "rightArm",
@@ -398,9 +398,9 @@
 					]
 				},
 				{
-					"name": "righthand",
+					"name": "rightCastParticle",
 					"parent": "rightArm",
-					"pivot": [-6.75, 17.5, 4]
+					"pivot": [-7.37923, 17.22235, 3.98438]
 				},
 				{
 					"name": "cape",
@@ -653,12 +653,7 @@
 				{
 					"name": "heart",
 					"parent": "chest",
-					"pivot": [0, 25.5, 3.75]
-				},
-				{
-					"name": "steam",
-					"parent": "chest",
-					"pivot": [0, 17.5, 3.75]
+					"pivot": [0.00521, 26.01563, 4.375]
 				},
 				{
 					"name": "skirt",
@@ -742,6 +737,11 @@
 							}
 						}
 					]
+				},
+				{
+					"name": "steam",
+					"parent": "ritekeeper",
+					"pivot": [0.05469, 10.34115, 4.38542]
 				}
 			]
 		}

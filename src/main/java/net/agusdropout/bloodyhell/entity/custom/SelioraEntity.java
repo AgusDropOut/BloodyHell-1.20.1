@@ -42,7 +42,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Random;
 
-public class SelioraEntity extends Monster implements GeoEntity, BloodyHellBoss {
+public class SelioraEntity extends Monster implements GeoEntity{
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     private int riseCooldown = 250;
@@ -198,7 +198,7 @@ public class SelioraEntity extends Monster implements GeoEntity, BloodyHellBoss 
 
             if (!this.level().isClientSide) {
                 this.level().players().forEach(player -> {
-                    ModMessages.sendToPlayer(new BossSyncS2CPacket(0, (int)getMaxHealth(), true, false), (ServerPlayer) player);
+                    ModMessages.sendToPlayer(new BossSyncS2CPacket(0, (int)getMaxHealth(), true, false,2), (ServerPlayer) player);
                 });
             }
 
@@ -522,7 +522,7 @@ public class SelioraEntity extends Monster implements GeoEntity, BloodyHellBoss 
         if (!this.level().isClientSide && this.tickCount % 20 == 0) {
             this.level().players().forEach(player -> {
                 boolean isNear = this.isAlive() && player.distanceTo(this) < 50;
-                ModMessages.sendToPlayer(new BossSyncS2CPacket((int) getHealth(), (int) getMaxHealth(), isDeadOrDying(), isNear), (ServerPlayer) player);
+                ModMessages.sendToPlayer(new BossSyncS2CPacket((int) getHealth(), (int) getMaxHealth(), isDeadOrDying(), isNear,2), (ServerPlayer) player);
             });
         }
     }
@@ -533,7 +533,7 @@ public class SelioraEntity extends Monster implements GeoEntity, BloodyHellBoss 
         if (!this.level().isClientSide) {
             this.level().players().forEach(player -> {
                 ModMessages.sendToPlayer(
-                        new BossSyncS2CPacket((int) getHealth(), (int) getMaxHealth(), isDeadOrDying(), false),
+                        new BossSyncS2CPacket((int) getHealth(), (int) getMaxHealth(), isDeadOrDying(), false,2),
                         (ServerPlayer) player
                 );
             });

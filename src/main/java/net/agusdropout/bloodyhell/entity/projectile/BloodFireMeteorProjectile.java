@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -104,13 +106,39 @@ public class BloodFireMeteorProjectile extends Projectile {
 
     private void launch() {
         this.entityData.set(LAUNCHED, true);
+
         if (this.getOwner() instanceof LivingEntity owner) {
-            Vec3 look = owner.getLookAngle();
-            Vec3 targetPos = owner.getEyePosition().add(look.scale(20.0));
-            Vec3 dir = targetPos.subtract(this.position()).normalize();
+            Vec3 dir;
+
+            // 1. ROBUST AI TARGETING (Fix for Mobs/Bosses)
+            if (owner instanceof net.minecraft.world.entity.Mob mob && mob.getTarget() != null) {
+                LivingEntity target = mob.getTarget();
+
+                // Calculate vector from Meteor -> Target Prediction
+                // We aim at the target's center, not feet.
+                Vec3 targetPos = target.getBoundingBox().getCenter();
+
+                // Optional: Predictive aiming (Aim slightly ahead based on target movement)
+                // targetPos = targetPos.add(target.getDeltaMovement().scale(10));
+
+                dir = targetPos.subtract(this.position()).normalize();
+            }
+            // 2. PLAYER / NO TARGET FALLBACK
+            else {
+                Vec3 look = owner.getLookAngle();
+                // Project a point far ahead to get a vector
+                Vec3 targetPos = owner.getEyePosition().add(look.scale(20.0));
+                dir = targetPos.subtract(this.position()).normalize();
+            }
+
+            // 3. Apply Velocity
             this.setDeltaMovement(dir.scale(this.speed));
+
+            // 4. Sound
             this.level().playSound(null, getX(), getY(), getZ(), SoundEvents.GHAST_SHOOT, SoundSource.HOSTILE, 2.0f, 0.5f);
+
         } else {
+            // Fallback if owner is null/dead: Just drop down
             this.setDeltaMovement(new Vec3(0, -1, 0).normalize().scale(this.speed));
         }
     }
@@ -129,6 +157,7 @@ public class BloodFireMeteorProjectile extends Projectile {
 
         BloodStainEntity stain = new BloodStainEntity(this.level(), getX(), getY(), getZ(), Direction.UP, size * 2.5f);
         this.level().addFreshEntity(stain);
+        stain.setOwner((LivingEntity) this.getOwner());
 
         placeFire(size);
         damageArea(size);
@@ -174,6 +203,13 @@ public class BloodFireMeteorProjectile extends Projectile {
                     BlockPos target = center.offset(x, 0, z);
                     if (this.level().getBlockState(target).isAir() && !this.level().getBlockState(target.below()).isAir()) {
                         this.level().setBlockAndUpdate(target, ModBlocks.BLOOD_FIRE.get().defaultBlockState());
+                        // 2. Get the Block Entity
+                        BlockEntity be = this.level().getBlockEntity(target);
+
+                        // 3. Set the Owner
+                        if (be instanceof BloodFireBlockEntity fireBe) {
+                            fireBe.setOwner((LivingEntity) this.getOwner()); // Pass the LivingEntity owner
+                        }
                     }
                 }
             }
@@ -216,7 +252,7 @@ public class BloodFireMeteorProjectile extends Projectile {
         ParticleHelper.spawnSphereGradient(level(), position().add(0, size * 0.5, 0), size * 1.5, 25, motion.scale(0.1), (ratio) -> {
 
             // 1. Calculate Color based on ratio (0.0 = center, 1.0 = edge)
-            Vector3f color = ParticleHelper.gradient3(ratio, white, brightRed, darkRed);
+            Vector3f color = ParticleHelper.gradient3(ratio, white, brightRed, brightRed);
 
             // 2. Calculate Size (Core is smaller, Edge is smoke-like and huge)
             float pSize = (size * 0.4f) + (ratio * size * 0.5f);

@@ -89,6 +89,7 @@ public class BloodFireColumnProjectile extends Projectile {
             );
             BloodStainEntity stain = new BloodStainEntity(this.level(), this.getX(), this.getY(), this.getZ(), Direction.UP, 3.0f);
             this.level().addFreshEntity(stain);
+            stain.setOwner((LivingEntity) this.getOwner());
             if (!this.level().isClientSide) {
                 this.entityData.set(ERUPTED, true);
                 EntityCameraShake.cameraShake(this.level(), this.position(), 20.0f, 2f, 5, 12); // Massive shake
@@ -207,7 +208,7 @@ public class BloodFireColumnProjectile extends Projectile {
         ParticleHelper.spawnCylinderGradient(level(), pos, COLUMN_RADIUS * 1.2, COLUMN_HEIGHT, 30, 0.4, (ratio) -> {
 
             // Color Gradient
-            Vector3f color = ParticleHelper.gradient3(ratio, core, mid, edge);
+            Vector3f color = ParticleHelper.gradient3(ratio, core, mid, mid);
 
             // Size Gradient (Center = small/tight, Edge = large/wispy)
             float pSize = 0.5f + (ratio * 0.8f);

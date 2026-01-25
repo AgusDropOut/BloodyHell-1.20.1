@@ -98,7 +98,18 @@ public class MagicParticle extends TextureSheetParticle {
     // We override this to use our custom Additive Render Type
     @Override
     public ParticleRenderType getRenderType() {
-        return PARTICLE_SHEET_ADDITIVE;
+        // Calculate perceived brightness (Luminance)
+        // Formula: 0.299*R + 0.587*G + 0.114*B (Standard human eye perception)
+        float brightness = (this.rCol * 0.299f) + (this.gCol * 0.587f) + (this.bCol * 0.114f);
+
+        // THRESHOLD: 0.3f
+        // If the color is very dark (Black, deep blood, void), use Translucent.
+        // If it's bright (Fire, Neon), use your Custom Additive type.
+        if (brightness < 0.3f) {
+            return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT; // Standard Vanilla Blending
+        } else {
+            return PARTICLE_SHEET_ADDITIVE; // Your Custom Glow
+        }
     }
 
     // Force full brightness (Emissive)

@@ -1,0 +1,147 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
+			},
+			"bones": [
+				{
+					"name": "failed_remnant",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [0, 20, -21.25], "size": [16.25, 24.25, 0], "uv": [48, 27]},
+						{"origin": [-16.25, 20, -21.25], "size": [16.25, 24.25, 0], "uv": [0, 51]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "failed_remnant",
+					"pivot": [4, 15, -21],
+					"cubes": [
+						{"origin": [-6, 14, -23], "size": [12, 12, 12], "uv": [0, 27]}
+					]
+				},
+				{
+					"name": "hat",
+					"parent": "head",
+					"pivot": [1, 26.25, -19],
+					"cubes": [
+						{"origin": [-5, 26, -22], "size": [10, 3, 10], "uv": [32, 51]}
+					],
+					"locators": {
+						"_null_IK_HAT_CONTROLLER": [0, 37, -10]
+					}
+				},
+				{
+					"name": "hat1",
+					"parent": "hat",
+					"pivot": [0, 28.875, -16.375],
+					"cubes": [
+						{"origin": [-4, 29, -21], "size": [8, 3, 8], "uv": [32, 64]}
+					]
+				},
+				{
+					"name": "hat2",
+					"parent": "hat1",
+					"pivot": [0, 31.24179, -16.5803],
+					"cubes": [
+						{"origin": [-3, 30.75, -18.75], "size": [6, 3, 6], "pivot": [0, 32.25, -15.75], "rotation": [-22.5, 0, 0], "uv": [72, 51]}
+					]
+				},
+				{
+					"name": "hat3",
+					"parent": "hat2",
+					"pivot": [0, 32.72102, -15.42317],
+					"cubes": [
+						{"origin": [-2, 32.23358, -16.41061], "size": [4, 4, 4], "pivot": [0, 34.23358, -14.41061], "rotation": [-45, 0, 0], "uv": [36, 75]}
+					]
+				},
+				{
+					"name": "hat4",
+					"parent": "hat3",
+					"pivot": [0, 35.59113, -14.26185],
+					"cubes": [
+						{"origin": [-1, 34.70845, -13.93573], "size": [2, 5, 2], "pivot": [0, 36.20845, -12.93573], "rotation": [-67.5, 0, 0], "uv": [52, 75]}
+					]
+				},
+				{
+					"name": "IK_HAT",
+					"parent": "hat4",
+					"pivot": [0, 37.20845, -9.93573]
+				},
+				{
+					"name": "faceParticle",
+					"parent": "head",
+					"pivot": [-0.25, 17.25, -23]
+				},
+				{
+					"name": "tail",
+					"parent": "failed_remnant",
+					"pivot": [4, 17.5, -11],
+					"locators": {
+						"_null_IK_TAIL_CONTROLLER": [0, 3, 29]
+					}
+				},
+				{
+					"name": "tail1",
+					"parent": "tail",
+					"pivot": [0, 19.5, -11],
+					"cubes": [
+						{"origin": [-7, 14.5, -12], "size": [13, 8, 19], "pivot": [4, 17.5, -11], "rotation": [-22.5, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "tail2",
+					"parent": "tail1",
+					"pivot": [-0.5, 11.65675, 6.08499],
+					"cubes": [
+						{"origin": [-4, 16.5, 7], "size": [7, 4, 9], "pivot": [4, 17.5, -11], "rotation": [-22.5, 0, 0], "uv": [64, 0]}
+					]
+				},
+				{
+					"name": "tail3",
+					"parent": "tail2",
+					"pivot": [-0.25, 7.74333, 14.20438],
+					"cubes": [
+						{"origin": [-3, 17.5, 16], "size": [5, 2, 11], "pivot": [4, 17.5, -11], "rotation": [-22.5, 0, 0], "uv": [64, 13]}
+					]
+				},
+				{
+					"name": "tail4",
+					"parent": "tail3",
+					"pivot": [-0.5, 3.79252, 24.47368],
+					"cubes": [
+						{"origin": [-2, 18.5, 27], "size": [3, 0, 7], "pivot": [4, 17.5, -11], "rotation": [-22.5, 0, 0], "uv": [16, 75]}
+					]
+				},
+				{
+					"name": "IK_TAIL",
+					"parent": "tail4",
+					"pivot": [-0.5, 1.79252, 28.47368]
+				},
+				{
+					"name": "rightArm",
+					"parent": "failed_remnant",
+					"pivot": [-7.25, 22.25, -10.75],
+					"cubes": [
+						{"origin": [-13.25, 3.25, -12.75], "size": [4, 20, 4], "pivot": [-11.25, 13.25, -10.75], "rotation": [0, 0, 22.5], "uv": [64, 64]}
+					]
+				},
+				{
+					"name": "leftArm",
+					"parent": "failed_remnant",
+					"pivot": [5.5, 22.25, -10.75],
+					"cubes": [
+						{"origin": [8.5, 3.25, -12.75], "size": [4, 20, 4], "pivot": [10.5, 13.25, -10.75], "rotation": [0, 0, -22.5], "uv": [0, 75]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -188,6 +188,7 @@ public class BloodSlashEntity extends Projectile {
                     this.level(), x, y, z, this.getYRot(), face
             );
             this.level().addFreshEntity(decal);
+            decal.setOwner((LivingEntity) this.getOwner());
         }
     }
 
