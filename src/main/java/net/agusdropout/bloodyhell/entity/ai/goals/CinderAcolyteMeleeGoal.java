@@ -20,9 +20,6 @@ public class CinderAcolyteMeleeGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        System.out.println("isFlameAttacking: " + this.mob.isFlameAttacking());
-        System.out.println("isMeleeReady: " + this.mob.isMeleeReady());
-        System.out.println("distanceToSqr Target: " + (this.mob.getTarget() != null ? this.mob.distanceToSqr(this.mob.getTarget()) : "No Target"));
         LivingEntity target = this.mob.getTarget();
         return target != null && target.isAlive()
                 && this.mob.distanceTo(target) < 2.0D // Very close range

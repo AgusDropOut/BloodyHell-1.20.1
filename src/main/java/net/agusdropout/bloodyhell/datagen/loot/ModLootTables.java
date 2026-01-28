@@ -104,6 +104,17 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(ModBlocks.BLOODY_STONE_TILES_WALL.get());
             this.dropSelf(ModBlocks.BLOODY_STONE_TILES_STAIRS.get());
 
+            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get());
+            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get());
+            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get());
+            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get());
+            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get());
+            this.dropSelf(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get());
+            this.dropSelf(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get());
+            this.dropSelf(ModBlocks.ANCIENT_BLOODY_LAMP.get());
+            this.dropOther(ModBlocks.ANCIENT_TORCH_BLOCK.get(),ModItems.ANCIENT_TORCH_ITEM.get());
+            this.dropSelf(ModBlocks.ANCIENT_BLOOD_CAPSULE.get());
+
 
 
 
@@ -474,6 +485,35 @@ public class ModLootTables extends LootTableProvider {
                             .setRolls(ConstantValue.exactly(1))
                     )
             );
+            this.add(ModEntityTypes.CINDER_ACOLYTE.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+
+            this.add(ModEntityTypes.FAILED_REMNANT.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+            this.add(ModEntityTypes.BLOOD_FIRE_SOUL.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+            this.add(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+            this.add(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+
+
+
 
 
 

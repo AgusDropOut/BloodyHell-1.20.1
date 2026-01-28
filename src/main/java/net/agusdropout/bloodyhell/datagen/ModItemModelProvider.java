@@ -82,6 +82,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         egg(ModItems.VEIL_STALKER_SPAWN_EGG);
         egg(ModItems.CYCLOPS_ENTITY_SPAWN_EGG);
         egg(ModItems.GRAVE_WALKER_SPAWN_EGG);
+        egg(ModItems.CINDER_ACOLYTE_SPAWN_EGG);
+        egg(ModItems.FAILED_REMNANT_SPAWN_EGG);
 
         //Food Items
         normalItem(ModItems.GOREHOG_RAW_STEAK);
@@ -173,6 +175,23 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(ModBlocks.BLOOD_PLANKS_STAIRS);
         evenSimplerBlockItem(ModBlocks.BLOOD_PLANKS_SLAB);
         evenSimplerBlockItem(ModBlocks.BLOOD_PLANKS_FENCE_GATE);
+
+
+
+
+
+        //Ancient Bricks
+        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS);
+        wallItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS);
+        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS);
+        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB);
+        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN);
+        evenSimplerBlockItem(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS);
+        evenSimplerBlockItem(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS);
+        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_LAMP);
+        blockItem(ModItems.ANCIENT_TORCH_ITEM, ModBlocks.ANCIENT_TORCH_BLOCK);
+
+
 
         //Blasphemous Biome
         evenSimplerBlockItem(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
@@ -334,5 +353,15 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .renderType("cutout");
     }
 
+
+
+    public void blockItem(RegistryObject<Item> item, RegistryObject<Block> block) {
+
+        ResourceLocation Itemid = ForgeRegistries.ITEMS.getKey(item.get());
+        ResourceLocation Blockid = ForgeRegistries.BLOCKS.getKey(block.get());
+
+
+        this.withExistingParent(Itemid.getPath(), modLoc("block/" + Blockid.getPath()));
+    }
 
 }

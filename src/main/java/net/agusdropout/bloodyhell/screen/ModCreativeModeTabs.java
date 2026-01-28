@@ -70,6 +70,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.VEIL_STALKER_SPAWN_EGG.get());
                         output.accept(ModItems.GRAVE_WALKER_SPAWN_EGG.get());
                         output.accept(ModItems.CYCLOPS_ENTITY_SPAWN_EGG.get());
+                        output.accept(ModItems.CINDER_ACOLYTE_SPAWN_EGG.get());
+                        output.accept(ModItems.FAILED_REMNANT_SPAWN_EGG.get());
 
                         // --- Food Items ---
                         output.accept(ModItems.Eyeball.get());
@@ -153,6 +155,19 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.BLOODY_STONE_BRICKS_FENCE.get());
                         output.accept(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get());
                         output.accept(ModBlocks.BLOODY_STONE_BRICKS_SLAB.get());
+
+                        // --- Ancient Bloody Bricks ---
+                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get());
+                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get());
+                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get());
+                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get());
+                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get());
+                        output.accept(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get());
+                        output.accept(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get());
+                        output.accept(ModBlocks.ANCIENT_BLOODY_LAMP.get());
+                        output.accept(ModItems.ANCIENT_TORCH_ITEM.get());
+                        output.accept(ModBlocks.ANCIENT_BLOOD_CAPSULE.get());
+
 
                         // --- Wood ---
                         output.accept(ModBlocks.BLOOD_LOG.get());

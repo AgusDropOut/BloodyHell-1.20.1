@@ -70,6 +70,17 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get())
                 .add(ModBlocks.BLOODY_STONE_BRICKS_WALL.get())
 
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get())
+                .add(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get())
+                .add(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get())
+                .add(ModBlocks.ANCIENT_BLOODY_LAMP.get())
+                .add(ModBlocks.ANCIENT_TORCH_BLOCK.get())
+                .add(ModBlocks.ANCIENT_BLOOD_CAPSULE.get())
+
                 .add(ModBlocks.SMALL_ROCKS.get())
 
                 .add(ModBlocks.BLOOD_ALTAR.get())
@@ -134,12 +145,27 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.POLISHED_BLOODY_STONE_FENCE.get())
                 .add(ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get())
                 .add(ModBlocks.POLISHED_BLOODY_STONE_WALL.get())
+
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get())
+                .add(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get())
+                .add(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get())
+                .add(ModBlocks.ANCIENT_BLOODY_LAMP.get())
+                .add(ModBlocks.ANCIENT_TORCH_BLOCK.get())
+                .add(ModBlocks.ANCIENT_BLOOD_CAPSULE.get())
+
+
                 .add(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get())
                 .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get())
                 .add(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .add(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+
+
 
 
 
@@ -200,6 +226,7 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(BlockTags.WALLS)
                 .add(ModBlocks.BLOODY_STONE_TILES_WALL.get())
                 .add(ModBlocks.POLISHED_BLOODY_STONE_WALL.get())
+                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
                 .add(ModBlocks.BLOODY_STONE_WALL.get());
 
 

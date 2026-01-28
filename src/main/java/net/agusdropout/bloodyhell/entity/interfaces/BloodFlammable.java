@@ -22,5 +22,6 @@ public interface BloodFlammable {
     }
 
 
+
     Level getLevel();
 }

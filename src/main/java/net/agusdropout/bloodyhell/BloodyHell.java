@@ -169,20 +169,28 @@ public class BloodyHell
                     Animal::checkMobSpawnRules);
             SpawnPlacements.register(ModEntityTypes.OFFSPRING_OF_THE_UNKNOWN.get(),
                     SpawnPlacements.Type.ON_GROUND,
-                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, // O MOTION_BLOCKING si es interior con techo
-                    Monster::checkAnyLightMonsterSpawnRules); // <--- AQUÍ ESTÁ EL CAMBIO
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Monster::checkAnyLightMonsterSpawnRules);
 
             // CAMBIO 2: Blasphemous Malformation
             SpawnPlacements.register(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(),
                     SpawnPlacements.Type.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Monster::checkAnyLightMonsterSpawnRules); // <--- USA ESTA REGLA;
+                    Monster::checkAnyLightMonsterSpawnRules);
             SpawnPlacements.register(ModEntityTypes.HORNED_WORM.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Monster::checkMonsterSpawnRules);
             SpawnPlacements.register(ModEntityTypes.VEIL_STALKER.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Monster::checkMonsterSpawnRules);
+            SpawnPlacements.register(ModEntityTypes.CINDER_ACOLYTE.get(),
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Monster::checkAnyLightMonsterSpawnRules);
+            SpawnPlacements.register(ModEntityTypes.FAILED_REMNANT.get(),
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Monster::checkAnyLightMonsterSpawnRules);
 
 
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.BLOOD_FLOWER.getId(),ModBlocks.POTTED_BLOOD_FLOWER);
@@ -238,8 +246,9 @@ public class BloodyHell
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             Minecraft.getInstance().particleEngine.register(ModParticles.CYLINDER_PARTICLE.get(), new CylinderParticle.Provider());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_BLOOD.get(), RenderType.translucent());  //RENDERIZADO DE LOS LIQUIDOS PARA QUE SEAN TRANSPARNETES
+            ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_BLOOD.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_BLOOD.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ANCIENT_BLOOD_CAPSULE.get(), RenderType.translucent());
             MenuScreens.register(ModMenuTypes.BLOOD_WORKBENCH_MENU.get(), BloodWorkBenchScreen::new);
             MenuScreens.register(ModMenuTypes.VESPER_MENU.get(), VesperScreen::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_SEEKER.get(), BloodSeekerRenderer::new);

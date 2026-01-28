@@ -368,6 +368,8 @@ public class ModBlocks {
                             .sound(SILENT) // <--- APPLY THE FIX HERE
                             .lightLevel(state -> 15) // Ensure it still emits light if needed
                             .replaceable()
+                            .noLootTable()
+
             ));
 
     public static final RegistryObject<Block> BLASPHEMITE_ORE = registerBlock("blasphemite_ore",
@@ -376,6 +378,50 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops(),
                     UniformInt.of(3, 7))); // Experiencia que suelta (entre 3 y 7)
 
+
+    //Ancient Bloody Stone Bricks
+
+
+    public static final RegistryObject<Block> ANCIENT_BLOODY_STONE_BRICKS = registerBlock("ancient_bloody_stone_bricks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)
+                    .strength(2f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ANCIENT_BLOODY_STONE_BRICKS_SLAB = registerBlock("ancient_bloody_stone_bricks_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)
+                    .strength(2f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ANCIENT_BLOODY_STONE_BRICKS_STAIRS = registerBlock("ancient_bloody_stone_bricks_stairs",
+            () -> new StairBlock(() -> ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get().defaultBlockState(),
+                    BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)
+                    .strength(2f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ANCIENT_BLOODY_STONE_BRICKS_WALL = registerBlock("ancient_bloody_stone_bricks_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)
+                    .strength(2f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ANCIENT_BLOODY_STONE_BRICKS_COLUMN = registerBlock("ancient_bloody_stone_bricks_column",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)
+                    .strength(2f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ANCIENT_DETAILED_BLOODY_STONE_BRICKS = registerBlock("ancient_detailed_bloody_stone_bricks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)
+                    .strength(2f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ANCIENT_CHISELED_BLOODY_STONE_BRICKS= registerBlock("ancient_chiseled_bloody_stone_bricks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)
+                    .strength(2f)
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ANCIENT_BLOODY_LAMP = registerBlock("ancient_bloody_lamp", () -> new AncientBloodyLamp(
+            BlockBehaviour.Properties.copy(Blocks.LANTERN).strength(1F).lightLevel((state)-> 14).noOcclusion()));
+    public static final RegistryObject<Block> ANCIENT_TORCH_BLOCK = registerBlock("ancient_torch_block", () -> new AncientTorchBlock(
+            BlockBehaviour.Properties.copy(Blocks.TORCH).strength(1F).lightLevel((state) -> 14).noOcclusion()) {
+    });
+
+    public static final RegistryObject<Block> ANCIENT_BLOOD_CAPSULE = registerBlock("ancient_blood_capsule",
+            () -> new BloodCapsuleBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)
+                    .strength(0.3f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion())); // Reinforce noOcclusion here just in case
 
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

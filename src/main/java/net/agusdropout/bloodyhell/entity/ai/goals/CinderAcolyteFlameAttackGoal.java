@@ -51,7 +51,6 @@ public class CinderAcolyteFlameAttackGoal extends Goal {
 
     @Override
     public void tick() {
-        System.out.println("Cinder Acolyte Flame Attack Tick: " + this.attackTicks);
         this.attackTicks++;
 
         // --- LOCK DIRECTION LOGIC ---

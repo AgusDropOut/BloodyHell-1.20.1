@@ -1,0 +1,15 @@
+{
+  "name": "bloodyhell:sanctum_of_the_unbound/pit",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "bloodyhell:sanctum_of_the_unbound/dark_pit",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

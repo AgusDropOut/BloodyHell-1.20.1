@@ -168,6 +168,10 @@ public class ModItems {
             new Item.Properties()));
     public static final RegistryObject<Item> GRAVE_WALKER_SPAWN_EGG = ITEMS.register("grave_walker_entity_spawn_egg",() -> new ForgeSpawnEggItem(ModEntityTypes.GRAVE_WALKER_ENTITY,0x000000 ,0xd4a600,
             new Item.Properties()));
+    public static final RegistryObject<Item> CINDER_ACOLYTE_SPAWN_EGG = ITEMS.register("cinder_acolyte_entity_spawn_egg",() -> new ForgeSpawnEggItem(ModEntityTypes.CINDER_ACOLYTE,0x000000 ,0xd4a600,
+            new Item.Properties()));
+    public static final RegistryObject<Item> FAILED_REMNANT_SPAWN_EGG = ITEMS.register("failed_remnant_entity_spawn_egg",() -> new ForgeSpawnEggItem(ModEntityTypes.FAILED_REMNANT,0x000000 ,0xd4a600,
+            new Item.Properties()));
 
 
     //Mobs Drops
@@ -229,6 +233,11 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLASPHEMOUS_HULKING_MASS_OF_IRON = ITEMS.register("blasphemous_hulking_mass_of_iron", () -> new BlasphemousHulkingMassOfIronItem(ModToolTiers.RHNULL,10,-2.4F,
             new Item.Properties().stacksTo(1)));
+
+
+    //Ancient
+    public static final RegistryObject<Item> ANCIENT_TORCH_ITEM = ITEMS.register("ancient_torch",
+            () -> new AncientTorchItem(ModBlocks.ANCIENT_TORCH_BLOCK.get(), new Item.Properties()));
 
 
     //Spell Books

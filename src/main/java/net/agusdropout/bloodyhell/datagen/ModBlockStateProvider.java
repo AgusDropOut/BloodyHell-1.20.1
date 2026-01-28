@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.base.TallPlantBlock;
 import net.agusdropout.bloodyhell.block.custom.HangingSoulTreeLeavesBlock;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -83,6 +84,20 @@ public class ModBlockStateProvider extends BlockStateProvider {
         fenceBlock(((FenceBlock) ModBlocks.BLOOD_PLANKS_FENCE.get()), blockTexture(ModBlocks.BLOOD_PLANKS.get()));
         fenceGateBlock(((FenceGateBlock) ModBlocks.BLOOD_PLANKS_FENCE_GATE.get()), blockTexture(ModBlocks.BLOOD_PLANKS.get()));
 
+        //Ancient
+        blockWithItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS);
+        stairsBlock(((StairBlock) ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
+        slabBlock(((SlabBlock) ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
+        wallBlock(((WallBlock) ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
+        log((ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN));
+        blockWithItem(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS);
+        blockWithItem(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS);
+        crossBlock(ModBlocks.ANCIENT_BLOODY_LAMP);
+        simpleHorizontalBlock(ModBlocks.ANCIENT_BLOOD_CAPSULE);
+
+        wallBlockHorizontal(ModBlocks.ANCIENT_TORCH_BLOCK);
+
+
         //Blasphemous Biome
         rotatedCubeBlock(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
         blockWithItem(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
@@ -133,10 +148,25 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(block.get(), models().cubeAll(name(block), blockTexture(block.get())).renderType("translucent"));
     }
 
-    public void log(Supplier<? extends RotatedPillarBlock> block, String name) {
-        axisBlock(block.get(), texture(name));
-    }
+    public void log(Supplier<? extends Block> block) {
+        // 1. Get the block instance
+        Block blockInstance = block.get();
 
+        // 2. Ensure it is actually a RotatedPillarBlock before casting
+        if (blockInstance instanceof RotatedPillarBlock rotatedPillarBlock) {
+            // 3. Automatically generate texture location: "modid:block/registry_name"
+            ResourceLocation texture = blockTexture(blockInstance);
+
+            // 4. Generate the model (Same texture on all sides, rotated by axis)
+            axisBlock(rotatedPillarBlock, texture);
+
+            // NOTE: If you want a separate top texture (e.g. column_top), use this instead:
+            // axisBlock(rotatedPillarBlock, texture, extend(texture, "_top"));
+        } else {
+            // Fallback for safety (optional)
+            simpleBlockWithItem(blockInstance, cubeAll(blockInstance));
+        }
+    }
     private void crossBlock(Supplier<? extends Block> block, ModelFile model) {
         getVariantBuilder(block.get()).forAllStates(state ->
                 ConfiguredModel.builder()
@@ -265,6 +295,50 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 default     -> stem;
             };
             return ConfiguredModel.builder().modelFile(chosen).build();
+        });
+    }
+
+    // Add this method to your class
+    public void wallBlockHorizontal(Supplier<? extends Block> block) {
+        // 1. Get the model file from existing JSON or generate it if you prefer
+        // Assuming the model is at "assets/bloodyhell/models/block/modelName.json"
+        String modelName = name(block);
+        ModelFile model = models().getExistingFile(modLoc("block/" + modelName));
+
+
+        // 2. Generate the variants
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            return ConfiguredModel.builder()
+                    .modelFile(model)
+                    // Logic to match vanilla rotation:
+                    // North = 0 (No rotation needed usually if model faces North)
+                    // East = 90
+                    // South = 180
+                    // West = 270
+                    .rotationY((int) dir.toYRot())
+                    .build();
+        });
+    }
+
+    public void simpleHorizontalBlock(Supplier<? extends Block> block) {
+        // Automatically find the model based on the block's registry name
+        // e.g., "sanguine_crucible" -> "bloodyhell:block/sanguine_crucible"
+        ModelFile model = models().getExistingFile(modLoc("block/" + name(block)));
+
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+            // Rotation Logic:
+            // Assumes your Blockbench model faces NORTH (-Z).
+            // Minecraft Directions: South=0, West=90, North=180, East=270
+            // We add 180 so that North (180) becomes 0 rotation in the JSON.
+            int rotY = ((int) dir.toYRot() + 180) % 360;
+
+            return ConfiguredModel.builder()
+                    .modelFile(model)
+                    .rotationY(rotY)
+                    .build();
         });
     }
 
