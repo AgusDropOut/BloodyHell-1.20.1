@@ -41,25 +41,25 @@ public class CyclopsEntity extends Mob {
     public CyclopsEntity(EntityType<? extends Mob> type, Level level) {
         super(type, level);
         this.lineOfSightTicks = 0;
-        // Forzamos persistencia al crear
+
         this.setPersistenceRequired();
     }
 
-    // --- MÉTODOS AÑADIDOS PARA EVITAR DESPAWN ---
+
     @Override
     public void checkDespawn() {
-        // No hacer nada para evitar despawn natural
+
     }
 
     @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        // Nunca remover por distancia
+
         return false;
     }
 
     @Override
     public boolean isPersistenceRequired() {
-        // Siempre guardar en el disco
+
         return true;
     }
     // -------------------------------------------
@@ -76,7 +76,7 @@ public class CyclopsEntity extends Mob {
         return this.entityData.get(SYNCED_LINE_OF_SIGHT_TICKS);
     }
 
-    // ... [El resto de tus métodos spawnAmbientEyeParticles, spawnAttackBeamParticles se mantienen igual] ...
+
 
     private void spawnAmbientEyeParticles() {
         ParticleHelper.spawnHollowSphere(level(), ModParticles.EYE_PARTICLE.get(),

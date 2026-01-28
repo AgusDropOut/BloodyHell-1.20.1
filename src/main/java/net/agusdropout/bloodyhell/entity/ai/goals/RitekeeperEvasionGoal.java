@@ -8,6 +8,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -95,13 +98,68 @@ public class RitekeeperEvasionGoal extends Goal {
     }
 
     private void dashAway(LivingEntity target) {
-        Vec3 bossPos = this.mob.position();
+        Vec3 mobPos = this.mob.position();
         Vec3 targetPos = target.position();
-        Vec3 dir = bossPos.subtract(targetPos).normalize();
-        dir = new Vec3(dir.x, 0.2, dir.z).normalize();
 
-        this.mob.lookAt(target, 180.0f, 30.0f);
-        this.mob.setDeltaMovement(dir.scale(DASH_STRENGTH));
+        // Vector pointing FROM mob TO target (to prevent dashing into them)
+        Vec3 toPlayer = targetPos.subtract(mobPos).normalize();
+
+        // 1. Define the 8 compass directions (Normalized)
+        Vec3[] directions = {
+                new Vec3(1, 0, 0),   // East
+                new Vec3(-1, 0, 0),  // West
+                new Vec3(0, 0, 1),   // South
+                new Vec3(0, 0, -1),  // North
+                new Vec3(0.707, 0, 0.707),   // South-East
+                new Vec3(0.707, 0, -0.707),  // North-East
+                new Vec3(-0.707, 0, 0.707),  // South-West
+                new Vec3(-0.707, 0, -0.707)  // North-West
+        };
+
+        Vec3 bestDir = Vec3.ZERO;
+        double maxDistance = 0.0;
+
+        // 2. Iterate through all directions
+        for (Vec3 dir : directions) {
+
+            // SECURITY CHECK: Don't pick a direction that points towards the player.
+            // (Dot product > 0 means the angle is less than 90 degrees, i.e., roughly towards player)
+            if (dir.dot(toPlayer) > 0.5) continue;
+
+            // 3. Raycast to see how much space we have
+            // We check from eye height so we don't get blocked by carpets/grass
+            Vec3 start = mobPos.add(0, this.mob.getEyeHeight(), 0);
+            Vec3 end = start.add(dir.scale(EVADE_DISTANCE));
+
+            BlockHitResult result = this.mob.level().clip(new ClipContext(
+                    start,
+                    end,
+                    ClipContext.Block.COLLIDER,
+                    ClipContext.Fluid.NONE,
+                    this.mob
+            ));
+
+            // Calculate the valid distance (0 to EVADE_DISTANCE)
+            double dist = result.getLocation().distanceTo(start);
+
+            // 4. Score Logic: Pick the Furthest one
+            if (dist > maxDistance) {
+                maxDistance = dist;
+                bestDir = dir;
+            }
+        }
+
+        // 5. Apply the Dash
+        if (maxDistance > 1.0) { // Only dash if we have at least 1 block of space
+            // Add a small vertical hop (0.35) to clear slight obstacles
+            Vec3 finalVelocity = new Vec3(bestDir.x, 0.35, bestDir.z).normalize().scale(DASH_STRENGTH);
+
+            this.mob.lookAt(target, 180.0f, 30.0f); // Keep looking at player while dashing back/sideways
+            this.mob.setDeltaMovement(finalVelocity);
+        } else {
+            // FALLBACK: If completely cornered (no space > 1 block), jump straight UP over the enemy
+            this.mob.setDeltaMovement(0, 0.7, 0);
+        }
     }
 
     private void spawnParticleCloud() {

@@ -52,7 +52,9 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
     public static final int CD_PILLAR_MAX = 200;
 
     public RitekeeperEntity(EntityType<? extends Monster> type, Level level) {
+
         super(type, level);
+        this.setPersistenceRequired();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -71,7 +73,6 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(2, new RitekeeperFlamePillarGoal(this));
         this.goalSelector.addGoal(3, new RitekeeperFireMeteorGoal(this));
         this.goalSelector.addGoal(4, new RitekeeperSoulAttackGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
@@ -188,5 +189,22 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
                 );
             });
         }
+    }
+
+    @Override
+    public void checkDespawn() {
+
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+
+        return false;
+    }
+
+    @Override
+    public boolean isPersistenceRequired() {
+
+        return true;
     }
 }

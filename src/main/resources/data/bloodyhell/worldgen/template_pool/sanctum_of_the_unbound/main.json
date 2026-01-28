@@ -3,7 +3,7 @@
   "fallback": "bloodyhell:sanctum_of_the_unbound/terminator",
   "elements": [
     {
-      "weight": 5,
+      "weight": 3,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "bloodyhell:sanctum_of_the_unbound/corridor",
@@ -12,7 +12,7 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 2,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "bloodyhell:sanctum_of_the_unbound/lab",
@@ -21,19 +21,10 @@
       }
     },
     {
-      "weight": 2,
+      "weight": 4,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "bloodyhell:sanctum_of_the_unbound/intersection",
-        "processors": "minecraft:empty",
-        "projection": "rigid"
-      }
-    },
-    {
-      "weight": 1,
-      "element": {
-        "element_type": "minecraft:single_pool_element",
-        "location": "bloodyhell:sanctum_of_the_unbound/boss_room",
         "processors": "minecraft:empty",
         "projection": "rigid"
       }

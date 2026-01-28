@@ -1,12 +1,12 @@
 {
-  "name": "bloodyhell:sanctum_of_the_unbound/start",
+  "name": "bloodyhell:sanctum_of_the_unbound/boss_chain",
   "fallback": "minecraft:empty",
   "elements": [
     {
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "bloodyhell:sanctum_of_the_unbound/intersection_start",
+        "location": "bloodyhell:sanctum_of_the_unbound/boss_room",
         "processors": "minecraft:empty",
         "projection": "rigid"
       }
