@@ -18,10 +18,18 @@ import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
 
 public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpellBookItem> {
+    private static final int COST = 20;
+
 
     public BloodScratchSpellBookItem(Properties properties) {
         super(properties);
     }
+
+    @Override
+    public int getCrimsonCost() {
+        return COST;
+    }
+
 
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.minecraft.client.Minecraft;
@@ -50,14 +51,8 @@ public class CrimsonVeilHudOverlay  {
 
     public static boolean shouldDisplayBar() {
         Player player = minecraft.player;
-        Item heldItem = player.getMainHandItem().getItem();
-        return heldItem.equals(ModItems.BLOOD_SPELL_BOOK_SCRATCH.get()) ||
-                heldItem.equals(ModItems.BLOOD_SPELL_BOOK_BLOODBALL.get()) ||
-                heldItem.equals(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA.get()) ||
-                heldItem.equals(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get()) ||
-                heldItem.equals(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
-                || heldItem.equals(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
-                || heldItem.equals(ModItems.BLASPHEMOUS_IMPALER.get());
+        ItemStack heldItem = player.getMainHandItem();
+        return heldItem.is(ModTags.Items.CRIMSONVEIL_CONSUMER);
     }
 
     public static void renderOverlay(ForgeGui gui, GuiGraphics guiGraphics, float pt, int width, int height) {

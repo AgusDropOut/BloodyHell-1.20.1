@@ -25,10 +25,13 @@ import java.util.Optional;
 public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireColumnSpellBookItem> {
 
     private static final double SPELL_RADIUS = 15.0;
+    private static final int COST = 20;
 
     public BloodFireColumnSpellBookItem(Properties properties) {
         super(properties);
     }
+
+
 
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
@@ -165,6 +168,11 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
     @Override
     public int getCooldown() {
         return 40;
+    }
+
+    @Override
+    public int getCrimsonCost() {
+        return COST;
     }
 
     @Override

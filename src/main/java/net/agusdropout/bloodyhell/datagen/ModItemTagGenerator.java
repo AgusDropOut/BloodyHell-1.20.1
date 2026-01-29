@@ -63,5 +63,17 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ModTags.Items.BLOOD_LOGS)
                 .add(ModBlocks.STRIPPED_BLOOD_LOG.get().asItem())
                 .add(ModBlocks.BLOOD_LOG.get().asItem());
+
+        this.tag(ModTags.Items.CRIMSONVEIL_CONSUMER)
+                .add(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
+                .add(ModItems.BLOOD_SPHERE_SPELLBOOK.get())
+                .add(ModItems.BLOOD_NOVA_SPELLBOOK.get())
+                .add(ModItems.BLOOD_SCRATCH_SPELLBOOK.get())
+                .add(ModItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
+                .add(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
+                .add(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
+                .add(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
+                .add(ModItems.BLASPHEMOUS_IMPALER.get())
+                .add(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get());
     }
 }

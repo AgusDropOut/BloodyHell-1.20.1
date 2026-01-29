@@ -14,6 +14,13 @@ import net.minecraft.world.level.Level;
 
 public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulSpellBookItem> {
 
+    private static final int COST = 20;
+
+    @Override
+    public int getCrimsonCost() {
+        return COST;
+    }
+
     public BloodFireSoulSpellBookItem(Properties properties) {
         super(properties);
     }

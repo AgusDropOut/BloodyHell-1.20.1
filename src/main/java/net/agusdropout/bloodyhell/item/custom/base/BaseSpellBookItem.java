@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.item.custom.base;
 
 import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookModel;
 import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookRenderer;
+import net.agusdropout.bloodyhell.util.CrimsonVeilHelper;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -113,16 +114,23 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
             int duration = getUseDuration(stack) - timeLeft;
 
             if (duration >= getMinChargeTime()) {
-                performSpell(level, player, InteractionHand.MAIN_HAND, stack);
 
-                if (level instanceof ServerLevel serverLevel) {
-                    triggerAnim(player, GeoItem.getOrAssignId(stack, serverLevel), "controller", "attack");
+                // LOGIC MOVED HERE: Check and Consume Resource
+                if (!level.isClientSide) {
+                    if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
+                        performSpell(level, player, InteractionHand.MAIN_HAND, stack);
+                        triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel)level), "controller", "attack");
+                        player.getCooldowns().addCooldown(this, getCooldown());
+                    }
+                } else {
+                    // Client side prediction or just sound/particle sync
+                    performSpell(level, player, InteractionHand.MAIN_HAND, stack);
                 }
-
-                player.getCooldowns().addCooldown(this, getCooldown());
             }
         }
     }
+
+    public abstract int getCrimsonCost();
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {

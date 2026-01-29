@@ -14,6 +14,7 @@ public class ModTags {
 
     public static class Items {
         public static final TagKey<Item> BLOOD_LOGS = tag("blood_logs");
+        public static final TagKey<Item> CRIMSONVEIL_CONSUMER = tag("spell_books");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(BloodyHell.MODID, name));

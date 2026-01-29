@@ -111,38 +111,6 @@ public class ModRecipes extends ModRecipesProvider {
 
         // --- LIBROS DE HECHIZOS ---
 
-        // SCRATCH
-        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_SCRATCH.get())
-                .requires(Items.BOOK)
-                .requires(ModItems.FILLED_BLOOD_FLASK.get())
-                .requires(ModItems.VEINREAVER_HORN.get())
-                .unlockedBy("has_book", has(Items.BOOK))
-                .save(consumer, name("ritual_spell_scratch"));
-
-        // BLOOD BALL
-        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_BLOODBALL.get())
-                .requires(Items.BOOK)
-                .requires(ModItems.FILLED_BLOOD_FLASK.get())
-                .requires(ModItems.AUREAL_REVENANT_DAGGER.get())
-                .unlockedBy("has_book", has(Items.BOOK))
-                .save(consumer, name("ritual_spell_bloodball"));
-
-        // BLOOD NOVA
-        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA.get())
-                .requires(Items.BOOK)
-                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-                .requires(ModItems.ANCIENT_GEM.get())
-                .unlockedBy("has_book", has(Items.BOOK))
-                .save(consumer, name("ritual_spell_bloodnova"));
-
-        // DAGGERS RAIN
-        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get())
-                .requires(Items.BOOK)
-                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-                .requires(ModItems.VEINREAVER_HORN.get())
-                .unlockedBy("has_book", has(Items.BOOK))
-                .save(consumer, name("ritual_spell_daggersrain"));
-
 
 
 

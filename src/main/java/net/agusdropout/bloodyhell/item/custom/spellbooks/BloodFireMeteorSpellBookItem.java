@@ -13,10 +13,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMeteorSpellBookItem> {
+    private static final int COST = 50;
+
+    @Override
+    public int getCrimsonCost() {
+        return COST;
+    }
 
     public BloodFireMeteorSpellBookItem(Properties properties) {
         super(properties);
     }
+
+
 
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {

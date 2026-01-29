@@ -222,14 +222,13 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.UNKNOWN_ENTITY_FINGER.get());
 
                         // --- Spell Book ---
-                        output.accept(ModItems.BLOOD_SPELL_BOOK_SCRATCH.get());
-                        output.accept(ModItems.BLOOD_SPELL_BOOK_BLOODBALL.get());
-                        output.accept(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA.get());
-                        output.accept(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get());
                         output.accept(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get());
                         output.accept(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get());
                         output.accept(ModItems.BLOOD_FIRE_SOUL_SPELLBOOK.get());
                         output.accept(ModItems.BLOOD_SCRATCH_SPELLBOOK.get());
+                        output.accept(ModItems.BLOOD_SPHERE_SPELLBOOK.get());
+                        output.accept(ModItems.BLOOD_NOVA_SPELLBOOK.get());
+                        output.accept(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get());
 
                         // --- Crimson Blood Items ---
                         output.accept(ModItems.AMULET_OF_ANCESTRAL_BLOOD.get());
@@ -239,8 +238,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.CRIMSON_WARD_RING.get());
                         output.accept(ModItems.BLASPHEMOUS_RING.get());
 
-                        // --- Blood Fire ---
-                        // REMOVED: ModBlocks.BLOOD_FIRE because it has no Item and causes crash.
+
 
                         // --- Blasphemous Biome ---
                         output.accept(ModItems.BLASPHEMITE.get());

@@ -93,9 +93,7 @@ public class BloodSpellBookDaggersRainItem extends Item implements GeoItem {
                             float yMotion = -(float) 0.5;
                             float zMotion = (float) (Math.random() * 2 - 1);
 
-                            // Crear y lanzar la daga
-                            BloodPortalEntity portal = new BloodPortalEntity(level, centerX, centerY+5,centerZ, player);
-                            level.addFreshEntity(portal);
+
                         }
 
                         // 🔹 Sincronizar CrimsonVeil con el cliente
