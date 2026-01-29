@@ -218,4 +218,36 @@ public class ParticleHelper {
             spawn(level, particle, center.x, center.y, center.z, vx, vy, vz);
         }
     }
+
+    /**
+     * <h3>Shape: Circle (Perimeter)</h3>
+     * Spawns particles in a perfect static circle on the X/Z plane.
+     * <br> Used for: <i>SpellBook casting circles, Magic Seals</i>
+     */
+    public static void spawnCircle(Level level, ParticleOptions particle, Vec3 center, double radius, int count) {
+        for (int i = 0; i < count; i++) {
+            double angle = (2 * Math.PI * i) / count;
+            double x = center.x + Math.cos(angle) * radius;
+            double z = center.z + Math.sin(angle) * radius;
+
+            spawn(level, particle, x, center.y, z, 0, 0, 0);
+        }
+    }
+
+    /**
+     * <h3>Shape: Disc (Filled Circle)</h3>
+     * Spawns particles randomly distributed <b>inside</b> a flat circle.
+     * <br> Used for: <i>Blood puddles, Ground AoE markers</i>
+     */
+    public static void spawnDisc(Level level, ParticleOptions particle, Vec3 center, double radius, int count) {
+        for (int i = 0; i < count; i++) {
+            double r = radius * Math.sqrt(random.nextDouble()); // Sqrt ensures uniform distribution
+            double angle = random.nextDouble() * 2 * Math.PI;
+
+            double x = center.x + r * Math.cos(angle);
+            double z = center.z + r * Math.sin(angle);
+
+            spawn(level, particle, x, center.y, z, 0, 0, 0);
+        }
+    }
 }

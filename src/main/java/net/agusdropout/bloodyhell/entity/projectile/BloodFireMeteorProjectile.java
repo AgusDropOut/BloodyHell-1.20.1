@@ -28,11 +28,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
@@ -61,7 +63,37 @@ public class BloodFireMeteorProjectile extends Projectile implements BloodFlamma
         this.damage = damage;
         this.speed = speed;
         this.entityData.set(SCALE, size);
-        this.setPos(owner.getX(), owner.getY() + 5.0, owner.getZ());
+        this.noPhysics = true; // Ensure physics don't glitch it out immediately
+
+        // --- SMART SPAWN LOGIC ---
+        Vec3 start = owner.getEyePosition();
+        double targetHeight = 5.0;
+        Vec3 end = start.add(0, targetHeight, 0);
+
+        // Raycast upwards to find the ceiling
+        BlockHitResult result = level.clip(new ClipContext(
+                start,
+                end,
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                owner
+        ));
+
+        double spawnY;
+        if (result.getType() == HitResult.Type.BLOCK) {
+            // If we hit a ceiling, spawn 1 block below the hit point so we don't clip inside
+            spawnY = result.getLocation().y - 1.0;
+        } else {
+            // If clear, use the full height
+            spawnY = start.y + targetHeight;
+        }
+
+        // Safety: Don't let it spawn lower than the owner's head (prevents spawning inside player)
+        if (spawnY < owner.getEyeY()) {
+            spawnY = owner.getEyeY() + 0.5;
+        }
+
+        this.setPos(owner.getX(), spawnY, owner.getZ());
     }
 
     @Override

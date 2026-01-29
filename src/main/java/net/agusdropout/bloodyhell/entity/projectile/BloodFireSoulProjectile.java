@@ -4,18 +4,20 @@ import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
-import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -26,9 +28,25 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class BloodFireSoulProjectile extends Projectile implements BloodFlammable {
+
+    private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(BloodFireSoulProjectile.class, EntityDataSerializers.INT);
+
+    private static final int MAX_LIFETIME = 300;
+    private static final double HOMING_SPEED = 0.55;
+    private static final double HOMING_SEARCH_RANGE = 30.0;
+    private static final double HOMING_CONE_THRESHOLD = 0.85;
+    private static final double HOMING_TURN_FACTOR = 0.15;
+    private static final float COLLISION_DAMAGE = 8.0F;
+    private static final int FIRE_EFFECT_DURATION = 200;
+    private static final int BURN_AURA_DURATION = 60;
+    private static final float EXPLOSION_RADIUS = 1.5F;
+    private static final int FIRE_SPREAD_RADIUS = 2;
+    private static final int NO_TARGET = -1;
 
     public BloodFireSoulProjectile(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
@@ -38,62 +56,104 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         super(type, level);
         this.setOwner(owner);
         this.setPos(owner.getX(), owner.getEyeY() - 0.4, owner.getZ());
+
+        // Give initial forward impulse so it doesn't spawn static
+        this.setDeltaMovement(owner.getLookAngle().scale(HOMING_SPEED));
+
+        this.selectInitialTarget(owner);
     }
 
     @Override
-    protected void defineSynchedData() {}
+    protected void defineSynchedData() {
+        this.entityData.define(TARGET_ID, NO_TARGET);
+    }
+
+    private void selectInitialTarget(LivingEntity owner) {
+        if (owner instanceof Player player) {
+            Vec3 lookVec = player.getLookAngle();
+            List<LivingEntity> candidates = this.level().getEntitiesOfClass(LivingEntity.class,
+                    player.getBoundingBox().inflate(HOMING_SEARCH_RANGE),
+                    e -> e != player && !e.isAlliedTo(player) && e.isAlive() && !e.isSpectator());
+
+            Optional<LivingEntity> bestTarget = candidates.stream()
+                    .filter(e -> {
+                        Vec3 toTarget = e.position().subtract(player.position()).normalize();
+                        return toTarget.dot(lookVec) > HOMING_CONE_THRESHOLD;
+                    })
+                    .min(Comparator.comparingDouble(e -> e.distanceToSqr(player)));
+
+            bestTarget.ifPresent(livingEntity -> this.entityData.set(TARGET_ID, livingEntity.getId()));
+
+        } else if (owner instanceof Mob mob) {
+            LivingEntity mobTarget = mob.getTarget();
+            if (mobTarget != null && mobTarget.isAlive()) {
+                this.entityData.set(TARGET_ID, mobTarget.getId());
+            }
+        }
+    }
 
     @Override
     public void tick() {
         super.tick();
 
-        // 1. MOVEMENT & COLLISION
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (hitResult.getType() != HitResult.Type.MISS) {
             this.onHit(hitResult);
         }
 
-        Vec3 delta = this.getDeltaMovement();
-        this.setPos(this.getX() + delta.x, this.getY() + delta.y, this.getZ() + delta.z);
-
-        // 2. SERVER LOGIC
         if (!this.level().isClientSide) {
-            homingLogic();
+            performMovementLogic();
             burnNearbyEntities();
 
-            if (this.tickCount > 300) {
+            if (this.tickCount > MAX_LIFETIME) {
                 this.discard();
             }
+        } else {
+            generateFireParticles();
         }
 
-        // 3. AUDIO
+        moveProjectile();
+
         if (this.tickCount % 10 == 0) {
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
                     SoundEvents.FIRE_AMBIENT, SoundSource.HOSTILE, 0.5F, 0.8F);
         }
-
-        // 4. VISUALS
-        if (this.level().isClientSide) {
-            generateFireParticles();
-        }
     }
 
-    private void homingLogic() {
-        if (this.tickCount < 10) return;
+    private void moveProjectile() {
+        Vec3 currentMovement = this.getDeltaMovement();
+        this.setPos(this.getX() + currentMovement.x, this.getY() + currentMovement.y, this.getZ() + currentMovement.z);
+    }
 
-        List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(15.0D),
-                entity -> entity != this.getOwner() && entity.isAlive() && !entity.isSpectator());
+    private void performMovementLogic() {
+        int targetId = this.entityData.get(TARGET_ID);
 
-        if (!targets.isEmpty()) {
-            LivingEntity target = targets.get(0);
-            Vec3 targetPos = target.getEyePosition().subtract(0, 0.5, 0);
-            Vec3 currentPos = this.position();
-            Vec3 direction = targetPos.subtract(currentPos).normalize();
-
+        // FALLBACK: If no target, maintain speed in current direction
+        if (targetId == NO_TARGET) {
             Vec3 currentMotion = this.getDeltaMovement();
-            Vec3 newVelocity = currentMotion.lerp(direction.scale(0.35), 0.05);
+            if (currentMotion.lengthSqr() < 0.01) {
+                // If stopped, force forward
+                currentMotion = this.getLookAngle().scale(HOMING_SPEED);
+            }
+            this.setDeltaMovement(currentMotion.normalize().scale(HOMING_SPEED));
+            return;
+        }
 
-            this.setDeltaMovement(newVelocity);
+        Entity targetEntity = this.level().getEntity(targetId);
+
+        if (targetEntity instanceof LivingEntity livingTarget && livingTarget.isAlive()) {
+            // HOMING LOGIC
+            Vec3 targetPos = livingTarget.getEyePosition().subtract(0, 0.5, 0);
+            Vec3 desiredDirection = targetPos.subtract(this.position()).normalize();
+            Vec3 currentDirection = this.getDeltaMovement().normalize();
+
+            // Lerp the DIRECTION, not the velocity vector, to avoid speed loss
+            Vec3 newDirection = currentDirection.lerp(desiredDirection, HOMING_TURN_FACTOR).normalize();
+
+            this.setDeltaMovement(newDirection.scale(HOMING_SPEED));
+        } else {
+            // Target lost/dead -> Switch to dumb fire mode
+            this.entityData.set(TARGET_ID, NO_TARGET);
         }
     }
 
@@ -103,7 +163,7 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
 
         for (LivingEntity victim : victims) {
             victim.hurt(this.damageSources().inFire(), 1.0F);
-            victim.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), 60, 0));
+            victim.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), BURN_AURA_DURATION, 0));
         }
     }
 
@@ -112,106 +172,95 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         super.onHit(result);
         if (this.level().isClientSide) return;
 
-        // Visual Explosion
-        this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1.5F, Level.ExplosionInteraction.NONE);
+        this.level().explode(this, this.getX(), this.getY(), this.getZ(), EXPLOSION_RADIUS, Level.ExplosionInteraction.NONE);
+        spawnFireLogic();
+        this.discard();
+    }
 
+    private void spawnFireLogic() {
         BlockPos impactPos = this.blockPosition();
-        int fireRadius = 2;
 
-        for (int x = -fireRadius; x <= fireRadius; x++) {
+        for (int x = -FIRE_SPREAD_RADIUS; x <= FIRE_SPREAD_RADIUS; x++) {
             for (int y = -1; y <= 1; y++) {
-                for (int z = -fireRadius; z <= fireRadius; z++) {
-                    if (x*x + y*y + z*z <= fireRadius*fireRadius) {
-
+                for (int z = -FIRE_SPREAD_RADIUS; z <= FIRE_SPREAD_RADIUS; z++) {
+                    if (x * x + y * y + z * z <= FIRE_SPREAD_RADIUS * FIRE_SPREAD_RADIUS) {
                         BlockPos targetPos = impactPos.offset(x, y, z);
-
-                        // Check if space is valid for fire
-                        if (this.level().getBlockState(targetPos).isAir()) {
-                            BlockState belowState = this.level().getBlockState(targetPos.below());
-
-                            // Ensure there is a solid block below and we aren't replacing existing fire
-                            if (!belowState.isAir() && !belowState.is(ModBlocks.BLOOD_FIRE.get())) {
-
-                                // 1. Place the Fire Block
-                                this.level().setBlockAndUpdate(targetPos, ModBlocks.BLOOD_FIRE.get().defaultBlockState());
-
-                                // 2. Get the Block Entity from the NEW FIRE POSITION (Not below!)
-                                BlockEntity be = this.level().getBlockEntity(targetPos);
-
-                                // 3. Set the Owner
-                                if (be instanceof BloodFireBlockEntity fireBe && this.getOwner() instanceof LivingEntity livingOwner) {
-                                    fireBe.setOwner(livingOwner);
-                                }
-                            }
-                        }
+                        attemptPlaceFire(targetPos);
                     }
                 }
             }
         }
-        this.discard();
+    }
+
+    private void attemptPlaceFire(BlockPos pos) {
+        if (this.level().getBlockState(pos).isAir()) {
+            BlockState belowState = this.level().getBlockState(pos.below());
+
+            if (!belowState.isAir() && !belowState.is(ModBlocks.BLOOD_FIRE.get())) {
+                this.level().setBlockAndUpdate(pos, ModBlocks.BLOOD_FIRE.get().defaultBlockState());
+                BlockEntity be = this.level().getBlockEntity(pos);
+
+                if (be instanceof BloodFireBlockEntity fireBe && this.getOwner() instanceof LivingEntity livingOwner) {
+                    fireBe.setOwner(livingOwner);
+                }
+            }
+        }
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity target = result.getEntity();
-        target.hurt(this.damageSources().magic(), 8.0F);
+        target.hurt(this.damageSources().magic(), COLLISION_DAMAGE);
         if (target instanceof LivingEntity living) {
-            setOnBloodFire( living,200,0);
-
+            setOnBloodFire(living, FIRE_EFFECT_DURATION, 0);
         }
     }
 
-    // --- VISUALS: PARTICLES ---
     private void generateFireParticles() {
         Vec3 motion = this.getDeltaMovement();
         Vec3 tailDir = motion.length() > 0 ? motion.normalize().scale(-1.0) : new Vec3(0, -1, 0);
-
         double baseX = this.getX();
         double baseY = this.getY() + 0.25D;
         double baseZ = this.getZ();
 
-        // 1. CORE (White -> Pink)
         for (int i = 0; i < 3; i++) {
-            double spread = 0.1;
-            double ox = (this.random.nextDouble() - 0.5D) * spread;
-            double oy = (this.random.nextDouble() - 0.5D) * spread;
-            double oz = (this.random.nextDouble() - 0.5D) * spread;
-
-            float pink = 0.6f + this.random.nextFloat() * 0.4f;
-            Vector3f color = new Vector3f(1.0f, pink, pink);
-
-            this.level().addParticle(new MagicParticleOptions(
-                            color, 0.3f, false, 10),
-                    baseX + ox, baseY + oy, baseZ + oz,
-                    tailDir.x * 0.3, tailDir.y * 0.3, tailDir.z * 0.3);
+            spawnCoreParticle(baseX, baseY, baseZ, tailDir);
         }
 
-        // 2. MID LAYER (Bright Red)
         for (int i = 0; i < 5; i++) {
-            double spread = 0.3;
-            double ox = (this.random.nextDouble() - 0.5D) * spread;
-            double oy = (this.random.nextDouble() - 0.5D) * spread;
-            double oz = (this.random.nextDouble() - 0.5D) * spread;
-
-            Vector3f color = new Vector3f(1.0f, 0.1f, 0.0f);
-
-            this.level().addParticle(new MagicParticleOptions(
-                            color, 0.4f, false, 20),
-                    baseX + ox, baseY + oy, baseZ + oz,
-                    tailDir.x * 0.15 + ox * 0.1,
-                    tailDir.y * 0.15 + oy * 0.1,
-                    tailDir.z * 0.15 + oz * 0.1);
+            spawnMidParticle(baseX, baseY, baseZ, tailDir);
         }
 
-
-
-
-
-        // 5. Chill Flame trail (Ghost effect)
         if (this.tickCount % 2 == 0) {
-            this.level().addParticle(ModParticles.CHILL_FLAME_PARTICLE.get(),
-                    baseX, baseY, baseZ, 0, 0, 0);
+            this.level().addParticle(ModParticles.CHILL_FLAME_PARTICLE.get(), baseX, baseY, baseZ, 0, 0, 0);
         }
+    }
+
+    private void spawnCoreParticle(double x, double y, double z, Vec3 dir) {
+        double spread = 0.1;
+        double ox = (this.random.nextDouble() - 0.5D) * spread;
+        double oy = (this.random.nextDouble() - 0.5D) * spread;
+        double oz = (this.random.nextDouble() - 0.5D) * spread;
+
+        float pink = 0.6f + this.random.nextFloat() * 0.4f;
+        Vector3f color = new Vector3f(1.0f, pink, pink);
+
+        this.level().addParticle(new MagicParticleOptions(color, 0.3f, false, 10),
+                x + ox, y + oy, z + oz,
+                dir.x * 0.3, dir.y * 0.3, dir.z * 0.3);
+    }
+
+    private void spawnMidParticle(double x, double y, double z, Vec3 dir) {
+        double spread = 0.3;
+        double ox = (this.random.nextDouble() - 0.5D) * spread;
+        double oy = (this.random.nextDouble() - 0.5D) * spread;
+        double oz = (this.random.nextDouble() - 0.5D) * spread;
+
+        Vector3f color = new Vector3f(1.0f, 0.1f, 0.0f);
+
+        this.level().addParticle(new MagicParticleOptions(color, 0.4f, false, 20),
+                x + ox, y + oy, z + oz,
+                dir.x * 0.15 + ox * 0.1, dir.y * 0.15 + oy * 0.1, dir.z * 0.15 + oz * 0.1);
     }
 
     @Override

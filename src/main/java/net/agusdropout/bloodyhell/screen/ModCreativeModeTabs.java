@@ -226,6 +226,10 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BLOOD_SPELL_BOOK_BLOODBALL.get());
                         output.accept(ModItems.BLOOD_SPELL_BOOK_BLOODNOVA.get());
                         output.accept(ModItems.BLOOD_SPELL_BOOK_DAGGERSRAIN.get());
+                        output.accept(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get());
+                        output.accept(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get());
+                        output.accept(ModItems.BLOOD_FIRE_SOUL_SPELLBOOK.get());
+                        output.accept(ModItems.BLOOD_SCRATCH_SPELLBOOK.get());
 
                         // --- Crimson Blood Items ---
                         output.accept(ModItems.AMULET_OF_ANCESTRAL_BLOOD.get());

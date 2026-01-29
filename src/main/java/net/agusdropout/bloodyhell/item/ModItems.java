@@ -10,6 +10,10 @@ import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.AmuletOfAncest
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.BlasphemousRing;
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.CrimsonWardRing;
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.GreatAmuletOfAncestralBlood;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.BloodFireColumnSpellBookItem;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.BloodFireMeteorSpellBookItem;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.BloodFireSoulSpellBookItem;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.BloodScratchSpellBookItem;
 import net.agusdropout.bloodyhell.item.potions.BloodFlaskItem;
 import net.agusdropout.bloodyhell.item.potions.BloodPotionItem;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -249,6 +253,15 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLOOD_SPELL_BOOK_DAGGERSRAIN = ITEMS.register("blood_spell_book_daggersrain", () -> new BloodSpellBookDaggersRainItem(
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLOOD_FIRE_METEOR_SPELLBOOK = ITEMS.register("bloodfire_meteor_spellbook", () -> new BloodFireMeteorSpellBookItem(
+            new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLOOD_FIRE_COLUMM_SPELLBOOK = ITEMS.register("bloodfire_column_spellbook", () -> new BloodFireColumnSpellBookItem(
+            new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLOOD_FIRE_SOUL_SPELLBOOK = ITEMS.register("bloodfire_soul_spellbook", () -> new BloodFireSoulSpellBookItem(
+            new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLOOD_SCRATCH_SPELLBOOK = ITEMS.register("blood_scratch_spellbook", () -> new BloodScratchSpellBookItem(
+            new Item.Properties().stacksTo(1)));
+
 
     //Crimson Veil Items
     public static final RegistryObject<Item> AMULET_OF_ANCESTRAL_BLOOD = ITEMS.register("amulet_of_ancestral_blood", () -> new AmuletOfAncestralBlood(
