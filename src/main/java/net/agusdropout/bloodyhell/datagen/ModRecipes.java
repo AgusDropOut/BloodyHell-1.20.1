@@ -111,8 +111,68 @@ public class ModRecipes extends ModRecipesProvider {
 
         // --- LIBROS DE HECHIZOS ---
 
+        // --- EXISTING SPELLBOOKS (Refactored) ---
+
+// --- EXISTING SPELLBOOKS ---
+
+// 1. SCRATCH (Basic)
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SCRATCH_SPELLBOOK.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModItems.VEINREAVER_HORN.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_scratch"));
+
+// 2. BLOOD SPHERE (Basic)
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPHERE_SPELLBOOK.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModItems.AUREAL_REVENANT_DAGGER.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_sphere"));
+
+// 3. BLOOD NOVA (Advanced)
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_NOVA_SPELLBOOK.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.ANCIENT_GEM.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_nova"));
+
+// 4. DAGGERS RAIN (Advanced)
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
+                .requires(Items.BOOK)
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.VEINREAVER_HORN.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer, name("ritual_spell_daggersrain"));
 
 
+// --- BLOOD FIRE SPELLBOOKS (Boss Tier) ---
+
+// 5. BLOOD FIRE METEOR
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
+                .requires(ModItems.GREAT_ANCIENT_GEM.get())
+                .requires(ModItems.RITEKEEPER_HEART.get())
+                .requires(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
+                .unlockedBy("has_ritekeeper_heart", has(ModItems.RITEKEEPER_HEART.get()))
+                .save(consumer, name("ritual_spell_bloodfire_meteor"));
+
+// 6. BLOOD FIRE COLUMN
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
+                .requires(ModItems.GREAT_ANCIENT_GEM.get())
+                .requires(ModItems.RITEKEEPER_HEART.get())
+                .requires(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
+                .unlockedBy("has_ritekeeper_heart", has(ModItems.RITEKEEPER_HEART.get()))
+                .save(consumer, name("ritual_spell_bloodfire_column"));
+
+// 7. BLOOD FIRE SOUL
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
+                .requires(ModItems.GREAT_ANCIENT_GEM.get())
+                .requires(ModItems.RITEKEEPER_HEART.get())
+                .requires(ModItems.FAILED_REMNANT_ASHES.get())
+                .unlockedBy("has_ritekeeper_heart", has(ModItems.RITEKEEPER_HEART.get()))
+                .save(consumer, name("ritual_spell_bloodfire_soul"));
 
 
         makePlanks(ModBlocks.BLOOD_PLANKS, ModTags.Items.BLOOD_LOGS).save(consumer);

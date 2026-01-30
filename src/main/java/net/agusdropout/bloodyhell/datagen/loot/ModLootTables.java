@@ -31,6 +31,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
@@ -480,20 +481,46 @@ public class ModLootTables extends LootTableProvider {
                             .setRolls(ConstantValue.exactly(1))
                     )
             );
+            // Added Ritekeeper Drops (Boss Item)
             this.add(ModEntityTypes.RITEKEEPER.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
+                            .setRolls(ConstantValue.exactly(4))
+                            .add(LootItem.lootTableItem(ModItems.RITEKEEPER_HEART.get())
+                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+                                    .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                            )
                     )
             );
+
+
             this.add(ModEntityTypes.CINDER_ACOLYTE.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
+                                    // 1. Set base count to 1 (If it drops, it drops 1)
+                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+                                    // 2. Add the Chance Condition (0.45 = 45% chance)
+                                    .when(LootItemRandomChanceCondition.randomChance(0.45F))
+                                    // 3. Looting Bonus (Adds 0 to 1 extra items per level of Looting)
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                            )
                     )
             );
+
 
             this.add(ModEntityTypes.FAILED_REMNANT.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.FAILED_REMNANT_ASHES.get())
+                                    // 1. Set base count to 1
+                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+                                    // 2. Add the Chance Condition (0.45 = 45% chance)
+                                    .when(LootItemRandomChanceCondition.randomChance(0.45F))
+                                    // 3. Looting Bonus
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                            )
                     )
             );
             this.add(ModEntityTypes.BLOOD_FIRE_SOUL.get(), LootTable.lootTable()

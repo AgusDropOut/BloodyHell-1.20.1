@@ -5,7 +5,7 @@
   "max_distance_from_center": 80,
   "biomes": "#bloodyhell:has_structure/sanctum_of_the_unbound",
   "start_height": {
-    "absolute": 26
+    "absolute": 23
   },
   "step": "underground_structures",
 

@@ -72,6 +72,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ModItems.VEINREAVER_HORN);
         normalItem(ModItems.CRIMSON_SHELL);
         normalItem(ModItems.SCARLET_FEATHER);
+        normalItem(ModItems.RITEKEEPER_HEART);
+        normalItem(ModItems.FAILED_REMNANT_ASHES);
+        normalItem(ModItems.CINDER_ACOLYTE_FAINTED_EMBER);
 
         //Mobs spawn eggs
         egg(ModItems.VEINRAVER_ENTITY_SPAWN_EGG);

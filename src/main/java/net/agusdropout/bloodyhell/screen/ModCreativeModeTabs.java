@@ -88,6 +88,10 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.VEINREAVER_HORN.get());
                         output.accept(ModItems.CRIMSON_SHELL.get());
                         output.accept(ModItems.SCARLET_FEATHER.get());
+                        output.accept(ModItems.RITEKEEPER_HEART.get());
+                        output.accept(ModItems.FAILED_REMNANT_ASHES.get());
+                        output.accept(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get());
+
 
                         // --- Misc Items ---
                         output.accept(ModItems.BLOODY_SOUL_DUST.get());

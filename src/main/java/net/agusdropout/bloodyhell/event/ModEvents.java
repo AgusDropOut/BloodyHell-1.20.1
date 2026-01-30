@@ -27,6 +27,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
@@ -104,6 +107,7 @@ public class ModEvents {
 
             @SubscribeEvent
             public static void EntityAttributeEvent(EntityAttributeCreationEvent event) {
+                // Existing Mobs
                 event.put(BLOODTHIRSTYBEAST.get(), BloodThirstyBeastEntity.setAttributes());
                 event.put(BLASPHEMOUS_ARM_ENTITY.get(), BlasphemousArmEntity.setAttributes());
                 event.put(BLOOD_SEEKER.get(), BloodSeekerEntity.setAttributes());
@@ -130,6 +134,14 @@ public class ModEvents {
                 event.put(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantEntity.setAttributes().build());
 
 
+            }
+
+
+            public static AttributeSupplier.Builder createGenericAttributes() {
+                return Monster.createMonsterAttributes()
+                        .add(Attributes.MAX_HEALTH, 10.0D)
+                        .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                        .add(Attributes.ATTACK_DAMAGE, 1.0D);
             }
 
 

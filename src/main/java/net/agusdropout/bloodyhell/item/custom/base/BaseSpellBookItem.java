@@ -3,9 +3,13 @@ package net.agusdropout.bloodyhell.item.custom.base;
 import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookModel;
 import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookRenderer;
 import net.agusdropout.bloodyhell.util.CrimsonVeilHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -91,6 +95,24 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
+
+        // 1. Check for resource immediately
+        if (!CrimsonVeilHelper.hasEnough(player, getCrimsonCost())) {
+
+            // Audio Feedback: Pitch-shifted "Deactivate" sound implies failure
+            level.playSound(player, player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0f, 2.0f);
+
+            if (!level.isClientSide) {
+                // Visual/Text Feedback: Action Bar Message
+                player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
+                        .withStyle(ChatFormatting.DARK_RED), true);
+            }
+
+            // Fail the interaction so no animation plays
+            return InteractionResultHolder.fail(itemstack);
+        }
+
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(itemstack);
     }
@@ -114,16 +136,18 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
             int duration = getUseDuration(stack) - timeLeft;
 
             if (duration >= getMinChargeTime()) {
-
-                // LOGIC MOVED HERE: Check and Consume Resource
                 if (!level.isClientSide) {
+                    // 2. Consume Resource
                     if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
                         performSpell(level, player, InteractionHand.MAIN_HAND, stack);
                         triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel)level), "controller", "attack");
                         player.getCooldowns().addCooldown(this, getCooldown());
+                    } else {
+                        // Fallback feedback if they somehow lost resources WHILE charging
+                        player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
+                                .withStyle(ChatFormatting.DARK_RED), true);
                     }
                 } else {
-                    // Client side prediction or just sound/particle sync
                     performSpell(level, player, InteractionHand.MAIN_HAND, stack);
                 }
             }
@@ -163,7 +187,6 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
 
     public abstract void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack);
 
-    // Updated abstract methods for progressive effects
     public abstract void spawnProgressiveParticles(Level level, Player player, int chargeTick);
     public abstract void playChargeSound(Level level, Player player, int chargeTick);
     public abstract int getMinChargeTime();

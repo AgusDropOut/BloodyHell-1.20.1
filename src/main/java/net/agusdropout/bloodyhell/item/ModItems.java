@@ -258,6 +258,15 @@ public class ModItems {
     public static final RegistryObject<Item> BLOOD_DAGGERSRAIN_SPELLBOOK = ITEMS.register("blood_daggersrain_spellbook", () -> new BloodDaggersRainSpellBookItem(
             new Item.Properties().stacksTo(1)));
 
+    //Sanctum of the unbound drops
+
+    public static final RegistryObject<Item> RITEKEEPER_HEART = ITEMS.register("ritekeeper_heart", () -> new Item(
+            new Item.Properties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> CINDER_ACOLYTE_FAINTED_EMBER = ITEMS.register("cinder_acolyte_fainted_ember", () -> new Item(
+            new Item.Properties()));
+    public static final RegistryObject<Item> FAILED_REMNANT_ASHES = ITEMS.register("failed_remnant_ashes", () -> new Item(
+            new Item.Properties()));
+
 
 
     //Crimson Veil Items

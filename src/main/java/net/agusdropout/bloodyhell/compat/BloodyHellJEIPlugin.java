@@ -32,7 +32,6 @@ public class BloodyHellJEIPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
-        // Obtenemos todas las recetas de tipo BLOOD_ALTAR
         List<BloodAltarRecipe> recipes = recipeManager.getAllRecipesFor(BloodAltarRecipe.Type.INSTANCE);
 
         registration.addRecipes(BloodAltarCategory.RECIPE_TYPE, recipes);
@@ -40,7 +39,6 @@ public class BloodyHellJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        // Cuando alguien pulse "U" sobre el bloque del altar, mostrará estas recetas
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.MAIN_BLOOD_ALTAR.get()), BloodAltarCategory.RECIPE_TYPE);
     }
 }
