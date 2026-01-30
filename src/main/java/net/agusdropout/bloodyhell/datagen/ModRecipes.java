@@ -624,7 +624,80 @@ public class ModRecipes extends ModRecipesProvider {
                 .define('R', ModItems.RHNULL.get())
                 .unlockedBy("has_seliora_essence", has(ModItems.SELIORA_ESSENCE.get()))
                 .save(consumer, name("blasphemous_hulking_mass_of_iron"));
+
+
+        // 1. Ancient Bloody Stone Bricks (Base Block)
+        // Recipe: 8 Polished Bloody Stone + 1 Gold Ingot in center
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get(), 8)
+                .pattern("PPP")
+                .pattern("PGP")
+                .pattern("PPP")
+                .define('P', ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get())
+                .define('G', Items.GOLD_INGOT)
+                .unlockedBy("has_polished_bloody_stone", has(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()))
+                .save(consumer, name("ancient_bloody_stone_bricks"));
+
+        // 2. Ancient Bloody Stone Variants
+        makeStairs(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
+        makeSlab(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
+        makeWall(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
+
+        // Column (Crafted like Chiseled Quartz: 2 slabs vertical)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get(), 2)
+                .pattern("S")
+                .pattern("S")
+                .define('S', ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get())
+                .unlockedBy("has_ancient_bloody_stone_slab", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get()))
+                .save(consumer, name("ancient_bloody_stone_bricks_column"));
+
+        // 3. Ancient Stonecutting (Decorated Blocks)
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+                .save(consumer, name("stonecutting_ancient_chiseled"));
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+                .save(consumer, name("stonecutting_ancient_detailed"));
+
+        // Also add stonecutting for basic variants for convenience
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get(), 2)
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+                .save(consumer, name("stonecutting_ancient_slab"));
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+                .save(consumer, name("stonecutting_ancient_stairs"));
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+                .save(consumer, name("stonecutting_ancient_wall"));
+
+
+        // --------------------------------- LIGHTING ---------------------------------- //
+
+        // 4. Ancient Torch (Item Variant)
+        // Recipe: Bloody Soul Dust + Stick (Like normal torch but with magic dust)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.ANCIENT_TORCH_ITEM.get(), 4)
+                .pattern("D")
+                .pattern("S")
+                .define('D', ModItems.BLOODY_SOUL_DUST.get())
+                .define('S', Items.STICK)
+                .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
+                .save(consumer, name("ancient_torch"));
+
+        // 5. Ancient Bloody Lamp
+        // Recipe: 8 Gold Nuggets surrounding an Ancient Torch
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.ANCIENT_BLOODY_LAMP.get())
+                .pattern("GGG")
+                .pattern("GTG")
+                .pattern("GGG")
+                .define('G', Items.GOLD_NUGGET)
+                .define('T', ModItems.ANCIENT_TORCH_ITEM.get())
+                .unlockedBy("has_ancient_torch", has(ModItems.ANCIENT_TORCH_ITEM.get()))
+                .save(consumer, name("ancient_bloody_lamp"));
+
+
     }
+
+
 
 
     private ResourceLocation name(String name) {
