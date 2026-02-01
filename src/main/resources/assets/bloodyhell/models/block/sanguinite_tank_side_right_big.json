@@ -1,0 +1,17 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "bloodyhell:block/sanguinite_tank_big_right_side",
+    "window": "bloodyhell:block/sanguinite_tank_big_right_side"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0], "to": [16, 16, 1],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#window" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#window" }
+      }
+    }
+  ]
+}

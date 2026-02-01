@@ -97,7 +97,8 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get())
                 .add(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get())
                 .add(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get())
-                .add(ModBlocks.BLASPHEMITE_ORE.get());
+                .add(ModBlocks.BLASPHEMITE_ORE.get())
+                .add(ModBlocks.SANGUINITE_PIPE.get());
 
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(ModBlocks.BLOOD_DIRT_BLOCK.get())
@@ -116,7 +117,8 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.Jumpy_Block.get())
                 .add(ModBlocks.BLEEDING_BLOCK.get())
                 .add(ModBlocks.SANGUINE_CRUCIBLE.get())
-                .add(ModBlocks.GLOWING_CRYSTAL.get());
+                .add(ModBlocks.GLOWING_CRYSTAL.get())
+                .add(ModBlocks.SANGUINITE_PIPE.get());
 
         this.tag(ModTags.Blocks.NEEDS_SANGUINITE_TOOL)
                 .add(ModBlocks.RHNULL_BLOCK.get())

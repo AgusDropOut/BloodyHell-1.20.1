@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.entity.SelioraRestingBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.StarLampBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.StarLampBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;

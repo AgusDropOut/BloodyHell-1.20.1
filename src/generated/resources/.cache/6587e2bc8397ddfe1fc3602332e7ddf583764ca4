@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-29T18:57:21.9490033	Item Models: bloodyhell
+// 1.20.1	2026-01-31T22:16:13.3422049	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 0daad63d3db69ced8f0038465c04abe47a00815e assets/bloodyhell/models/item/ancient_bloody_lamp.json
 77c198480c0204d88a6582721584ec72818df45b assets/bloodyhell/models/item/ancient_bloody_stone_bricks.json
@@ -47,6 +47,7 @@ f2b7e5b32741be881b8d9b1366e33f7eb5debcb4 assets/bloodyhell/models/item/bloody_st
 a1814ad5586de1a0eef7d19eb5a0429af9810f00 assets/bloodyhell/models/item/bloody_stone_wall.json
 439b5e1961284e369b053d5100c3c0676938858a assets/bloodyhell/models/item/blood_arrow.json
 c3448e8886690f83221cb730ea17f18aa3e5208b assets/bloodyhell/models/item/blood_boots.json
+186d7b68fa4662886920a7a127bfeced66f4b86d assets/bloodyhell/models/item/blood_bucket.json
 377fc4900ef4e80a5b08b2a4d6405f282e52a775 assets/bloodyhell/models/item/blood_chestplate.json
 7255c6cc57384344c27e12c485944b5d41c6711d assets/bloodyhell/models/item/blood_fire.json
 08f3e91ce44841765fe7d5adc04fefa92e86c213 assets/bloodyhell/models/item/blood_flask.json
@@ -65,6 +66,7 @@ c887e2ce7f7fa3be28a4a14282b01d7012168424 assets/bloodyhell/models/item/chalice_o
 a8dcfa61205af49890e97939316dbe24aa8236a5 assets/bloodyhell/models/item/chiseled_detailed_blasphemous_sandstone_block.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/cinder_acolyte_entity_spawn_egg.json
 aeb93dcb10acfc00b3408f04d5ff67603893535a assets/bloodyhell/models/item/cinder_acolyte_fainted_ember.json
+c9dae4787cd817de036dc324665181aafd6e65f5 assets/bloodyhell/models/item/corrupted_blood_bucket.json
 b3fc61db059346819d91dd3e8b9ab106308d8970 assets/bloodyhell/models/item/corrupted_blood_flask.json
 192954ddb5d4f638a75b2ea944c5627b8c4e0fba assets/bloodyhell/models/item/cracked_blasphemous_sandstone.json
 ab6939c6717581b28e5d5d1d393aab3decfaada9 assets/bloodyhell/models/item/crimson_idol_coin.json
@@ -141,3 +143,5 @@ c99540685bd4cc062d723f2e29f3f245a44958f4 assets/bloodyhell/models/item/sting_flo
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/veil_stalker_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/veinraver_entity_spawn_egg.json
 41ab3b73e3e61976fc1471fa796fa375c37e41b1 assets/bloodyhell/models/item/veinreaver_horn.json
+72e2a96cc1a0b24d951912c48186acf096f664ee assets/bloodyhell/models/item/visceral_blood_bucket.json
+ffbc2b579050e9b391774ae40c5a7e81ded5961c assets/bloodyhell/models/item/viscous_blasphemy_bucket.json

@@ -89,6 +89,15 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(ModBlocks.BLOODDIRT_FARMLAND.get());
             this.dropSelf(ModBlocks.BLOODY_STONE_BLOCK.get());
 
+            this.dropOther(ModBlocks.SANGUINITE_PIPE.get(),ModItems.SANGUINITE_PIPE_ITEM.get());
+            this.dropSelf(ModBlocks.SANGUINITE_TANK.get());
+            this.dropSelf(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get());
+
+
+            this.dropSelf(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get());
+
+
+
 
 
             this.dropSelf(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get());
@@ -477,6 +486,11 @@ public class ModLootTables extends LootTableProvider {
             )
             ;
             this.add(ModEntityTypes.GRAVE_WALKER_ENTITY.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+            this.add(ModEntityTypes.BLOOD_SOUL.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                     )

@@ -11,6 +11,7 @@ import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.entity.projectile.*;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
+import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -221,6 +222,11 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.of(FailedRemnantEntity::new, MobCategory.MONSTER)
                             .sized(1.5f, 2f) // Wide but flat (Crawling)
                             .build(new ResourceLocation(BloodyHell.MODID, "failed_remnant").toString()));
+    public static final RegistryObject<EntityType<BloodSoulEntity>> BLOOD_SOUL =
+            ENTITY_TYPES.register("blood_soul_entity",
+                    () -> EntityType.Builder.<BloodSoulEntity>of(BloodSoulEntity::new, MobCategory.AMBIENT)
+                            .sized(0.5f, 0.5f) // Smaller size for a particle effect
+                            .build(new ResourceLocation(BloodyHell.MODID, "blood_soul_entity").toString()));
 
 
 

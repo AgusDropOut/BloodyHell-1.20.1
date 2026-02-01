@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.networking.packet;
 
-import net.agusdropout.bloodyhell.block.entity.BloodWorkbenchBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodWorkbenchBlockEntity;
 import net.agusdropout.bloodyhell.screen.BloodWorkBenchMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

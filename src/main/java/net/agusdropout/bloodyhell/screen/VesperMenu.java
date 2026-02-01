@@ -1,17 +1,10 @@
 package net.agusdropout.bloodyhell.screen;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.BloodWorkbenchBlockEntity;
 import net.agusdropout.bloodyhell.entity.custom.VesperEntity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.npc.ClientSideMerchant;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;

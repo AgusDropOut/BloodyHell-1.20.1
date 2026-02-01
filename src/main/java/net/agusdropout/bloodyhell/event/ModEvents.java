@@ -10,6 +10,7 @@ import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.*;
+import net.agusdropout.bloodyhell.event.handlers.BloodHarvestHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
 import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
@@ -41,6 +42,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -192,6 +194,11 @@ public class ModEvents {
                         }
                     }
                 }
+            }
+
+            @SubscribeEvent
+            public static void onLivingDeath(LivingDeathEvent event) {
+                BloodHarvestHandler.onLivingDeath(event);
             }
 
             @SubscribeEvent

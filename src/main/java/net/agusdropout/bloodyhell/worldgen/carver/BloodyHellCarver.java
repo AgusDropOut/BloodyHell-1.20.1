@@ -126,7 +126,7 @@ public class BloodyHellCarver extends CaveWorldCarver {
 
     private BlockState getCarveState(CarvingContext context, CaveCarverConfiguration config, BlockPos pos) {
         if (pos.getY() <= config.lavaLevel.resolveY(context)) {
-            return ModFluids.SOURCE_BLOOD.get().defaultFluidState().createLegacyBlock();
+            return ModFluids.BLOOD_SOURCE.get().defaultFluidState().createLegacyBlock();
         } else {
             return CAVE_AIR;
         }

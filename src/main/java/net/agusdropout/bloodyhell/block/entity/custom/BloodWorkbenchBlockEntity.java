@@ -1,6 +1,6 @@
-package net.agusdropout.bloodyhell.block.entity;
+package net.agusdropout.bloodyhell.block.entity.custom;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.EnergySyncS2CPacket;
 import net.agusdropout.bloodyhell.recipe.BloodWorkBenchRecipe;
@@ -27,7 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -266,7 +265,7 @@ public class BloodWorkbenchBlockEntity extends BlockEntity implements MenuProvid
 
     private boolean hasBloodBucketInFirstSlot() {
         if (this.itemHandler != null && this.itemHandler.getSlots() > 0) {
-            return this.itemHandler.getStackInSlot(0).getItem() == ModItems.RHNULL_BLOOD_BUCKET.get();
+            //return this.itemHandler.getStackInSlot(0).getItem() == ModItems.RHNULL_BLOOD_BUCKET.get();
         }
         return false;
     }

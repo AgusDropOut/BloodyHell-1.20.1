@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.entity.BloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

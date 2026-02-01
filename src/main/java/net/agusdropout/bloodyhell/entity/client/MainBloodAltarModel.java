@@ -1,8 +1,7 @@
 package net.agusdropout.bloodyhell.entity.client;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.entity.BloodAltarBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.MainBloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.MainBloodAltarBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 

@@ -5,6 +5,9 @@ import com.mojang.logging.LogUtils;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
 import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.client.SanguinitePipeRenderer;
+import net.agusdropout.bloodyhell.block.client.SanguiniteTankRenderer;
+import net.agusdropout.bloodyhell.block.client.generic.BaseGeckoBlockRenderer;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
@@ -246,8 +249,8 @@ public class BloodyHell
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             Minecraft.getInstance().particleEngine.register(ModParticles.CYLINDER_PARTICLE.get(), new CylinderParticle.Provider());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_BLOOD.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_BLOOD.get(), RenderType.translucent());
+            //ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_BLOOD.get(), RenderType.translucent());
+            //ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_BLOOD.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.ANCIENT_BLOOD_CAPSULE.get(), RenderType.translucent());
             MenuScreens.register(ModMenuTypes.BLOOD_WORKBENCH_MENU.get(), BloodWorkBenchScreen::new);
             MenuScreens.register(ModMenuTypes.VESPER_MENU.get(), VesperScreen::new);
@@ -294,8 +297,12 @@ public class BloodyHell
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_PETALS.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.SPIKY_GRASS.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_CRUCIBLE.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_MUSHROOM_BLOCK.get(), RenderType.translucent());
             BlockEntityRenderers.register(ModBlockEntities.BLOOD_ALTAR.get(), BloodAltarRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_PIPE_BE.get(), SanguinitePipeRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_TANK_BE.get(), SanguiniteTankRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_BLOOD_HARVESTER_BE.get(), BaseGeckoBlockRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.STAR_LAMP.get(), StarLampRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SELIORA_RESTING.get(), SelioraRestingBlockRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.MAIN_BLOOD_ALTAR.get(), MainBloodAltarRenderer::new);
@@ -319,6 +326,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), BloodFireMeteorRenderer::new);
             EntityRenderers.register(ModEntityTypes.CINDER_ACOLYTE.get(), CinderAcolyteRenderer::new);
             EntityRenderers.register(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BLOOD_SOUL.get(), BloodSoulRenderer::new);
 
 
 

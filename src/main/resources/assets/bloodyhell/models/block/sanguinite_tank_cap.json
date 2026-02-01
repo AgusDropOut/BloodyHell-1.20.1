@@ -1,0 +1,16 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "bloodyhell:block/sanguinite_tank_cap",
+    "cap": "bloodyhell:block/sanguinite_tank_cap"
+  },
+  "elements": [
+    {
+      "from": [0, 15, 0], "to": [16, 16, 16],
+      "faces": {
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#cap" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#cap" }
+      }
+    }
+  ]
+}

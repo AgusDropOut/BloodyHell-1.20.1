@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
 import net.agusdropout.bloodyhell.particle.ModParticles;

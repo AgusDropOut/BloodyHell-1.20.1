@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity; // Import your BlockEntity
+import net.agusdropout.bloodyhell.block.entity.custom.BloodFireBlockEntity; // Import your BlockEntity
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;

@@ -1,5 +1,6 @@
-package net.agusdropout.bloodyhell.block.entity;
+package net.agusdropout.bloodyhell.block.entity.custom;
 
+import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.EnergySyncS2CPacket;
 import net.agusdropout.bloodyhell.util.ModEnergyStorage;

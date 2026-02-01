@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.block.custom;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.BloodAltarBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.MainBloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.MainBloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.TentacleEntity;
@@ -260,7 +260,7 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
         };
         for (BlockPos p : area) {
             if (level.getBlockState(p).is(ModBlocks.BLOOD_FLUID_BLOCK.get())) {
-                level.setBlockAndUpdate(p, ModBlocks.RHNULL_BLOOD_FLUID_BLOCK.get().defaultBlockState());
+                //level.setBlockAndUpdate(p, ModBlocks.RHNULL_BLOOD_FLUID_BLOCK.get().defaultBlockState());
                 if(level instanceof ServerLevel sl) {
                     sl.sendParticles(ModParticles.BLOOD_PARTICLES.get(), p.getX()+0.5, p.getY()+1, p.getZ()+0.5, 5, 0.2, 0.2, 0.2, 0.05);
                 }

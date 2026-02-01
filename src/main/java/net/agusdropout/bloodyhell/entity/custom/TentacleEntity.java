@@ -1,8 +1,7 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.block.custom.BloodAltarBlock;
-import net.agusdropout.bloodyhell.block.entity.BloodAltarBlockEntity;
-import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodAltarBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;

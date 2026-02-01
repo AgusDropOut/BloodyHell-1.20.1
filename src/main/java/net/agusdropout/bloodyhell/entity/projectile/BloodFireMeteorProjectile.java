@@ -1,15 +1,12 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
-import net.agusdropout.bloodyhell.effect.ModEffects;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
-import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ImpactParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
@@ -20,10 +17,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;

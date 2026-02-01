@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom;
 
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
-import net.agusdropout.bloodyhell.block.entity.TombBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.TombBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;

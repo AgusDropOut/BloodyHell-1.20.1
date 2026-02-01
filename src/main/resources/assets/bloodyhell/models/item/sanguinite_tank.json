@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "top": "bloodyhell:block/sanguinite_tank_cap",
+    "bottom": "bloodyhell:block/sanguinite_tank_cap",
+    "side": "bloodyhell:block/sanguinite_tank_side_single"
+  }
+}

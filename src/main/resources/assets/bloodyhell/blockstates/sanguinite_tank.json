@@ -1,0 +1,39 @@
+{
+  "multipart": [
+
+    { "when": { "north": "single" },      "apply": { "model": "bloodyhell:block/sanguinite_tank_side_single", "uvlock": true } },
+    { "when": { "north": "left_small" },  "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left", "uvlock": true } },
+    { "when": { "north": "right_small" }, "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right", "uvlock": true } },
+    { "when": { "north": "left_big" },    "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left_big", "uvlock": true } },
+    { "when": { "north": "right_big" },   "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right_big", "uvlock": true } },
+    { "when": { "north": "none" },        "apply": { "model": "bloodyhell:block/sanguinite_tank_side_empty", "uvlock": true } },
+
+
+    { "when": { "east": "single" },       "apply": { "model": "bloodyhell:block/sanguinite_tank_side_single", "y": 90, "uvlock": true } },
+    { "when": { "east": "left_small" },   "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left", "y": 90, "uvlock": true } },
+    { "when": { "east": "right_small" },  "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right", "y": 90, "uvlock": true } },
+    { "when": { "east": "left_big" },     "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left_big", "y": 90, "uvlock": true } },
+    { "when": { "east": "right_big" },    "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right_big", "y": 90, "uvlock": true } },
+    { "when": { "east": "none" },         "apply": { "model": "bloodyhell:block/sanguinite_tank_side_empty", "y": 90, "uvlock": true } },
+
+
+    { "when": { "south": "single" },      "apply": { "model": "bloodyhell:block/sanguinite_tank_side_single", "y": 180, "uvlock": true } },
+    { "when": { "south": "left_small" },  "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left", "y": 180, "uvlock": true } },
+    { "when": { "south": "right_small" }, "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right", "y": 180, "uvlock": true } },
+    { "when": { "south": "left_big" },    "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left_big", "y": 180, "uvlock": true } },
+    { "when": { "south": "right_big" },   "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right_big", "y": 180, "uvlock": true } },
+    { "when": { "south": "none" },        "apply": { "model": "bloodyhell:block/sanguinite_tank_side_empty", "y": 180, "uvlock": true } },
+
+
+    { "when": { "west": "single" },       "apply": { "model": "bloodyhell:block/sanguinite_tank_side_single", "y": 270, "uvlock": true } },
+    { "when": { "west": "left_small" },   "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left", "y": 270, "uvlock": true } },
+    { "when": { "west": "right_small" },  "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right", "y": 270, "uvlock": true } },
+    { "when": { "west": "left_big" },     "apply": { "model": "bloodyhell:block/sanguinite_tank_side_left_big", "y": 270, "uvlock": true } },
+    { "when": { "west": "right_big" },    "apply": { "model": "bloodyhell:block/sanguinite_tank_side_right_big", "y": 270, "uvlock": true } },
+    { "when": { "west": "none" },         "apply": { "model": "bloodyhell:block/sanguinite_tank_side_empty", "y": 270, "uvlock": true } },
+
+
+    { "when": { "up": "true" },    "apply": { "model": "bloodyhell:block/sanguinite_tank_cap" } },
+    { "when": { "down": "true" },  "apply": { "model": "bloodyhell:block/sanguinite_tank_cap", "x": 180 } }
+  ]
+}

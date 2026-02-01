@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.block.entity;
+package net.agusdropout.bloodyhell.block.entity.custom;
 
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities; // You need to create this registry
 import net.minecraft.core.BlockPos;

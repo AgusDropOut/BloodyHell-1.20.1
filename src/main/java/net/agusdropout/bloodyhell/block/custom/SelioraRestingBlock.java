@@ -1,8 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.entity.SelioraRestingBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.SelioraRestingBlockEntity;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes; // Asegúrate de importar tus entidades
-import net.agusdropout.bloodyhell.entity.custom.SelioraEntity; // Importa la clase de tu jefe
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;

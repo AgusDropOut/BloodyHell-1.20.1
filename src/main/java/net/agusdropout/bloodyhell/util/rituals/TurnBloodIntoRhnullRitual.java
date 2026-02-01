@@ -49,7 +49,7 @@ public class TurnBloodIntoRhnullRitual extends Ritual {
         }
         if (isBloodPrepared) {
             for (BlockPos pos : altarPositions) {
-                level.setBlockAndUpdate(pos, ModBlocks.RHNULL_BLOOD_FLUID_BLOCK.get().defaultBlockState());
+               // level.setBlockAndUpdate(pos, ModBlocks.RHNULL_BLOOD_FLUID_BLOCK.get().defaultBlockState());
 
                 for (int i = 0; i < 10; i++) {
                     double x = pos.getX() + 0.5;

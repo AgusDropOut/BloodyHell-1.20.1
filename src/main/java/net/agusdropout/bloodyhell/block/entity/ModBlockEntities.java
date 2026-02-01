@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.block.entity;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.entity.custom.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -42,6 +43,18 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("blood_fire_block_entity",
                     () -> BlockEntityType.Builder.of(BloodFireBlockEntity::new,
                             ModBlocks.BLOOD_FIRE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SanguinitePipeBlockEntity>> SANGUINITE_PIPE_BE =
+            BLOCK_ENTITIES.register("sanguine_pipe_be", () ->
+                    BlockEntityType.Builder.of(SanguinitePipeBlockEntity::new,
+                            ModBlocks.SANGUINITE_PIPE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SanguiniteTankBlockEntity>> SANGUINITE_TANK_BE =
+            BLOCK_ENTITIES.register("sanguinite_tank_be", () ->
+                    BlockEntityType.Builder.of(SanguiniteTankBlockEntity::new,
+                            ModBlocks.SANGUINITE_TANK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SanguiniteBloodHarvesterBlockEntity>> SANGUINITE_BLOOD_HARVESTER_BE =
+            BLOCK_ENTITIES.register("sanguinite_blood_harvester_be", () ->
+                    BlockEntityType.Builder.of(SanguiniteBloodHarvesterBlockEntity::new,
+                            ModBlocks.SANGUINITE_BLOOD_HARVESTER.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {

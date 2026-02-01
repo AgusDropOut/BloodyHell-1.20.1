@@ -1,5 +1,5 @@
 package net.agusdropout.bloodyhell.block.custom;
-import net.agusdropout.bloodyhell.block.entity.BloodFireBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;

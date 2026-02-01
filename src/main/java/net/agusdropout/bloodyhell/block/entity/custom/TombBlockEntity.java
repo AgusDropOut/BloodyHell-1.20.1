@@ -1,7 +1,8 @@
-package net.agusdropout.bloodyhell.block.entity;
+package net.agusdropout.bloodyhell.block.entity.custom;
 
 import net.agusdropout.bloodyhell.block.custom.TombBlock;
 
+import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.GraveWalkerEntity;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

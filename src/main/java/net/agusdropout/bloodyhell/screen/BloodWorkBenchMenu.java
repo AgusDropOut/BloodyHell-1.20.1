@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.screen;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.BloodWorkbenchBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.BloodWorkbenchBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

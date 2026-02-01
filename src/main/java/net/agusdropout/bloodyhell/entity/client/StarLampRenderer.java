@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.client;
 
-import net.agusdropout.bloodyhell.block.entity.StarLampBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.StarLampBlockEntity;
 import net.agusdropout.bloodyhell.util.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

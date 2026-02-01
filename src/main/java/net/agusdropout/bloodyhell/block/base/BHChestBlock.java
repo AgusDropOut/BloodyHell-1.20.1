@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.base;
 
-import net.agusdropout.bloodyhell.block.entity.BHChestBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.BHChestBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.ChestBlock;

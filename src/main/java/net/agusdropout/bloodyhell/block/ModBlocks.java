@@ -4,10 +4,13 @@ package net.agusdropout.bloodyhell.block;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.entity.SelioraRestingBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.StarLampBlockEntity;
+import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteBloodHarvesterBlock;
+import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
+import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteTankBlock;
+import net.agusdropout.bloodyhell.block.custom.mushroom.VoraciousMushroomBlock;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.worldgen.tree.BloodTreeGrower;
 import net.agusdropout.bloodyhell.worldgen.tree.GiantBloodTreeGrower;
 import net.agusdropout.bloodyhell.worldgen.tree.SmallBloodTreeGrower;
@@ -258,12 +261,58 @@ public class ModBlocks {
             BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
 
 
+    //Special mushrooms
+    public static final RegistryObject<Block> VORACIOUS_MUSHROOM_BLOCK = registerBlock("voracious_mushroom_block", ()-> new VoraciousMushroomBlock(
+            BlockBehaviour.Properties.copy(Blocks.BROWN_MUSHROOM_BLOCK).strength(0.5f).noOcclusion().lightLevel((state)->10)));
+
+
 
     //Fluid
+    // FLUID BLOCKS
     public static final RegistryObject<LiquidBlock> BLOOD_FLUID_BLOCK = BLOCKS.register("blood_fluid_block",
-            () -> new LiquidBlock(ModFluids.SOURCE_BLOOD, BlockBehaviour.Properties.copy(Blocks.LAVA).noLootTable().lightLevel((state)->1).liquid()));
-    public static final RegistryObject<LiquidBlock> RHNULL_BLOOD_FLUID_BLOCK = BLOCKS.register("rhnull_blood_fluid_block",
-            () -> new LiquidBlock(ModFluids.SOURCE_RHNULL_BLOOD, BlockBehaviour.Properties.copy(Blocks.LAVA).noLootTable().lightLevel((state)->1).liquid()));
+            () -> new BaseLiquidBlock(
+                    ModFluids.BLOOD_SOURCE,
+                    BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable(),
+                    ModParticles.BLOOD_PARTICLES, // Lazy Particle
+                    0.05f // Chance
+            ));
+
+    // 2. CORRUPTED BLOOD (Dark Red) -> Uses Vanilla Ash
+    public static final RegistryObject<LiquidBlock> CORRUPTED_BLOOD_BLOCK = BLOCKS.register("corrupted_blood_block",
+            () -> new BaseLiquidBlock(
+                    ModFluids.CORRUPTED_BLOOD_SOURCE,
+                    BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable(),
+                    () -> net.minecraft.core.particles.ParticleTypes.ASH,
+                    0.1f
+            ));
+
+    // 3. VISCOUS BLASPHEMY (Black/Yellow) -> Uses Magic Gold Particles
+    public static final RegistryObject<LiquidBlock> VISCOUS_BLASPHEMY_BLOCK = BLOCKS.register("viscous_blasphemy_block",
+            () -> new BaseLiquidBlock(
+                    ModFluids.VISCOUS_BLASPHEMY_SOURCE,
+                    BlockBehaviour.Properties.copy(Blocks.LAVA).noLootTable().lightLevel((state) -> 15),
+                    () -> new net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions(
+                            new org.joml.Vector3f(1.0f, 0.88f, 0.07f), // Gold Color
+                            1.2f, // Size
+                            true, // Jitter
+                            40    // Lifetime
+                    ),
+                    0.02f
+            ));
+    // 3. VISCOUS BLASPHEMY (Black/Yellow) -> Uses Magic Gold Particles
+    public static final RegistryObject<LiquidBlock> VISCERAL_BLOOD_BLOCK = BLOCKS.register("visceral_fluid_block",
+            () -> new BaseLiquidBlock(
+                    ModFluids.VISCERAL_BLOOD_SOURCE,
+                    BlockBehaviour.Properties.copy(Blocks.LAVA).noLootTable().lightLevel((state) -> 15),
+                    () -> new net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions(
+                            new org.joml.Vector3f(1.0f, 0.88f, 0.07f), // Gold Color
+                            1.2f, // Size
+                            true, // Jitter
+                            40    // Lifetime
+                    ),
+                    0.02f
+            ));
+
 
     //Glowing
     public static final RegistryObject<Block> SOUL_LAMP = registerBlock("soul_lamp", ()-> new Soullampblock(
@@ -281,9 +330,9 @@ public class ModBlocks {
 
     //Tranfusion Power Generating Mushrooms
     public static final RegistryObject<Block> BLOOD_ALTAR = BLOCKS.register("blood_altar", ()-> new BloodAltarBlock(
-            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15)));
+            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
     public static final RegistryObject<Block> MAIN_BLOOD_ALTAR = BLOCKS.register("main_blood_altar", ()-> new MainBloodAltarBlock(
-            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15)));
+            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
 
     //Blasphemous Biome Blocks
     public static final RegistryObject<Block> BLASPHEMOUS_SAND_BLOCK = registerBlock("blasphemous_sand_block", () -> new SandBlock(1,
@@ -421,8 +470,18 @@ public class ModBlocks {
             () -> new BloodCapsuleBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)
                     .strength(0.3f)
                     .sound(SoundType.GLASS)
-                    .noOcclusion())); // Reinforce noOcclusion here just in case
+                    .noOcclusion()));
 
+    //Mechanisms
+    public static final RegistryObject<Block> SANGUINITE_PIPE = registerBlock("sanguinite_pipe",
+            () -> new SanguinitePipeBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SANGUINITE_TANK = registerBlock("sanguinite_tank",
+            () -> new SanguiniteTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SANGUINITE_BLOOD_HARVESTER = registerBlock("sanguinite_blood_harvester",
+            () -> new SanguiniteBloodHarvesterBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

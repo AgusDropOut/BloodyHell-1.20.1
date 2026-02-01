@@ -54,6 +54,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ModItems.SANGUINITE_NUGGET);
         normalItem(ModItems.RAW_SANGUINITE);
 
+
+        //Bucket
+        normalItem(ModItems.BLOOD_BUCKET);
+        normalItem(ModItems.CORRUPTED_BLOOD_BUCKET);
+        normalItem(ModItems.VISCOUS_BLASPHEMY_BUCKET);
+        normalItem(ModItems.VISCERAL_BLOOD_BUCKET);
         //Rhnull Items
         toolItem(ModItems.RHNULL_SWORD);
         toolItem(ModItems.RHNULL_PICKAXE);
@@ -129,6 +135,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(ModBlocks.RHNULL_BLOCK);
         simpleBlockItemBlockTexture(ModBlocks.BLOOD_FLOWER);
         simpleBlockItemBlockTexture(ModBlocks.BLOOD_GRASS);
+
+
 
 
 

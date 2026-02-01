@@ -11,6 +11,8 @@ import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.AmuletOfAncest
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.BlasphemousRing;
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.CrimsonWardRing;
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.GreatAmuletOfAncestralBlood;
+import net.agusdropout.bloodyhell.item.custom.mechanism.SanguiniteBloodHarvesterItem;
+import net.agusdropout.bloodyhell.item.custom.mechanism.SanguinitePipeItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.agusdropout.bloodyhell.item.potions.BloodFlaskItem;
 import net.agusdropout.bloodyhell.item.potions.BloodPotionItem;
@@ -60,10 +62,18 @@ public class ModItems {
             () -> new BloodArmorItem(ModArmorMaterials.BLOOD, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> BLOOD_BOOTS = ITEMS.register("blood_boots",
             () -> new BloodArmorItem(ModArmorMaterials.BLOOD, ArmorItem.Type.BOOTS, new Item.Properties()));
-    public static final RegistryObject<Item> BLOOD_BUCKET = ITEMS.register("blood_bucket", () -> new BucketItem(ModFluids.SOURCE_BLOOD,
-                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
-    public static final RegistryObject<Item> RHNULL_BLOOD_BUCKET = ITEMS.register("rhnull_blood_bucket", () -> new BucketItem(ModFluids.SOURCE_RHNULL_BLOOD,
-            new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    // FLUID BUCKETS
+    public static final RegistryObject<Item> BLOOD_BUCKET = ITEMS.register("blood_bucket",
+            () -> new BucketItem(ModFluids.BLOOD_SOURCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+
+    public static final RegistryObject<Item> CORRUPTED_BLOOD_BUCKET = ITEMS.register("corrupted_blood_bucket",
+            () -> new BucketItem(ModFluids.CORRUPTED_BLOOD_SOURCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+
+    public static final RegistryObject<Item> VISCOUS_BLASPHEMY_BUCKET = ITEMS.register("viscous_blasphemy_bucket",
+            () -> new BucketItem(ModFluids.VISCOUS_BLASPHEMY_SOURCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+
+    public static final RegistryObject<Item> VISCERAL_BLOOD_BUCKET = ITEMS.register("visceral_blood_bucket",
+            () -> new BucketItem(ModFluids.VISCERAL_BLOOD_SOURCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
 
     //Rhnull Items
@@ -209,6 +219,12 @@ public class ModItems {
             ModBlocks.BLOOD_ALTAR.get(),new Item.Properties()));
     public static final RegistryObject<Item> MAIN_BLOOD_ALTAR = ITEMS.register("main_blood_altar", () -> new MainBloodAltarItem(
             ModBlocks.MAIN_BLOOD_ALTAR.get(),new Item.Properties()));
+
+
+    public static final RegistryObject<Item> SANGUINITE_PIPE_ITEM = ITEMS.register("sanguinite_pipe_item",
+            () -> new SanguinitePipeItem(ModBlocks.SANGUINITE_PIPE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SANGUINITE_BLOOD_HARVESTER_ITEM = ITEMS.register("sanguinite_blood_harvester_item",
+            () -> new SanguiniteBloodHarvesterItem(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get(), new Item.Properties()));
 
     //Flasks
     public static final RegistryObject<Item> BLOOD_FLASK = ITEMS.register("blood_flask", () -> new BloodFlaskItem(
