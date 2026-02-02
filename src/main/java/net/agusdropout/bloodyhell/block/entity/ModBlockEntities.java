@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteInfuso
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteTankBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.mushroom.VoraciousMushroomBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.plant.BloodGemSproutBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -67,6 +68,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("sanguinite_infusor_be", () ->
                     BlockEntityType.Builder.of(SanguiniteInfusorBlockEntity::new,
                             ModBlocks.SANGUINITE_INFUSOR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BloodGemSproutBlockEntity>> BLOOD_GEM_SPROUT_BE =
+            BLOCK_ENTITIES.register("blood_gem_sprout_be", () ->
+                    BlockEntityType.Builder.of(BloodGemSproutBlockEntity::new,
+                            ModBlocks.BLOOD_GEM_SPROUT.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {

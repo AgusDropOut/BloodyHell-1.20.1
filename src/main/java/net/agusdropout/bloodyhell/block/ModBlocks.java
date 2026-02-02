@@ -10,6 +10,7 @@ import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteTankBlock;
 import net.agusdropout.bloodyhell.block.custom.mushroom.VoraciousMushroomBlock;
 import net.agusdropout.bloodyhell.block.custom.mushroom.InfestationVeinBlock;
+import net.agusdropout.bloodyhell.block.custom.plant.BloodGemSproutBlock;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -488,6 +489,9 @@ public class ModBlocks {
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SANGUINITE_INFUSOR = registerBlock("sanguinite_infusor",
             () -> new SanguiniteInfusorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> BLOOD_GEM_SPROUT = registerBlock("blood_gem_sprout",
+            () -> new BloodGemSproutBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

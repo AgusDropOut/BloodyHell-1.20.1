@@ -916,5 +916,183 @@ public class RenderHelper {
         return new Vec3(temp.x, temp.y, temp.z);
     }
 
+    // =========================================================================================
+    //                                  MANUAL DIAMOND (THE CHEAT)
+    // =========================================================================================
+
+    // =========================================================================================
+    //                                  MANUAL DIAMOND (LAYERED & DOUBLE SIDED)
+    // =========================================================================================
+
+    // =========================================================================================
+    //                                  MANUAL DIAMOND (SOLID / OPAQUE)
+    // =========================================================================================
+
+    // =========================================================================================
+    //                                  MANUAL DIAMOND (DOUBLE SIDED FIX)
+    // =========================================================================================
+
+    public static void renderFloatingDiamond(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
+                                             float x, float y, float z,
+                                             float w, float h,
+                                             float r, float g, float b, float a,
+                                             int light) {
+
+        // Vertices
+        Vec3 vTop = new Vec3(x, y + h, z);
+        Vec3 vBot = new Vec3(x, y - h, z);
+
+        Vec3 vEast = new Vec3(x + w, y, z);
+        Vec3 vSouth = new Vec3(x, y, z + w);
+        Vec3 vWest = new Vec3(x - w, y, z);
+        Vec3 vNorth = new Vec3(x, y, z - w);
+
+        // --- UPPER PYRAMID ---
+        addDoubleSidedTri(consumer, pose, normal, vEast, vTop, vSouth, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, vSouth, vTop, vWest, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, vWest, vTop, vNorth, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, vNorth, vTop, vEast, r, g, b, a, light);
+
+        // --- LOWER PYRAMID ---
+        addDoubleSidedTri(consumer, pose, normal, vEast, vSouth, vBot, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, vSouth, vWest, vBot, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, vWest, vNorth, vBot, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, vNorth, vEast, vBot, r, g, b, a, light);
+    }
+
+    // =========================================================================================
+    //                                  GEOMETRIC GEMS (ROBUST)
+    // =========================================================================================
+
+    /**
+     * Renders a classic 8-sided Gem (Octahedron).
+     * Guaranteed to be visible from all angles (Double Sided).
+     */
+    public static void renderOctahedron(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
+                                        float size,
+                                        float r, float g, float b, float a, int light) {
+
+        // 6 Vertices of an Octahedron
+        Vec3 top = new Vec3(0, size, 0);
+        Vec3 bot = new Vec3(0, -size, 0);
+
+        Vec3 front = new Vec3(0, 0, size);
+        Vec3 right = new Vec3(size, 0, 0);
+        Vec3 back  = new Vec3(0, 0, -size);
+        Vec3 left  = new Vec3(-size, 0, 0);
+
+        // --- TOP PYRAMID ---
+        addDoubleSidedTri(consumer, pose, normal, top, front, right, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, top, right, back, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, top, back, left, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, top, left, front, r, g, b, a, light);
+
+        // --- BOTTOM PYRAMID ---
+        addDoubleSidedTri(consumer, pose, normal, bot, right, front, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, bot, back, right, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, bot, left, back, r, g, b, a, light);
+        addDoubleSidedTri(consumer, pose, normal, bot, front, left, r, g, b, a, light);
+    }
+
+
+
+    // =========================================================================================
+    //                            THE DODECAHEDRON (COMPLETED)
+    // =========================================================================================
+
+    public static void renderDodecahedron(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
+                                          float size,
+                                          float r, float g, float b, float a, int light) {
+
+        // Golden Ratio Constants
+        float phi = 1.618034f;
+        float invPhi = 1.0f / phi;
+
+        // Scale (Dodecahedrons look huge compared to Octahedrons, so we scale down slightly)
+        float s = size * 0.5f;
+
+        // --- VERTEX GENERATION ---
+
+        // Group A: Cube Corners (±1, ±1, ±1)
+        // 0:(+,+,+), 1:(+,+,-), 2:(+,-,+), 3:(+,-,-)
+        // 4:(-,+,+), 5:(-,+,-), 6:(-,-,+), 7:(-,-,-)
+        Vec3[] aV = {
+                new Vec3(s, s, s),   new Vec3(s, s, -s),   new Vec3(s, -s, s),   new Vec3(s, -s, -s),
+                new Vec3(-s, s, s),  new Vec3(-s, s, -s),  new Vec3(-s, -s, s),  new Vec3(-s, -s, -s)
+        };
+
+        // Group B: YZ Rect (0, ±invPhi, ±phi)
+        // 0:(Top-Front), 1:(Top-Back), 2:(Bot-Front), 3:(Bot-Back)
+        Vec3[] bV = {
+                new Vec3(0, s*invPhi, s*phi),  new Vec3(0, s*invPhi, -s*phi),
+                new Vec3(0, -s*invPhi, s*phi), new Vec3(0, -s*invPhi, -s*phi)
+        };
+
+        // Group C: XY Rect (±invPhi, ±phi, 0)
+        // 0:(Right-Top), 1:(Right-Bot), 2:(Left-Top), 3:(Left-Bot)
+        Vec3[] cV = {
+                new Vec3(s*invPhi, s*phi, 0),  new Vec3(s*invPhi, -s*phi, 0),
+                new Vec3(-s*invPhi, s*phi, 0), new Vec3(-s*invPhi, -s*phi, 0)
+        };
+
+        // Group D: XZ Rect (±phi, 0, ±invPhi)
+        // 0:(Right-Front), 1:(Right-Back), 2:(Left-Front), 3:(Left-Back)
+        Vec3[] dV = {
+                new Vec3(s*phi, 0, s*invPhi),  new Vec3(s*phi, 0, -s*invPhi),
+                new Vec3(-s*phi, 0, s*invPhi), new Vec3(-s*phi, 0, -s*invPhi)
+        };
+
+        // --- FACE RENDERING (12 Pentagons) ---
+        // We render each pentagon Double-Sided so it never disappears.
+
+        // 1. Front (+Z, +X side)
+        renderPentagon(consumer, pose, normal, bV[0], aV[0], dV[0], aV[2], bV[2], r, g, b, a, light);
+        // 2. Front (+Z, -X side)
+        renderPentagon(consumer, pose, normal, bV[2], aV[6], dV[2], aV[4], bV[0], r, g, b, a, light);
+
+        // 3. Back (-Z, +X side)
+        renderPentagon(consumer, pose, normal, bV[1], bV[3], aV[3], dV[1], aV[1], r, g, b, a, light);
+        // 4. Back (-Z, -X side)
+        renderPentagon(consumer, pose, normal, bV[3], bV[1], aV[5], dV[3], aV[7], r, g, b, a, light);
+
+        // 5. Top (+Y, Front-ish)
+        renderPentagon(consumer, pose, normal, cV[0], aV[0], bV[0], aV[4], cV[2], r, g, b, a, light);
+        // 6. Top (+Y, Back-ish)
+        renderPentagon(consumer, pose, normal, cV[2], aV[5], bV[1], aV[1], cV[0], r, g, b, a, light);
+
+        // 7. Bottom (-Y, Front-ish)
+        renderPentagon(consumer, pose, normal, cV[1], aV[2], bV[2], aV[6], cV[3], r, g, b, a, light);
+        // 8. Bottom (-Y, Back-ish)
+        renderPentagon(consumer, pose, normal, cV[3], aV[7], bV[3], aV[3], cV[1], r, g, b, a, light);
+
+        // 9. Right (+X, Top-ish)
+        renderPentagon(consumer, pose, normal, dV[0], aV[0], cV[0], aV[1], dV[1], r, g, b, a, light);
+        // 10. Right (+X, Bot-ish)
+        renderPentagon(consumer, pose, normal, dV[1], aV[3], cV[1], aV[2], dV[0], r, g, b, a, light);
+
+        // 11. Left (-X, Top-ish)
+        renderPentagon(consumer, pose, normal, dV[2], dV[3], aV[5], cV[2], aV[4], r, g, b, a, light);
+        // 12. Left (-X, Bot-ish)
+        renderPentagon(consumer, pose, normal, dV[3], dV[2], aV[6], cV[3], aV[7], r, g, b, a, light);
+    }
+
+    /**
+     * Helper to draw a Pentagon as a Triangle Fan (3 Triangles).
+     * Draws Double-Sided (6 calls total) to prevent culling.
+     */
+    private static void renderPentagon(VertexConsumer c, Matrix4f p, Matrix3f n,
+                                       Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4, Vec3 v5,
+                                       float r, float g, float b, float a, int light) {
+        // Triangle 1 (v1-v2-v3)
+        addDoubleSidedTri(c, p, n, v1, v2, v3, r, g, b, a, light);
+        // Triangle 2 (v1-v3-v4)
+        addDoubleSidedTri(c, p, n, v1, v3, v4, r, g, b, a, light);
+        // Triangle 3 (v1-v4-v5)
+        addDoubleSidedTri(c, p, n, v1, v4, v5, r, g, b, a, light);
+    }
+
+
+
+
 
 }
