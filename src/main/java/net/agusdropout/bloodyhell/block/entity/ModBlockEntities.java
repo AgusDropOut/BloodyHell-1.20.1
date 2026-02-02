@@ -3,6 +3,10 @@ package net.agusdropout.bloodyhell.block.entity;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.entity.custom.*;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteInfusorBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteTankBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mushroom.VoraciousMushroomBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -55,6 +59,14 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("sanguinite_blood_harvester_be", () ->
                     BlockEntityType.Builder.of(SanguiniteBloodHarvesterBlockEntity::new,
                             ModBlocks.SANGUINITE_BLOOD_HARVESTER.get()).build(null));
+    public static final RegistryObject<BlockEntityType<VoraciousMushroomBlockEntity>> VORACIOUS_MUSHROOM_BE =
+            BLOCK_ENTITIES.register("voracious_mushroom_be", () ->
+                    BlockEntityType.Builder.of(VoraciousMushroomBlockEntity::new,
+                            ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SanguiniteInfusorBlockEntity>> SANGUINITE_INFUSOR_BE =
+            BLOCK_ENTITIES.register("sanguinite_infusor_be", () ->
+                    BlockEntityType.Builder.of(SanguiniteInfusorBlockEntity::new,
+                            ModBlocks.SANGUINITE_INFUSOR.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {

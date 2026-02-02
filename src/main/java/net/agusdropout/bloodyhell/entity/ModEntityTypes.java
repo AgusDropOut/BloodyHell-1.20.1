@@ -4,11 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 
 
-import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
-import net.agusdropout.bloodyhell.entity.effects.BloodNovaDebrisEntity;
-import net.agusdropout.bloodyhell.entity.effects.BloodSlashDecalEntity;
-import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
-import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
+import net.agusdropout.bloodyhell.entity.effects.*;
 import net.agusdropout.bloodyhell.entity.projectile.*;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
@@ -222,10 +218,15 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.of(FailedRemnantEntity::new, MobCategory.MONSTER)
                             .sized(1.5f, 2f) // Wide but flat (Crawling)
                             .build(new ResourceLocation(BloodyHell.MODID, "failed_remnant").toString()));
+    public static final RegistryObject<EntityType<InfestationDecalEntity>> INFESTATION_DECAL =
+            ENTITY_TYPES.register("infestation_decal",
+                    () -> EntityType.Builder.<InfestationDecalEntity>of(InfestationDecalEntity::new, MobCategory.AMBIENT)
+                            .sized(1.0f, 1.0f) // Wide but flat (Crawling)
+                            .build(new ResourceLocation(BloodyHell.MODID, "infestation_decal").toString()));
     public static final RegistryObject<EntityType<BloodSoulEntity>> BLOOD_SOUL =
             ENTITY_TYPES.register("blood_soul_entity",
                     () -> EntityType.Builder.<BloodSoulEntity>of(BloodSoulEntity::new, MobCategory.AMBIENT)
-                            .sized(0.5f, 0.5f) // Smaller size for a particle effect
+                            .sized(0.5f, 0.5f)
                             .build(new ResourceLocation(BloodyHell.MODID, "blood_soul_entity").toString()));
 
 

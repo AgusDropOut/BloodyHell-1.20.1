@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-31T22:16:13.3422049	Item Models: bloodyhell
+// 1.20.1	2026-02-01T02:49:46.8314805	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 0daad63d3db69ced8f0038465c04abe47a00815e assets/bloodyhell/models/item/ancient_bloody_lamp.json
 77c198480c0204d88a6582721584ec72818df45b assets/bloodyhell/models/item/ancient_bloody_stone_bricks.json
@@ -144,4 +144,5 @@ c99540685bd4cc062d723f2e29f3f245a44958f4 assets/bloodyhell/models/item/sting_flo
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/veinraver_entity_spawn_egg.json
 41ab3b73e3e61976fc1471fa796fa375c37e41b1 assets/bloodyhell/models/item/veinreaver_horn.json
 72e2a96cc1a0b24d951912c48186acf096f664ee assets/bloodyhell/models/item/visceral_blood_bucket.json
+3cee1a7730bdb147b9c2eacde682f2943c8a9445 assets/bloodyhell/models/item/visceral_infected_vein.json
 ffbc2b579050e9b391774ae40c5a7e81ded5961c assets/bloodyhell/models/item/viscous_blasphemy_bucket.json

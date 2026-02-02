@@ -694,7 +694,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_ancient_torch", has(ModItems.ANCIENT_TORCH_ITEM.get()))
                 .save(consumer, name("ancient_bloody_lamp"));
 
-
+        makeInfusion(consumer, ModItems.RHNULL.get(), ModItems.SANGUINITE.get(), 500, 500, "rhnull_ingot_infusion");
     }
 
 

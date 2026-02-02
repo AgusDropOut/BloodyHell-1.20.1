@@ -9,12 +9,16 @@ import org.joml.Vector3f;
 
 public enum BloodSoulType {
     BLOOD(
-            new Vector3f(1.0f, 0.0f, 0.0f),
-            new Vector3f(1.0f, 0.6f, 0.8f)
+            new Vector3f(1.0f, 0.0f, 0.0f), // Red
+            new Vector3f(1.0f, 0.6f, 0.8f)  // Pinkish Red
     ),
     CORRUPTED(
-            new Vector3f(0.2f, 0.0f, 0.0f), // Darker Red
-            new Vector3f(0.6f, 0.0f, 0.0f)
+            new Vector3f(0.2f, 0.0f, 0.0f), // Dark Red
+            new Vector3f(0.6f, 0.0f, 0.0f)  // Crimson
+    ),
+    INFECTED(
+            new Vector3f(0.1f, 0.8f, 0.2f), // Toxic Green
+            new Vector3f(0.6f, 0.8f, 0.1f)  // Sickly Yellow-Green
     );
 
     private final Vector3f startColor;
@@ -27,6 +31,7 @@ public enum BloodSoulType {
 
     public void spawnParticles(Level level, Vec3 pos, RandomSource random, float scaleMultiplier) {
         float ratio = random.nextFloat();
+        // Linear interpolation between start and end color
         Vector3f color = new Vector3f(
                 startColor.x + (endColor.x - startColor.x) * ratio,
                 startColor.y + (endColor.y - startColor.y) * ratio,

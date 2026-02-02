@@ -136,6 +136,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(ModBlocks.BLOOD_FLOWER);
         simpleBlockItemBlockTexture(ModBlocks.BLOOD_GRASS);
 
+        simpleBlockItemBlockTexture(ModBlocks.VISCERAL_INFECTED_VEIN);
+
 
 
 

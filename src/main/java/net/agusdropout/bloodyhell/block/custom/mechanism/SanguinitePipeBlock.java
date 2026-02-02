@@ -1,9 +1,19 @@
 package net.agusdropout.bloodyhell.block.custom.mechanism;
 
+import net.agusdropout.bloodyhell.block.base.IFilterableBlock;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
-import net.agusdropout.bloodyhell.block.entity.custom.SanguinitePipeBlockEntity;
+
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
+import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -17,12 +27,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
-public class SanguinitePipeBlock extends BaseEntityBlock {
+public class SanguinitePipeBlock extends BaseEntityBlock implements IFilterableBlock {
 
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -31,7 +42,7 @@ public class SanguinitePipeBlock extends BaseEntityBlock {
     public static final BooleanProperty UP = BooleanProperty.create("up");
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
-    // Center Cube (4x4x4)
+    // Simple 4x4x4 center box
     private static final VoxelShape CENTER_SHAPE = Block.box(6, 6, 6, 10, 10, 10);
 
     public SanguinitePipeBlock(Properties properties) {
@@ -42,9 +53,50 @@ public class SanguinitePipeBlock extends BaseEntityBlock {
                 .setValue(UP, false).setValue(DOWN, false));
     }
 
+
+
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+
+
+
+
+        // 2. FILTERING (Normal Right Click)
+        // Since we checked Crouch above, this will now only run if the player is NOT crouching.
+        InteractionResult filterResult = checkFilterInteraction(state, level, pos, player, hand);
+        if (filterResult != InteractionResult.PASS) return filterResult;
+
+
+        if (!level.isClientSide) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof SanguinitePipeBlockEntity pipe) {
+
+                // Toggle Mode
+                pipe.togglePullMode();
+
+                // Feedback
+                boolean isPulling = pipe.isPullMode();
+                String mode = isPulling ? "§c[Mode]: EXTRACTION (Pull)" : "§a[Mode]: TRANSPORT (Push)";
+
+                player.displayClientMessage(Component.literal(mode), true);
+                level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.5f, isPulling ? 0.6f : 0.5f);
+            }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+
+    }
+
+
+    // --- BOILERPLATE & RENDERING ---
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN);
+    }
+
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        // Vital for GeckoLib Animation
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
@@ -60,13 +112,6 @@ public class SanguinitePipeBlock extends BaseEntityBlock {
         if (level.isClientSide) return null;
         return createTickerHelper(type, ModBlockEntities.SANGUINITE_PIPE_BE.get(),
                 (lvl, pos, st, be) -> be.tick(lvl, pos, st));
-    }
-
-    // --- CONNECTION LOGIC ---
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN);
     }
 
     @Override
@@ -92,16 +137,10 @@ public class SanguinitePipeBlock extends BaseEntityBlock {
     private boolean canConnect(LevelAccessor level, BlockPos pos, Direction dir) {
         BlockPos neighborPos = pos.relative(dir);
         BlockEntity neighborBE = level.getBlockEntity(neighborPos);
-
         if (neighborBE == null) return false;
-
-        // Connect if neighbor has Fluid Handler on that side
         return neighborBE.getCapability(ForgeCapabilities.FLUID_HANDLER, dir.getOpposite()).isPresent();
     }
 
-    // --- COLLISION SHAPE ---
-    // (Optional: You can make this complex if you want raytracing to hit the arms perfectly,
-    //  but a simple center box + dynamic arms logic is verbose. A center box is often enough for alpha.)
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return CENTER_SHAPE;

@@ -15,8 +15,10 @@ import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
 import net.agusdropout.bloodyhell.entity.client.layer.BloodFireLayer;
+import net.agusdropout.bloodyhell.entity.client.layer.VisceralLayer;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
+import net.agusdropout.bloodyhell.event.handlers.EntityLayerHandler;
 import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.client.OffhandDaggerLayer;
@@ -293,48 +295,9 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void addEntityLayers(EntityRenderersEvent.AddLayers event) {
-            System.out.println("DEBUG: Starting AddLayers event...");
-
-            // 1. PLAYERS
-            for (String skinType : event.getSkins()) {
-                LivingEntityRenderer<Player, EntityModel<Player>> renderer = event.getSkin(skinType);
-                if (renderer != null) {
-                    renderer.addLayer(new BloodFireLayer<>(renderer));
-                    System.out.println("DEBUG: Added BloodFireLayer to Player skin: " + skinType);
-                }
-            }
-
-            // 2. MOBS
-            List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(
-                    ForgeRegistries.ENTITY_TYPES.getValues().stream()
-                            .filter(DefaultAttributes::hasSupplier)
-                            .map(entityType -> (EntityType<? extends LivingEntity>) entityType)
-                            .collect(Collectors.toList())
-            );
-
-            System.out.println("DEBUG: Found " + entityTypes.size() + " applicable living entities.");
-            entityTypes.forEach(entityType -> addLayerIfApplicable(entityType, event));
+            EntityLayerHandler.onAddLayers(event);
         }
 
-        private static void addLayerIfApplicable(EntityType<? extends LivingEntity> entityType, EntityRenderersEvent.AddLayers event) {
-            LivingEntityRenderer renderer = null;
-            if (entityType != EntityType.ENDER_DRAGON) {
-                try {
-                    renderer = event.getRenderer(entityType);
-                } catch (Exception e) {
-                    System.out.println("DEBUG: Failed to get renderer for " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
-                }
 
-                if (renderer != null) {
-                    try {
-                        renderer.addLayer(new BloodFireLayer<>(renderer));
-                        // DEBUG: Success for specific mob
-                         System.out.println("DEBUG: Added BloodFireLayer to: " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
-                    } catch (Exception e) {
-                        System.out.println("DEBUG: Error adding layer to " + ForgeRegistries.ENTITY_TYPES.getKey(entityType) + ": " + e.getMessage());
-                    }
-                }
-            }
-        }
     }
 }

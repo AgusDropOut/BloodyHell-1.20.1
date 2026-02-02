@@ -4,7 +4,7 @@ package net.agusdropout.bloodyhell.block.client;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
-import net.agusdropout.bloodyhell.block.entity.custom.SanguinitePipeBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.model.GeoModel;

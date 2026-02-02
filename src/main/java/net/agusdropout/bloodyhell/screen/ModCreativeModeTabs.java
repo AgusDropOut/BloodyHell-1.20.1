@@ -41,6 +41,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.VISCOUS_BLASPHEMY_BUCKET.get());
                         output.accept(ModItems.VISCERAL_BLOOD_BUCKET.get());
                         output.accept(ModItems.SANGUINITE_PIPE_ITEM.get());
+                        output.accept(ModBlocks.SANGUINITE_INFUSOR.get());
                         output.accept(ModBlocks.SANGUINITE_TANK.get());
                         output.accept(ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
                         output.accept(ModItems.BLOOD_SCYTHE.get());
@@ -84,6 +85,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.GLOW_FRUIT.get());
                         output.accept(ModItems.GLOW_MUSHROOM.get());
                         output.accept(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get());
+                        output.accept(ModBlocks.VISCERAL_INFECTED_VEIN.get());
                         output.accept(ModItems.SCARLET_RAW_CHICKEN.get());
                         output.accept(ModItems.SCARLET_COOKED_CHICKEN.get());
                         output.accept(ModItems.GOREHOG_RAW_STEAK.get());

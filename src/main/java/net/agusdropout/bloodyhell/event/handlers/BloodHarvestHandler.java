@@ -1,11 +1,8 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
-
-
 import net.agusdropout.bloodyhell.block.entity.custom.SanguiniteBloodHarvesterBlockEntity;
 import net.agusdropout.bloodyhell.datagen.ModTags;
-import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-
+import net.agusdropout.bloodyhell.effect.ModEffects; // Don't forget this import!
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulSize;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulType;
@@ -48,17 +45,26 @@ public class BloodHarvestHandler {
     private static boolean isValidSacrifice(LivingEntity entity) {
         return entity.getType().is(ModTags.Entities.SACRIFICEABLE_ENTITY) ||
                 entity.getType().is(ModTags.Entities.CORRUPTED_SACRIFICEABLE_ENTITY) ||
-                entity instanceof Monster; // Allow generic monsters even if not tagged
+                entity instanceof Monster;
     }
 
     private static BloodSoulType determineBloodType(LivingEntity entity) {
+        // 1. PRIORITY CHECK: VISCERAL EFFECT
+        // If the entity is suffering from Visceral, it produces an INFECTED soul
+        // regardless of what mob it originally was.
+        if (entity.hasEffect(ModEffects.VISCERAL_EFFECT.get())) {
+            return BloodSoulType.INFECTED;
+        }
+
+        // 2. Standard Tag Checks
         if (entity.getType().is(ModTags.Entities.CORRUPTED_SACRIFICEABLE_ENTITY)) {
             return BloodSoulType.CORRUPTED;
         }
         if (entity.getType().is(ModTags.Entities.SACRIFICEABLE_ENTITY)) {
             return BloodSoulType.BLOOD;
         }
-        // Fallback
+
+        // 3. Fallback
         if (entity instanceof Monster) return BloodSoulType.CORRUPTED;
         return BloodSoulType.BLOOD;
     }

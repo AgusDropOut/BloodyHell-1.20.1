@@ -164,12 +164,23 @@ public class SanguiniteBloodHarvesterBlockEntity extends BaseGeckoBlockEntity {
         if (level == null || level.isClientSide) return;
 
         FluidStack fluidToAdd;
-        if (type == BloodSoulType.CORRUPTED) {
-            fluidToAdd = new FluidStack(ModFluids.CORRUPTED_BLOOD_SOURCE.get(), amount);
-        } else {
-            fluidToAdd = new FluidStack(ModFluids.BLOOD_SOURCE.get(), amount);
+
+        // Determine which fluid corresponds to the Soul Type
+        switch (type) {
+            case CORRUPTED:
+                fluidToAdd = new FluidStack(ModFluids.CORRUPTED_BLOOD_SOURCE.get(), amount);
+                break;
+            case INFECTED:
+                // Maps Infected Soul -> Visceral Blood
+                fluidToAdd = new FluidStack(ModFluids.VISCERAL_BLOOD_SOURCE.get(), amount);
+                break;
+            case BLOOD:
+            default:
+                fluidToAdd = new FluidStack(ModFluids.BLOOD_SOURCE.get(), amount);
+                break;
         }
 
+        // Fill the tank
         tank.fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
 
         // Restart animation

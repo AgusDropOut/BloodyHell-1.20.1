@@ -827,5 +827,94 @@ public class RenderHelper {
         }
     }
 
+    /**
+     * Renders a pulsating, spinning "Atlas" Heart (Complex geometric artifact).
+     * Consists of 3 layers of Stellated Icosahedrons rotating against each other.
+     *
+     * @param gameTime Used for rotation math.
+     * @param partialTick For smooth animation.
+     */
+    // In RenderHelper.java
+
+    public static void renderAtlasHeart(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
+                                        long gameTime, float partialTick,
+                                        float rBase, float gBase, float bBase, // NEW: Base Color
+                                        float alpha, int light) {
+
+        float time = gameTime + partialTick;
+        float pulse = 1.0f + Mth.sin(time * 0.1f) * 0.1f;
+
+        // LAYER 1: Core (Small, fast spin)
+        renderRotatedLayer(consumer, pose, normal,
+                0.25f * pulse, 0.35f * pulse,
+                time * 3.0f,
+                rBase, gBase, bBase, // Pass base color
+                1.0f, light);
+
+        // LAYER 2: Shell (Medium, reverse spin)
+        renderRotatedLayer(consumer, pose, normal,
+                0.4f * pulse, 0.55f * pulse,
+                -time * 1.5f,
+                rBase, gBase, bBase, // Pass base color
+                0.7f, light);
+
+        // LAYER 3: Outer Field (Large, slow spin)
+        renderRotatedLayer(consumer, pose, normal,
+                0.6f * pulse, 0.2f * pulse,
+                time * 0.5f,
+                rBase, gBase, bBase, // Pass base color
+                0.4f, light);
+    }
+
+    private static void renderRotatedLayer(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
+                                           float baseScale, float tipScale, float rotDegrees,
+                                           float r, float g, float b, // Base Color input
+                                           float alpha, int light) {
+
+        Vec3[] baseVerts = getIcosahedronVertices(baseScale);
+        Vec3[] tipVerts = (baseScale == tipScale) ? baseVerts : getIcosahedronVertices(tipScale);
+        int[][] faces = getIcosahedronFaces();
+
+        // Rotation
+        Quaternionf q = new Quaternionf().rotateY(Mth.DEG_TO_RAD * rotDegrees);
+        Quaternionf q2 = new Quaternionf().rotateX(Mth.DEG_TO_RAD * (rotDegrees * 0.5f));
+        q.mul(q2);
+
+        // DYNAMIC PALETTE GENERATION
+        // We create variations based on the input color so it's not monotone.
+        // Color 1: The Base Color (e.g. Red)
+        // Color 2: Shifted slightly towards Yellow/White (Highlight)
+        // Color 3: Shifted slightly towards Purple/Dark (Shadow)
+
+        float[] c1 = {r, g, b};
+        float[] c2 = {Math.min(1f, r + 0.2f), Math.min(1f, g + 0.2f), Math.min(1f, b + 0.2f)};
+        float[] c3 = {Math.max(0f, r - 0.2f), Math.max(0f, g - 0.1f), Math.max(0f, b - 0.1f)};
+
+        for (int i = 0; i < faces.length; i++) {
+            int[] f = faces[i];
+
+            Vec3 v1 = rotateVec(baseVerts[f[0]], q);
+            Vec3 v2 = rotateVec(baseVerts[f[1]], q);
+            Vec3 v3 = rotateVec(baseVerts[f[2]], q);
+            Vec3 tTip = rotateVec(tipVerts[f[0]], q);
+
+            float[] c;
+            int colorIndex = i % 3;
+            if (colorIndex == 0) c = c1;
+            else if (colorIndex == 1) c = c2;
+            else c = c3;
+
+            addTri(consumer, pose, normal, v1, v2, tTip, c[0], c[1], c[2], alpha, light);
+            addTri(consumer, pose, normal, v2, v3, tTip, c[0], c[1], c[2], alpha, light);
+            addTri(consumer, pose, normal, v3, v1, tTip, c[0], c[1], c[2], alpha, light);
+        }
+    }
+
+    private static Vec3 rotateVec(Vec3 v, Quaternionf q) {
+        Vector3f temp = new Vector3f(v.x, v.y, v.z);
+        temp.rotate(q);
+        return new Vec3(temp.x, temp.y, temp.z);
+    }
+
 
 }

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.block.client.layer.SanguinitePipeFluidLayer;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
-import net.agusdropout.bloodyhell.block.entity.custom.SanguinitePipeBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;

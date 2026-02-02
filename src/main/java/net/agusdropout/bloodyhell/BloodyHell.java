@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
 import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.client.SanguiniteInfusorRenderer;
 import net.agusdropout.bloodyhell.block.client.SanguinitePipeRenderer;
 import net.agusdropout.bloodyhell.block.client.SanguiniteTankRenderer;
 import net.agusdropout.bloodyhell.block.client.generic.BaseGeckoBlockRenderer;
@@ -299,6 +300,7 @@ public class BloodyHell
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_CRUCIBLE.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_MUSHROOM_BLOCK.get(), RenderType.translucent());
+            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_INFUSOR_BE.get(), SanguiniteInfusorRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.BLOOD_ALTAR.get(), BloodAltarRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_PIPE_BE.get(), SanguinitePipeRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_TANK_BE.get(), SanguiniteTankRenderer::new);
@@ -327,6 +329,8 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.CINDER_ACOLYTE.get(), CinderAcolyteRenderer::new);
             EntityRenderers.register(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_SOUL.get(), BloodSoulRenderer::new);
+            EntityRenderers.register(ModEntityTypes.INFESTATION_DECAL.get(), InfestationDecalRenderer::new);
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
 
 
 

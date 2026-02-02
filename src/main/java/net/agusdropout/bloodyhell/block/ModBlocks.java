@@ -5,9 +5,11 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteBloodHarvesterBlock;
+import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteInfusorBlock;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteTankBlock;
 import net.agusdropout.bloodyhell.block.custom.mushroom.VoraciousMushroomBlock;
+import net.agusdropout.bloodyhell.block.custom.mushroom.InfestationVeinBlock;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -264,6 +266,8 @@ public class ModBlocks {
     //Special mushrooms
     public static final RegistryObject<Block> VORACIOUS_MUSHROOM_BLOCK = registerBlock("voracious_mushroom_block", ()-> new VoraciousMushroomBlock(
             BlockBehaviour.Properties.copy(Blocks.BROWN_MUSHROOM_BLOCK).strength(0.5f).noOcclusion().lightLevel((state)->10)));
+    public static final RegistryObject<Block> VISCERAL_INFECTED_VEIN = registerBlock("visceral_infected_vein", ()-> new InfestationVeinBlock(
+            BlockBehaviour.Properties.copy(Blocks.SCULK_VEIN).strength(0.5f).noOcclusion().noCollission().replaceable().lightLevel((state)->10).noLootTable()));
 
 
 
@@ -481,6 +485,9 @@ public class ModBlocks {
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SANGUINITE_BLOOD_HARVESTER = registerBlock("sanguinite_blood_harvester",
             () -> new SanguiniteBloodHarvesterBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SANGUINITE_INFUSOR = registerBlock("sanguinite_infusor",
+            () -> new SanguiniteInfusorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

@@ -59,6 +59,11 @@ public class ModMessages {
                 .encoder(SyncRemoveBloodFirePacket::toBytes)
                 .consumerMainThread(SyncRemoveBloodFirePacket::handle)
                 .add();
+        net.messageBuilder(SyncVisceralEffectPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncVisceralEffectPacket::new)
+                .encoder(SyncVisceralEffectPacket::toBytes)
+                .consumerMainThread(SyncVisceralEffectPacket::handle)
+                .add();
     }
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);

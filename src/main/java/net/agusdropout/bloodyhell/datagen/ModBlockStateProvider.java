@@ -56,6 +56,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         crossBlock(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
         crossBlock(ModBlocks.BLOOD_FIRE);
 
+        veinBlock(ModBlocks.VISCERAL_INFECTED_VEIN);
+
         //Bloody Stone
         stairsBlock(((StairBlock) ModBlocks.BLOODY_STONE_STAIRS.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));
         slabBlock(((SlabBlock) ModBlocks.BLOODY_STONE_SLAB.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));
@@ -342,6 +344,74 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .rotationY(rotY)
                     .build();
         });
+    }
+
+    public void veinBlock(Supplier<? extends Block> blockSupplier) {
+        Block block = blockSupplier.get();
+        ResourceLocation texture = blockTexture(block);
+        String name = name(block);
+
+        // 1. FIXED MODEL: Defined at Z=0 (North Face) instead of Z=16
+        // This aligns with the "North" property having 0 rotation.
+        ModelFile model = models().getBuilder(name)
+                .parent(models().getExistingFile(mcLoc("block/block")))
+                .texture("particle", texture)
+                .texture("vein", texture)
+                .renderType("cutout") // Ensure transparency works
+                .element()
+                .from(0.0f, 0.0f, 0.0f)  // Start at Z=0 (North Face)
+                .to(16.0f, 16.0f, 1.0f)  // Thickness of 1 pixel
+                .shade(false)
+                // We render the SOUTH face of this element because it points INTO the block center
+                // (The player sees this when looking at the wall)
+                .face(Direction.SOUTH).texture("#vein").uvs(0, 0, 16, 16).end()
+                // Render North face too just in case (pointing into the wall)
+                .face(Direction.NORTH).texture("#vein").uvs(16, 0, 0, 16).end()
+                .end();
+
+        // 2. Build the Multipart State (Logic remains the same, but now rotations work)
+        var builder = getMultipartBuilder(block);
+
+        Direction[] directions = { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN };
+
+        for (Direction dir : directions) {
+            int rotX = 0;
+            int rotY = 0;
+
+            // Standard rotations for a North-facing model
+            switch (dir) {
+                case NORTH: rotX = 0;   rotY = 0;   break; // Default (Z=0)
+                case EAST:  rotX = 0;   rotY = 90;  break; // Rotates Z=0 to X=0
+                case SOUTH: rotX = 0;   rotY = 180; break; // Rotates Z=0 to Z=16
+                case WEST:  rotX = 0;   rotY = 270; break; // Rotates Z=0 to X=16
+                case UP:    rotX = 270; rotY = 0;   break; // Rotates Z=0 to Y=16 (Ceiling)
+                case DOWN:  rotX = 90;  rotY = 0;   break; // Rotates Z=0 to Y=0 (Floor)
+            }
+
+            // Part A: Render when this face is ACTIVE
+            builder.part()
+                    .modelFile(model)
+                    .rotationX(rotX)
+                    .rotationY(rotY)
+                    .uvLock(true)
+                    .addModel()
+                    .condition(MultifaceBlock.getFaceProperty(dir), true);
+
+            // Part B: The "All False" Fallback (Prevents invisible blocks)
+            var fallbackPart = builder.part()
+                    .modelFile(model)
+                    .rotationX(rotX)
+                    .rotationY(rotY)
+                    .uvLock(true)
+                    .addModel();
+
+            fallbackPart.condition(PipeBlock.NORTH, false)
+                    .condition(PipeBlock.EAST, false)
+                    .condition(PipeBlock.SOUTH, false)
+                    .condition(PipeBlock.WEST, false)
+                    .condition(PipeBlock.UP, false)
+                    .condition(PipeBlock.DOWN, false);
+        }
     }
 
 }

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.block.custom.mechanism.ConnectionType;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteTankBlock;
-import net.agusdropout.bloodyhell.block.entity.custom.SanguiniteTankBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteTankBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

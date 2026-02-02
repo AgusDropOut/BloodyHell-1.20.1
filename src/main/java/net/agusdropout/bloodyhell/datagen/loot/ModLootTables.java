@@ -95,6 +95,7 @@ public class ModLootTables extends LootTableProvider {
 
 
             this.dropSelf(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get());
+            this.dropSelf(ModBlocks.SANGUINITE_INFUSOR.get());
 
 
 
@@ -548,6 +549,11 @@ public class ModLootTables extends LootTableProvider {
                     )
             );
             this.add(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+            this.add(ModEntityTypes.INFESTATION_DECAL.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                     )

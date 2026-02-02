@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom.mechanism;
 
-import net.agusdropout.bloodyhell.block.entity.custom.SanguiniteTankBlockEntity;
+import net.agusdropout.bloodyhell.block.base.IFilterableBlock;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteTankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -22,7 +23,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidUtil;
 import org.jetbrains.annotations.Nullable;
 
-public class SanguiniteTankBlock extends BaseEntityBlock {
+public class SanguiniteTankBlock extends BaseEntityBlock implements IFilterableBlock {
 
     public static final EnumProperty<ConnectionType> NORTH = EnumProperty.create("north", ConnectionType.class);
     public static final EnumProperty<ConnectionType> SOUTH = EnumProperty.create("south", ConnectionType.class);
@@ -55,6 +56,8 @@ public class SanguiniteTankBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return calculateState(this.defaultBlockState(), context.getLevel(), context.getClickedPos());
     }
+
+
 
     // --- LOGIC ---
     private BlockState calculateState(BlockState state, LevelAccessor level, BlockPos pos) {
@@ -128,6 +131,12 @@ public class SanguiniteTankBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide) {
+            InteractionResult filterResult = checkFilterInteraction(state, level, pos, player, hand);
+
+            if (filterResult != InteractionResult.PASS) {
+                return filterResult;
+            }
+
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof SanguiniteTankBlockEntity cistern) {
                 // IMPORTANT: Always interact with the Controller to fill the WHOLE structure

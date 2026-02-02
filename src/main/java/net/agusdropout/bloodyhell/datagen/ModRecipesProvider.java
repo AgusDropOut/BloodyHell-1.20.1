@@ -91,6 +91,12 @@ public abstract class ModRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_" + ForgeRegistries.BLOCKS.getKey(blockIn.get()).getPath(), has(blockIn.get()));
     }
 
+    protected void makeInfusion(Consumer<FinishedRecipe> consumer, Item result, Item input, int blood, int visceral, String name) {
+        new SanguiniteInfusorRecipeBuilder(result, Ingredient.of(input), blood, visceral)
+                .unlockedBy("has_" + ForgeRegistries.ITEMS.getKey(input).getPath(), has(input))
+                .save(consumer, new ResourceLocation(BloodyHell.MODID, name));
+    }
+
     public ShapedRecipeBuilder makeFence(Supplier<? extends Block> fenceOut, Supplier<? extends Block> blockIn) {
         return ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, fenceOut.get(), 6)
                 .pattern("M/M")

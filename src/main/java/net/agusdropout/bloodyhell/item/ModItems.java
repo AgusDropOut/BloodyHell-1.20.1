@@ -228,13 +228,13 @@ public class ModItems {
 
     //Flasks
     public static final RegistryObject<Item> BLOOD_FLASK = ITEMS.register("blood_flask", () -> new BloodFlaskItem(
-            new Item.Properties().stacksTo(1)));
+            new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> CORRUPTED_BLOOD_FLASK = ITEMS.register("corrupted_blood_flask", () -> new BloodPotionItem(
-            new Item.Properties().stacksTo(1),new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
+            new Item.Properties().stacksTo(64),new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
     public static final RegistryObject<Item> FILLED_BLOOD_FLASK = ITEMS.register("filled_blood_flask", () -> new BloodPotionItem(
-            new Item.Properties().stacksTo(1), new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
+            new Item.Properties().stacksTo(64), new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
     public static final RegistryObject<Item> FILLED_RHNULL_BLOOD_FLASK = ITEMS.register("filled_rhnull_blood_flask", () -> new BloodPotionItem(
-            new Item.Properties().stacksTo(1), new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
+            new Item.Properties().stacksTo(64), new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
 
 
 

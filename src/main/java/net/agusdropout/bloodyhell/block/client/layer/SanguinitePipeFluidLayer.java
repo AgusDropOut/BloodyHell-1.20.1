@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.block.client.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
-import net.agusdropout.bloodyhell.block.entity.custom.SanguinitePipeBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -62,7 +62,7 @@ public class SanguinitePipeFluidLayer extends GeoRenderLayer<SanguinitePipeBlock
         GeoBone fluidBone = bakedModel.getBone("fluid_inner").orElse(null);
         if (fluidBone == null) return;
 
-        FluidStack fluidStack = animatable.getFluidStack();
+        FluidStack fluidStack = animatable.getFluidInTank();
         if (fluidStack.isEmpty()) return;
 
         IClientFluidTypeExtensions fluidProps = IClientFluidTypeExtensions.of(fluidStack.getFluid());
