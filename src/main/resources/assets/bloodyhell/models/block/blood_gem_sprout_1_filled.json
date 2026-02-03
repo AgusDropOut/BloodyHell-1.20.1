@@ -1,0 +1,86 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "bloodyhell:block/blood_gem_sprout_1_filled",
+		"particle": "bloodyhell:block/blood_gem_sprout_1_filled"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 4, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 7]},
+			"faces": {
+				"north": {"uv": [2, 2, 4, 3], "texture": "#0"},
+				"east": {"uv": [0, 2, 2, 3], "texture": "#0"},
+				"south": {"uv": [6, 2, 8, 3], "texture": "#0"},
+				"west": {"uv": [4, 2, 6, 3], "texture": "#0"},
+				"up": {"uv": [4, 2, 2, 0], "texture": "#0"},
+				"down": {"uv": [6, 0, 4, 2], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, -2, 13],
+			"to": [12, 2, 13],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [7, -2, 8]},
+			"faces": {
+				"north": {"uv": [10, 5.5, 12, 6.5], "texture": "#0"},
+				"south": {"uv": [12, 5.5, 14, 6.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, -2, 3],
+			"to": [12, 2, 3],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [7, -2, 8]},
+			"faces": {
+				"north": {"uv": [10, 6.5, 12, 7.5], "texture": "#0"},
+				"south": {"uv": [12, 6.5, 14, 7.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [13, -2, 4],
+			"to": [13, 2, 12],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [8, -2, 7]},
+			"faces": {
+				"east": {"uv": [6, 7.5, 8, 8.5], "texture": "#0"},
+				"west": {"uv": [8, 7.5, 10, 8.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, -2, 4],
+			"to": [3, 2, 12],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [8, -2, 7]},
+			"faces": {
+				"east": {"uv": [8, 2, 10, 3], "texture": "#0"},
+				"west": {"uv": [10, 2, 12, 3], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 4, 5],
+			"to": [8, 28, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 4, 7]},
+			"faces": {
+				"east": {"uv": [0, 4.5, 1.5, 10.5], "texture": "#0"},
+				"west": {"uv": [1.5, 4.5, 3, 10.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 4, 8],
+			"to": [11, 23, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 4, 9]},
+			"faces": {
+				"north": {"uv": [3, 3, 4.5, 7.75], "texture": "#0"},
+				"south": {"uv": [4.5, 3, 6, 7.75], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "blood_gem_sprout_juvenile",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6]
+		}
+	]
+}

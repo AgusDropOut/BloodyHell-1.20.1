@@ -1,0 +1,153 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "bloodyhell:block/blood_gem_sprout_4_filled",
+		"particle": "bloodyhell:block/blood_gem_sprout_4_filled"
+	},
+	"elements": [
+		{
+			"from": [3, 19.01, -5],
+			"to": [13, 19.01, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 20, -5]},
+			"faces": {
+				"up": {"uv": [10, 9.75, 7.5, 7.25], "texture": "#0"},
+				"down": {"uv": [12, 4, 9.5, 6.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 19, -1],
+			"to": [8, 32, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 6, 7]},
+			"faces": {
+				"east": {"uv": [7.5, 9.75, 9.25, 13], "texture": "#0"},
+				"west": {"uv": [9.25, 9.75, 11, 13], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 9, 5],
+			"to": [4, 16, 11],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [5, 6, 7]},
+			"faces": {
+				"east": {"uv": [11, 12.25, 12.5, 14], "texture": "#0"},
+				"west": {"uv": [0, 12.5, 1.5, 14.25], "texture": "#0"}
+			}
+		},
+		{
+			"from": [11.9999, 11, 5],
+			"to": [11.9999, 22, 11],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [11, 12, 7]},
+			"faces": {
+				"east": {"uv": [4, 10.5, 5.5, 13.25], "texture": "#0"},
+				"west": {"uv": [5.5, 10.5, 7, 13.25], "texture": "#0"}
+			}
+		},
+		{
+			"from": [15, 0, 3],
+			"to": [15, 5, 13],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [16, 0, 7]},
+			"faces": {
+				"east": {"uv": [11, 9.75, 13.5, 11], "texture": "#0"},
+				"west": {"uv": [11, 11, 13.5, 12.25], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 6, -1],
+			"to": [8, 19, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 6, 7]},
+			"faces": {
+				"east": {"uv": [6, 4, 9.5, 7.25], "texture": "#0"},
+				"west": {"uv": [4, 7.25, 7.5, 10.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 19, 6],
+			"to": [8, 32, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 6, 7]},
+			"faces": {
+				"east": {"uv": [10, 0, 11.75, 3.25], "texture": "#0"},
+				"west": {"uv": [10, 6.5, 11.75, 9.75], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 0, 13.9999],
+			"to": [13, 5, 13.9999],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [7, 2, 15]},
+			"faces": {
+				"north": {"uv": [11.75, 0, 14.25, 1.25], "texture": "#0"},
+				"south": {"uv": [11.75, 1.25, 14.25, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 0, 2],
+			"to": [13, 5, 2],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [7, 2, 1]},
+			"faces": {
+				"north": {"uv": [11.75, 2.5, 14.25, 3.75], "texture": "#0"},
+				"south": {"uv": [11.75, 6.5, 14.25, 7.75], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 6, 8],
+			"to": [12, 26, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 6, 7]},
+			"faces": {
+				"north": {"uv": [0, 7.5, 2, 12.5], "texture": "#0"},
+				"south": {"uv": [2, 7.5, 4, 12.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 12, 11],
+			"to": [12, 32, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 12, 10]},
+			"faces": {
+				"north": {"uv": [0, 7.5, 2, 12.5], "texture": "#0"},
+				"south": {"uv": [2, 7.5, 4, 12.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 0, 3],
+			"to": [13, 6, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 7]},
+			"faces": {
+				"north": {"uv": [2.5, 2.5, 5, 4], "texture": "#0"},
+				"east": {"uv": [0, 2.5, 2.5, 4], "texture": "#0"},
+				"south": {"uv": [7.5, 2.5, 10, 4], "texture": "#0"},
+				"west": {"uv": [5, 2.5, 7.5, 4], "texture": "#0"},
+				"up": {"uv": [5, 2.5, 2.5, 0], "texture": "#0"},
+				"down": {"uv": [7.5, 0, 5, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0.9999, 0, 3],
+			"to": [0.9999, 5, 13],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [0, 0, 7]},
+			"faces": {
+				"east": {"uv": [11.75, 7.75, 14.25, 9], "texture": "#0"},
+				"west": {"uv": [12, 3.75, 14.5, 5], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "blood_gem_sprout",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "tintable",
+					"origin": [0, 0, 7],
+					"color": 0,
+					"children": [0, 1]
+				},
+				{
+					"name": "notTintable",
+					"origin": [5, 6, 7],
+					"color": 0,
+					"children": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+				}
+			]
+		}
+	]
+}
