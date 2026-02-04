@@ -1,48 +1,38 @@
 package net.agusdropout.bloodyhell.event;
 
-import com.google.common.collect.ImmutableList;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.agusdropout.bloodyhell.BloodyHell;
-
 import net.agusdropout.bloodyhell.client.BloodFireOverlay;
 import net.agusdropout.bloodyhell.client.BossBarHudOverlay;
+import net.agusdropout.bloodyhell.client.ClientModLabelTooltip;
 import net.agusdropout.bloodyhell.client.CrimsonVeilHudOverlay;
-
 import net.agusdropout.bloodyhell.client.VisceralEffectHudOverlay;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
-import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
-import net.agusdropout.bloodyhell.entity.client.layer.BloodFireLayer;
-import net.agusdropout.bloodyhell.entity.client.layer.VisceralLayer;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.event.handlers.EntityLayerHandler;
 import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.client.OffhandDaggerLayer;
-import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
+import net.agusdropout.bloodyhell.item.custom.base.IComboWeapon;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.*;
+import net.agusdropout.bloodyhell.screen.ModLabelTooltipData;
 import net.agusdropout.bloodyhell.util.ClientTickHandler;
-import net.agusdropout.bloodyhell.util.ShaderUtils;
 import net.agusdropout.bloodyhell.util.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -51,17 +41,12 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ClientEvents {
 
-    // --- FORGE BUS EVENTS ---
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
-        // ... (Keep existing ClientForgeEvents code exactly as is) ...
+
         @SubscribeEvent
         public static void clientTickEvent(TickEvent.ClientTickEvent event) {
             if (event.phase == TickEvent.Phase.START) {
@@ -71,10 +56,6 @@ public class ClientEvents {
                 LocalPlayer player = Minecraft.getInstance().player;
                 if (player == null) return;
 
-                // NOTA: No llamamos a RitualAmbienceHandler.tick() aquí porque
-                // esa clase tiene su propio @SubscribeEvent para el tick.
-
-                // --- PLAYER ANIMATION LOGIC ---
                 var animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess
                         .getPlayerAssociatedData((AbstractClientPlayer) player)
                         .get(new ResourceLocation(BloodyHell.MODID, "animation"));
@@ -83,7 +64,6 @@ public class ClientEvents {
 
                 ItemStack stack = player.getMainHandItem();
 
-                // CASE 1: ITEM SWITCH
                 if (!(stack.getItem() instanceof IComboWeapon comboWeapon)) {
                     if (animationLayer.getAnimation() != null) {
                         animationLayer.setAnimation(null);
@@ -91,7 +71,6 @@ public class ClientEvents {
                     return;
                 }
 
-                // CASE 2: COMBO WINDOW EXPIRED
                 if (comboWeapon.isComboWindowExpired(stack, System.currentTimeMillis())) {
                     if (animationLayer.getAnimation() != null) {
                         animationLayer.setAnimation(null);
@@ -100,14 +79,11 @@ public class ClientEvents {
             }
         }
 
-
-
         @SubscribeEvent
         public static void onComputeFov(ViewportEvent.ComputeFov event) {
             Player player = (Player) event.getCamera().getEntity();
             if (player == null) return;
 
-            // 1. CYCLOPS ZOOM LOGIC (Multiplicative)
             float cyclopsZoomMultiplier = 1.0f;
             CyclopsEntity cyclops = player.level().getEntitiesOfClass(CyclopsEntity.class, player.getBoundingBox().inflate(64.0))
                     .stream().findFirst().orElse(null);
@@ -120,80 +96,8 @@ public class ClientEvents {
                 }
             }
 
-            // 2. RITUAL ELDRITCH LOGIC (Additive / Distortion)
-            // Llamamos al helper estático de la nueva clase externa
             float ritualFovDistortion = RitualAmbienceHandler.getFovModifier(player);
-
-            // 3. COMBINE BOTH WITHOUT CONFLICT
-            // Formula: (BaseFOV * Multiplier) + AdditiveDistortion
             event.setFOV((event.getFOV() * cyclopsZoomMultiplier) + ritualFovDistortion);
-        }
-
-        @Mod.EventBusSubscriber(modid = BloodyHell.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-        public class ClientPlayerRenderEvents {
-
-            @SubscribeEvent
-            public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
-                if (event.getEntity() instanceof Player player) {
-                    if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
-                        PlayerModel<?> model = playerRenderer.getModel();
-
-                        // 3. CASE: CHESTPLATE
-                        if (player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLASPHEMITE_CHESTPLATE.get()) ||
-                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLOOD_CHESTPLATE.get()) ||
-                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.RHNULL_CHESTPLATE.get())) {
-
-                            model.jacket.visible = false;
-                            model.leftSleeve.visible = false;
-                            model.rightSleeve.visible = false;
-                        }
-
-                        // 4. CASE: LEGGINGS and BOOTS
-                        if (player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLASPHEMITE_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLOOD_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLASPHEMITE_BOOTS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLOOD_BOOTS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.RHNULL_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.RHNULL_BOOTS.get())) {
-
-                            model.leftPants.visible = false;
-                            model.rightPants.visible = false;
-                        }
-
-                        // 5. CASE: HELMET
-                        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLASPHEMITE_HELMET.get()) ||
-                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLOOD_HELMET.get()) ||
-                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.RHNULL_HELMET.get())) {
-
-                            model.hat.visible = false;
-                            model.head.visible = false;
-                        }
-                    }
-                }
-            }
-
-            @SubscribeEvent
-            public static void onRenderDebugText(CustomizeGuiOverlayEvent.DebugText event) {
-                // Add a line to the LEFT side of the F3 screen
-               // event.getLeft().add(String.format("[BloodyHell] Shaders Active: %s",
-               //         ShaderUtils.areShadersActive() ? "§aTRUE" : "§cFALSE"));
-            }
-
-            @SubscribeEvent
-            public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
-                if (event.getEntity() instanceof Player) {
-                    if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
-                        PlayerModel<?> model = playerRenderer.getModel();
-                        model.jacket.visible = true;
-                        model.leftSleeve.visible = true;
-                        model.rightSleeve.visible = true;
-                        model.leftPants.visible = true;
-                        model.rightPants.visible = true;
-                        model.hat.visible = true;
-                        model.head.visible = true;
-                    }
-                }
-            }
         }
 
         @SubscribeEvent
@@ -217,12 +121,72 @@ public class ClientEvents {
                 event.setRoll((float) (event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4) * 25));
             }
         }
+
+        @Mod.EventBusSubscriber(modid = BloodyHell.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+        public class ClientPlayerRenderEvents {
+
+            @SubscribeEvent
+            public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
+                if (event.getEntity() instanceof Player player) {
+                    if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
+                        PlayerModel<?> model = playerRenderer.getModel();
+
+                        if (player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLASPHEMITE_CHESTPLATE.get()) ||
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLOOD_CHESTPLATE.get()) ||
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.RHNULL_CHESTPLATE.get())) {
+
+                            model.jacket.visible = false;
+                            model.leftSleeve.visible = false;
+                            model.rightSleeve.visible = false;
+                        }
+
+                        if (player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLASPHEMITE_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLOOD_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLASPHEMITE_BOOTS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLOOD_BOOTS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.RHNULL_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.RHNULL_BOOTS.get())) {
+
+                            model.leftPants.visible = false;
+                            model.rightPants.visible = false;
+                        }
+
+                        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLASPHEMITE_HELMET.get()) ||
+                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLOOD_HELMET.get()) ||
+                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.RHNULL_HELMET.get())) {
+
+                            model.hat.visible = false;
+                            model.head.visible = false;
+                        }
+                    }
+                }
+            }
+
+            @SubscribeEvent
+            public static void onRenderDebugText(CustomizeGuiOverlayEvent.DebugText event) {
+                // Debug text logic
+            }
+
+            @SubscribeEvent
+            public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
+                if (event.getEntity() instanceof Player) {
+                    if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
+                        PlayerModel<?> model = playerRenderer.getModel();
+                        model.jacket.visible = true;
+                        model.leftSleeve.visible = true;
+                        model.rightSleeve.visible = true;
+                        model.leftPants.visible = true;
+                        model.rightPants.visible = true;
+                        model.hat.visible = true;
+                        model.head.visible = true;
+                    }
+                }
+            }
+        }
     }
 
-    // --- MOD BUS EVENTS ---
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
-        // ... (Keep existing registration events) ...
 
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
@@ -232,6 +196,11 @@ public class ClientEvents {
             if (event.getSkin("slim") instanceof PlayerRenderer renderer) {
                 renderer.addLayer(new OffhandDaggerLayer(renderer));
             }
+        }
+
+        @SubscribeEvent
+        public static void registerTooltipFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+            event.register(ModLabelTooltipData.class, ClientModLabelTooltip::new);
         }
 
         @SubscribeEvent
@@ -263,8 +232,6 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.BLOOD_SIGIL_PARTICLE.get(), BloodSigilParticle.Provider::new);
             event.registerSpriteSet(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(), SmallBloodFlameParticle.Provider::new);
             event.registerSpriteSet(ModParticles.CHILL_BLACK_PARTICLE.get(), ChillBlackParticle.Provider::new);
-
-
         }
 
         @SubscribeEvent
@@ -273,7 +240,6 @@ public class ClientEvents {
             event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), "visceral_overlay", VisceralEffectHudOverlay.OVERLAY);
             event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "boss_bar", BossBarHudOverlay.OVERLAY);
             event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "blood_fire", BloodFireOverlay.HUD_BLOOD_FIRE);
-
         }
 
         @SubscribeEvent
@@ -284,7 +250,6 @@ public class ClientEvents {
             event.registerLayerDefinition(TentacleEntityModel.LAYER_LOCATION, TentacleEntityModel::createBodyLayer);
             event.registerLayerDefinition(SmallCrimsonDaggerModel.LAYER_LOCATION, SmallCrimsonDaggerModel::createBodyLayer);
             event.registerLayerDefinition(BloodFireMeteorModel.LAYER_LOCATION, BloodFireMeteorModel::createBodyLayer);
-
         }
 
         @SubscribeEvent
@@ -297,7 +262,5 @@ public class ClientEvents {
         public static void addEntityLayers(EntityRenderersEvent.AddLayers event) {
             EntityLayerHandler.onAddLayers(event);
         }
-
-
     }
 }

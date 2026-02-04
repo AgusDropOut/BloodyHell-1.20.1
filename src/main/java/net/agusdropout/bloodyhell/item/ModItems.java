@@ -11,6 +11,7 @@ import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.AmuletOfAncest
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.BlasphemousRing;
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.CrimsonWardRing;
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.GreatAmuletOfAncestralBlood;
+import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguiniteBloodHarvesterItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguinitePipeItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
@@ -195,6 +196,18 @@ public class ModItems {
             new Item.Properties()));
     public static final RegistryObject<Item> SCARLET_FEATHER = ITEMS.register("scarlet_feather", () -> new Item(
             new Item.Properties()));
+
+    public static final RegistryObject<Item> PURE_BLOOD_GEM = ITEMS.register("pure_blood_gem", () -> new BasePowerGemItem(
+            new Item.Properties()));
+    public static final RegistryObject<Item> CITRINE_BLOOD_GEM = ITEMS.register("citrine_blood_gem", () -> new BasePowerGemItem(
+            new Item.Properties()));
+    public static final RegistryObject<Item> TANZARINE_BLOOD_GEM = ITEMS.register("tanzarine_blood_gem", () -> new BasePowerGemItem(
+            new Item.Properties()));
+    public static final RegistryObject<Item> AVENTURINE_BLOOD_GEM = ITEMS.register("aventurine_blood_gem", () -> new BasePowerGemItem(
+            new Item.Properties()));
+
+
+
 
     //Misc Items
     public static final RegistryObject<Item> Eight_ball = ITEMS.register("eight_ball", () -> new EightBallItem(

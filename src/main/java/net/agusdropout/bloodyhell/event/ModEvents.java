@@ -3,7 +3,6 @@ package net.agusdropout.bloodyhell.event;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
-import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonVeil;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
@@ -13,9 +12,8 @@ import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.event.handlers.BloodHarvestHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
-import net.agusdropout.bloodyhell.item.custom.IComboWeapon;
+import net.agusdropout.bloodyhell.item.custom.base.IComboWeapon;
 import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.networking.packet.BossSyncS2CPacket;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.agusdropout.bloodyhell.networking.packet.SyncRemoveBloodFirePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -86,6 +84,8 @@ public class ModEvents {
                         new ResourceLocation(MODID, "animation"),
                         42,
                         ModEventBusEvents::registerPlayerAnimation);
+
+
             }
 
             //This method will set your mods animation into the library.
@@ -172,23 +172,17 @@ public class ModEvents {
 
             @SubscribeEvent
             public static void onLivingHurt(LivingHurtEvent event) {
-                // 1. Verificamos que el causante del daño sea un Jugador
-                // (getEntity() devuelve al atacante, incluso si es un proyectil, pero aquí nos centramos en melee)
                 if (event.getSource().getEntity() instanceof Player player) {
 
-                    // 2. Obtenemos el ítem que tiene en la mano principal
                     ItemStack mainHandStack = player.getMainHandItem();
 
-                    // 3. MAGIA DE LA EXTENSIBILIDAD:
-                    // Verificamos si el ítem implementa nuestra interfaz genérica IComboWeapon.
-                    // No importa si es Daga, Espada, Hacha o un Pescado, si tiene la interfaz, funciona.
+
                     if (mainHandStack.getItem() instanceof IComboWeapon comboWeapon) {
 
-                        // 4. Le pedimos al ítem que calcule su propio bonus
-                        // (El ítem revisará su NBT, su combo actual, etc. y nos dará un número)
+
                         float bonusDamage = comboWeapon.getComboDamageBonus(mainHandStack);
 
-                        // 5. Si hay bonus, lo sumamos al daño total del evento
+
                         if (bonusDamage > 0) {
                             event.setAmount(event.getAmount() + bonusDamage);
                         }
@@ -203,21 +197,14 @@ public class ModEvents {
 
             @SubscribeEvent
             public static void onPlayerAttack(AttackEntityEvent event) {
-                // Obtenemos al jugador
                 Player player = event.getEntity();
 
-                // Verificamos si tiene nuestras dagas en la mano principal
+
                 if (player.getMainHandItem().getItem() instanceof BlasphemousTwinDaggerItem) {
 
-                    // EL FILTRO MÁGICO:
-                    // Si el jugador tiene cooldown en el ítem (el que pusimos en onEntitySwing)...
+
                     if (player.getCooldowns().isOnCooldown(player.getMainHandItem().getItem())) {
 
-                        // ... CANCELAMOS EL ATAQUE COMPLETAMENTE.
-                        // Esto hace que:
-                        // 1. La entidad no reciba daño.
-                        // 2. No se envíe paquete de ataque.
-                        // 3. No se reinicie la animación de swing bruscamente.
                         event.setCanceled(true);
                     }
                 }

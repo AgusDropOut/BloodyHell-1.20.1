@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.block.custom.plant.BloodGemSproutBlock;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGemSproutBlockEntity;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
+import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.util.RenderHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,6 +29,8 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static net.minecraft.world.level.block.Block.popResource;
+
 public class BloodGemSproutBlockEntity extends BaseGemSproutBlockEntity {
 
     // --- CONFIG ---
@@ -34,8 +38,7 @@ public class BloodGemSproutBlockEntity extends BaseGemSproutBlockEntity {
     private static final int MAX_GROWTH_TOME = 500;
     private static final float GROWTH_CHANCE = 0.35f;
 
-    // --- STATE ---
-    private int gemColor = 0xFFDC00;
+
 
     public BloodGemSproutBlockEntity(BlockPos pPos, BlockState pState) {
         super(ModBlockEntities.BLOOD_GEM_SPROUT_BE.get(), pPos, pState,
@@ -43,15 +46,9 @@ public class BloodGemSproutBlockEntity extends BaseGemSproutBlockEntity {
     }
 
 
-    public int getGemColor() {
-        return gemColor;
-    }
 
-    public void setGemColor(int color) {
-        this.gemColor = color;
-        setChanged();
-        sync();
-    }
+
+
 
 
     @Override
@@ -77,4 +74,6 @@ public class BloodGemSproutBlockEntity extends BaseGemSproutBlockEntity {
                 15728880
         );
     }
+
+
 }

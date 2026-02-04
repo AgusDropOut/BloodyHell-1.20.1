@@ -4,17 +4,23 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.block.base.BaseGemSproutBlock;
 import net.agusdropout.bloodyhell.block.custom.plant.BloodGemSproutBlock;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGemSproutBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.plant.BloodGemSproutBlockEntity;
 import net.agusdropout.bloodyhell.util.RenderHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -37,9 +43,29 @@ public class BloodGemSproutRenderer implements BlockEntityRenderer<BaseGemSprout
                        MultiBufferSource buffer, int packedLight, int packedOverlay) {
 
         BlockState state = be.getBlockState();
+        ItemStack itemStack = be.getTempStoredItem();
+
+        if(state.getValue(BloodGemSproutBlock.ITEM_INSIDE) &&  !itemStack.isEmpty()) {
+            System.out.println("Rendering Item Inside");
+
+            poseStack.pushPose();
+            // Center the item floating above
+            poseStack.translate(0.5f, 1.25f, 0.5f);
+            poseStack.scale(0.7f, 0.7f, 0.7f);
+
+            // Spin item slowly
+            long time = be.getLevel().getGameTime();
+            float rotation = (time + partialTick) * 2.0f;
+            poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
+
+            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+            itemRenderer.renderStatic(itemStack, ItemDisplayContext.GROUND, packedLight,
+                    OverlayTexture.NO_OVERLAY, poseStack, buffer, be.getLevel(), 1);
+            poseStack.popPose();
+        }
 
 
-        if (state.getValue(BloodGemSproutBlock.AGE) < 4) {
+        if (state.getValue(BloodGemSproutBlock.AGE) < BaseGemSproutBlock.MAX_AGE) {
             return;
         }
 

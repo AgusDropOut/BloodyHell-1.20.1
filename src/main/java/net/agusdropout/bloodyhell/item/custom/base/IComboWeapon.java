@@ -1,8 +1,4 @@
-package net.agusdropout.bloodyhell.item.custom;
-
-import net.minecraft.world.item.ItemStack;
-
-
+package net.agusdropout.bloodyhell.item.custom.base;
 
 import net.minecraft.world.item.ItemStack;
 

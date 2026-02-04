@@ -492,7 +492,7 @@ public class ModBlocks {
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> BLOOD_GEM_SPROUT = registerBlock("blood_gem_sprout",
             () -> new BloodGemSproutBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
-                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+                    .noOcclusion().strength(3f).noParticlesOnBreak().noLootTable()));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

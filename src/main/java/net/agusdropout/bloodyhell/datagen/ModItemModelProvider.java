@@ -54,6 +54,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ModItems.SANGUINITE_NUGGET);
         normalItem(ModItems.RAW_SANGUINITE);
 
+        normalItem(ModItems.PURE_BLOOD_GEM);
+        normalItem(ModItems.AVENTURINE_BLOOD_GEM);
+        normalItem(ModItems.CITRINE_BLOOD_GEM);
+        normalItem(ModItems.TANZARINE_BLOOD_GEM);
+
 
         //Bucket
         normalItem(ModItems.BLOOD_BUCKET);

@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "bloodyhell:block/blood_gem_sprout_4",
-		"particle": "bloodyhell:block/blood_gem_sprout_4"
+		"0": "bloodyhell:block/blood_gem_sprout_5_filled",
+		"particle": "bloodyhell:block/blood_gem_sprout_5_filled"
 	},
 	"elements": [
 		{
@@ -17,51 +17,12 @@
 			}
 		},
 		{
-			"from": [5, 17, -3],
-			"to": [11, 19, 3],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 12, -1]},
-			"faces": {
-				"north": {"uv": [1.5, 5.5, 3, 6], "texture": "#0"},
-				"east": {"uv": [0, 5.5, 1.5, 6], "texture": "#0"},
-				"south": {"uv": [4.5, 5.5, 6, 6], "texture": "#0"},
-				"west": {"uv": [3, 5.5, 4.5, 6], "texture": "#0"},
-				"up": {"uv": [3, 5.5, 1.5, 4], "texture": "#0"},
-				"down": {"uv": [4.5, 4, 3, 5.5], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6, 15, -2],
-			"to": [10, 17, 2],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 10, -1]},
-			"faces": {
-				"north": {"uv": [1, 7, 2, 7.5], "texture": "#0"},
-				"east": {"uv": [0, 7, 1, 7.5], "texture": "#0"},
-				"south": {"uv": [3, 7, 4, 7.5], "texture": "#0"},
-				"west": {"uv": [2, 7, 3, 7.5], "texture": "#0"},
-				"up": {"uv": [2, 7, 1, 6], "texture": "#0"},
-				"down": {"uv": [3, 6, 2, 7], "texture": "#0"}
-			}
-		},
-		{
 			"from": [8, 19, -1],
 			"to": [8, 32, 6],
 			"rotation": {"angle": 0, "axis": "y", "origin": [9, 6, 7]},
 			"faces": {
 				"east": {"uv": [7.5, 9.75, 9.25, 13], "texture": "#0"},
 				"west": {"uv": [9.25, 9.75, 11, 13], "texture": "#0"}
-			}
-		},
-		{
-			"from": [7, 14, -1],
-			"to": [9, 15, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 8, -1]},
-			"faces": {
-				"north": {"uv": [4.5, 6.5, 5, 6.75], "texture": "#0"},
-				"east": {"uv": [4, 6.5, 4.5, 6.75], "texture": "#0"},
-				"south": {"uv": [5.5, 6.5, 6, 6.75], "texture": "#0"},
-				"west": {"uv": [5, 6.5, 5.5, 6.75], "texture": "#0"},
-				"up": {"uv": [5, 6.5, 4.5, 6], "texture": "#0"},
-				"down": {"uv": [5.5, 6, 5, 6.5], "texture": "#0"}
 			}
 		},
 		{
@@ -178,13 +139,13 @@
 					"name": "tintable",
 					"origin": [0, 0, 7],
 					"color": 0,
-					"children": [0, 1, 2, 3, 4]
+					"children": [0, 1]
 				},
 				{
 					"name": "notTintable",
 					"origin": [5, 6, 7],
 					"color": 0,
-					"children": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+					"children": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 				}
 			]
 		}

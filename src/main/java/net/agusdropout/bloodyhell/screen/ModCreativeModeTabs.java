@@ -243,6 +243,13 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BLOOD_NOVA_SPELLBOOK.get());
                         output.accept(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get());
 
+                        // --- Blood Gems Items ---
+                        output.accept(ModItems.PURE_BLOOD_GEM.get());
+                        output.accept(ModItems.TANZARINE_BLOOD_GEM.get());
+                        output.accept(ModItems.AVENTURINE_BLOOD_GEM.get());
+                        output.accept(ModItems.CITRINE_BLOOD_GEM.get());
+
+
                         // --- Crimson Blood Items ---
                         output.accept(ModItems.AMULET_OF_ANCESTRAL_BLOOD.get());
                         output.accept(ModItems.ANCIENT_GEM.get());

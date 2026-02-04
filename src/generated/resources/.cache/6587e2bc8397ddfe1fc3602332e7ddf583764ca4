@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-01T02:49:46.8314805	Item Models: bloodyhell
+// 1.20.1	2026-02-03T01:01:11.620284	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 0daad63d3db69ced8f0038465c04abe47a00815e assets/bloodyhell/models/item/ancient_bloody_lamp.json
 77c198480c0204d88a6582721584ec72818df45b assets/bloodyhell/models/item/ancient_bloody_stone_bricks.json
@@ -11,6 +11,7 @@ ee9f663134c8320ba7d8eb2ffe2c50f79b0f767c assets/bloodyhell/models/item/ancient_d
 14a952b98c00afd133a0e452445054b35e60ecf8 assets/bloodyhell/models/item/ancient_gem.json
 b1ecf22cfc0f17c3561b3c355b19f96e35815db2 assets/bloodyhell/models/item/ancient_torch.json
 f49a02ab718c1273b0986d09260a7eedd70e35a7 assets/bloodyhell/models/item/aureal_revenant_dagger.json
+5993d52688b8a93d3962bff331587b58c0d00711 assets/bloodyhell/models/item/aventurine_blood_gem.json
 199e5ae911cec144d1b4c62f8b20213884161214 assets/bloodyhell/models/item/blasphemite.json
 ae2588581a469b71948b31588492c54bc0258c34 assets/bloodyhell/models/item/blasphemite_axe.json
 0dad40cb8fd69307de2264108937afcd89997045 assets/bloodyhell/models/item/blasphemite_boots.json
@@ -66,6 +67,7 @@ c887e2ce7f7fa3be28a4a14282b01d7012168424 assets/bloodyhell/models/item/chalice_o
 a8dcfa61205af49890e97939316dbe24aa8236a5 assets/bloodyhell/models/item/chiseled_detailed_blasphemous_sandstone_block.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/cinder_acolyte_entity_spawn_egg.json
 aeb93dcb10acfc00b3408f04d5ff67603893535a assets/bloodyhell/models/item/cinder_acolyte_fainted_ember.json
+ac9bd5532ece713f329742d3440a1deff930b9fc assets/bloodyhell/models/item/citrine_blood_gem.json
 c9dae4787cd817de036dc324665181aafd6e65f5 assets/bloodyhell/models/item/corrupted_blood_bucket.json
 b3fc61db059346819d91dd3e8b9ab106308d8970 assets/bloodyhell/models/item/corrupted_blood_flask.json
 192954ddb5d4f638a75b2ea944c5627b8c4e0fba assets/bloodyhell/models/item/cracked_blasphemous_sandstone.json
@@ -102,6 +104,7 @@ fba7ac8b0eaf78b398a28eca9c2ba8455ddd7893 assets/bloodyhell/models/item/great_amu
 80f3ca3c0c52a9a2829768cf1f1f79e24b1328c4 assets/bloodyhell/models/item/polished_bloody_stone_slab.json
 87e18e44a6457c5d4252553fee2683dffbe796f9 assets/bloodyhell/models/item/polished_bloody_stone_stairs.json
 2b8bb492e3175877c89bab98d8ef3ca79fc2881d assets/bloodyhell/models/item/polished_bloody_stone_wall.json
+53e3e48a470f897b34caa2a05f31d0bc57e986dc assets/bloodyhell/models/item/pure_blood_gem.json
 e7c07409b66392d26588806c7244ea2ac0ece3da assets/bloodyhell/models/item/raw_blasphemite.json
 c951baf9982df7c980b0b30fb7dd648e39a27c21 assets/bloodyhell/models/item/raw_sanguinite.json
 1dc554db58365281c45ec60c22609b5b6e1d3f4b assets/bloodyhell/models/item/rhnull.json
@@ -139,6 +142,7 @@ fc53386e3aee237beb90835e1ac954d19474b6a6 assets/bloodyhell/models/item/smooth_bl
 2ddf74b6a0c32eb650d41c4a14b8eff32e506cf9 assets/bloodyhell/models/item/spiky_grass.json
 4c6d4c1a913bb44cc7e4d37819f63a92c832963d assets/bloodyhell/models/item/star_lamp_block.json
 c99540685bd4cc062d723f2e29f3f245a44958f4 assets/bloodyhell/models/item/sting_flower.json
+ef83cb9c2c9d6cbc044f64cd53cbeab5e0e7b89a assets/bloodyhell/models/item/tanzarine_blood_gem.json
 3ec0ba33d99064809ef0ebfc0dfff8fb2fc2d27a assets/bloodyhell/models/item/unknown_entity_finger.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/veil_stalker_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/veinraver_entity_spawn_egg.json

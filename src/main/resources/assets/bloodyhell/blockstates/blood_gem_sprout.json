@@ -48,6 +48,16 @@
     "age=4,facing=north,filled=true":  { "model": "bloodyhell:block/blood_gem_sprout_4_filled" },
     "age=4,facing=east,filled=true":   { "model": "bloodyhell:block/blood_gem_sprout_4_filled", "y": 90 },
     "age=4,facing=south,filled=true":  { "model": "bloodyhell:block/blood_gem_sprout_4_filled", "y": 180 },
-    "age=4,facing=west,filled=true":   { "model": "bloodyhell:block/blood_gem_sprout_4_filled", "y": 270 }
+    "age=4,facing=west,filled=true":   { "model": "bloodyhell:block/blood_gem_sprout_4_filled", "y": 270 },
+
+    "age=5,facing=north,filled=false": { "model": "bloodyhell:block/blood_gem_sprout_5" },
+    "age=5,facing=east,filled=false":  { "model": "bloodyhell:block/blood_gem_sprout_5", "y": 90 },
+    "age=5,facing=south,filled=false": { "model": "bloodyhell:block/blood_gem_sprout_5", "y": 180 },
+    "age=5,facing=west,filled=false":  { "model": "bloodyhell:block/blood_gem_sprout_5", "y": 270 },
+
+    "age=5,facing=north,filled=true":  { "model": "bloodyhell:block/blood_gem_sprout_5_filled" },
+    "age=5,facing=east,filled=true":   { "model": "bloodyhell:block/blood_gem_sprout_5_filled", "y": 90 },
+    "age=5,facing=south,filled=true":  { "model": "bloodyhell:block/blood_gem_sprout_5_filled", "y": 180 },
+    "age=5,facing=west,filled=true":   { "model": "bloodyhell:block/blood_gem_sprout_5_filled", "y": 270 }
   }
 }

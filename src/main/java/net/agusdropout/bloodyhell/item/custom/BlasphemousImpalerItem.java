@@ -9,6 +9,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider; // IMPORT NECESARIO
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
 import net.agusdropout.bloodyhell.item.client.BlasphemousImpalerItemRenderer;
+import net.agusdropout.bloodyhell.item.custom.base.IComboWeapon;
 import net.agusdropout.bloodyhell.networking.ModMessages; // IMPORT NECESARIO
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket; // IMPORT NECESARIO
 import net.minecraft.client.Minecraft;

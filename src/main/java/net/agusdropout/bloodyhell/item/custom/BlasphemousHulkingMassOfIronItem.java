@@ -8,10 +8,9 @@ import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousSpearEntity;
 import net.agusdropout.bloodyhell.item.client.BlasphemousHulkingMassOfIronRenderer;
+import net.agusdropout.bloodyhell.item.custom.base.IComboWeapon;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
-import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -37,7 +36,6 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import dev.kosmx.playerAnim.api.layered.IAnimation;

@@ -15,28 +15,25 @@ import net.minecraftforge.fml.common.Mod;
 public class RitualAmbienceHandler {
 
     private static float currentIntensity = 0.0f;
-    private static int activeTicks = 0; // Temporizador
-    private static final float TRANSITION_SPEED = 0.015f; // Velocidad de entrada/salida
+    private static int activeTicks = 0;
+    private static final float TRANSITION_SPEED = 0.015f;
 
-    // --- MÉTODO DE DISPARO (Llamado desde el Bloque) ---
-    // durationTicks: Cuánto tiempo dura el efecto "fuerte" antes de empezar a desvanecerse.
+
     public static void triggerRitual(int durationTicks) {
         activeTicks = durationTicks;
     }
 
-    // --- EVENTOS DE FORGE ---
+
 
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
 
-        // 1. Manejo del Temporizador
         if (activeTicks > 0) {
             activeTicks--;
         }
 
-        // 2. Transición de Intensidad
-        // Si el temporizador está activo, subimos a 1.0. Si no, bajamos a 0.0.
+
         if (activeTicks > 0) {
             if (currentIntensity < 1.0f) currentIntensity += TRANSITION_SPEED;
         } else {
@@ -69,7 +66,6 @@ public class RitualAmbienceHandler {
         float originalStart = event.getNearPlaneDistance();
         float originalEnd = event.getFarPlaneDistance();
 
-        // Niebla cerrada
         float targetStart = -5.0f;
         float targetEnd = 25.0f;
 
