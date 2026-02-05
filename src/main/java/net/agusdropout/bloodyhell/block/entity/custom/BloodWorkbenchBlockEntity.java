@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.EnergySyncS2CPacket;
 import net.agusdropout.bloodyhell.recipe.BloodWorkBenchRecipe;
-import net.agusdropout.bloodyhell.screen.BloodWorkBenchMenu;
+import net.agusdropout.bloodyhell.screen.custom.menu.BloodWorkBenchMenu;
 import net.agusdropout.bloodyhell.util.ModEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -68,7 +68,7 @@ public class BloodWorkbenchBlockEntity extends BlockEntity implements MenuProvid
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    protected  ContainerData data;  //CUIDADO QUE ACA SAQUE EL FINAL
+    protected  ContainerData data;
     private int progress = 0;
     private int maxProgress = 78;
     public IEnergyStorage getEnergyStorage() {

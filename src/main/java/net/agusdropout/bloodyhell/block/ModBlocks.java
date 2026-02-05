@@ -490,6 +490,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> SANGUINITE_INFUSOR = registerBlock("sanguinite_infusor",
             () -> new SanguiniteInfusorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SANGUINE_LAPIDARY = registerBlock("sanguine_lapidary",
+            () -> new SanguineLapidaryBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> BLOOD_GEM_SPROUT = registerBlock("blood_gem_sprout",
             () -> new BloodGemSproutBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .noOcclusion().strength(3f).noParticlesOnBreak().noLootTable()));

@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.entity.ai.goals.VesperAttackGoal;
 import net.agusdropout.bloodyhell.item.ModItems;
-import net.agusdropout.bloodyhell.screen.VesperMenu;
+import net.agusdropout.bloodyhell.screen.custom.menu.VesperMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;

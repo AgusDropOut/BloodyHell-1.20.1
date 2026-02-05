@@ -1,7 +1,8 @@
-package net.agusdropout.bloodyhell.screen;
+package net.agusdropout.bloodyhell.screen.custom.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.screen.custom.menu.VesperMenu;
 import net.agusdropout.bloodyhell.screen.renderer.EnergyInfoArea;
 import net.agusdropout.bloodyhell.util.MouseUtil;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,27 +12,22 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class BloodWorkBenchScreen extends AbstractContainerScreen<BloodWorkBenchMenu> {
+public class VesperScreen extends AbstractContainerScreen<VesperMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(BloodyHell.MODID,"textures/gui/blood_workbench_gui.png");
+            new ResourceLocation(BloodyHell.MODID,"textures/gui/vesper_gui.png");
     private EnergyInfoArea energyInfoArea;
 
-    public BloodWorkBenchScreen(BloodWorkBenchMenu menu, Inventory inventory, Component component) {
+    public VesperScreen(VesperMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        super.imageHeight = 169;
     }
 
     @Override
     protected void init() {
         super.init();
-        assignEnergyInfoArea();
+
     }
 
-    private void assignEnergyInfoArea() {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-
-        energyInfoArea = new EnergyInfoArea(x + 55, y + 15, menu.blockEntity.getEnergyStorage());
-    }
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int pMouseX, int pMouseY) {
@@ -56,16 +52,9 @@ public class BloodWorkBenchScreen extends AbstractContainerScreen<BloodWorkBench
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-
-        renderProgressArrow(guiGraphics, x, y);
-        energyInfoArea.draw(guiGraphics);
     }
 
-    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) {
-            guiGraphics.blit(TEXTURE, x + 105, y + 33, 176, 0, 8, menu.getScaledProgress());
-        }
-    }
+
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {

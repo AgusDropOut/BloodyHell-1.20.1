@@ -1,7 +1,9 @@
-package net.agusdropout.bloodyhell.screen;
+package net.agusdropout.bloodyhell.screen.custom.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.screen.custom.menu.SanguineLapidaryMenu;
+import net.agusdropout.bloodyhell.screen.custom.menu.VesperMenu;
 import net.agusdropout.bloodyhell.screen.renderer.EnergyInfoArea;
 import net.agusdropout.bloodyhell.util.MouseUtil;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,13 +13,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class VesperScreen extends AbstractContainerScreen<VesperMenu> {
+public class SanguineLapidaryScreen extends AbstractContainerScreen<SanguineLapidaryMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(BloodyHell.MODID,"textures/gui/vesper_gui.png");
-    private EnergyInfoArea energyInfoArea;
+            new ResourceLocation(BloodyHell.MODID,"textures/gui/sanguine_lapidary_gui.png");
 
-    public VesperScreen(VesperMenu menu, Inventory inventory, Component component) {
+    public SanguineLapidaryScreen(SanguineLapidaryMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        super.imageHeight = 169;
     }
 
     @Override
@@ -48,10 +50,7 @@ public class VesperScreen extends AbstractContainerScreen<VesperMenu> {
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-
-
     }
 
 

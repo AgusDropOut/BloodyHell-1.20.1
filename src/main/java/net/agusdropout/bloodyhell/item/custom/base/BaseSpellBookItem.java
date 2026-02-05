@@ -15,12 +15,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.constant.DataTickets;
@@ -31,6 +29,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends Item implements GeoItem {
@@ -38,6 +37,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     private static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenLoop("open");
     private static final RawAnimation CLOSED_ANIM = RawAnimation.begin().thenLoop("closed");
     private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenPlay("attack");
+    private static final List<String> gem_sockets = List.of("socket_1","socket_2","socket_3");
 
     private static final String NBT_OPEN_KEY = "spellbook_is_open";
 
@@ -183,6 +183,29 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
 
     public GeoItemRenderer<T> createRenderer() {
         return new GenericSpellBookRenderer<T>(new GenericSpellBookModel<>());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> toolTip, TooltipFlag flag) {
+        super.appendHoverText(itemStack, level, toolTip, flag);
+
+        // 1. Get the Gems using your new robust method
+        List<Gem> gems = GemType.getGemsFromWeapon(itemStack);
+
+        if (!gems.isEmpty()) {
+            toolTip.add(Component.literal("Socketed Gems:").withStyle(ChatFormatting.GRAY));
+
+            // 2. Iterate the Gem objects directly
+            for (Gem gem : gems) {
+                String bonusType = gem.getStat(); // or gem.getStat()
+                double value = gem.getValue();
+
+                toolTip.add(Component.literal(" " + GemType.getFormattedBonus(bonusType, value))
+                        .withStyle(GemType.getChatFormating(bonusType)));
+            }
+        } else {
+            toolTip.add(Component.literal("No Gems Socketed").withStyle(ChatFormatting.DARK_GRAY));
+        }
     }
 
     public abstract void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack);

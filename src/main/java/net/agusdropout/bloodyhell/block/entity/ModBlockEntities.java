@@ -72,6 +72,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("blood_gem_sprout_be", () ->
                     BlockEntityType.Builder.of(BloodGemSproutBlockEntity::new,
                             ModBlocks.BLOOD_GEM_SPROUT.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SanguineLapidaryBlockEntity>> SANGUINE_LAPIDARY_BE =
+            BLOCK_ENTITIES.register("sanguine_lapidary_be", () ->
+                    BlockEntityType.Builder.of(SanguineLapidaryBlockEntity::new,
+                            ModBlocks.SANGUINE_LAPIDARY.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {

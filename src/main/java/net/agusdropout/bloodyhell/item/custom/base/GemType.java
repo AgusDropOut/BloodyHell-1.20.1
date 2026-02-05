@@ -2,11 +2,15 @@ package net.agusdropout.bloodyhell.item.custom.base;
 
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+
+import java.util.List;
 
 public enum GemType {
     EMPTY("empty", 0xFFFFFF, Items.AIR, null, ""),
@@ -157,6 +161,31 @@ public enum GemType {
         return "";
     }
 
+    public static GemType getGemTypeFromGemStack(ItemStack stack) {
+        for( GemType gem : values()) {
+            if(stack.is(gem.resultGem)){
+                return gem;
+            };
+        }
+        return GemType.EMPTY;
+    }
+
+    public static List<String> getAllStatsFromStack(ItemStack stack) {
+        List<String> sockets = List.of("socket_0","socket_1", "socket_2");
+        List<String> stats = new java.util.ArrayList<>();
+        for (String socket : sockets) {
+            if (stack.hasTag() && stack.getTag().contains(socket)) {
+                CompoundTag socketData = stack.getTag().getCompound(socket);
+                for (GemType gem : GemType.values()) {
+                    if (socketData.contains(gem.getBonusType())) {
+                        stats.add(gem.getBonusType());
+                    }
+                }
+            }
+        }
+        return stats;
+    }
+
     public static String getFormattedBonus(String statType, double value) {
         return switch (statType) {
             case "damage" -> "+" + value + " Damage";
@@ -175,5 +204,96 @@ public enum GemType {
             case  "duration" -> ChatFormatting.LIGHT_PURPLE;
             default -> ChatFormatting.WHITE;
         };
+    }
+
+    public static void cleanNbtData(ItemStack stack) {
+        for( GemType gem : values()) {
+            if(stack.hasTag() && stack.getTag().contains(gem.getBonusType()) && gem != GemType.EMPTY){
+                stack.getTag().remove(gem.getBonusType());
+            };
+        }
+    }
+
+    public  static void applyGemEffectToWeapon(ItemStack weapon, Gem gem, int gemSlot) {
+            String socket_key = "socket_" + gemSlot;
+            CompoundTag socketData  = new CompoundTag();
+            socketData.putDouble(gem.getStat(), gem.getValue());
+            weapon.getOrCreateTag().put(socket_key, socketData);
+
+    }
+
+    public static ItemStack getGemStackWithStatFromNbt(ItemStack weapon, String socketKey) {
+        if (weapon.hasTag() && weapon.getTag().contains(socketKey)) {
+            CompoundTag socketData = weapon.getTag().getCompound(socketKey);
+            for (GemType gem : GemType.values()) {
+                if (socketData.contains(gem.getBonusType())) {
+                    ItemStack gemStack = new ItemStack(gem.getResultGem());
+                    double value = socketData.getDouble(gem.getBonusType());
+                    gemStack.getOrCreateTag().putDouble(gem.getBonusType(), value);
+                    return gemStack;
+                }
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public static List<Gem> getGemsFromWeapon(ItemStack weapon){
+        List<Gem> gems = new java.util.ArrayList<>();
+        List<String> sockets = List.of("socket_0","socket_1", "socket_2");
+        for (String socket : sockets) {
+            if (weapon.hasTag() && weapon.getTag().contains(socket)) {
+                CompoundTag socketData = weapon.getTag().getCompound(socket);
+                for (GemType gemType : GemType.values()) {
+                    if (socketData.contains(gemType.getBonusType())) {
+                        double value = socketData.getDouble(gemType.getBonusType());
+                        gems.add(new Gem(gemType,gemType.bonusType, value));
+                    }
+                }
+            }
+        }
+        return gems;
+
+    }
+
+    public static void putGemsIntoWeapon(ItemStack weapon, List<Gem> gems){
+        int slotIndex = 0;
+        for (Gem gem : gems) {
+            String socket_key = "socket_" + slotIndex;
+            CompoundTag socketData  = new CompoundTag();
+            socketData.putDouble(gem.getStat(), gem.getValue());
+            weapon.getOrCreateTag().put(socket_key, socketData);
+            slotIndex++;
+        }
+    }
+
+    public static void cleanGemsFromWeapon(ItemStack weapon){
+        List<String> sockets = List.of("socket_0","socket_1", "socket_2");
+        for (String socket : sockets) {
+            if (weapon.hasTag() && weapon.getTag().contains(socket)) {
+                weapon.getTag().remove(socket);
+            }
+        }
+    }
+
+    public static double getStatValueFromGemStack(ItemStack gemStack){
+        GemType gemType = GemType.getGemTypeFromGemStack(gemStack);
+        if (gemType != GemType.EMPTY && gemStack.hasTag() && gemStack.getTag().contains(gemType.getBonusType())) {
+            return gemStack.getTag().getDouble(gemType.getBonusType());
+        }
+        return 0.0;
+    }
+
+    public static ItemStack getGemStackFromGem(Gem gem){
+        ItemStack gemStack = new ItemStack(gem.getType().getResultGem());
+        gemStack.getOrCreateTag().putDouble(gem.getStat(), gem.getValue());
+        return gemStack;
+    }
+
+
+    public static GemType getGemTypeForStat(String stat) {
+        for (GemType type : GemType.values()) {
+            if (type.getBonusType().equals(stat)) return type;
+        }
+        return GemType.EMPTY;
     }
 }

@@ -108,19 +108,6 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
 
     public void tick(Level level, BlockPos pos, BlockState state) {
         if(level.isClientSide) return;
-
-
-        System.out.println("Blood Gem Sprout Tick - Age: " + state.getValue(BloodGemSproutBlock.AGE) +
-                " GrowthTimer: " + growthTimer +
-                " BloodAmount: " + bloodTank.getFluidAmount() +
-                " GemType: " + gemType +
-                " GemColor: " + String.format("#%06X", (0xFFFFFF & gemColor))+ "item inside: "
-                + state.getValue(BloodGemSproutBlock.ITEM_INSIDE)
-                + " RenderTimer: " + renderTimer
-                + " TempStoredItem: " + (tempStoredItem.isEmpty() ? "Empty" : tempStoredItem.getHoverName().getString()));
-
-
-
         int age = state.getValue(BloodGemSproutBlock.AGE);
         if (age >= BaseGemSproutBlock.MAX_AGE) return;
 

@@ -42,6 +42,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.VISCERAL_BLOOD_BUCKET.get());
                         output.accept(ModItems.SANGUINITE_PIPE_ITEM.get());
                         output.accept(ModBlocks.SANGUINITE_INFUSOR.get());
+                        output.accept(ModBlocks.SANGUINE_LAPIDARY.get());
                         output.accept(ModBlocks.BLOOD_GEM_SPROUT.get());
                         output.accept(ModBlocks.SANGUINITE_TANK.get());
                         output.accept(ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
