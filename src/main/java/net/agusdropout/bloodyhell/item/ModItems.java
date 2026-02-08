@@ -7,10 +7,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.custom.*;
 
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.AmuletOfAncestralBlood;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.BlasphemousRing;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.CrimsonWardRing;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.GreatAmuletOfAncestralBlood;
+import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
 import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguiniteBloodHarvesterItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguinitePipeItem;
@@ -264,7 +261,7 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
 
     //Unknown Entity
-    public static final RegistryObject<Item> UNKNOWN_ENTITY_FINGER = ITEMS.register("unknown_entity_finger", () -> new Item(
+    public static final RegistryObject<Item> UNKNOWN_ENTITY_FINGER = ITEMS.register("unknown_entity_finger", () -> new UnknownEntityFingers(
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLASPHEMOUS_TWIN_DAGGERS = ITEMS.register("blasphemous_twin_daggers", () -> new BlasphemousTwinDaggerItem(ModToolTiers.RHNULL,10,-2.4F,
             new Item.Properties().stacksTo(1)));

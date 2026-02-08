@@ -694,6 +694,81 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_ancient_torch", has(ModItems.ANCIENT_TORCH_ITEM.get()))
                 .save(consumer, name("ancient_bloody_lamp"));
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_PIPE_ITEM.get(), 8)
+                .pattern("GGG")
+                .pattern("SSS")
+                .pattern("GGG")
+                .define('G', Items.GLASS_PANE)
+                .define('S', ModItems.SANGUINITE.get())
+                .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
+                .save(consumer, name("sanguinite_pipe"));
+
+        // Sanguinite Tank
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINITE_TANK.get())
+                .pattern("SGS")
+                .pattern("G G")
+                .pattern("SGS")
+                .define('S', ModItems.SANGUINITE.get())
+                .define('G', Items.GLASS)
+                .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
+                .save(consumer, name("sanguinite_tank"));
+
+        // Sanguinite Blood Harvester
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get())
+                .pattern("ISI")
+                .pattern("RDR")
+                .pattern("ISI")
+                .define('S', ModItems.SANGUINITE.get())
+                .define('I', Items.IRON_INGOT)
+                .define('R', Items.REDSTONE)
+                .define('D', ModItems.SACRIFICIAL_DAGGER.get()) // The "Harvesting" blade
+                .unlockedBy("has_sacrificial_dagger", has(ModItems.SACRIFICIAL_DAGGER.get()))
+                .save(consumer, name("sanguinite_blood_harvester"));
+
+        // Sanguinite Infusor
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINITE_INFUSOR.get())
+                .pattern("SGS")
+                .pattern("GCG")
+                .pattern("SBS")
+                .define('S', ModItems.SANGUINITE.get())
+                .define('G', Items.GOLD_INGOT)
+                .define('B', ModBlocks.SANGUINITE_BLOCK.get())
+                .define('C', ModItems.ANCIENT_GEM.get()) // The magic core
+                .unlockedBy("has_crucible_core", has(ModItems.SANGUINE_CRUCIBLE_CORE.get()))
+                .save(consumer, name("sanguinite_infusor"));
+
+        // Sanguine Lapidary
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINE_LAPIDARY.get())
+                .pattern(" D ")
+                .pattern("SPS")
+                .pattern("BBB")
+                .define('D', ModItems.GREAT_ANCIENT_GEM.get())
+                .define('S', ModItems.SANGUINITE.get())
+                .define('P', ModBlocks.POLISHED_BLOODY_STONE_SLAB.get())
+                .define('B', ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get())
+                .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
+                .save(consumer, name("sanguine_lapidary"));
+
+        BloodAltarRecipeBuilder.ritual(ModItems.VORACIOUS_MUSHROOM.get())
+                .requires(ModItems.GLOW_MUSHROOM.get())
+                .requires(ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .requires(ModItems.BLOODY_SOUL_DUST.get())
+                .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
+                .save(consumer, name("ritual_voracious_mushroom"));
+
+        // Heretic Sacrificial Dagger
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HERETIC_SACRIFICIAL_DAGGER.get(), 1)
+                .pattern(" BB")
+                .pattern("GB ")
+                .pattern("DG ")
+                .define('G', Items.GOLD_INGOT)
+                .define('B', ModItems.BLASPHEMITE.get()) // Replaces Sanguinite
+                .define('D', ModItems.AUREAL_REVENANT_DAGGER.get())
+                .unlockedBy("has_blasphemite", has(ModItems.BLASPHEMITE.get()))
+                .unlockedBy("has_aureal_revenant_dagger", has(ModItems.AUREAL_REVENANT_DAGGER.get()))
+                .save(consumer, name("heretic_sacrificial_dagger"));
+
+
         makeInfusion(consumer, ModItems.RHNULL.get(), ModItems.SANGUINITE.get(), 500, 500, "rhnull_ingot_infusion");
     }
 
