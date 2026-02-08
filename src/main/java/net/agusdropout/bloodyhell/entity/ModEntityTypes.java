@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.entity.effects.*;
 import net.agusdropout.bloodyhell.entity.projectile.*;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
+import net.agusdropout.bloodyhell.entity.projectile.spell.*;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -137,14 +138,14 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<BloodPortalEntity>> BLOOD_PORTAL_ENTITY = ENTITY_TYPES.register("blood_portal_entity",
             () -> EntityType.Builder.<BloodPortalEntity>of(BloodPortalEntity::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_portal_entity").toString()));
-    public static final RegistryObject<EntityType<BloodFireSoulProjectile>> BLOOD_FIRE_SOUL = ENTITY_TYPES.register("blood_fire_soul",
-            () -> EntityType.Builder.<BloodFireSoulProjectile>of(BloodFireSoulProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
+    public static final RegistryObject<EntityType<BloodFireSoulEntity>> BLOOD_FIRE_SOUL = ENTITY_TYPES.register("blood_fire_soul",
+            () -> EntityType.Builder.<BloodFireSoulEntity>of(BloodFireSoulEntity::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_fire_soul").toString()));
-    public static final RegistryObject<EntityType<BloodFireColumnProjectile>> BLOOD_FIRE_COLUMN_PROJECTILE = ENTITY_TYPES.register("blood_fire_column_proyectile",
-            () -> EntityType.Builder.<BloodFireColumnProjectile>of(BloodFireColumnProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
-                    "blood_fire_column_proyectile").toString()));
-    public static final RegistryObject<EntityType<BloodFireMeteorProjectile>> BLOOD_FIRE_METEOR_PROJECTILE = ENTITY_TYPES.register("blood_fire_meteor_projectile",
-            () -> EntityType.Builder.<BloodFireMeteorProjectile>of(BloodFireMeteorProjectile::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
+    public static final RegistryObject<EntityType<BloodFireColumnEntity>> BLOOD_FIRE_COLUMN_PROJECTILE = ENTITY_TYPES.register("blood_fire_column_entity",
+            () -> EntityType.Builder.<BloodFireColumnEntity>of(BloodFireColumnEntity::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
+                    "blood_fire_column_entity").toString()));
+    public static final RegistryObject<EntityType<BloodFireMeteorEntity>> BLOOD_FIRE_METEOR_PROJECTILE = ENTITY_TYPES.register("blood_fire_meteor_projectile",
+            () -> EntityType.Builder.<BloodFireMeteorEntity>of(BloodFireMeteorEntity::new,MobCategory.AMBIENT).sized(1.0f,1.0f).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build(new ResourceLocation(BloodyHell.MODID,
                     "blood_fire_meteor_projectile").toString()));
 
     public static final RegistryObject<EntityType<BlasphemousTwinDaggersCloneEntity>> BLASPHEMOUS_TWIN_DAGGERS_CLONE =

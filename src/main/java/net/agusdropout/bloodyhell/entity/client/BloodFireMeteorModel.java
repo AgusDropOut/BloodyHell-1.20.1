@@ -3,7 +3,8 @@ package net.agusdropout.bloodyhell.entity.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireMeteorProjectile;
+
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireMeteorEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -11,7 +12,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 
-public class BloodFireMeteorModel<T extends BloodFireMeteorProjectile> extends EntityModel<T> {
+public class BloodFireMeteorModel<T extends BloodFireMeteorEntity> extends EntityModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BloodyHell.MODID, "blood_fire_meteor_projectile"), "main");
     private final ModelPart bloodFireMeteor;
 

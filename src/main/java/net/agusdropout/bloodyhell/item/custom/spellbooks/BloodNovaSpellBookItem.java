@@ -1,14 +1,11 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
-import net.agusdropout.bloodyhell.entity.projectile.BloodNovaEntity;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodNovaEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
-import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
+import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.ParticleHelper;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+
+import java.util.List;
 
 public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBookItem> {
 
@@ -38,7 +37,7 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
         if (!level.isClientSide) {
 
-
+                    List<Gem> gems = super.getGemsFromItemStack(itemStack);
                     float yaw = player.getYRot();
                     float pitch = player.getXRot();
                     double radians = Math.toRadians(-yaw);
@@ -48,12 +47,8 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     double baseY = player.getY() + 0.5;
                     double baseZ = player.getZ() + Math.cos(radians) * 1.0;
 
-                    BloodNovaEntity projectile = new BloodNovaEntity(level, baseX, baseY + SPAWN_HEIGHT_OFFSET, baseZ, 30.0F, player, yaw, pitch);
+                    BloodNovaEntity projectile = new BloodNovaEntity(level, baseX, baseY + SPAWN_HEIGHT_OFFSET, baseZ, 30.0F, player, yaw, pitch, gems);
                     level.addFreshEntity(projectile);
-
-
-
-
 
         }
 

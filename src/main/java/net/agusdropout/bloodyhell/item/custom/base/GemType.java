@@ -13,6 +13,9 @@ import net.minecraft.world.item.Items;
 import java.util.List;
 
 public enum GemType {
+
+
+
     EMPTY("empty", 0xFFFFFF, Items.AIR, null, ""),
 
     // 1. DAMAGE (Ruby)
@@ -34,6 +37,14 @@ public enum GemType {
     // Range: +0.5s to +3.0s Duration (or Speed multiplier).
     // Bias 1.2: Fairly balanced distribution.
     TANZARINE("tanzarine_blood_gem", 0xa600ff, Items.AMETHYST_SHARD, ModItems.TANZARINE_BLOOD_GEM.get(), "duration");
+
+
+    /* Universal Bonus Types */
+    public static final String TYPE_DAMAGE = "damage";
+    public static final String TYPE_SIZE = "size";
+    public static final String TYPE_QUANTITY = "quantity";
+    public static final String TYPE_DURATION = "duration";
+
 
     // --- CONFIGURABLE STAT RANGES ---
     // Damage
@@ -170,21 +181,6 @@ public enum GemType {
         return GemType.EMPTY;
     }
 
-    public static List<String> getAllStatsFromStack(ItemStack stack) {
-        List<String> sockets = List.of("socket_0","socket_1", "socket_2");
-        List<String> stats = new java.util.ArrayList<>();
-        for (String socket : sockets) {
-            if (stack.hasTag() && stack.getTag().contains(socket)) {
-                CompoundTag socketData = stack.getTag().getCompound(socket);
-                for (GemType gem : GemType.values()) {
-                    if (socketData.contains(gem.getBonusType())) {
-                        stats.add(gem.getBonusType());
-                    }
-                }
-            }
-        }
-        return stats;
-    }
 
     public static String getFormattedBonus(String statType, double value) {
         return switch (statType) {
@@ -206,36 +202,6 @@ public enum GemType {
         };
     }
 
-    public static void cleanNbtData(ItemStack stack) {
-        for( GemType gem : values()) {
-            if(stack.hasTag() && stack.getTag().contains(gem.getBonusType()) && gem != GemType.EMPTY){
-                stack.getTag().remove(gem.getBonusType());
-            };
-        }
-    }
-
-    public  static void applyGemEffectToWeapon(ItemStack weapon, Gem gem, int gemSlot) {
-            String socket_key = "socket_" + gemSlot;
-            CompoundTag socketData  = new CompoundTag();
-            socketData.putDouble(gem.getStat(), gem.getValue());
-            weapon.getOrCreateTag().put(socket_key, socketData);
-
-    }
-
-    public static ItemStack getGemStackWithStatFromNbt(ItemStack weapon, String socketKey) {
-        if (weapon.hasTag() && weapon.getTag().contains(socketKey)) {
-            CompoundTag socketData = weapon.getTag().getCompound(socketKey);
-            for (GemType gem : GemType.values()) {
-                if (socketData.contains(gem.getBonusType())) {
-                    ItemStack gemStack = new ItemStack(gem.getResultGem());
-                    double value = socketData.getDouble(gem.getBonusType());
-                    gemStack.getOrCreateTag().putDouble(gem.getBonusType(), value);
-                    return gemStack;
-                }
-            }
-        }
-        return ItemStack.EMPTY;
-    }
 
     public static List<Gem> getGemsFromWeapon(ItemStack weapon){
         List<Gem> gems = new java.util.ArrayList<>();
@@ -290,10 +256,4 @@ public enum GemType {
     }
 
 
-    public static GemType getGemTypeForStat(String stat) {
-        for (GemType type : GemType.values()) {
-            if (type.getBonusType().equals(stat)) return type;
-        }
-        return GemType.EMPTY;
-    }
 }

@@ -107,10 +107,13 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ModItems.GLOW_FRUIT);
         normalItem(ModItems.GLOW_MUSHROOM);
 
+
         //Misc Items
         normalItem(ModItems.CHALICE_OF_THE_DAMMED);
         normalItem(ModItems.CRIMSON_IDOL_COIN);
         normalItem(ModItems.SANGUINE_CRUCIBLE_CORE);
+        normalItem(ModItems.VORACIOUS_MUSHROOM);
+        normalItem(ModItems.BLOOD_GEM_SPROUT_SEED);
 
         //Potions
         normalItem(ModItems.BLOOD_FLASK);

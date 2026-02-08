@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireSoulProjectile;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireSoulEntity;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,7 +13,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectile> {
+public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulEntity> {
 
     private final RandomSource random = RandomSource.create();
 
@@ -21,13 +21,11 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
         super(context);
     }
 
-    @Override
-    public ResourceLocation getTextureLocation(BloodFireSoulProjectile entity) {
-        return null;
-    }
+    // --- SECT 1: MAIN RENDER ---
 
     @Override
-    public void render(BloodFireSoulProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void render(BloodFireSoulEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        // Setup Render State
         RenderSystem.enableBlend();
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);
@@ -38,18 +36,24 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
 
         float time = entity.tickCount + partialTick;
 
+        // Retrieve Synchronized Scale (Gem Upgrade)
+        float gemScale = entity.getScale();
+
         poseStack.pushPose();
         poseStack.translate(0, 0.25, 0);
 
-        // === LAYER 1: INNER CORE ===
+        // Apply Global Scale here so it affects all layers
+        poseStack.scale(gemScale, gemScale, gemScale);
+
+        // ===  INNER CORE ===
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // Additive Glow
 
         poseStack.pushPose();
 
-        // Heartbeat Pulse
+        // Heartbeat Pulse Animation
         float pulse = (float) Math.sin(time * 0.3f);
         float baseScale = 0.7f + (pulse * 0.05f);
-        poseStack.scale(baseScale, baseScale, baseScale); // Uniform Scale (Sphere)
+        poseStack.scale(baseScale, baseScale, baseScale);
 
         // Rotation
         poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(time * 15f));
@@ -64,11 +68,12 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
         );
         poseStack.popPose();
 
-        // === LAYER 2: OUTER SMOKE ===
+        // === OUTER SMOKE ===
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // Standard Alpha
 
         poseStack.pushPose();
-        poseStack.scale(0.9f, 0.9f, 0.9f); // Slightly larger sphere
+        // Slightly larger than core
+        poseStack.scale(0.9f, 0.9f, 0.9f);
 
         // Counter Rotation
         poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(-time * 5f));
@@ -80,10 +85,12 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
                 0.65f,               // HIGH THRESHOLD (More holes!)
                 false                // Is Shell
         );
+        poseStack.scale(gemScale, gemScale, gemScale);
         poseStack.popPose();
 
-        poseStack.popPose();
+        poseStack.popPose(); // End Global Scale
 
+        // Cleanup
         RenderSystem.depthMask(true);
         RenderSystem.enableCull();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -92,13 +99,14 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
+    // --- SECT 2: NOISE SPHERE LOGIC ---
+
     private void drawNoiseSphere(Tesselator tess, BufferBuilder buffer, Matrix4f pose, float time,
                                  float r, float g, float b, float maxAlpha, float frequency, float threshold, boolean isCore) {
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        // OPTIMIZATION: 16 Segments is enough for iGPUs, especially with noise
-        int segments = 32;
+        int segments = 32; // Resolution
         float radius = 1.0f;
 
         for (int i = 0; i < segments; i++) {
@@ -114,22 +122,13 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
                 double lon0 = 2 * Math.PI * (double) (j) / segments;
                 double lon1 = 2 * Math.PI * (double) (j + 1) / segments;
 
-                // --- SPHERE GEOMETRY ---
-                // We define 4 corners explicitly to keep variables clean
-
-                // TL: Top Left (lat0, lon0)
+                // Define 4 corners
                 float x_tl = (float) Math.cos(lon0) * r0; float z_tl = (float) Math.sin(lon0) * r0; float y_tl = y0;
-
-                // TR: Top Right (lat0, lon1)
                 float x_tr = (float) Math.cos(lon1) * r0; float z_tr = (float) Math.sin(lon1) * r0; float y_tr = y0;
-
-                // BL: Bottom Left (lat1, lon0)
                 float x_bl = (float) Math.cos(lon0) * r1; float z_bl = (float) Math.sin(lon0) * r1; float y_bl = y1;
-
-                // BR: Bottom Right (lat1, lon1)
                 float x_br = (float) Math.cos(lon1) * r1; float z_br = (float) Math.sin(lon1) * r1; float y_br = y1;
 
-                // --- VERTEX JITTER ---
+                // Apply Jitter to Core only (Electric feel)
                 if (isCore) {
                     float jitter = 0.02f;
                     x_tl += (random.nextFloat() - 0.5f) * jitter; y_tl += (random.nextFloat() - 0.5f) * jitter; z_tl += (random.nextFloat() - 0.5f) * jitter;
@@ -138,14 +137,13 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
                     x_br += (random.nextFloat() - 0.5f) * jitter; y_br += (random.nextFloat() - 0.5f) * jitter; z_br += (random.nextFloat() - 0.5f) * jitter;
                 }
 
-                // --- NOISE ---
-                // Use center point for noise calculation
+                // Calculate Noise for Alpha Cutout
                 float cx = (x_tl + x_br) / 2f;
                 float cy = (y_tl + y_br) / 2f;
                 float cz = (z_tl + z_br) / 2f;
 
                 double rawNoise = Math.sin(cx * frequency + time * 0.1)
-                        * Math.cos((cy - time * 0.2) * frequency) // Scrolling Up
+                        * Math.cos((cy - time * 0.2) * frequency)
                         * Math.sin(cz * frequency + time * 0.05);
 
                 float noise01 = (float) ((rawNoise + 1.0) / 2.0);
@@ -160,18 +158,11 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
 
                 if (finalAlpha <= 0.01f) continue;
 
-                // --- COLOR LOGIC ---
+                // Color Logic
                 float localR = r;
-
-                // Darken bottom of core sphere for depth
                 if (isCore && y_tl < -0.3f) {
-                    localR *= 0.6f;
+                    localR *= 0.6f; // Darken bottom
                 }
-
-                // --- DRAW QUAD (Counter-Clockwise Winding: TL -> BL -> BR -> TR) ---
-                // Note: Minecraft/OpenGL winding can be tricky.
-                // Standard: TL -> BL -> BR -> TR is usually correct for avoiding backface culling issues if Cull is enabled.
-                // We disabled cull, so winding order affects lighting normals mostly, but here we use unlit PositionColor shader.
 
                 addVertex(buffer, pose, x_tl, y_tl, z_tl, localR, g, b, finalAlpha);
                 addVertex(buffer, pose, x_bl, y_bl, z_bl, localR, g, b, finalAlpha);
@@ -186,5 +177,10 @@ public class BloodFireSoulRenderer extends EntityRenderer<BloodFireSoulProjectil
         Vector3f vec = new Vector3f(x, y, z);
         vec.mulPosition(pose);
         buffer.vertex(vec.x(), vec.y(), vec.z()).color(r, g, b, a).endVertex();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(BloodFireSoulEntity entity) {
+        return null;
     }
 }

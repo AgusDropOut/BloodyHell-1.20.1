@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.entity.client;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.entity.projectile.SmallCrimsonDagger;
 import net.agusdropout.bloodyhell.entity.projectile.VisceralProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -37,7 +36,6 @@ public class VisceralProjectileEntityModel extends GeoModel<VisceralProjectile> 
         Optional<GeoBone> bone = this.getBone("visceral_projectile");
 
         if (bone != null && bone.isPresent()) {
-            // Verificamos si la instancia actual corresponde a la entidad correcta
             if (instanceId == animatable.getId()) {
                 float yRot = animatable.getYRot();
                 float xRot = animatable.getXRot();

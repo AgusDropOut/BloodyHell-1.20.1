@@ -1,8 +1,10 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireColumnProjectile;
+
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireColumnEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
+import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -18,6 +20,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -36,24 +39,43 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
         if (!level.isClientSide) {
-            Vec3 targetPos = findTargetPosition(level, player);
 
-            BloodFireColumnProjectile column = new BloodFireColumnProjectile(
-                    ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(),
-                    level,
-                    player,
-                    targetPos.x,
-                    targetPos.y,
-                    targetPos.z
-            );
-            level.addFreshEntity(column);
+
+            List<Gem> gems = getGemsFromItemStack(itemStack);
+            int projectileCount = 1 + getProjectileAdditionalFromGems(gems);
+            List <Vec3> targetPositions = findTargetPosition(level, player,projectileCount);
+
+            if(targetPositions.isEmpty()){
+                Vec3 fallbackPos = getPlayerColumnPosition(player,level);
+                targetPositions.add(fallbackPos);
+            }
+
+            for (Vec3 targetPos : targetPositions) {
+
+
+                    BloodFireColumnEntity column = new BloodFireColumnEntity(
+                            ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(),
+                            level,
+                            player,
+                            targetPos.x,
+                            targetPos.y,
+                            targetPos.z,
+                            gems
+                    );
+                    level.addFreshEntity(column);
+
+            }
+
+
         }
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0f, 0.8f);
     }
 
-    private Vec3 findTargetPosition(Level level, Player player) {
+    private List<Vec3> findTargetPosition(Level level, Player player,int targetsCount) {
+        List<Vec3> targetPositions = new ArrayList<>();
+
         // 1. Scan for nearby enemies
         AABB searchBox = player.getBoundingBox().inflate(SPELL_RADIUS, 5.0, SPELL_RADIUS);
         List<LivingEntity> potentialTargets = level.getEntitiesOfClass(LivingEntity.class, searchBox,
@@ -61,11 +83,22 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
 
         Optional<LivingEntity> closestFoe = potentialTargets.stream()
                 .min(Comparator.comparingDouble(e -> e.distanceToSqr(player)));
-
-        if (closestFoe.isPresent()) {
-            return closestFoe.get().position();
+        if(closestFoe.isPresent()){
+            targetPositions.add(closestFoe.get().position());
         }
+        for (LivingEntity entity : potentialTargets) {
+            if (closestFoe.isPresent() && entity != closestFoe.get()) {
+                targetPositions.add(entity.position());
+                if (targetPositions.size() >= targetsCount) {
+                    break;
+                }
+            }
+        }
+        return targetPositions;
+    }
 
+
+    private Vec3 getPlayerColumnPosition(Player player,Level level){
         // 2. Raycast to find what the player is looking at
         Vec3 startPos = player.getEyePosition();
         Vec3 viewVector = player.getViewVector(1.0F);

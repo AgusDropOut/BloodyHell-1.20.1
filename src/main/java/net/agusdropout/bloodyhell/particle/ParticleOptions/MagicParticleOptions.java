@@ -4,11 +4,20 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
+import net.agusdropout.bloodyhell.item.custom.base.GemType;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.Locale;
@@ -111,4 +120,6 @@ public class MagicParticleOptions implements ParticleOptions {
                 BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
                 this.color.x(), this.color.y(), this.color.z(), this.size, this.jitter, this.lifetime);
     }
+
+
 }

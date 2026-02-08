@@ -1,5 +1,8 @@
-// 1.20.1	2026-01-29T17:13:17.9542441	Tags for minecraft:item mod id bloodyhell
+// 1.20.1	2026-02-08T00:01:04.3615831	Tags for minecraft:item mod id bloodyhell
+13cc6131dd871ae46f994b95ed9996547e7f9861 data/bloodyhell/tags/items/blasphemous_tier_items.json
 8808f43ca5a3dffc3abed5d5d5452614acdd8ba6 data/bloodyhell/tags/items/blood_logs.json
+4d39bf536357f3cab846b86f8d9b27242e667bbb data/bloodyhell/tags/items/rhnull_tier_items.json
+8b01e622f8878fefcc19af3397c2b836c2d6b0d8 data/bloodyhell/tags/items/sanguinite_tier_items.json
 79bd6aca666d1a9a2b6527152ace02058ab272f5 data/bloodyhell/tags/items/spell_books.json
 2ae2294df205e3989ee75e74b69a64de09c90096 data/minecraft/tags/items/arrows.json
 f02c38005637db56a302ca765db7d2a21c07e650 data/minecraft/tags/items/axes.json

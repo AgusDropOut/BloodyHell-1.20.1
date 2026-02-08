@@ -208,11 +208,31 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         }
     }
 
+    protected List<Gem> getGemsFromItemStack(ItemStack itemStack) {
+        return GemType.getGemsFromWeapon(itemStack);
+    }
+
+    protected int getProjectileAdditionalFromGems(List<Gem> gems) {
+        int additionalProjectiles = 0;
+        for (Gem gem : gems) {
+            if (gem.getStat().equals(GemType.TYPE_QUANTITY)) {
+                additionalProjectiles += (int) gem.getValue();
+            }
+        }
+        return additionalProjectiles;
+    }
+
+
+
     public abstract void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack);
+
+
 
     public abstract void spawnProgressiveParticles(Level level, Player player, int chargeTick);
     public abstract void playChargeSound(Level level, Player player, int chargeTick);
     public abstract int getMinChargeTime();
     public abstract int getCooldown();
     public abstract String getSpellBookId();
+
+
 }

@@ -1,7 +1,8 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
-import net.agusdropout.bloodyhell.entity.projectile.BloodPortalEntity;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodPortalEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
+import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.ParticleHelper;
@@ -19,6 +20,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
+import java.util.List;
+
 public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDaggersRainSpellBookItem> {
 
     private static final int COST = 40;
@@ -34,11 +37,13 @@ public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDagger
 
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
+        List<Gem> gems = getGemsFromItemStack(itemStack);
+
         if (!level.isClientSide) {
             Vec3 targetPos = calculateTargetPosition(level, player);
             float heightOffset = calculatePortalOffset(level, targetPos);
 
-            BloodPortalEntity portal = new BloodPortalEntity(level, targetPos.x, targetPos.y, targetPos.z, player, heightOffset);
+            BloodPortalEntity portal = new BloodPortalEntity(level, targetPos.x, targetPos.y, targetPos.z, player, heightOffset, gems);
             level.addFreshEntity(portal);
         }
 

@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-03T01:01:11.620284	Item Models: bloodyhell
+// 1.20.1	2026-02-07T22:43:23.9379744	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 0daad63d3db69ced8f0038465c04abe47a00815e assets/bloodyhell/models/item/ancient_bloody_lamp.json
 77c198480c0204d88a6582721584ec72818df45b assets/bloodyhell/models/item/ancient_bloody_stone_bricks.json
@@ -53,6 +53,7 @@ c3448e8886690f83221cb730ea17f18aa3e5208b assets/bloodyhell/models/item/blood_boo
 7255c6cc57384344c27e12c485944b5d41c6711d assets/bloodyhell/models/item/blood_fire.json
 08f3e91ce44841765fe7d5adc04fefa92e86c213 assets/bloodyhell/models/item/blood_flask.json
 9d344eb71c2cf1433524bc33bbaa5e169f682648 assets/bloodyhell/models/item/blood_flower.json
+97ced78151d88c5d0fa09a91f2e342a7c206bf25 assets/bloodyhell/models/item/blood_gem_sprout_seed.json
 18ef5b45822a7717043d9779f5e5525d8555e715 assets/bloodyhell/models/item/blood_glowing_chains_block.json
 85b82409ddd6893ee2a65862a8716826762d96a7 assets/bloodyhell/models/item/blood_grass.json
 70ba345100d42407c93c98520215548ac4f49b0a assets/bloodyhell/models/item/blood_helmet.json
@@ -150,3 +151,4 @@ ef83cb9c2c9d6cbc044f64cd53cbeab5e0e7b89a assets/bloodyhell/models/item/tanzarine
 72e2a96cc1a0b24d951912c48186acf096f664ee assets/bloodyhell/models/item/visceral_blood_bucket.json
 3cee1a7730bdb147b9c2eacde682f2943c8a9445 assets/bloodyhell/models/item/visceral_infected_vein.json
 ffbc2b579050e9b391774ae40c5a7e81ded5961c assets/bloodyhell/models/item/viscous_blasphemy_bucket.json
+227833d48d7ebd53dacad1a85f7ec99f10f02955 assets/bloodyhell/models/item/voracious_mushroom_item.json

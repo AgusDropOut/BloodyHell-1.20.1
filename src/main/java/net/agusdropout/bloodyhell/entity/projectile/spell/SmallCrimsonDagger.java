@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.entity.projectile;
+package net.agusdropout.bloodyhell.entity.projectile.spell;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
@@ -205,6 +205,9 @@ public class SmallCrimsonDagger extends Projectile {
         if (!isStuckInGround()) return 1.0f;
         return Mth.clamp(1.0f - ((fadeTimer + partialTicks) / 60.0f), 0.0f, 1.0f);
     }
+
+    public void increaseDamage(float damage) {
+        this.damage += damage; }
 
     // Accessor for Renderer
     public Deque<Vec3> getTrailHistory() {

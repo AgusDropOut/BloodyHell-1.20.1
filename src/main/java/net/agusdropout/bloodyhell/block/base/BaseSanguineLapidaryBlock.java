@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -40,12 +41,11 @@ public abstract class BaseSanguineLapidaryBlock extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
-    @Nullable
+
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        if(level.isClientSide) return null ;
-        return createTickerHelper(type, ModBlockEntities.SANGUINE_LAPIDARY_BE.get(),
-                (l, p, s, be) -> be.tick(l, p, s));
+    public RenderShape getRenderShape(BlockState state) {
+
+        return RenderShape.MODEL;
     }
 
 

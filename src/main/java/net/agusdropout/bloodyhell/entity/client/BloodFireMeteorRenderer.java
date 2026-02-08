@@ -3,7 +3,8 @@ package net.agusdropout.bloodyhell.entity.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireMeteorProjectile;
+
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireMeteorEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -12,12 +13,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class BloodFireMeteorRenderer extends EntityRenderer<BloodFireMeteorProjectile> {
+public class BloodFireMeteorRenderer extends EntityRenderer<BloodFireMeteorEntity> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/blood_fire_meteor.png");
-    // Emissive Texture (The model with only the glowing parts painted)
     private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/blood_fire_meteor_glowmask.png");
 
-    private final BloodFireMeteorModel<BloodFireMeteorProjectile> model;
+    private final BloodFireMeteorModel<BloodFireMeteorEntity> model;
 
     public BloodFireMeteorRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -25,7 +25,7 @@ public class BloodFireMeteorRenderer extends EntityRenderer<BloodFireMeteorProje
     }
 
     @Override
-    public void render(BloodFireMeteorProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(BloodFireMeteorEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
         poseStack.translate(0.0D, 1.5D, 0.0D);
@@ -62,7 +62,7 @@ public class BloodFireMeteorRenderer extends EntityRenderer<BloodFireMeteorProje
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BloodFireMeteorProjectile entity) {
+    public ResourceLocation getTextureLocation(BloodFireMeteorEntity entity) {
         return TEXTURE;
     }
 }

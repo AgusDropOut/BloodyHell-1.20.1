@@ -1,8 +1,7 @@
 package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.custom.VeinraverEntity;
-import net.agusdropout.bloodyhell.entity.projectile.BloodSlashEntity;
-import net.agusdropout.bloodyhell.entity.projectile.SpecialSlashEntity; // Updated Import
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSlashEntity;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;

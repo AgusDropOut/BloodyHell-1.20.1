@@ -48,9 +48,6 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
     public static final int INSERT_GEM_AGE = 2;
     private ItemStack tempStoredItem = ItemStack.EMPTY;
 
-
-
-
     public BaseGemSproutBlockEntity(BlockEntityType<?> entityType, BlockPos blockPos, BlockState blockState, int MAX_GROWTH_TIME, int BLOOD_PER_STAGE, float GROWTH_CHANCE) {
         super(entityType, blockPos, blockState);
         this.MAX_GROWTH_TOME = MAX_GROWTH_TIME;
@@ -149,7 +146,7 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
         }
 
 
-        boolean shouldBeFilled = hasBlood(1);
+        boolean shouldBeFilled = hasBlood(BLOOD_PER_STAGE);
         boolean isCurrentlyFilled = state.getValue(BloodGemSproutBlock.FILLED);
 
         if (shouldBeFilled != isCurrentlyFilled) {

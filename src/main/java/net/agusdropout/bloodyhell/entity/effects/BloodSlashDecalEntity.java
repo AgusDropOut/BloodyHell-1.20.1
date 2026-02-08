@@ -20,12 +20,20 @@ import java.util.UUID;
 
 public class BloodSlashDecalEntity extends Entity {
 
-    private int age = 0;
-    private static final int MAX_AGE = 200;
-    private static final EntityDataAccessor<Direction> DATA_FACE = SynchedEntityData.defineId(BloodSlashDecalEntity.class, EntityDataSerializers.DIRECTION);
+    // ---  FIELDS & DATA KEYS ---
 
-    @Nullable
-    private UUID ownerUUID; // Owner Support
+    private static final EntityDataAccessor<Direction> DATA_FACE = SynchedEntityData.defineId(BloodSlashDecalEntity.class, EntityDataSerializers.DIRECTION);
+    private static final EntityDataAccessor<Float> DATA_SIZE = SynchedEntityData.defineId(BloodSlashDecalEntity.class, EntityDataSerializers.FLOAT);
+
+
+    private static final EntityDataAccessor<Integer> DATA_MAX_AGE = SynchedEntityData.defineId(BloodSlashDecalEntity.class, EntityDataSerializers.INT);
+
+    private int age = 0;
+    private static final int DEFAULT_MAX_AGE = 200;
+
+    @Nullable private UUID ownerUUID;
+
+    // --- CONSTRUCTORS ---
 
     public BloodSlashDecalEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -39,10 +47,25 @@ public class BloodSlashDecalEntity extends Entity {
         this.setFace(face);
     }
 
-    // --- OWNER METHODS ---
-    public void setOwner(LivingEntity owner) {
-        this.ownerUUID = owner.getUUID();
+    @Override
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_FACE, Direction.UP);
+        this.entityData.define(DATA_SIZE, 1.0f);
+        this.entityData.define(DATA_MAX_AGE, DEFAULT_MAX_AGE);
     }
+
+    // --- GETTERS & SETTERS ---
+
+    public void setFace(Direction face) { this.entityData.set(DATA_FACE, face); }
+    public Direction getFace() { return this.entityData.get(DATA_FACE); }
+
+    public void setSize(float size) { this.entityData.set(DATA_SIZE, size); }
+    public float getSize() { return this.entityData.get(DATA_SIZE); }
+
+    public void setDuration(int ticks) { this.entityData.set(DATA_MAX_AGE, ticks); }
+    public int getMaxAge() { return this.entityData.get(DATA_MAX_AGE); }
+
+    public void setOwner(LivingEntity owner) { this.ownerUUID = owner.getUUID(); }
 
     public boolean isSafe(LivingEntity entity) {
         if (this.ownerUUID == null) return false;
@@ -56,32 +79,29 @@ public class BloodSlashDecalEntity extends Entity {
         }
         return false;
     }
-    // ---------------------
 
-    @Override
-    protected void defineSynchedData() {
-        this.entityData.define(DATA_FACE, Direction.UP);
-    }
-
-    public void setFace(Direction face) { this.entityData.set(DATA_FACE, face); }
-    public Direction getFace() { return this.entityData.get(DATA_FACE); }
+    // --- TICK LOOP ---
 
     @Override
     public void tick() {
         if (!this.level().isClientSide) {
-            if (this.age++ >= MAX_AGE) {
+            if (this.age++ >= getMaxAge()) {
                 this.discard();
             }
         }
     }
 
     public float getAge(float partialTicks) { return this.age + partialTicks; }
-    public float getMaxAge() { return MAX_AGE; }
+
+    // --- SERIALIZATION ---
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         this.age = tag.getInt("Age");
         this.setFace(Direction.from3DDataValue(tag.getByte("Face")));
+        if(tag.contains("Size")) setSize(tag.getFloat("Size"));
+        if(tag.contains("MaxAge")) setDuration(tag.getInt("MaxAge"));
+
         if (tag.hasUUID("Owner")) {
             this.ownerUUID = tag.getUUID("Owner");
         }
@@ -91,6 +111,9 @@ public class BloodSlashDecalEntity extends Entity {
     protected void addAdditionalSaveData(CompoundTag tag) {
         tag.putInt("Age", this.age);
         tag.putByte("Face", (byte)this.getFace().get3DDataValue());
+        tag.putFloat("Size", getSize());
+        tag.putInt("MaxAge", getMaxAge());
+
         if (this.ownerUUID != null) {
             tag.putUUID("Owner", this.ownerUUID);
         }

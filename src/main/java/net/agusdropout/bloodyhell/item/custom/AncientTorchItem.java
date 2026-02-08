@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.effect.ModEffects;
-import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
 
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;

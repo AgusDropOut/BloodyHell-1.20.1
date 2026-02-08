@@ -75,5 +75,57 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
                 .add(ModItems.BLASPHEMOUS_IMPALER.get())
                 .add(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get());
+
+
+        this.tag(ModTags.Items.SANGUINITE_TIER_ITEMS)
+                .add(ModItems.SANGUINITE.get())
+                .add(ModItems.RAW_SANGUINITE.get())
+                .add(ModItems.SANGUINITE_NUGGET.get())
+                .add(ModItems.SANGUINITE_SWORD.get())
+                .add(ModItems.SANGUINITE_PICKAXE.get())
+                .add(ModItems.SANGUINITE_AXE.get())
+                .add(ModItems.SANGUINITE_SHOVEL.get())
+                .add(ModItems.SANGUINITE_HOE.get())
+                .add(ModBlocks.SANGUINITE_BLOCK.get().asItem())
+                .add(ModBlocks.SANGUINITE_ORE.get().asItem())
+                .add(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get().asItem())
+                .add(ModBlocks.SANGUINITE_PIPE.get().asItem())
+                .add(ModBlocks.SANGUINITE_TANK.get().asItem())
+                .add(ModBlocks.SANGUINITE_INFUSOR.get().asItem());
+
+        // 2. Rhnull Tier (Reddish Gold Frame, Gold Text)
+        this.tag(ModTags.Items.RHNULL_TIER_ITEMS)
+                .add(ModItems.RHNULL.get())
+                .add(ModItems.RHNULL_NUGGET.get())
+                .add(ModItems.RHNULL_SWORD.get())
+                .add(ModItems.RHNULL_PICKAXE.get())
+                .add(ModItems.RHNULL_AXE.get())
+                .add(ModItems.RHNULL_SHOVEL.get())
+                .add(ModItems.RHNULL_HOE.get())
+                .add(ModItems.RHNULL_HELMET.get())
+                .add(ModItems.RHNULL_CHESTPLATE.get())
+                .add(ModItems.RHNULL_LEGGINGS.get())
+                .add(ModItems.RHNULL_BOOTS.get())
+                .add(ModBlocks.RHNULL_BLOCK.get().asItem())
+                .add(ModItems.FILLED_RHNULL_BLOOD_FLASK.get());
+
+        // 3. Blasphemous Tier (Gold Frame, Dark Yellow/Black BG)
+        this.tag(ModTags.Items.BLASPHEMOUS_TIER_ITEMS)
+                .add(ModItems.BLASPHEMITE.get())
+                .add(ModItems.RAW_BLASPHEMITE.get())
+                .add(ModItems.BLASPHEMITE_NUGGET.get())
+                .add(ModItems.BLASPHEMITE_SWORD.get())
+                .add(ModItems.BLASPHEMITE_PICKAXE.get())
+                .add(ModItems.BLASPHEMITE_AXE.get())
+                .add(ModItems.BLASPHEMITE_SHOVEL.get())
+                .add(ModItems.BLASPHEMITE_HOE.get())
+                .add(ModItems.BLASPHEMITE_HELMET.get())
+                .add(ModItems.BLASPHEMITE_CHESTPLATE.get())
+                .add(ModItems.BLASPHEMITE_LEGGINGS.get())
+                .add(ModItems.BLASPHEMITE_BOOTS.get())
+                .add(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
+                .add(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
+                .add(ModItems.BLASPHEMOUS_IMPALER.get())
+                .add(ModItems.BLASPHEMOUS_RING.get());
     }
 }

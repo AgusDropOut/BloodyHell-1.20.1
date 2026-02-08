@@ -3,10 +3,7 @@ package net.agusdropout.bloodyhell;
 import com.mojang.logging.LogUtils;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.client.BloodGemSproutRenderer;
-import net.agusdropout.bloodyhell.block.client.SanguiniteInfusorRenderer;
-import net.agusdropout.bloodyhell.block.client.SanguinitePipeRenderer;
-import net.agusdropout.bloodyhell.block.client.SanguiniteTankRenderer;
+import net.agusdropout.bloodyhell.block.client.*;
 import net.agusdropout.bloodyhell.block.client.generic.BaseGeckoBlockRenderer;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
@@ -296,6 +293,8 @@ public class BloodyHell
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_MUSHROOM_BLOCK.get(), RenderType.translucent());
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_INFUSOR_BE.get(), SanguiniteInfusorRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.SANGUINE_LAPIDARY_BE.get(), SanguineLapidaryRenderer::new);
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_LAPIDARY.get(), RenderType.cutout());
             BlockEntityRenderers.register(ModBlockEntities.BLOOD_ALTAR.get(), BloodAltarRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_PIPE_BE.get(), SanguinitePipeRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_TANK_BE.get(), SanguiniteTankRenderer::new);

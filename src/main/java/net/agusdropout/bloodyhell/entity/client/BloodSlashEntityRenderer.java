@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.entity.projectile.BloodSlashEntity;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSlashEntity;
 import net.agusdropout.bloodyhell.util.RenderHelper;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,9 +12,10 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.joml.Matrix4f;
 
 public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
+
+    // CONSTANTS ---
 
     private static final ResourceLocation BLANK_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/misc/white.png");
 
@@ -27,9 +28,13 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
         super(context);
     }
 
+    // --- MAIN RENDER ---
+
     @Override
     public void render(BloodSlashEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         float age = entity.tickCount + partialTicks;
+
+        // Use Synced Rotation for smooth interpolation
         float lerpYaw = Mth.lerp(partialTicks, entity.getYawSynced(), entity.getYawSynced());
         float lerpPitch = Mth.lerp(partialTicks, entity.getPitchSynced(), entity.getPitchSynced());
 
@@ -38,6 +43,10 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
             lerpPitch = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
         }
 
+        // Get the synchronized scale (Gem Upgrade)
+        float entityScale = entity.getScale();
+
+        // Setup Render State
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
         RenderSystem.enableBlend();
@@ -47,79 +56,85 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
         RenderSystem.depthMask(false);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-        // 1. AIR SLASH
+        // A. AIR SLASH RENDERING
         poseStack.pushPose();
+
+        // Orient to entity rotation
         poseStack.mulPose(Axis.YP.rotationDegrees(GLOBAL_YAW_OFFSET - lerpYaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(lerpPitch));
         poseStack.mulPose(Axis.ZP.rotationDegrees(MESH_ROTATION_Z));
         poseStack.mulPose(Axis.XP.rotationDegrees(MESH_ROTATION_X));
         poseStack.mulPose(Axis.YP.rotationDegrees(MESH_ROTATION_Y));
 
-        renderAirSlash(poseStack, buffer, age, 1.0f);
+        // Render Core
+        renderAirSlash(poseStack, buffer, age, 1.0f, entityScale);
 
-        // Side Echoes
+        // Render Side Echoes
         for (int i = 1; i <= 2; i++) {
-            float offset = i * 0.25f;
+            float offset = i * 0.25f * entityScale; // Scale the offset too
             float fade = 0.5f / (i + 1);
 
             poseStack.pushPose(); poseStack.translate(0, 0, offset);
-            renderAirSlash(poseStack, buffer, age, fade);
+            renderAirSlash(poseStack, buffer, age, fade, entityScale);
             poseStack.popPose();
 
             poseStack.pushPose(); poseStack.translate(0, 0, -offset);
-            renderAirSlash(poseStack, buffer, age, fade);
+            renderAirSlash(poseStack, buffer, age, fade, entityScale);
             poseStack.popPose();
         }
 
-        // Back Trail
+        // Render Back Trails
         for (int i = 1; i <= 3; i++) {
-            float backOffset = i * 0.6f;
+            float backOffset = i * 0.6f * entityScale;
             float fade = 0.6f / i;
             poseStack.pushPose();
             poseStack.translate(0, backOffset, 0);
             float trailScale = 1.0f - (i * 0.1f);
             poseStack.scale(trailScale, trailScale, 1.0f);
-            renderAirSlash(poseStack, buffer, age, fade);
+            renderAirSlash(poseStack, buffer, age, fade, entityScale);
             poseStack.popPose();
         }
         poseStack.popPose();
 
-        // 2. FLOOR TRAIL
+        // B. FLOOR TRAIL RENDERING
         RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        renderFloorTrail(entity, partialTicks, poseStack, buffer, age, lerpYaw);
 
+        // Cleanup
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
         super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }
 
-    private void renderAirSlash(PoseStack poseStack, BufferBuilder buffer, float age, float alphaMult) {
-        float scale = 1.0f + (age * 0.15f);
-        poseStack.scale(scale, scale, scale);
+    // --- HELPERS ---
+
+    private void renderAirSlash(PoseStack poseStack, BufferBuilder buffer, float age, float alphaMult, float entityScale) {
+        // Base animation growth * Entity Scale
+        float animationScale = 1.0f + (age * 0.15f);
+        float finalScale = animationScale * entityScale;
+
+        poseStack.pushPose();
+        poseStack.scale(finalScale, finalScale, finalScale);
+
         float alpha = Math.max(0, 1.0f - (age / 25.0f)) * alphaMult;
 
         buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
-        // CORE
+        // Render Core Crescent
         RenderHelper.renderCrescent(buffer, poseStack.last().pose(), null,
                 1.5f, 0.5f, (float)Math.PI / 1.5f, 1.0f, 0.2f, 0.0f, alpha, 15728880);
 
-        // EDGE
+        // Render Edge Glow
         RenderHelper.renderCrescent(buffer, poseStack.last().pose(), null,
                 1.6f, 0.7f, (float)Math.PI / 1.5f, 0.0f, 0.0f, 0.0f, alpha * 0.6f, 15728880);
 
         Tesselator.getInstance().end();
+        poseStack.popPose();
     }
 
-    // (renderFloorTrail kept similar but using RenderHelper.renderCrescent inside)
-    private void renderFloorTrail(BloodSlashEntity entity, float partialTick, PoseStack poseStack, BufferBuilder buffer, float age, float lerpYaw) {
-        // ... (Floor finding logic) ...
-        // inside if(foundGround):
-        // buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, ...);
-        // RenderHelper.renderCrescent(buffer, matrix, null, 1.8f, 1.5f, (float)Math.PI/1.5f, 0.7f, 0f, 0f, alpha, 15728880);
-        // Tesselator.getInstance().end();
-        // ...
-    }
 
-    @Override public ResourceLocation getTextureLocation(BloodSlashEntity entity) { return BLANK_TEXTURE; }
+
+    @Override
+    public ResourceLocation getTextureLocation(BloodSlashEntity entity) {
+        return BLANK_TEXTURE;
+    }
 }

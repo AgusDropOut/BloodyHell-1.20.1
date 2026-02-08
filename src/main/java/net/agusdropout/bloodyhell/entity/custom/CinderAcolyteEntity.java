@@ -3,16 +3,13 @@ package net.agusdropout.bloodyhell.entity.custom;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ai.goals.CinderAcolyteFlameAttackGoal;
 import net.agusdropout.bloodyhell.entity.ai.goals.CinderAcolyteMeleeGoal;
-import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
-import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
+import net.agusdropout.bloodyhell.entity.interfaces.IBloodFlammable;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,7 +28,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -41,7 +37,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class CinderAcolyteEntity extends Monster implements GeoEntity , BloodFlammable {
+public class CinderAcolyteEntity extends Monster implements GeoEntity , IBloodFlammable {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     // Synced Data for Animations

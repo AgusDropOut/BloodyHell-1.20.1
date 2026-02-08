@@ -2,7 +2,8 @@ package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.RitekeeperEntity;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireColumnProjectile;
+
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireColumnEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -58,7 +59,7 @@ public class RitekeeperFlamePillarGoal extends Goal {
         if (this.animationTicks == CAST_POINT && target != null) {
 
             // 1. Create Pillar directly at target's feet
-            BloodFireColumnProjectile pillar = new BloodFireColumnProjectile(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(),this.mob.level(),this.mob ,target.getX(), target.getY(), target.getZ());
+            BloodFireColumnEntity pillar = new BloodFireColumnEntity(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(),this.mob.level(),this.mob ,target.getX(), target.getY(), target.getZ());
 
             // 2. Spawn & Sound
             this.mob.level().addFreshEntity(pillar);

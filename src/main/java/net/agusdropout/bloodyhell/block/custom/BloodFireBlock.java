@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -121,11 +122,7 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock, Ent
         double x = pos.getX() + 0.5D;
         double y = pos.getY() + 0.5D;
         double z = pos.getZ() + 0.5D;
-        //rarely remove block
-        if(random.nextInt(0,1000)< 50){
-            level.removeBlock(pos, false);
-            return;
-        }
+
 
         if (state.getValue(WATERLOGGED)) {
             // --- UNDERWATER ---
@@ -171,9 +168,19 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock, Ent
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState p_49921_) {
+    public boolean isRandomlyTicking(BlockState state) {
         return true;
     }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (random.nextInt(100) < 50) {
+            level.removeBlock(pos, false);
+        }
+
+    }
+
+
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {

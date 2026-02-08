@@ -1,16 +1,27 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireMeteorProjectile;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireMeteorEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
+import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMeteorSpellBookItem> {
     private static final int COST = 50;
@@ -29,15 +40,25 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
         if (!level.isClientSide) {
-            BloodFireMeteorProjectile meteor = new BloodFireMeteorProjectile(
-                    ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(),
-                    level,
-                    player,
-                    20.0f,
-                    1.5f,
-                    1.5f
-            );
-            level.addFreshEntity(meteor);
+            List<Gem> gems = super.getGemsFromItemStack(itemStack);
+            List<BloodFireMeteorEntity> meteorEntities = new ArrayList<>();
+            int projectileCount = 1 + getProjectileAdditionalFromGems(gems);
+            RandomSource random = level.random;
+
+            for (int i = 0; i < projectileCount; i++) {
+                BloodFireMeteorEntity meteor = new BloodFireMeteorEntity(
+                        level,
+                        player,
+                        20.0f,
+                        1.5f,
+                        1.5f,
+                        random.nextInt(0,100),
+                        gems
+                );
+                meteorEntities.add(meteor);
+                level.addFreshEntity(meteor);
+            }
+            placeMeteors(player, level, meteorEntities);
         }
 
         // Impact sound on fire
@@ -98,6 +119,62 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
                     0, 0, 0);
         }
     }
+
+    private void placeMeteors(LivingEntity owner, Level level, List<BloodFireMeteorEntity> meteorEntities) {
+        Vec3 start = owner.getEyePosition();
+        double targetHeight = 5.0;
+        Vec3 end = start.add(0, targetHeight, 0);
+
+        // Raycast upwards to find the ceiling
+        BlockHitResult result = level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner));
+
+        double spawnY;
+        if (result.getType() == HitResult.Type.BLOCK) {
+            spawnY = result.getLocation().y - 1.0;
+        } else {
+            spawnY = start.y + targetHeight;
+        }
+
+        // Safety check to prevent spawning inside the owner
+        if (spawnY < owner.getEyeY()) {
+            spawnY = owner.getEyeY() + 0.5;
+        }
+
+        for (BloodFireMeteorEntity meteor : meteorEntities){
+
+        }
+
+        int count = meteorEntities.size();
+
+        // Configurable: How far from the center they spawn
+        double radius = 2.0;
+
+        // Configurable: Rotate the whole ring so it aligns with where player is looking
+        // (Optional: remove this line to align to North/South grid)
+        float startRotation = -owner.getYRot() * ((float)Math.PI / 180F);
+
+        for (int i = 0; i < count; i++) {
+            BloodFireMeteorEntity meteor = meteorEntities.get(i);
+
+            // EDGE CASE: If only 1 meteor, spawn it perfectly centered
+            if (count == 1) {
+                meteor.setPos(owner.getX(), spawnY, owner.getZ());
+            }
+            else {
+                // 1. Calculate Angle
+                // StartAngle + (Step * Index)
+                double angle = startRotation + (i * (Math.PI * 2 / count));
+
+                // 2. Calculate Offset
+                double offsetX = Math.sin(angle) * radius;
+                double offsetZ = Math.cos(angle) * radius;
+
+                // 3. Set Position
+                meteor.setPos(owner.getX() + offsetX, spawnY, owner.getZ() + offsetZ);
+            }
+        }
+    }
+
 
     @Override
     public int getMinChargeTime() {

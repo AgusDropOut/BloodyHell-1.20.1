@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.RitekeeperEntity;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireMeteorProjectile;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireMeteorEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -63,7 +63,7 @@ public class RitekeeperFireMeteorGoal extends Goal {
             Vec3 spawnPos = target.position().add(0, 10, 0);
 
             // 2. Create Projectile
-            BloodFireMeteorProjectile meteor = new BloodFireMeteorProjectile(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), this.mob.level(), this.mob, 10.0f, 0.3f, 1);
+            BloodFireMeteorEntity meteor = new BloodFireMeteorEntity( this.mob.level(), this.mob, 10.0f, 0.3f, 1);
             meteor.setPos(spawnPos);
 
             // 3. Aim DOWN at the target

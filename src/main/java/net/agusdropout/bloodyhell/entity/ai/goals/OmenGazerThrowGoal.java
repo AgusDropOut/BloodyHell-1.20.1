@@ -1,8 +1,7 @@
 package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.custom.OmenGazerEntity;
-import net.agusdropout.bloodyhell.entity.projectile.SmallCrimsonDagger;
-import net.minecraft.server.level.ServerLevel;
+import net.agusdropout.bloodyhell.entity.projectile.spell.SmallCrimsonDagger;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;

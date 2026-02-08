@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-01T17:51:45.9152518	Loot Tables
+// 1.20.1	2026-02-07T22:43:23.9329736	Loot Tables
 bdc15ebc2a02a82e61a914b0bd6b6d56c3d69ab7 data/bloodyhell/loot_tables/blocks/ancient_bloody_lamp.json
 3e5464c67bd9f7358ce85ae0627c72b91b7537a6 data/bloodyhell/loot_tables/blocks/ancient_bloody_stone_bricks.json
 b5521909998c93d083cf6fe797817ca8fdad5feb data/bloodyhell/loot_tables/blocks/ancient_bloody_stone_bricks_column.json
@@ -91,6 +91,7 @@ ab4409a655a7de70d77129b11ec3125a2c0720c6 data/bloodyhell/loot_tables/blocks/pott
 dc0ad9f9913f5590469d9cfb090497b9b73a9b7b data/bloodyhell/loot_tables/blocks/rhnull_block.json
 412a8a5719a3b8fad36e971b4e59bbba3cfa3775 data/bloodyhell/loot_tables/blocks/rounded_grass.json
 12e8f6e7dbe9b1f72d77d26cf3384ca3ea5e80bd data/bloodyhell/loot_tables/blocks/sanguine_crucible.json
+0cc03f81148917b7e28cea74968f09a267b2ff4f data/bloodyhell/loot_tables/blocks/sanguine_lapidary.json
 3b61651d51484cc5edfa32fc569dbe5d02677d03 data/bloodyhell/loot_tables/blocks/sanguinite_block.json
 ea3856374f59fe513e2f971e4e374b2c47b2e12a data/bloodyhell/loot_tables/blocks/sanguinite_blood_harvester.json
 1e241ac93c47524214b34a7a38c215f65e9a51af data/bloodyhell/loot_tables/blocks/sanguinite_infusor.json
@@ -126,7 +127,7 @@ c3dd1c31e7eb744cbc88d261ea5bf981ded3661f data/bloodyhell/loot_tables/entities/bl
 d4573b5306a4cfa7fbc7f9b1cce8e92651486cef data/bloodyhell/loot_tables/entities/bloodthirstybeast.json
 fc914da92603abe7d2aae3521ef9f6d9daf2fad0 data/bloodyhell/loot_tables/entities/bloody_soul_entity.json
 19376ea19f1289c3a302d15217aaa5421b3d94d2 data/bloodyhell/loot_tables/entities/blood_arrow_entity.json
-65357da1dbc0fc2409a2e9bd3d5f03a3a1a7d4e4 data/bloodyhell/loot_tables/entities/blood_fire_column_proyectile.json
+6c49c5ab25cf21fdb8e5904252d76e7a1042a58e data/bloodyhell/loot_tables/entities/blood_fire_column_entity.json
 ad988cb2055a0d736bf6b44f239664d29199624e data/bloodyhell/loot_tables/entities/blood_fire_meteor_projectile.json
 eb7d425da4fe839bd96544b1d71c43106d580002 data/bloodyhell/loot_tables/entities/blood_fire_soul.json
 a6199d0714890864d412bdec0b5f538fc5e980ea data/bloodyhell/loot_tables/entities/blood_nova_entity.json

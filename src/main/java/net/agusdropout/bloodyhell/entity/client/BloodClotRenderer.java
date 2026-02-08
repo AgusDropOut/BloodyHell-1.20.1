@@ -46,7 +46,7 @@ public class BloodClotRenderer extends EntityRenderer<BloodClotProjectile> {
         float totalDepth = LAYERS * layerSpacing;
         poseStack.translate(-totalWidth / 2.0f, -totalWidth / 2.0f, -totalDepth / 2.0f);
 
-        VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(BLANK_TEXTURE));
+        VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucentEmissive(BLANK_TEXTURE));
         Matrix4f p = poseStack.last().pose();
         Matrix3f n = poseStack.last().normal();
 

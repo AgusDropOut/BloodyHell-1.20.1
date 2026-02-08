@@ -1,12 +1,18 @@
-package net.agusdropout.bloodyhell.entity.projectile;
+package net.agusdropout.bloodyhell.entity.projectile.spell;
 
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.entity.custom.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.effect.ModEffects;
-import net.agusdropout.bloodyhell.entity.interfaces.BloodFlammable;
+import net.agusdropout.bloodyhell.entity.interfaces.IBloodFlammable;
+import net.agusdropout.bloodyhell.entity.interfaces.IGemSpell;
+import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.GemType;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,46 +32,74 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 import org.joml.Vector3f;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class BloodFireSoulProjectile extends Projectile implements BloodFlammable {
+public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, IGemSpell {
 
-    private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(BloodFireSoulProjectile.class, EntityDataSerializers.INT);
+    // --- SECT 1: FIELDS & DATA KEYS ---
 
-    private static final int MAX_LIFETIME = 300;
+    private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(BloodFireSoulEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DATA_SCALE = SynchedEntityData.defineId(BloodFireSoulEntity.class, EntityDataSerializers.FLOAT);
+
+    // Default Stats
+    private static final int DEFAULT_LIFETIME = 300;
+    private static final float DEFAULT_DAMAGE = 8.0f;
+    private static final float DEFAULT_EXPLOSION_RADIUS = 1.5f;
+    private static final float DEFAULT_SCALE = 1.0f;
+
+    // Homing Constants
     private static final double HOMING_SPEED = 0.55;
     private static final double HOMING_SEARCH_RANGE = 30.0;
     private static final double HOMING_CONE_THRESHOLD = 0.85;
     private static final double HOMING_TURN_FACTOR = 0.15;
-    private static final float COLLISION_DAMAGE = 8.0F;
-    private static final int FIRE_EFFECT_DURATION = 200;
-    private static final int BURN_AURA_DURATION = 60;
-    private static final float EXPLOSION_RADIUS = 1.5F;
-    private static final int FIRE_SPREAD_RADIUS = 2;
     private static final int NO_TARGET = -1;
 
-    public BloodFireSoulProjectile(EntityType<? extends Projectile> type, Level level) {
+    // Instance Variables (Upgradeable)
+    private float collisionDamage = DEFAULT_DAMAGE;
+    private float explosionRadius = DEFAULT_EXPLOSION_RADIUS;
+    private int maxLifetime = DEFAULT_LIFETIME;
+
+    // Effect Constants
+    private static final int FIRE_EFFECT_DURATION = 200;
+    private static final int BURN_AURA_DURATION = 60;
+    private static final int FIRE_SPREAD_RADIUS = 2;
+
+    // --- SECT 2: CONSTRUCTORS ---
+
+    public BloodFireSoulEntity(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
     }
 
-    public BloodFireSoulProjectile(EntityType<? extends Projectile> type, Level level, LivingEntity owner) {
+    // Standard Constructor (Mobs)
+    public BloodFireSoulEntity(EntityType<? extends Projectile> type, Level level, LivingEntity owner) {
         super(type, level);
         this.setOwner(owner);
         this.setPos(owner.getX(), owner.getEyeY() - 0.4, owner.getZ());
 
-        // Give initial forward impulse so it doesn't spawn static
+        // Initial impulse
         this.setDeltaMovement(owner.getLookAngle().scale(HOMING_SPEED));
-
         this.selectInitialTarget(owner);
+    }
+
+    // Gem Constructor (Spellbook)
+    public BloodFireSoulEntity(EntityType<? extends Projectile> type, Level level, LivingEntity owner, List<Gem> gems) {
+        this(type, level, owner);
+        configureSpell(gems);
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(TARGET_ID, NO_TARGET);
+        this.entityData.define(DATA_SCALE, DEFAULT_SCALE);
+    }
+
+    public float getScale() {
+        return this.entityData.get(DATA_SCALE);
     }
 
     private void selectInitialTarget(LivingEntity owner) {
@@ -92,6 +126,8 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         }
     }
 
+    // --- SECT 3: MAIN TICK LOOP ---
+
     @Override
     public void tick() {
         super.tick();
@@ -105,7 +141,7 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
             performMovementLogic();
             burnNearbyEntities();
 
-            if (this.tickCount > MAX_LIFETIME) {
+            if (this.tickCount > maxLifetime) {
                 this.discard();
             }
         } else {
@@ -128,11 +164,10 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
     private void performMovementLogic() {
         int targetId = this.entityData.get(TARGET_ID);
 
-        // FALLBACK: If no target, maintain speed in current direction
+        // Fallback: No target, maintain momentum
         if (targetId == NO_TARGET) {
             Vec3 currentMotion = this.getDeltaMovement();
             if (currentMotion.lengthSqr() < 0.01) {
-                // If stopped, force forward
                 currentMotion = this.getLookAngle().scale(HOMING_SPEED);
             }
             this.setDeltaMovement(currentMotion.normalize().scale(HOMING_SPEED));
@@ -142,23 +177,23 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         Entity targetEntity = this.level().getEntity(targetId);
 
         if (targetEntity instanceof LivingEntity livingTarget && livingTarget.isAlive()) {
-            // HOMING LOGIC
             Vec3 targetPos = livingTarget.getEyePosition().subtract(0, 0.5, 0);
             Vec3 desiredDirection = targetPos.subtract(this.position()).normalize();
             Vec3 currentDirection = this.getDeltaMovement().normalize();
 
-            // Lerp the DIRECTION, not the velocity vector, to avoid speed loss
+            // Steer towards target
             Vec3 newDirection = currentDirection.lerp(desiredDirection, HOMING_TURN_FACTOR).normalize();
-
             this.setDeltaMovement(newDirection.scale(HOMING_SPEED));
         } else {
-            // Target lost/dead -> Switch to dumb fire mode
+            // Target lost
             this.entityData.set(TARGET_ID, NO_TARGET);
         }
     }
 
     private void burnNearbyEntities() {
-        List<LivingEntity> victims = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5D),
+        // Burn area scales slightly with upgrades
+        double burnRadius = 1.5D * getScale();
+        List<LivingEntity> victims = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(burnRadius),
                 entity -> entity != this.getOwner() && entity.isAlive());
 
         for (LivingEntity victim : victims) {
@@ -167,23 +202,36 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         }
     }
 
+    // --- SECT 4: COLLISION & EXPLOSION ---
+
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (this.level().isClientSide) return;
 
-        this.level().explode(this, this.getX(), this.getY(), this.getZ(), EXPLOSION_RADIUS, Level.ExplosionInteraction.NONE);
+        this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionRadius, Level.ExplosionInteraction.NONE);
         spawnFireLogic();
         this.discard();
     }
 
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity target = result.getEntity();
+        target.hurt(this.damageSources().magic(), collisionDamage);
+        if (target instanceof LivingEntity living) {
+            setOnBloodFire(living, FIRE_EFFECT_DURATION, 0);
+        }
+    }
+
     private void spawnFireLogic() {
         BlockPos impactPos = this.blockPosition();
+        // Fire spread scales with upgrade
+        int range = (int) (FIRE_SPREAD_RADIUS * getScale());
 
-        for (int x = -FIRE_SPREAD_RADIUS; x <= FIRE_SPREAD_RADIUS; x++) {
+        for (int x = -range; x <= range; x++) {
             for (int y = -1; y <= 1; y++) {
-                for (int z = -FIRE_SPREAD_RADIUS; z <= FIRE_SPREAD_RADIUS; z++) {
-                    if (x * x + y * y + z * z <= FIRE_SPREAD_RADIUS * FIRE_SPREAD_RADIUS) {
+                for (int z = -range; z <= range; z++) {
+                    if (x * x + y * y + z * z <= range * range) {
                         BlockPos targetPos = impactPos.offset(x, y, z);
                         attemptPlaceFire(targetPos);
                     }
@@ -207,16 +255,10 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         }
     }
 
-    @Override
-    protected void onHitEntity(EntityHitResult result) {
-        Entity target = result.getEntity();
-        target.hurt(this.damageSources().magic(), COLLISION_DAMAGE);
-        if (target instanceof LivingEntity living) {
-            setOnBloodFire(living, FIRE_EFFECT_DURATION, 0);
-        }
-    }
+    // --- SECT 5: VISUALS ---
 
     private void generateFireParticles() {
+        float scale = getScale();
         Vec3 motion = this.getDeltaMovement();
         Vec3 tailDir = motion.length() > 0 ? motion.normalize().scale(-1.0) : new Vec3(0, -1, 0);
         double baseX = this.getX();
@@ -224,11 +266,11 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         double baseZ = this.getZ();
 
         for (int i = 0; i < 3; i++) {
-            spawnCoreParticle(baseX, baseY, baseZ, tailDir);
+            spawnCoreParticle(baseX, baseY, baseZ, tailDir, scale);
         }
 
         for (int i = 0; i < 5; i++) {
-            spawnMidParticle(baseX, baseY, baseZ, tailDir);
+            spawnMidParticle(baseX, baseY, baseZ, tailDir, scale);
         }
 
         if (this.tickCount % 2 == 0) {
@@ -236,8 +278,8 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         }
     }
 
-    private void spawnCoreParticle(double x, double y, double z, Vec3 dir) {
-        double spread = 0.1;
+    private void spawnCoreParticle(double x, double y, double z, Vec3 dir, float scale) {
+        double spread = 0.1 * scale;
         double ox = (this.random.nextDouble() - 0.5D) * spread;
         double oy = (this.random.nextDouble() - 0.5D) * spread;
         double oz = (this.random.nextDouble() - 0.5D) * spread;
@@ -245,22 +287,74 @@ public class BloodFireSoulProjectile extends Projectile implements BloodFlammabl
         float pink = 0.6f + this.random.nextFloat() * 0.4f;
         Vector3f color = new Vector3f(1.0f, pink, pink);
 
-        this.level().addParticle(new MagicParticleOptions(color, 0.3f, false, 10),
+        // Particle size scales with entity
+        float size = 0.3f * scale;
+
+        this.level().addParticle(new MagicParticleOptions(color, size, false, 10),
                 x + ox, y + oy, z + oz,
                 dir.x * 0.3, dir.y * 0.3, dir.z * 0.3);
     }
 
-    private void spawnMidParticle(double x, double y, double z, Vec3 dir) {
-        double spread = 0.3;
+    private void spawnMidParticle(double x, double y, double z, Vec3 dir, float scale) {
+        double spread = 0.3 * scale;
         double ox = (this.random.nextDouble() - 0.5D) * spread;
         double oy = (this.random.nextDouble() - 0.5D) * spread;
         double oz = (this.random.nextDouble() - 0.5D) * spread;
 
         Vector3f color = new Vector3f(1.0f, 0.1f, 0.0f);
+        float size = 0.4f * scale;
 
-        this.level().addParticle(new MagicParticleOptions(color, 0.4f, false, 20),
+        this.level().addParticle(new MagicParticleOptions(color, size, false, 20),
                 x + ox, y + oy, z + oz,
                 dir.x * 0.15 + ox * 0.1, dir.y * 0.15 + oy * 0.1, dir.z * 0.15 + oz * 0.1);
+    }
+
+    // --- SECT 6: IGemSpell IMPLEMENTATION ---
+
+    @Override
+    public void increaseSpellDamage(double amount) {
+        this.collisionDamage += (float) amount;
+    }
+
+    @Override
+    public void increaseSpellSize(double amount) {
+        // Increase Explosion Radius
+        this.explosionRadius += (float) amount;
+
+        // Increase Visual Scale
+        float currentScale = this.entityData.get(DATA_SCALE);
+        this.entityData.set(DATA_SCALE, (float)(currentScale + amount * 0.5f));
+    }
+
+    @Override
+    public void increaseSpellDuration(int amount) {
+        // Increase Lifetime (Seconds -> Ticks)
+        this.maxLifetime += amount ;
+    }
+
+    // --- SECT 7: BOILERPLATE ---
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        if(tag.contains("Damage")) this.collisionDamage = tag.getFloat("Damage");
+        if(tag.contains("Radius")) this.explosionRadius = tag.getFloat("Radius");
+        if(tag.contains("MaxLife")) this.maxLifetime = tag.getInt("MaxLife");
+        if(tag.contains("Scale")) this.entityData.set(DATA_SCALE, tag.getFloat("Scale"));
+        if(tag.contains("Target")) this.entityData.set(TARGET_ID, tag.getInt("Target"));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.putFloat("Damage", collisionDamage);
+        tag.putFloat("Radius", explosionRadius);
+        tag.putInt("MaxLife", maxLifetime);
+        tag.putFloat("Scale", getScale());
+        tag.putInt("Target", this.entityData.get(TARGET_ID));
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

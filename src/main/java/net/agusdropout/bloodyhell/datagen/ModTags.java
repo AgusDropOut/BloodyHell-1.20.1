@@ -16,6 +16,11 @@ public class ModTags {
         public static final TagKey<Item> BLOOD_LOGS = tag("blood_logs");
         public static final TagKey<Item> CRIMSONVEIL_CONSUMER = tag("spell_books");
 
+
+        public static final TagKey<Item> SANGUINITE_TIER_ITEMS = tag("sanguinite_tier_items");
+        public static final TagKey<Item> RHNULL_TIER_ITEMS = tag("rhnull_tier_items");
+        public static final TagKey<Item> BLASPHEMOUS_TIER_ITEMS = tag("blasphemous_tier_items");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(BloodyHell.MODID, name));
         }

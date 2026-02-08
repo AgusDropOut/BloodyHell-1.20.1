@@ -1,8 +1,11 @@
-package net.agusdropout.bloodyhell.entity.projectile;
+package net.agusdropout.bloodyhell.entity.projectile.spell;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
+import net.agusdropout.bloodyhell.entity.interfaces.IGemSpell;
+import net.agusdropout.bloodyhell.entity.projectile.BloodClotProjectile;
+import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -29,11 +32,17 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class BloodSphereEntity extends Projectile {
+public class BloodSphereEntity extends Projectile implements IGemSpell {
 
-    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(BloodSphereEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_RADIUS = SynchedEntityData.defineId(BloodSphereEntity.class, EntityDataSerializers.FLOAT);
+
+    private static final float DEFAULT_RADIUS = 6.0f;
+    private static final int DEFAULT_LIFE = 100;
+
+    private float damage;
+    private int maxLife = DEFAULT_LIFE;
     private int lifeTicks = 0;
-    private static final int MAX_LIFE = 100;
+    private int delayTicks = 0;
 
     public BloodSphereEntity(EntityType<? extends Projectile> entityType, Level level) {
         super(entityType, level);
@@ -43,31 +52,52 @@ public class BloodSphereEntity extends Projectile {
     public BloodSphereEntity(Level level, LivingEntity owner, float damage) {
         this(ModEntityTypes.BLOOD_PROJECTILE.get(), level);
         this.setOwner(owner);
-        this.setDamage(damage);
+        this.damage = damage;
+        this.initPosition(owner);
+    }
+
+    public BloodSphereEntity(Level level, LivingEntity owner, float damage, int delayTicks, List<Gem> gems) {
+        this(ModEntityTypes.BLOOD_PROJECTILE.get(), level);
+        this.setOwner(owner);
+        this.damage = damage;
+        this.delayTicks = delayTicks;
+        this.initPosition(owner);
+        configureSpell(gems);
+
+        if (delayTicks > 0) {
+            this.setInvisible(true);
+        }
+    }
+
+    private void initPosition(LivingEntity owner) {
         this.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
         Vec3 look = owner.getLookAngle();
-        // Projectile speed (0.5 is slow and threatening)
         this.setDeltaMovement(look.scale(0.5));
     }
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(DAMAGE, 5.0f);
+        this.entityData.define(DATA_RADIUS, DEFAULT_RADIUS);
     }
 
-    public void setDamage(float damage) {
-        this.entityData.set(DAMAGE, damage);
-    }
-
-    public float getDamage() {
-        return this.entityData.get(DAMAGE);
+    public float getRadius() {
+        return this.entityData.get(DATA_RADIUS);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (this.lifeTicks++ >= MAX_LIFE) {
+        if (delayTicks > 0) {
+            delayTicks--;
+            if (delayTicks == 0) {
+                this.setInvisible(false);
+                this.level().playSound(null, getX(), getY(), getZ(), SoundEvents.BUCKET_EMPTY_LAVA, SoundSource.PLAYERS, 1.0f, 1.5f);
+            }
+            return;
+        }
+
+        if (this.lifeTicks++ >= maxLife) {
             this.discard();
             return;
         }
@@ -87,16 +117,21 @@ public class BloodSphereEntity extends Projectile {
             }
         }
 
-        // Particle trail while traveling (Client only)
         if (this.level().isClientSide) {
-            for(int i=0; i<2; i++) {
-                // Using animated particle for trail too, but with low speed
-                this.level().addParticle(ModParticles.BLOOD_PULSE_PARTICLE.get(),
-                        this.getX() + (random.nextDouble()-0.5)*0.3,
-                        this.getY() + (random.nextDouble()-0.5)*0.3,
-                        this.getZ() + (random.nextDouble()-0.5)*0.3,
-                        0, 0, 0); // Zero velocity to float
-            }
+            spawnTravelParticles();
+        }
+    }
+
+    private void spawnTravelParticles() {
+        float radius = getRadius();
+        float scaleFactor = radius / DEFAULT_RADIUS;
+
+        for (int i = 0; i < 2; i++) {
+            this.level().addParticle(ModParticles.BLOOD_PULSE_PARTICLE.get(),
+                    this.getX() + (random.nextDouble() - 0.5) * 0.3 * scaleFactor,
+                    this.getY() + (random.nextDouble() - 0.5) * 0.3 * scaleFactor,
+                    this.getZ() + (random.nextDouble() - 0.5) * 0.3 * scaleFactor,
+                    0, 0, 0);
         }
     }
 
@@ -110,47 +145,43 @@ public class BloodSphereEntity extends Projectile {
     }
 
     private void explode() {
-        float radius = 6.0f;
-        float dmg = getDamage();
+        float currentRadius = getRadius();
 
-        // 1. DAMAGE
-        AABB area = this.getBoundingBox().inflate(radius);
+        AABB area = this.getBoundingBox().inflate(currentRadius);
         List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, area);
+
         for (LivingEntity target : targets) {
             if (target != this.getOwner()) {
-                target.hurt(this.damageSources().magic(), dmg);
+                target.hurt(this.damageSources().magic(), this.damage);
                 double dx = target.getX() - this.getX();
                 double dz = target.getZ() - this.getZ();
                 target.knockback(1.5, -dx, -dz);
             }
         }
 
-        // 2. SOUNDS & PARTICLES
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 1.0f, 1.5f);
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ZOMBIE_VILLAGER_CURE, SoundSource.HOSTILE, 1.0f, 0.5f);
 
         if (!this.level().isClientSide) {
             ServerLevel serverLevel = (ServerLevel) this.level();
+
             serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
             serverLevel.sendParticles(ModParticles.BLOOD_PULSE_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 60, 1.0, 1.0, 1.0, 0.2);
 
-            EntityCameraShake.cameraShake(this.level(), this.position(), 20.0f, 2.0f, 15, 5);
-            spawnDebris(serverLevel);
+            EntityCameraShake.cameraShake(this.level(), this.position(), currentRadius * 3.5f, 2.0f, 15, 5);
 
-            // --- NEW: SPAWN VISCOUS SHRAPNEL ---
+            spawnDebris(serverLevel);
             spawnClots();
         }
     }
 
     private void spawnClots() {
-        // Spawn 8 clots flying in random directions
         for (int i = 0; i < 8; i++) {
             BloodClotProjectile clot = new BloodClotProjectile(this.level(), this.getX(), this.getY(), this.getZ());
             if (this.getOwner() instanceof LivingEntity l) clot.setOwner(l);
 
-            // Velocity: Random burst
             double vx = (random.nextDouble() - 0.5) * 1.5;
-            double vy = random.nextDouble() * 0.8 + 0.2; // Tend upwards slightly
+            double vy = random.nextDouble() * 0.8 + 0.2;
             double vz = (random.nextDouble() - 0.5) * 1.5;
 
             clot.setDeltaMovement(vx, vy, vz);
@@ -159,28 +190,25 @@ public class BloodSphereEntity extends Projectile {
     }
 
     private void spawnDebris(ServerLevel level) {
-        BlockPos impactPos = this.blockPosition().below(); // Check block below impact
-        int debrisCount = 10; // Increased debris count
+        BlockPos impactPos = this.blockPosition().below();
+        int debrisCount = 10;
+        float radiusScale = getRadius() / DEFAULT_RADIUS;
 
         for (int i = 0; i < debrisCount; i++) {
-            // Random position near impact (radius 3)
-            double offsetX = (random.nextDouble() - 0.5) * 3.0;
-            double offsetZ = (random.nextDouble() - 0.5) * 3.0;
-            BlockPos targetPos = impactPos.offset((int)offsetX, 0, (int)offsetZ);
+            double offsetX = (random.nextDouble() - 0.5) * 3.0 * radiusScale;
+            double offsetZ = (random.nextDouble() - 0.5) * 3.0 * radiusScale;
+            BlockPos targetPos = impactPos.offset((int) offsetX, 0, (int) offsetZ);
 
             BlockState state = level.getBlockState(targetPos);
 
-            // Only spawn debris if block is not air and is solid
             if (!state.isAir() && state.isSolidRender(level, targetPos)) {
                 EntityFallingBlock debris = new EntityFallingBlock(ModEntityTypes.ENTITY_FALLING_BLOCK.get(), level);
 
                 debris.setPos(targetPos.getX() + 0.5, targetPos.getY() + 1, targetPos.getZ() + 0.5);
-                debris.setBlock(state); // Copy texture
-                debris.setDuration(40); // Lasts 2 seconds
+                debris.setBlock(state);
+                debris.setDuration(40);
 
-                // Velocity: Upwards and away from center
                 debris.setDeltaMovement(offsetX * 0.3, 0.5 + random.nextDouble() * 0.4, offsetZ * 0.3);
-
                 level.addFreshEntity(debris);
             }
         }
@@ -191,7 +219,40 @@ public class BloodSphereEntity extends Projectile {
         return super.canHitEntity(entity) && (entity != this.getOwner() || this.lifeTicks >= 5);
     }
 
-    @Override protected void addAdditionalSaveData(CompoundTag tag) { tag.putFloat("Damage", getDamage()); }
-    @Override protected void readAdditionalSaveData(CompoundTag tag) { setDamage(tag.getFloat("Damage")); }
-    @Override public Packet<ClientGamePacketListener> getAddEntityPacket() { return new ClientboundAddEntityPacket(this); }
+    @Override
+    public void increaseSpellDamage(double amount) {
+        this.damage += (float) amount;
+    }
+
+    @Override
+    public void increaseSpellSize(double amount) {
+        float current = this.entityData.get(DATA_RADIUS);
+        this.entityData.set(DATA_RADIUS, current + (DEFAULT_RADIUS * (float)amount));
+    }
+
+    @Override
+    public void increaseSpellDuration(int amount) {
+        this.maxLife += amount;
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.putFloat("Damage", this.damage);
+        tag.putFloat("Radius", getRadius());
+        tag.putInt("MaxLife", this.maxLife);
+        tag.putInt("Delay", this.delayTicks);
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        if (tag.contains("Damage")) this.damage = tag.getFloat("Damage");
+        if (tag.contains("Radius")) this.entityData.set(DATA_RADIUS, tag.getFloat("Radius"));
+        if (tag.contains("MaxLife")) this.maxLife = tag.getInt("MaxLife");
+        if (tag.contains("Delay")) this.delayTicks = tag.getInt("Delay");
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return new ClientboundAddEntityPacket(this);
+    }
 }

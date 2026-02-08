@@ -198,12 +198,18 @@ public class ModItems {
             new Item.Properties()));
 
     public static final RegistryObject<Item> PURE_BLOOD_GEM = ITEMS.register("pure_blood_gem", () -> new BasePowerGemItem(
-            new Item.Properties()));
+            new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> CITRINE_BLOOD_GEM = ITEMS.register("citrine_blood_gem", () -> new BasePowerGemItem(
-            new Item.Properties()));
+            new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> TANZARINE_BLOOD_GEM = ITEMS.register("tanzarine_blood_gem", () -> new BasePowerGemItem(
-            new Item.Properties()));
+            new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> AVENTURINE_BLOOD_GEM = ITEMS.register("aventurine_blood_gem", () -> new BasePowerGemItem(
+            new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> BLOOD_GEM_SPROUT_SEED = ITEMS.register("blood_gem_sprout_seed", () -> new ItemNameBlockItem(ModBlocks.BLOOD_GEM_SPROUT.get(),
+            new Item.Properties()));
+
+    public static final RegistryObject<Item> VORACIOUS_MUSHROOM = ITEMS.register("voracious_mushroom_item", () -> new BlockItem(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(),
             new Item.Properties()));
 
 

@@ -14,7 +14,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
@@ -26,12 +25,14 @@ public class BloodRuneParticle extends Particle {
     private final float baseRadius;
     private final float cylinderHeight;
 
-    protected BloodRuneParticle(ClientLevel level, double x, double y, double z) {
+    protected BloodRuneParticle(ClientLevel level, double x, double y, double z, double radius) {
         super(level, x, y, z);
         this.lifetime = 80;
         this.gravity = 0;
         this.hasPhysics = false;
-        this.baseRadius = 4.5f;
+
+
+        this.baseRadius = (radius > 0) ? (float) radius : 4.5f;
         this.cylinderHeight = 8.0f;
     }
 
@@ -54,18 +55,13 @@ public class BloodRuneParticle extends Particle {
 
         // --- RENDER SETUP ---
         RenderSystem.enableBlend();
-        // ADDITIVE BLENDING: Critical for "Glow" look without textures
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);
-
-        // Use Simple Color Shader
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
-
-        // Use Simple Format (No Texture, No Lightmap, No Normals)
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         float time = age + partialTicks;
@@ -74,8 +70,6 @@ public class BloodRuneParticle extends Particle {
         else if (age > lifetime - 20) alphaFade = (lifetime - age) / 20f;
 
         Matrix4f pose = poseStack.last().pose();
-        // No normal matrix needed
-
         float rotation = time * 0.02f;
 
         // 1. RENDER RINGS
@@ -125,8 +119,8 @@ public class BloodRuneParticle extends Particle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-            return new BloodRuneParticle(world, x, y, z);
+            // VX is hijacked to pass the Radius
+            return new BloodRuneParticle(world, x, y, z, vx);
         }
     }
 }
-

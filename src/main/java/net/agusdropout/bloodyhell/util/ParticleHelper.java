@@ -250,4 +250,33 @@ public class ParticleHelper {
             spawn(level, particle, x, center.y, z, 0, 0, 0);
         }
     }
+
+    /**
+     * <h3>Shape: Simple Burst</h3>
+     * Spawns a burst of particles radiating outward from a center point.
+     *
+     * @param quantity  How many particles to spawn.
+     * @param intensity How fast the particles fly outward.
+     */
+    public static void spawnBurst(Level level, ParticleOptions particle, Vec3 center, int quantity, double intensity) {
+        for (int i = 0; i < quantity; i++) {
+
+            double vx = (random.nextDouble() - 0.5) * 2.0;
+            double vy = (random.nextDouble() - 0.5) * 2.0;
+            double vz = (random.nextDouble() - 0.5) * 2.0;
+
+
+            double dist = Math.sqrt(vx * vx + vy * vy + vz * vz);
+            if (dist > 0.0001) {
+                vx = (vx / dist) * intensity;
+                vy = (vy / dist) * intensity;
+                vz = (vz / dist) * intensity;
+            }
+
+
+            double randomSpeed = 0.5 + (random.nextDouble() * 0.5);
+
+            spawn(level, particle, center.x, center.y, center.z, vx * randomSpeed, vy * randomSpeed, vz * randomSpeed);
+        }
+    }
 }

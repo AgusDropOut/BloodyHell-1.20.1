@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.RitekeeperEntity;
-import net.agusdropout.bloodyhell.entity.projectile.BloodFireSoulProjectile;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireSoulEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -63,7 +63,7 @@ public class RitekeeperSoulAttackGoal extends Goal {
             Vec3 spawnPos = this.mob.position().add(0, 1.5, 0);
 
             // 2. Create Projectile
-            BloodFireSoulProjectile soul = new BloodFireSoulProjectile(ModEntityTypes.BLOOD_FIRE_SOUL.get(), this.mob.level(),this.mob);
+            BloodFireSoulEntity soul = new BloodFireSoulEntity(ModEntityTypes.BLOOD_FIRE_SOUL.get(), this.mob.level(),this.mob);
             soul.setPos(spawnPos);
 
             // 3. Aim at target

@@ -125,6 +125,7 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(ModBlocks.ANCIENT_BLOODY_LAMP.get());
             this.dropOther(ModBlocks.ANCIENT_TORCH_BLOCK.get(),ModItems.ANCIENT_TORCH_ITEM.get());
             this.dropSelf(ModBlocks.ANCIENT_BLOOD_CAPSULE.get());
+            this.dropSelf(ModBlocks.SANGUINE_LAPIDARY.get());
 
 
 
