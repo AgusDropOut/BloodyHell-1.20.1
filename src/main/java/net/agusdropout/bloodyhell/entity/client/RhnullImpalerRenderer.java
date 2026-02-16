@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.entity.client.layer.RhnullImpalerGlowLayer;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -31,33 +30,32 @@ public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
     public void render(RhnullImpalerEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
-        // 1. ROTATION LOGIC
-        // Use smooth interpolation
+
         float yRot = Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot());
         float xRot = Mth.rotLerp(partialTicks, entity.xRotO, entity.getXRot());
 
-        // FIX YAW: Model faces North (-Z), we want it to face South (+Z) to align with player.
-        // Subtract 180 degrees.
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F -yRot ));
-
-        // FIX PITCH: Pitch does NOT need 180 flip. If you flip Pitch 180, Up becomes Down.
-        // We pass xRot directly.
+        poseStack.mulPose(Axis.YP.rotationDegrees(-yRot));
         poseStack.mulPose(Axis.XP.rotationDegrees(-xRot));
 
-        // 2. SCALE
-        float scale = entity.getEntityData().get(RhnullImpalerEntity.SPELL_SCALE);
-        poseStack.scale(scale * 0.5f, scale* 0.5f, scale* 0.5f);
 
-        // 3. ANIMATION
+        float scale = entity.getEntityData().get(RhnullImpalerEntity.SPELL_SCALE);
+        poseStack.scale(scale * 0.5f, scale * 0.5f, scale * 0.5f);
+
+
+        poseStack.translate(0.0, -1.5, 0.0);
         this.model.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
 
-        // 4. RENDER
+
         RenderType renderType = this.getRenderType(entity, false, false, false);
         VertexConsumer vertexconsumer = buffer.getBuffer(renderType);
 
-        this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.65F);
+        if(entity.getLifeTicks() > 0.8 * entity.getLifeTimeTicks()) {
+            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, (float) (Math.sin(entity.getLifeTicks()*1.5f) * 0.5+ 0.5f));
+        } else {
+            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.7F);
+        }
 
-        // Glow Layer
+
         float time = entity.tickCount + partialTicks;
         float pulse = (Mth.sin(time * 0.15f) * 0.4f) + 0.6f;
         VertexConsumer glowConsumer = buffer.getBuffer(RenderType.entityTranslucentEmissive(GLOW_TEXTURE));
@@ -67,7 +65,6 @@ public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
-    // ... getTextureLocation and getRenderType remain the same ...
     @Override
     public ResourceLocation getTextureLocation(RhnullImpalerEntity entity) {
         return TEXTURE;

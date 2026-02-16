@@ -1,8 +1,12 @@
 package net.agusdropout.bloodyhell.entity.projectile.spell;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
+import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.interfaces.IGemSpell;
+import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -22,21 +26,31 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.joml.Vector3f;
+
+import java.util.List;
 
 public class RhnullImpalerEntity extends Projectile implements IGemSpell {
 
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(RhnullImpalerEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Float> SPELL_SCALE = SynchedEntityData.defineId(RhnullImpalerEntity.class, EntityDataSerializers.FLOAT);
-
-    // Core Synced Data needed for Client prediction
     private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(RhnullImpalerEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OFFSET_INDEX = SynchedEntityData.defineId(RhnullImpalerEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TOTAL_SPEARS = SynchedEntityData.defineId(RhnullImpalerEntity.class, EntityDataSerializers.INT);
 
-    // Removed custom YAW/PITCH. We use the standard Entity rotations (getYRot/getXRot) which are auto-synced.
+    private static final float DEFAULT_DAMAGE = 8.0f;
+    private static final float DEFAULT_SIZE = 2.0f;
+    private static final int DEFAULT_DURATION = 600;
+    private static final int SIZE_FACTOR_ON_VISUAL_EFFECTS = 5;
 
-    private double damage = 8.0;
-    private int lifeTimeTicks = 600;
+
+    private static final Vector3f COLOR_CORE = new Vector3f(1f, 0.9f, 0.0f);
+    private static final Vector3f COLOR_FADE = new Vector3f(0.7f, 0.65f, 0.0f);
+
+    private float damage = DEFAULT_DAMAGE;
+    private float size = DEFAULT_SIZE;
+    private int lifeTimeTicks = DEFAULT_DURATION;
+    private int lifeTicks = 0;
 
     public RhnullImpalerEntity(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
@@ -51,9 +65,13 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
         this.entityData.set(OFFSET_INDEX, index);
         this.entityData.set(TOTAL_SPEARS, total);
 
-        // Start behind player immediately
         Vec3 startPos = owner.getEyePosition().subtract(owner.getLookAngle().scale(1.5));
         this.setPos(startPos.x, startPos.y, startPos.z);
+    }
+
+    public RhnullImpalerEntity(Level level, LivingEntity owner, int index, int total, List<Gem> gems) {
+        this(level, owner, index, total);
+        configureSpell(gems);
     }
 
     @Override
@@ -67,19 +85,15 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
 
     @Override
     public void tick() {
-        // Run logic on BOTH sides.
-        // Client needs to calculate orbit to prevent "Rubber Banding".
+        this.lifeTicks++;
         if (isLaunched()) {
-            super.tick();
             projectileLogic();
         } else {
-            baseTick(); // Basic timer updates
             orbitLogic();
         }
     }
 
     private void orbitLogic() {
-        // 1. Safe Owner Retrieval
         Entity owner = getOwner();
         if (owner == null) {
             int id = this.entityData.get(OWNER_ID);
@@ -91,64 +105,45 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
             return;
         }
 
-        // 2. Setup Variables
         int index = this.entityData.get(OFFSET_INDEX);
         int total = this.entityData.get(TOTAL_SPEARS);
         if (total == 0) total = 1;
 
-        // 3. Define the "Screen" Plane (Coordinate System relative to Player Look)
         Vec3 lookVec = owner.getLookAngle();
         Vec3 upVec = new Vec3(0, 1, 0);
         Vec3 rightVec = lookVec.cross(upVec).normalize();
         Vec3 relativeUp = rightVec.cross(lookVec).normalize();
 
-        // 4. Calculate Target Position (BEHIND PLAYER)
         double circleRadius = 1.2 + (total * 0.1);
-        double distanceBehind = 1.0; // How far back from the head
+        double distanceBehind = 0;
 
         double angle = (2 * Math.PI * index) / total;
         double xOffset = Math.cos(angle) * circleRadius;
         double yOffset = Math.sin(angle) * circleRadius;
 
-        // Logic: EyePos - (Look * Distance) = Point Behind Player
         Vec3 origin = owner.getEyePosition().subtract(lookVec.scale(distanceBehind));
         Vec3 targetPos = origin.add(rightVec.scale(xOffset)).add(relativeUp.scale(yOffset));
 
-        // 5. Smooth Movement
-        // We calculate this on Client too, so it looks perfectly smooth (60+ FPS)
         Vec3 current = this.position();
-        Vec3 nextPos = current.lerp(targetPos, 0.25); // 0.25 = snappy but smooth
+        Vec3 nextPos = current.lerp(targetPos, 0.25);
         this.setPos(nextPos);
         this.setDeltaMovement(Vec3.ZERO);
 
-        // 6. AIMING LOGIC (Phalanx Effect)
-        // Instead of facing parallel to player, face exactly what the player is looking at.
-
-        // A. Find what player is looking at (Raycast)
         Vec3 aimStart = owner.getEyePosition();
-        Vec3 aimEnd = aimStart.add(lookVec.scale(50.0)); // Look 50 blocks out
+        Vec3 aimEnd = aimStart.add(lookVec.scale(50.0));
         BlockHitResult ray = this.level().clip(new ClipContext(aimStart, aimEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner));
         Vec3 aimTarget = ray.getType() != HitResult.Type.MISS ? ray.getLocation() : aimEnd;
 
-        // B. Calculate Vector from Spear -> Target
         double dx = aimTarget.x - this.getX();
         double dy = aimTarget.y - this.getY();
         double dz = aimTarget.z - this.getZ();
         double horizontalDist = Math.sqrt(dx * dx + dz * dz);
 
-        // C. Convert Vector to Angles
-        // Minecraft Yaw: atan2(z, x) converted to degrees, -90 offset standard
         float targetYaw = (float)(Mth.atan2(dz, dx) * (double)(180F / (float)Math.PI)) - 90.0F;
-        // Minecraft Pitch: atan2(y, horizontal) converted to degrees
         float targetPitch = (float)(Mth.atan2(dy, horizontalDist) * (double)(180F / (float)Math.PI));
 
-        // D. Apply Rotation
         this.setYRot(targetYaw);
-        this.setXRot(targetPitch); // Note: Projectile pitch is usually inverted, we check this in Renderer
-
-        // Critical: Update Previous Rotation to prevent flickering
-        this.yRotO = this.getYRot();
-        this.xRotO = this.getXRot();
+        this.setXRot(targetPitch);
 
         if (!this.level().isClientSide && this.tickCount > lifeTimeTicks) this.discard();
     }
@@ -161,33 +156,67 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
 
         Vec3 movement = this.getDeltaMovement();
         this.setPos(this.getX() + movement.x, this.getY() + movement.y, this.getZ() + movement.z);
-        ProjectileUtil.rotateTowardsMovement(this, 0.2F);
 
         if (this.level().isClientSide) {
-            this.level().addParticle(ModParticles.BLOOD_PARTICLES.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            float particleSize = 1.2f * (this.size / DEFAULT_SIZE);
+            this.level().addParticle(new MagicParticleOptions(COLOR_CORE, particleSize, false, 30), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         }
     }
 
-    // ... Standard Launch & Hits ...
-    public void launch(Vec3 direction) {
-        this.entityData.set(LAUNCHED, true);
-        this.setDeltaMovement(direction.normalize().scale(3.0));
-        this.shoot(direction.x, direction.y, direction.z, 3.0f, 0);
-    }
-
-    public boolean isLaunched() { return this.entityData.get(LAUNCHED); }
-    @Override public void increaseSpellDamage(double amount) { this.damage += amount; }
-    @Override public void increaseSpellSize(double amount) { this.entityData.set(SPELL_SCALE, Math.min(3.0f, this.entityData.get(SPELL_SCALE) + (float)amount)); }
-    @Override public void increaseSpellDuration(int amount) { this.lifeTimeTicks += amount; }
-
-    @Override protected void onHitEntity(EntityHitResult result) {
+    private void explode(Vec3 pos) {
         if (!this.level().isClientSide) {
-            result.getEntity().hurt(this.level().damageSources().magic(), (float)this.damage);
-            ParticleHelper.spawnDirectionalSpray(this.level(), ModParticles.BLOOD_PARTICLES.get(),
-                    this.position(), this.getDeltaMovement().reverse(), 15, 0.2, 0.5);
+            this.level().explode(this, pos.x, pos.y, pos.z, this.size, Level.ExplosionInteraction.NONE);
+            EntityCameraShake.cameraShake(this.level(), pos, this.size * 5.0f, 0.5f, 15, 5);
+
+            float scaleRatio = this.size / DEFAULT_SIZE;
+
+            ParticleHelper.spawnExplosion(this.level(),
+                    new MagicParticleOptions(COLOR_CORE, 1.2f * scaleRatio, false, 30),
+                    pos, 30 + (int)(this.size * SIZE_FACTOR_ON_VISUAL_EFFECTS), 0.6, 0.5);
+
+            ParticleHelper.spawnRing(this.level(),
+                    new MagicFloorParticleOptions(COLOR_FADE, 3.0f * scaleRatio, false, 40),
+                    pos.add(0, 0.1, 0), this.size * 0.5, 40 + (int)(this.size * SIZE_FACTOR_ON_VISUAL_EFFECTS), 0.25);
+
+            ParticleHelper.spawnCylinder(this.level(),
+                    new MagicParticleOptions(COLOR_CORE, 0.8f * scaleRatio, false, 20),
+                    pos, this.size * 0.25, this.size, 15 + (int)(this.size * SIZE_FACTOR_ON_VISUAL_EFFECTS), 0.4);
+
             this.discard();
         }
     }
-    @Override protected void onHitBlock(BlockHitResult result) { if (!this.level().isClientSide) this.discard(); }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        if (!this.level().isClientSide) {
+            result.getEntity().hurt(this.level().damageSources().magic(), (float)this.damage);
+            explode(result.getLocation());
+        }
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        explode(result.getLocation());
+    }
+
+    public void launch(Vec3 direction) {
+        this.entityData.set(LAUNCHED, true);
+        this.setDeltaMovement(direction.normalize().scale(3.0));
+
+    }
+
+    public int getLifeTicks(){ return this.lifeTicks; }
+    public int getLifeTimeTicks(){ return this.lifeTimeTicks; }
+
+    public boolean isLaunched() { return this.entityData.get(LAUNCHED); }
+    @Override public void increaseSpellDamage(double amount) { this.damage += amount; }
+    @Override
+    public void increaseSpellSize(double amount) {
+        this.size += amount;
+        this.entityData.set(SPELL_SCALE, this.size);
+    }
+    @Override public void increaseSpellDuration(int amount) { this.lifeTimeTicks += amount; }
+
     @Override public Packet<ClientGamePacketListener> getAddEntityPacket() { return NetworkHooks.getEntitySpawningPacket(this); }
+
 }
