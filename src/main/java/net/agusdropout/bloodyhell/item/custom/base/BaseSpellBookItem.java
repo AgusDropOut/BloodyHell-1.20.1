@@ -26,7 +26,6 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -172,17 +171,17 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private GeoItemRenderer<T> renderer;
+            private BlockEntityWithoutLevelRenderer renderer;
+
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null) this.renderer = createRenderer();
+                if (this.renderer == null) {
+                    // Look how clean this is now! No generic diamond operators <>
+                    this.renderer = new GenericSpellBookRenderer();
+                }
                 return this.renderer;
             }
         });
-    }
-
-    public GeoItemRenderer<T> createRenderer() {
-        return new GenericSpellBookRenderer<T>(new GenericSpellBookModel<>());
     }
 
     @Override
@@ -222,17 +221,12 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         return additionalProjectiles;
     }
 
-
-
     public abstract void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack);
-
-
 
     public abstract void spawnProgressiveParticles(Level level, Player player, int chargeTick);
     public abstract void playChargeSound(Level level, Player player, int chargeTick);
     public abstract int getMinChargeTime();
     public abstract int getCooldown();
     public abstract String getSpellBookId();
-
 
 }

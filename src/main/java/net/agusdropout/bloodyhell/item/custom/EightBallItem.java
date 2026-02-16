@@ -1,12 +1,13 @@
 package net.agusdropout.bloodyhell.item.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.custom.BloodFireBlockEntity; // Import your BlockEntity
+import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -28,47 +28,47 @@ public class EightBallItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
-            BlockPos pos = player.blockPosition();
+            // --- SPELL LOGIC: SUMMON SPEARS ---
+            int quantity = 5; // How many spears to summon
 
-            // 1. Place the Block
-            level.setBlockAndUpdate(pos, ModBlocks.BLOOD_FIRE.get().defaultBlockState());
+            // Check if player already has spears (optional, prevents infinite stacking)
+            /*
+            List<RhnullImpalerEntity> existing = level.getEntitiesOfClass(RhnullImpalerEntity.class,
+                player.getBoundingBox().inflate(5),
+                e -> e.getOwner() == player && !e.isLaunched());
+            if (!existing.isEmpty()) return InteractionResultHolder.fail(player.getItemInHand(hand));
+            */
 
-            // 2. Get the Block Entity
-            BlockEntity be = level.getBlockEntity(pos);
+            for (int i = 0; i < quantity; i++) {
+                // Create the entity passing the index and total count for correct spacing
+                RhnullImpalerEntity spear = new RhnullImpalerEntity(level, player, i, quantity);
 
-            // 3. Set Owner (This makes it safe for YOU)
-            if (be instanceof BloodFireBlockEntity fireEntity) {
-                fireEntity.setOwner(player);
-                player.sendSystemMessage(Component.literal("Placed Fire bound to UUID: " + player.getName().getString())
-                        .withStyle(ChatFormatting.GREEN));
-            } else {
-                player.sendSystemMessage(Component.literal("Failed to find Block Entity!")
-                        .withStyle(ChatFormatting.RED));
+                // Optional: Customize stats here for testing
+                spear.increaseSpellDamage(2.0);
+
+                level.addFreshEntity(spear);
             }
+
+            // Sound Effect
+            level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.EVOKER_PREPARE_SUMMON, SoundSource.PLAYERS, 1.0f, 1.0f);
         }
 
-        return super.use(level, player, hand);
-    }
-
-    // ... (Keep existing onUseTick and appendHoverText methods) ...
-    @Override
-    public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
-        super.onUseTick(level, player, stack, count);
-        if (Math.random() < 0.5) {
-            double offsetX = Math.random() - 0.5;
-            double offsetZ = Math.random() - 0.5;
-            level.addParticle(ModParticles.MAGIC_LINE_PARTICLE.get(),
-                    player.getX() + offsetX, player.getY(), player.getZ() + offsetZ,
-                    0, 0.05, 0);
+        // Visual Feedback (Client Side)
+        if (level.isClientSide) {
+            ParticleHelper.spawnRing(level, ModParticles.BLOOD_PARTICLES.get(), player.position().add(0, 1, 0), 1.5, 20, 0.05);
         }
+
+        return InteractionResultHolder.success(player.getItemInHand(hand));
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        if(Screen.hasShiftDown()){
-            components.add(Component.literal("Right click to spawn Safe Fire (UUID)!").withStyle(ChatFormatting.RED));
+        if (Screen.hasShiftDown()) {
+            components.add(Component.literal("Right Click: Summon Rhnull Impalers").withStyle(ChatFormatting.RED));
+            components.add(Component.literal("Left Click (Empty Hand): Fire Spear").withStyle(ChatFormatting.GOLD));
         } else {
-            components.add(Component.literal("Press shift for more info!").withStyle(ChatFormatting.DARK_RED));
+            components.add(Component.literal("Hold [SHIFT] for spell info").withStyle(ChatFormatting.DARK_RED));
         }
         super.appendHoverText(stack, level, components, flag);
     }

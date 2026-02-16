@@ -92,6 +92,11 @@ public class ModParticles {
     public static final RegistryObject<SimpleParticleType> SMALL_BLOOD_FLAME_PARTICLE =
             PARTICLE_TYPES.register("small_blood_flame_particle", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> BLOOD_DROP_PARTICLE =
+            PARTICLE_TYPES.register("blood_drop_particle", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> BLOOD_STAIN_PARTICLE =
+            PARTICLE_TYPES.register("blood_stain_particle", () -> new SimpleParticleType(true));
+
     public static final RegistryObject<ParticleType<ImpactParticleOptions>> IMPACT_PARTICLE =
             PARTICLE_TYPES.register("impact_particle",
                     () -> new ParticleType<ImpactParticleOptions>(false, ImpactParticleOptions.DESERIALIZER) {

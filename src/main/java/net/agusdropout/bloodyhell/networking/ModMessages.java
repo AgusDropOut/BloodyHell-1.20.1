@@ -64,6 +64,12 @@ public class ModMessages {
                 .encoder(SyncVisceralEffectPacket::toBytes)
                 .consumerMainThread(SyncVisceralEffectPacket::handle)
                 .add();
+
+        net.messageBuilder(PacketFireRhnullImpaler.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketFireRhnullImpaler::new)
+                .encoder(PacketFireRhnullImpaler::toBytes)
+                .consumerMainThread(PacketFireRhnullImpaler::handle)
+                .add();
     }
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);

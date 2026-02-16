@@ -267,6 +267,18 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLASPHEMOUS_HULKING_MASS_OF_IRON = ITEMS.register("blasphemous_hulking_mass_of_iron", () -> new BlasphemousHulkingMassOfIronItem(ModToolTiers.RHNULL,10,-2.4F,
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BLASPHEMOUS_IMPALER = ITEMS.register("blasphemous_impaler", () -> new BlasphemousImpalerItem(ModToolTiers.BLASPHEMITE, 10, -3.0F,
+            new Item.Properties().stacksTo(0)));
+
+
+
+
+    // public static final RegistryObject<Item> BLASPHEMOUS_TWIN_DAGGERS = ITEMS.register("blasphemous_twin_daggers", () -> new Item(
+    //         new Item.Properties().stacksTo(1)));
+    // public static final RegistryObject<Item> BLASPHEMOUS_HULKING_MASS_OF_IRON = ITEMS.register("blasphemous_hulking_mass_of_iron", () -> new Item(
+    //         new Item.Properties().stacksTo(1)));
+    // public static final RegistryObject<Item> BLASPHEMOUS_IMPALER = ITEMS.register("blasphemous_impaler", () ->
+    //         new Item(new Item.Properties().stacksTo(0)));
 
 
     //Ancient
@@ -340,13 +352,7 @@ public class ModItems {
             () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> BLASPHEMITE_BOOTS = ITEMS.register("blasphemite_boots",
             () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.BOOTS, new Item.Properties()));
-    public static final RegistryObject<Item> BLASPHEMOUS_IMPALER = ITEMS.register("blasphemous_impaler",
-            () -> new BlasphemousImpalerItem(
-                    ModToolTiers.BLASPHEMITE,
-                    10,
-                    -3.0F,
-                    new Item.Properties().stacksTo(0)
-            ));
+
     public static final RegistryObject<Item> SELIORA_ESSENCE = ITEMS.register("seliora_essence",
             () -> new Item(new Item.Properties()
                     .stacksTo(1)

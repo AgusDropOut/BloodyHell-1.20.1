@@ -93,8 +93,6 @@ public class BloodyHell
 
         modEventBus.addListener(this::commonSetup);
 
-        MinecraftForge.EVENT_BUS.addListener(this::registerDimEffects);
-
         MinecraftForge.EVENT_BUS.addListener(this::portalTick);
         ModCreativeModeTab.register(modEventBus);
         GeckoLib.initialize();
@@ -192,7 +190,6 @@ public class BloodyHell
 
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.BLOOD_FLOWER.getId(),ModBlocks.POTTED_BLOOD_FLOWER);
             ModMessages.register();
-            ModItemProperties.addCustomItemProperties();
            //ModVillagers.registerPOIs();
             MinecraftForge.EVENT_BUS.addListener(this::onPlayerInteract);
 
@@ -225,9 +222,6 @@ public class BloodyHell
             event.setCanceled(true);
         }
 
-    }
-    private void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
-        event.register(ModDimensions.DIMENSION_RENDERER, new BloodDimensionRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
     }
 
 
@@ -324,6 +318,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), BloodFireMeteorRenderer::new);
             EntityRenderers.register(ModEntityTypes.CINDER_ACOLYTE.get(), CinderAcolyteRenderer::new);
             EntityRenderers.register(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantRenderer::new);
+            EntityRenderers.register(ModEntityTypes.RHNULL_IMPALER_PROJECTILE.get(), RhnullImpalerRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_SOUL.get(), BloodSoulRenderer::new);
             EntityRenderers.register(ModEntityTypes.INFESTATION_DECAL.get(), InfestationDecalRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());

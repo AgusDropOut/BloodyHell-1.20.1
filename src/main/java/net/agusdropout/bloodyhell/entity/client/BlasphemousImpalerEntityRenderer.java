@@ -16,12 +16,12 @@ public class BlasphemousImpalerEntityRenderer extends EntityRenderer<Blasphemous
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/blasphemous_impaler_entity.png");
 
-    // CORRECCIÓN 1: La variable debe ser del tipo MODELO, no de la entidad
+
     private final BlasphemousImpalerEntityModel model;
 
     public BlasphemousImpalerEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
-        // CORRECCIÓN 2: Instanciamos el MODELO
+
         this.model = new BlasphemousImpalerEntityModel(context.bakeLayer(BlasphemousImpalerEntityModel.LAYER_LOCATION));
     }
 
@@ -32,7 +32,7 @@ public class BlasphemousImpalerEntityRenderer extends EntityRenderer<Blasphemous
         float yRot = Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
         float xRot = Mth.rotLerp(partialTick, entity.xRotO, entity.getXRot());
 
-        // 1. ROTACIÓN MATEMÁTICA
+
         poseStack.mulPose(Axis.YP.rotationDegrees(yRot - 180.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(xRot));
 
@@ -43,7 +43,7 @@ public class BlasphemousImpalerEntityRenderer extends EntityRenderer<Blasphemous
             poseStack.mulPose(Axis.ZP.rotationDegrees(angle));
         }
 
-        // 3. RENDERIZADO DEL MODELO (Ahora sí funcionará)
+
         VertexConsumer vertexConsumer = buffer.getBuffer(this.model.renderType(this.getTextureLocation(entity)));
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 

@@ -229,6 +229,11 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<BloodSoulEntity>of(BloodSoulEntity::new, MobCategory.AMBIENT)
                             .sized(0.5f, 0.5f)
                             .build(new ResourceLocation(BloodyHell.MODID, "blood_soul_entity").toString()));
+    public static final RegistryObject<EntityType<RhnullImpalerEntity>> RHNULL_IMPALER_PROJECTILE =
+            ENTITY_TYPES.register("rhnull_impaler_projectile",
+                    () -> EntityType.Builder.<RhnullImpalerEntity>of(RhnullImpalerEntity::new, MobCategory.AMBIENT)
+                            .sized(0.5f, 0.5f)
+                            .build(new ResourceLocation(BloodyHell.MODID, "rhnull_impaler_projectile").toString()));
 
 
 

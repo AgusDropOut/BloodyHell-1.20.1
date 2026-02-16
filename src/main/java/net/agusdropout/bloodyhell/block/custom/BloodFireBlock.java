@@ -186,7 +186,7 @@ public class BloodFireBlock extends Block implements SimpleWaterloggedBlock, Ent
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
-        if (belowState.is(this) || belowState.is(Blocks.AIR)) {
+        if (belowState.is(this) || belowState.is(Blocks.AIR) ) {
             return false;
         }
         return super.canSurvive(state, level, pos);

@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.event;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory; // Moved here
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.BloodFireOverlay;
 import net.agusdropout.bloodyhell.client.BossBarHudOverlay;
@@ -22,6 +23,7 @@ import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.*;
 import net.agusdropout.bloodyhell.screen.ModLabelTooltipData;
 import net.agusdropout.bloodyhell.util.ClientTickHandler;
+import net.agusdropout.bloodyhell.util.ModItemProperties;
 import net.agusdropout.bloodyhell.util.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.client.Minecraft;
@@ -41,6 +43,7 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent; // Moved here
 
 public class ClientEvents {
 
@@ -123,7 +126,7 @@ public class ClientEvents {
         }
 
         @Mod.EventBusSubscriber(modid = BloodyHell.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-        public class ClientPlayerRenderEvents {
+        public static class ClientPlayerRenderEvents {
 
             @SubscribeEvent
             public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
@@ -188,6 +191,21 @@ public class ClientEvents {
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
 
+        // --- MOVED from ModEvents: Player Animation Setup ---
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(
+                    new ResourceLocation(BloodyHell.MODID, "animation"),
+                    42,
+                    ClientModBusEvents::registerPlayerAnimation);
+            ModItemProperties.addCustomItemProperties();
+        }
+
+        private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
+            return new ModifierLayer<>();
+        }
+        // ----------------------------------------------------
+
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
             if (event.getSkin("default") instanceof PlayerRenderer renderer) {
@@ -232,6 +250,8 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.BLOOD_SIGIL_PARTICLE.get(), BloodSigilParticle.Provider::new);
             event.registerSpriteSet(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(), SmallBloodFlameParticle.Provider::new);
             event.registerSpriteSet(ModParticles.CHILL_BLACK_PARTICLE.get(), ChillBlackParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.BLOOD_DROP_PARTICLE.get(), BloodDropParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.BLOOD_STAIN_PARTICLE.get(), BloodStainParticle.Provider::new);
         }
 
         @SubscribeEvent
@@ -250,6 +270,7 @@ public class ClientEvents {
             event.registerLayerDefinition(TentacleEntityModel.LAYER_LOCATION, TentacleEntityModel::createBodyLayer);
             event.registerLayerDefinition(SmallCrimsonDaggerModel.LAYER_LOCATION, SmallCrimsonDaggerModel::createBodyLayer);
             event.registerLayerDefinition(BloodFireMeteorModel.LAYER_LOCATION, BloodFireMeteorModel::createBodyLayer);
+            event.registerLayerDefinition(RhnullImpalerModel.LAYER_LOCATION, RhnullImpalerModel::createBodyLayer);
         }
 
         @SubscribeEvent
