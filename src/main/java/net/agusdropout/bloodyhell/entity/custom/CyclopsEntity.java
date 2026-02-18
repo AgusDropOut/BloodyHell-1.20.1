@@ -1,9 +1,8 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.util.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag; // Import necesario
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;

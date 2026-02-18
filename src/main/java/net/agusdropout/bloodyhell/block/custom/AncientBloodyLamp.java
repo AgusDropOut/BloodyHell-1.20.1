@@ -1,9 +1,8 @@
 package net.agusdropout.bloodyhell.block.custom;
 
 import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
-import net.agusdropout.bloodyhell.util.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;

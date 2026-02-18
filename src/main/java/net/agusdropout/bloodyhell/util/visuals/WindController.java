@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.util;
+package net.agusdropout.bloodyhell.util.visuals;
 
 import java.util.Random;
 

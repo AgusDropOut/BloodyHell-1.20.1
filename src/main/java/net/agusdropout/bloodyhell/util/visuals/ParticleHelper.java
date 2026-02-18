@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.util;
+package net.agusdropout.bloodyhell.util.visuals;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;

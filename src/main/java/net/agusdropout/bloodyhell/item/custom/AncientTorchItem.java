@@ -5,7 +5,7 @@ import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.SyncBloodFireEffectPacket;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
-import net.agusdropout.bloodyhell.util.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,19 +47,13 @@ public class AncientTorchItem extends BlockItem  {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        // 1. Client Side Check (Particles are visual only)
+
         if (!level.isClientSide) {
             return;
         }
-
-        // 2. Player Check
         if (!(entity instanceof Player player)) {
             return;
         }
-
-        // 3. CRITICAL: "Camera" Check
-        // isControlledByLocalInstance() returns true ONLY for the client's main player.
-        // It returns false for other players (RemotePlayers) walking around.
         if (!player.isControlledByLocalInstance()) {
             return;
         }
@@ -74,7 +68,6 @@ public class AncientTorchItem extends BlockItem  {
     }
 
     private void spawnHeldParticles(Level level, Player player, ItemStack stack) {
-        // Reduced chance slightly to avoid overwhelming the screen since we spawn multiple particles now
         if (level.random.nextFloat() > 0.20f) return;
 
         boolean isRightHand = player.getMainHandItem() == stack;
@@ -84,7 +77,6 @@ public class AncientTorchItem extends BlockItem  {
             currentSideOffset = -OFFSET_SIDE;
         }
 
-        // --- 1. Vector Calculation (Same as before) ---
         Vec3 eyePos = player.getEyePosition(1.0f);
         Vec3 viewVec = player.getViewVector(1.0f);
         Vec3 rightVec = viewVec.cross(new Vec3(0, 1, 0)).normalize();
@@ -96,46 +88,40 @@ public class AncientTorchItem extends BlockItem  {
                 .add(rightVec.scale(currentSideOffset))
                 .add(downVec.scale(OFFSET_DOWN));
 
-        // --- 2. Gradient Magic Particles ---
-        // We calculate a small random offset for "volume"
+
         double offsetX = (level.random.nextDouble() - 0.5) * 0.1;
         double offsetY = (level.random.nextDouble() - 0.5) * 0.1;
         double offsetZ = (level.random.nextDouble() - 0.5) * 0.1;
 
-        // Calculate distance from "center" of the flame for gradient logic
-        // 0.0 = Center, 1.0 = Edge (approx)
-        double dist = Math.sqrt(offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ) / 0.1; // Normalize roughly 0-1
+
+        double dist = Math.sqrt(offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ) / 0.1;
         float ratio = (float) Mth.clamp(dist, 0.0, 1.0);
 
-        // Gradient Colors:
-        // Center (0.0) -> Pink/White (Hot)
-        // Mid   (0.5) -> Bright Red
-        // Edge  (1.0) -> Dark Blood Red (Cool)
+
         Vector3f color = ParticleHelper.gradient3(ratio,
                 new Vector3f(1.0f, 0.6f, 0.8f), // START: Pink
                 new Vector3f(0.9f, 0.1f, 0.1f), // MID: Red
                 new Vector3f(0.3f, 0.0f, 0.0f)  // END: Dark Red
         );
 
-        float size = 0.15f + level.random.nextFloat() * 0.1f; // Slightly smaller for hand view
+        float size = 0.15f + level.random.nextFloat() * 0.1f;
 
         // Spawn Magic Particle
         ParticleHelper.spawn(level, new MagicParticleOptions(
                 color,
                 size,
-                false, // Emissive looks better for fire
-                25    // Short life
+                false,
+                25
         ), basePos.x + offsetX, basePos.y + offsetY, basePos.z + offsetZ, 0.0, 0.015, 0.0);
 
 
-        // --- 3. Smoke Particles (Occasional) ---
-        // Adds detail and makes it feel like a real burning torch
-        if (level.random.nextFloat() < 0.3f) { // 30% chance when the main particle spawns
+
+        if (level.random.nextFloat() < 0.3f) {
             ParticleHelper.spawn(level, ParticleTypes.SMOKE,
                     basePos.x + (level.random.nextDouble() - 0.5) * 0.05,
-                    basePos.y + 0.1, // Spawn slightly above the flame
+                    basePos.y + 0.1,
                     basePos.z + (level.random.nextDouble() - 0.5) * 0.05,
-                    0.0, 0.03, 0.0); // Floats up faster
+                    0.0, 0.03, 0.0);
         }
     }
 

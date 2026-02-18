@@ -30,7 +30,6 @@ import net.agusdropout.bloodyhell.screen.custom.screen.SanguineLapidaryScreen;
 import net.agusdropout.bloodyhell.screen.custom.screen.VesperScreen;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.util.ModItemProperties;
-import net.agusdropout.bloodyhell.villager.ModPOIs;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.agusdropout.bloodyhell.worldgen.feature.ModFeatures;
 import net.agusdropout.bloodyhell.worldgen.structure.ModStructures;
@@ -96,7 +95,6 @@ public class BloodyHell
         MinecraftForge.EVENT_BUS.addListener(this::portalTick);
         ModCreativeModeTab.register(modEventBus);
         GeckoLib.initialize();
-        ModPOIs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModSounds.register(modEventBus);

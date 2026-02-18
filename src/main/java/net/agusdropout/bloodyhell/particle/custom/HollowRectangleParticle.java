@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis; // Import Axis for rotation
 import net.agusdropout.bloodyhell.particle.ParticleOptions.HollowRectangleOptions;
-import net.agusdropout.bloodyhell.util.RenderHelper;
+import net.agusdropout.bloodyhell.util.visuals.RenderHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -81,28 +81,20 @@ public class HollowRectangleParticle extends TextureSheetParticle {
         float yOffset = (this.height / 7.0f) + (this.width / 7.0f);
         float upAlpha = (float) (Math.sin(time * 0.08) * 0.2f + 0.3f);
 
-       // RenderHelper.renderHollowRectangle(
-       //         buffer,
-       //         pose,
-       //         w,
-       //         h,
-       //         yOffset,
-       //         rCol,
-       //         gCol,
-       //         bCol,
-       //         alpha,
-       //         upAlpha,
-       //         jitterIntensity
-       // );
-
-        RenderHelper.renderSideCylinder(
+        RenderHelper.renderHollowRectangle(
                 buffer,
                 pose,
-                w,              // radius
-                h,              // length
-                32,             // segments
-                rCol, gCol, bCol, alpha
+                w,
+                h,
+                yOffset,
+                rCol,
+                gCol,
+                bCol,
+                alpha,
+                upAlpha,
+                jitterIntensity
         );
+
 
 
 

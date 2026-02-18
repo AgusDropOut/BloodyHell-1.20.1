@@ -1,10 +1,9 @@
 package net.agusdropout.bloodyhell.entity.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.FailedRemnantEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.util.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.phys.Vec3;

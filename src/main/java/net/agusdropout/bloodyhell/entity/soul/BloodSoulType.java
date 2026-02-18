@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.soul;
 
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
-import net.agusdropout.bloodyhell.util.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;

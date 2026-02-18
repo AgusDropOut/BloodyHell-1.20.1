@@ -5,7 +5,7 @@ import net.agusdropout.bloodyhell.entity.ai.goals.CinderAcolyteFlameAttackGoal;
 import net.agusdropout.bloodyhell.entity.ai.goals.CinderAcolyteMeleeGoal;
 import net.agusdropout.bloodyhell.entity.interfaces.IBloodFlammable;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
-import net.agusdropout.bloodyhell.util.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

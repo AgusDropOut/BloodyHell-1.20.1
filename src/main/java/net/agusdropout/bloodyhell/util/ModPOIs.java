@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.villager;
+package net.agusdropout.bloodyhell.util;
 
 import com.google.common.collect.ImmutableSet;
 import net.agusdropout.bloodyhell.BloodyHell;

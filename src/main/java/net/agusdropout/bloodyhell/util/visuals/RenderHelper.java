@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.util;
+package net.agusdropout.bloodyhell.util.visuals;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.texture.OverlayTexture;

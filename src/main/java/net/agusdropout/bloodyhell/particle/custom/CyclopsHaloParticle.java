@@ -1,10 +1,8 @@
 package net.agusdropout.bloodyhell.particle.custom;
 
-import net.agusdropout.bloodyhell.util.WindController;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
 
 public class CyclopsHaloParticle extends TextureSheetParticle {
 

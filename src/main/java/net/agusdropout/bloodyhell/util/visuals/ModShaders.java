@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.util; // Or wherever you keep client code
+package net.agusdropout.bloodyhell.util.visuals; // Or wherever you keep client code
 
 import net.minecraft.client.renderer.ShaderInstance;
 

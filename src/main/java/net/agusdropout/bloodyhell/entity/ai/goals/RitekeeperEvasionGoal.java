@@ -2,13 +2,12 @@ package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.custom.RitekeeperEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.util.ParticleHelper; // Import your helper
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper; // Import your helper
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;

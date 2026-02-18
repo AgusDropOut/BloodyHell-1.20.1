@@ -29,6 +29,11 @@ public class RhnullIHeavySwordRenderer extends EntityRenderer<RhnullHeavySwordEn
 
     @Override
     public void render(RhnullHeavySwordEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+
+        if (entity.getDelayTicks() > 0) {
+            return;
+        }
+
         poseStack.pushPose();
 
         float yRot = Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot());
