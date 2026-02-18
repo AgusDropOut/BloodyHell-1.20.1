@@ -12,20 +12,18 @@ import java.util.function.Supplier;
 
 public class PacketFireRhnullImpaler {
 
-    // 1. Empty Constructor (Required for creating the packet instance before sending)
+
     public PacketFireRhnullImpaler() {
     }
 
-    // 2. Decoder Constructor (Required for reading from the buffer on the receiving side)
-    // Even if empty, it MUST exist so Forge knows how to reconstruct the object.
+
     public PacketFireRhnullImpaler(FriendlyByteBuf buf) {
-        // No data to read
+
     }
 
-    // 3. Encoder (Required for writing to the buffer)
-    // Even if empty, it MUST exist.
+
     public void toBytes(FriendlyByteBuf buf) {
-        // No data to write
+
     }
 
     // 4. Handler (The Logic)
@@ -34,7 +32,7 @@ public class PacketFireRhnullImpaler {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
             if (player != null) {
-                // Find unlaunched spears owned by the player
+
                 List<RhnullImpalerEntity> spears = player.level().getEntitiesOfClass(
                         RhnullImpalerEntity.class,
                         player.getBoundingBox().inflate(10), // Radius check
@@ -42,11 +40,11 @@ public class PacketFireRhnullImpaler {
                 );
 
                 if (!spears.isEmpty()) {
-                    // Fire the first one found (FIFO logic)
+
                     RhnullImpalerEntity spear = spears.get(0);
                     spear.launch(player.getLookAngle());
 
-                    // Sound Effect
+
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0f, 1.0f);
                 }

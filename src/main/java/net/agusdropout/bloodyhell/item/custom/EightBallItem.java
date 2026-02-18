@@ -1,7 +1,9 @@
 package net.agusdropout.bloodyhell.item.custom;
 
+import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.HollowRectangleOptions;
 import net.agusdropout.bloodyhell.util.ParticleHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,7 +18,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -25,34 +29,44 @@ public class EightBallItem extends Item {
         super(properties);
     }
 
+    private static final Vector3f COLOR_CORE = new Vector3f(1.0f, 0.6f, 0.0f);
+    private static final Vector3f COLOR_FADE = new Vector3f(0.5f, 0.0f, 0.0f);
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
-            // --- SPELL LOGIC: SUMMON SPEARS ---
-            int quantity = 5; // How many spears to summon
+            double distanceInFront = 5.0; // Distance in blocks
+            Vec3 lookVec = player.getLookAngle();
 
-            // Check if player already has spears (optional, prevents infinite stacking)
-            /*
-            List<RhnullImpalerEntity> existing = level.getEntitiesOfClass(RhnullImpalerEntity.class,
-                player.getBoundingBox().inflate(5),
-                e -> e.getOwner() == player && !e.isLaunched());
-            if (!existing.isEmpty()) return InteractionResultHolder.fail(player.getItemInHand(hand));
-            */
+            // We only care about horizontal direction for the ground slam placement usually
+            // but lookVec works fine. If you want it strictly flat, normalize (x, 0, z).
+            double targetX = player.getX() + lookVec.x * distanceInFront;
+            double targetY = player.getY(); // Keep it at player's feet level
+            double targetZ = player.getZ() + lookVec.z * distanceInFront;
 
-            for (int i = 0; i < quantity; i++) {
-                // Create the entity passing the index and total count for correct spacing
-                RhnullImpalerEntity spear = new RhnullImpalerEntity(level, player, i, quantity);
+            float width = 3.0f;   // The "Thickness" of the slam area
+            float length = 8.0f;  // The "Length" extending forward
+            float height = 4.0f;  // How high the walls go
 
-                // Optional: Customize stats here for testing
-                spear.increaseSpellDamage(2.0);
+            // 2. Spawn the Rectangle
+            // We pass '-player.getYRot()' so the rectangle rotates to match the player's facing direction.
+            ParticleHelper.spawn(level,
+                    new HollowRectangleOptions(
+                            COLOR_FADE,
+                            width,    // Width (X-axis relative to rotation)
+                            length,   // Height/Length (Z-axis relative to rotation)
+                            300,       // Life (ticks)
+                            -player.getYRot(), // ROTATION: Rotates the box to face where player is looking
+                            0.0f      // Jitter
+                    ),
+                    targetX, targetY, targetZ,
+                    0, 0, 0 // Velocity (0 for static area)
+            );
 
-                level.addFreshEntity(spear);
-            }
-
-            // Sound Effect
-            level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.EVOKER_PREPARE_SUMMON, SoundSource.PLAYERS, 1.0f, 1.0f);
-        }
+             // Sound Effect
+             level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                     SoundEvents.EVOKER_PREPARE_ATTACK, SoundSource.PLAYERS, 1.0f, 1.0f);
+        }//
 
         // Visual Feedback (Client Side)
         if (level.isClientSide) {

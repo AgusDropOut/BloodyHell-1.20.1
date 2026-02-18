@@ -19,22 +19,12 @@ public class ClientSpellInputHandler {
 
         if (event.getButton() == 0 && event.getAction() == 1) {
             Minecraft mc = Minecraft.getInstance();
-
-
             if (mc.player == null) return;
-
-
             if (mc.screen != null) return;
-
-
             if (mc.hitResult != null && mc.hitResult.getType() != HitResult.Type.MISS) {
                 return;
             }
-
-
             ModMessages.sendToServer(new PacketFireRhnullImpaler());
-
-
         }
     }
 }

@@ -233,7 +233,12 @@ public class ModEntityTypes {
             ENTITY_TYPES.register("rhnull_impaler_projectile",
                     () -> EntityType.Builder.<RhnullImpalerEntity>of(RhnullImpalerEntity::new, MobCategory.AMBIENT)
                             .sized(0.5f, 0.5f)
-                            .build(new ResourceLocation(BloodyHell.MODID, "rhnull_impaler_projectile").toString()));
+                            .build(new ResourceLocation(BloodyHell.MODID, "rhnull_heavy_sword_projectile").toString()));
+    public static final RegistryObject<EntityType<RhnullHeavySwordEntity>> RHNULL_HEAVY_SWORD_PROJECTILE =
+            ENTITY_TYPES.register("rhnull_heavy_sword_projectile",
+                    () -> EntityType.Builder.<RhnullHeavySwordEntity>of(RhnullHeavySwordEntity::new, MobCategory.AMBIENT)
+                            .sized(0.5f, 0.5f)
+                            .build(new ResourceLocation(BloodyHell.MODID, "rhnull_heavy_sword_projectile").toString()));
 
 
 

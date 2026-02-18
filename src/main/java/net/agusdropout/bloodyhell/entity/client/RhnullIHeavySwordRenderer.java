@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -14,39 +15,32 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
-public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
+public class RhnullIHeavySwordRenderer extends EntityRenderer<RhnullHeavySwordEntity> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/rhnull_impaler_entity.png");
-    private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/rhnull_impaler_entity_glowmask.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/rhnull_heavy_sword_entity.png");
+    private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/rhnull_heavy_sword_entity_glowmask.png");
 
-    private final RhnullImpalerModel model;
+    private final RhnullHeavySwordModel<RhnullHeavySwordEntity> model;
 
-    public RhnullImpalerRenderer(EntityRendererProvider.Context context) {
+    public RhnullIHeavySwordRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new RhnullImpalerModel(context.bakeLayer(RhnullImpalerModel.LAYER_LOCATION));
+        this.model = new RhnullHeavySwordModel<RhnullHeavySwordEntity>(context.bakeLayer(RhnullHeavySwordModel.LAYER_LOCATION));
     }
 
     @Override
-    public void render(RhnullImpalerEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(RhnullHeavySwordEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-
 
         float yRot = Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot());
         float xRot = Mth.rotLerp(partialTicks, entity.xRotO, entity.getXRot());
 
-        //float yRot = entity.getYRot();
-        //float xRot = entity.getXRot();
-
         poseStack.mulPose(Axis.YP.rotationDegrees(-yRot));
         poseStack.mulPose(Axis.XP.rotationDegrees(-xRot));
 
-
-        float scale = entity.getEntityData().get(RhnullImpalerEntity.SPELL_SCALE);
+        float scale = entity.getEntityData().get(RhnullHeavySwordEntity.SPELL_SCALE);
         poseStack.scale(scale * 0.5f, scale * 0.5f, scale * 0.5f);
-
-
-        poseStack.translate(0.0, -1.5, 0.0);
         this.model.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
+
 
 
         RenderType renderType = this.getRenderType(entity, false, false, false);
@@ -69,12 +63,12 @@ public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(RhnullImpalerEntity entity) {
+    public ResourceLocation getTextureLocation(RhnullHeavySwordEntity entity) {
         return TEXTURE;
     }
 
     @Nullable
-    protected RenderType getRenderType(RhnullImpalerEntity entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+    protected RenderType getRenderType(RhnullHeavySwordEntity entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         return RenderType.entityTranslucentCull(this.getTextureLocation(entity));
     }
 }

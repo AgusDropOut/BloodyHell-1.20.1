@@ -321,6 +321,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.RHNULL_IMPALER_PROJECTILE.get(), RhnullImpalerRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLOOD_SOUL.get(), BloodSoulRenderer::new);
             EntityRenderers.register(ModEntityTypes.INFESTATION_DECAL.get(), InfestationDecalRenderer::new);
+            EntityRenderers.register(ModEntityTypes.RHNULL_HEAVY_SWORD_PROJECTILE.get(), RhnullIHeavySwordRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
 
 

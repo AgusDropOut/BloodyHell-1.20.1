@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.util;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -148,6 +149,8 @@ public class RenderHelper {
         }
     }
 
+
+
     /**
      * Renders a cylinder where the radius follows a power curve (Trumpet/Flare shape).
      *
@@ -263,6 +266,134 @@ public class RenderHelper {
                 vertex(consumer, pose, null, x2b, y2, z2b, new float[]{r, g, b, a2}, light, 1, 1, n2bx, 0, n2bz);
                 vertex(consumer, pose, null, x2a, y2, z2a, new float[]{r, g, b, a2}, light, 0, 1, n2ax, 0, n2az);
             }
+        }
+    }
+
+
+    /**
+     * Renders a hollow rectangle box (walls only, no top/bottom caps).
+     * Useful for magical barriers or highlighting areas.
+     *
+     * @param width   Half-width of the rectangle (extends +/- width from center).
+     * @param height  The vertical extent of the walls (extends +/- height from center).
+     * @param yOffset vertical shift applied to the top/bottom edges (e.g. for animations).
+     * @param upAlpha Alpha transparency for the top edge of the walls.
+     */
+    public static void renderHollowRectangle(VertexConsumer consumer, Matrix4f pose,
+                                             float width, float height, float yOffset,
+                                             float r, float g, float b, float alpha, float upAlpha,float jitterIntensity) {
+
+        float upRedColor = r;
+        float upGreenColor = g;
+        float upBlueColor = b;
+
+
+        RandomSource random = RandomSource.create();
+
+        if (jitterIntensity > 0) {
+            // Apply random offset based on intensity (e.g., -0.1 to +0.1)
+            upRedColor = Mth.clamp(r + (random.nextFloat() - 0.5f) * jitterIntensity, 0.0f, 1.0f);
+            upGreenColor = Mth.clamp(g + (random.nextFloat() - 0.5f) * jitterIntensity, 0.0f, 1.0f);
+            upBlueColor = Mth.clamp(b + (random.nextFloat() - 0.5f) * jitterIntensity, 0.0f, 1.0f);
+        }
+
+
+        // Face 1: EAST (+X)
+        simpleVertex(consumer, pose, width, -yOffset, -height, r, g, b, alpha);
+        simpleVertex(consumer, pose, width, -yOffset,  height, r, g, b, alpha);
+        simpleVertex(consumer, pose, width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+        simpleVertex(consumer, pose, width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+
+        // Face 2: WEST (-X)
+        simpleVertex(consumer, pose, -width, -yOffset,  height, r, g, b, alpha);
+        simpleVertex(consumer, pose, -width, -yOffset, -height, r, g, b, alpha);
+        simpleVertex(consumer, pose, -width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+        simpleVertex(consumer, pose, -width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+
+        // Face 3: NORTH (-Z)
+        simpleVertex(consumer, pose, -width, -yOffset, -height, r, g, b, alpha);
+        simpleVertex(consumer, pose,  width, -yOffset, -height, r, g, b, alpha);
+        simpleVertex(consumer, pose,  width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+        simpleVertex(consumer, pose, -width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+
+        // Face 4: SOUTH (+Z)
+        simpleVertex(consumer, pose,  width, -yOffset,  height, r, g, b, alpha);
+        simpleVertex(consumer, pose, -width, -yOffset,  height, r, g, b, alpha);
+        simpleVertex(consumer, pose, -width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+        simpleVertex(consumer, pose,  width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
+    }
+
+
+    public static void renderPureMathToroid(VertexConsumer consumer, Matrix4f pose,
+                                            float R, float r, float rCol, float gCol, float bCol, float alpha) {
+        float step = (float) Math.PI / 8;
+
+        for (float phi = 0; phi < Mth.TWO_PI; phi += step) {
+            for (float theta = 0; theta < Mth.TWO_PI; theta += step) {
+
+                drawFormulaVertex(consumer, pose, R, r, phi, theta, rCol, gCol, bCol, alpha);
+                drawFormulaVertex(consumer, pose, R, r, phi + step, theta, rCol, gCol, bCol, alpha);
+                drawFormulaVertex(consumer, pose, R, r, phi + step/2, theta + step, rCol, gCol, bCol, alpha);
+                drawFormulaVertex(consumer, pose, R, r, phi, theta + step, rCol, gCol, bCol, alpha);
+            }
+        }
+    }
+
+    private static void drawFormulaVertex(VertexConsumer consumer, Matrix4f pose, float R, float r,
+                                          float phi, float theta, float rCol, float gCol, float bCol, float alpha) {
+        // x = (R + r * sin(theta)) * cos(phi)
+        // z = (R + r * sin(theta)) * sin(phi)
+        // y = r * cos(theta)
+        float x = (R + r * Mth.sin(theta)) * Mth.cos(phi);
+        float z = (R + r * Mth.sin(theta)) * Mth.sin(phi);
+        float y = r * Mth.cos(theta);
+
+        consumer.vertex(pose, x, y, z).color(rCol, gCol, bCol, alpha).endVertex();
+    }
+
+
+    /**
+     * Renders a horizontal cylinder (lying on its side).
+     * * @param radius The radius of the circular face.
+     * @param length The total length of the cylinder.
+     * @param segments How many quads to use for the roundness (Resolution).
+     */
+    public static void renderSideCylinder(VertexConsumer consumer, Matrix4f pose,
+                                          float radius, float length, int segments,
+                                          float rCol, float gCol, float bCol, float alpha) {
+
+        float angleStep = (float) (Math.PI * 2) / segments;
+
+        float x = 0;
+        float z = 0;
+        float nextx = 0;
+        float nextz = 0;
+        float y=10;
+
+        for (int i = 0; i < segments; i++) {
+            float theta = i * angleStep;
+            float nextTheta = (i + 1) * angleStep;
+
+            // --- YOUR TURN ---
+            // 1. Calculate the 4 corners of a "strip" of the cylinder.
+            // 2. Front corners will have z = 0.
+            // 3. Back corners will have z = length.
+            // 4. Use Mth.cos(theta) and Mth.sin(theta) for X and Y.
+            x = (radius * Mth.cos(theta));
+            z = (radius * Mth.sin(theta));
+            nextx = (radius * Mth.cos(nextTheta));
+            nextz = (radius * Mth.sin(nextTheta));
+
+            consumer.vertex(pose, x, y, z).color(rCol, gCol, 1.0f, alpha).endVertex();
+            consumer.vertex(pose, nextx, y, nextz).color(1.0f, gCol, bCol, alpha).endVertex();
+            consumer.vertex(pose, nextx, y+10, nextz).color(rCol, 0.5f, bCol, alpha).endVertex();
+            consumer.vertex(pose, x, y+10, z).color(rCol, gCol, 1.0f, alpha).endVertex();
+
+            //invertido
+            consumer.vertex(pose, x, y+10, z).color(rCol, gCol, 1.0f, alpha).endVertex();
+            consumer.vertex(pose, nextx, y+10, nextz).color(rCol, 0.5f, bCol, alpha).endVertex();
+            consumer.vertex(pose, nextx, y, nextz).color(1.0f, gCol, bCol, alpha).endVertex();
+            consumer.vertex(pose, x, y, z).color(rCol, gCol, 1.0f, alpha).endVertex();
         }
     }
 
@@ -636,6 +767,11 @@ public class RenderHelper {
         vertexForPixel(consumer, pose, normal, x + size, y + size, z, 1.0f, 0.0f, color, light);
         vertexForPixel(consumer, pose, normal, x, y + size, z, 0.0f, 0.0f, color, light);
     }
+
+
+
+
+
 
     /**
      * Renders a pulsating, spinning "Atlas" Heart (Complex geometric artifact).

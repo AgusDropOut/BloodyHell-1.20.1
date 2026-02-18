@@ -48,7 +48,7 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
-            // Register spawn placements here if needed
+
         }
 
         @SubscribeEvent

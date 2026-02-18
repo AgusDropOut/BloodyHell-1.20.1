@@ -2,10 +2,7 @@ package net.agusdropout.bloodyhell.particle;
 
 import com.mojang.serialization.Codec;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.ImpactParticleOptions;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.SimpleBlockParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.*;
 
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -46,6 +43,7 @@ public class ModParticles {
             PARTICLE_TYPES.register("viceral_particle", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> CYLINDER_PARTICLE =
             PARTICLE_TYPES.register("cylinder_particle", () -> new SimpleParticleType(false));
+
     public static final RegistryObject<SimpleParticleType> STAR_EXPLOSION_PARTICLE =
             PARTICLE_TYPES.register("star_explosion_particle", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> BLACK_HOLE_PARTICLE =
@@ -103,6 +101,14 @@ public class ModParticles {
                         @Override
                         public Codec<ImpactParticleOptions> codec() {
                             return ImpactParticleOptions.CODEC;
+                        }
+                    });
+    public static final RegistryObject<ParticleType<HollowRectangleOptions>> HOLLOW_RECTANGLE_PARTICLE =
+            PARTICLE_TYPES.register("hollow_rectangle_particle",
+                    () -> new ParticleType<HollowRectangleOptions>(false, HollowRectangleOptions.DESERIALIZER) {
+                        @Override
+                        public Codec<HollowRectangleOptions> codec() {
+                            return HollowRectangleOptions.CODEC;
                         }
                     });
 

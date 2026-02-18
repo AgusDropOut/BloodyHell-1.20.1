@@ -12,8 +12,6 @@ import java.util.function.Function;
 
 public class ParticleHelper {
 
-    private static final RandomSource random = RandomSource.create();
-
     /**
      * Spawns a single particle (Handles Client/Server difference automatically).
      */
@@ -58,6 +56,7 @@ public class ParticleHelper {
      * @param spread    How wide the cone is (0.0 = laser, 0.5 = shotgun spray).
      */
     public static void spawnDirectionalSpray(Level level, ParticleOptions particle, Vec3 origin, Vec3 direction, int count, double speed, double spread) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double vx = direction.x + (random.nextDouble() - 0.5) * spread;
             double vy = direction.y + (random.nextDouble() - 0.5) * spread;
@@ -74,6 +73,7 @@ public class ParticleHelper {
      * Spawns particles shooting upwards and falling down in an arc.
      */
     public static void spawnFountain(Level level, ParticleOptions particle, Vec3 center, int count, double height, double radius) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double vx = (random.nextDouble() - 0.5) * radius;
             double vz = (random.nextDouble() - 0.5) * radius;
@@ -87,6 +87,7 @@ public class ParticleHelper {
      * Spawns particles dripping down from a horizontal area.
      */
     public static void spawnDrippingArea(Level level, ParticleOptions particle, Vec3 center, double width, double length, int count) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double x = center.x + (random.nextDouble() - 0.5) * width;
             double z = center.z + (random.nextDouble() - 0.5) * length;
@@ -127,6 +128,7 @@ public class ParticleHelper {
      * A tight, high-pressure stream that pulses slightly.
      */
     public static void spawnArterialSpurt(Level level, ParticleOptions particle, Vec3 origin, Vec3 direction, int count, double speed) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             // Slight variation so it looks like a fluid stream, not a laser
             double spread = 0.1;
@@ -146,6 +148,7 @@ public class ParticleHelper {
      * An explosion that only goes UP (half-sphere).
      */
     public static void spawnHemisphereExplosion(Level level, ParticleOptions particle, Vec3 center, int count, double radius, double speed) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             // Random direction in a sphere
             double theta = random.nextDouble() * 2 * Math.PI;
@@ -198,6 +201,7 @@ public class ParticleHelper {
      */
     public static void spawnSphereGradient(Level level, Vec3 center, double radius, int count, Vec3 baseMotion, Function<Float, ParticleOptions> factory) {
         if (!level.isClientSide) return;
+        RandomSource random = level.getRandom();
 
         for (int i = 0; i < count; i++) {
             double rRatio = random.nextDouble();
@@ -220,6 +224,7 @@ public class ParticleHelper {
      */
     public static void spawnCylinderGradient(Level level, Vec3 base, double radius, double height, int count, double upSpeed, Function<Float, ParticleOptions> factory) {
         if (!level.isClientSide) return;
+        RandomSource random = level.getRandom();
 
         for (int i = 0; i < count; i++) {
             double rRatio = random.nextDouble();
@@ -240,6 +245,7 @@ public class ParticleHelper {
      * Spawns particles randomly distributed inside a sphere.
      */
     public static void spawnSphereVolume(Level level, ParticleOptions particle, Vec3 center, double radius, int count, Vec3 motion) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double r = radius * Math.cbrt(random.nextDouble());
             double theta = random.nextDouble() * 2 * Math.PI;
@@ -257,6 +263,7 @@ public class ParticleHelper {
      * Spawns particles on the surface of a sphere.
      */
     public static void spawnHollowSphere(Level level, ParticleOptions particle, Vec3 center, double radius, int count, double speed) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double theta = random.nextDouble() * 2 * Math.PI;
             double phi = Math.acos(2 * random.nextDouble() - 1);
@@ -294,6 +301,7 @@ public class ParticleHelper {
      * Spawns particles randomly inside a vertical cylinder.
      */
     public static void spawnCylinder(Level level, ParticleOptions particle, Vec3 base, double radius, double height, int count, double upwardSpeed) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double r = radius * Math.sqrt(random.nextDouble());
             double angle = random.nextDouble() * 2 * Math.PI;
@@ -310,6 +318,7 @@ public class ParticleHelper {
      * Spawns particles along a line between two points.
      */
     public static void spawnLine(Level level, ParticleOptions particle, Vec3 start, Vec3 end, int count, Vec3 randomSpread) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double progress = (double) i / count;
             double x = Mth.lerp(progress, start.x, end.x);
@@ -328,6 +337,7 @@ public class ParticleHelper {
      * Spawns particles exploding outwards from a center point.
      */
     public static void spawnExplosion(Level level, ParticleOptions particle, Vec3 center, int count, double speed, double spread) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double vx = (random.nextDouble() - 0.5) * spread;
             double vy = (random.nextDouble() - 0.5) * spread;
@@ -359,6 +369,7 @@ public class ParticleHelper {
      * Spawns particles randomly distributed inside a flat circle.
      */
     public static void spawnDisc(Level level, ParticleOptions particle, Vec3 center, double radius, int count) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             double r = radius * Math.sqrt(random.nextDouble());
             double angle = random.nextDouble() * 2 * Math.PI;
@@ -374,6 +385,7 @@ public class ParticleHelper {
      * Spawns a burst of particles radiating outward.
      */
     public static void spawnBurst(Level level, ParticleOptions particle, Vec3 center, int quantity, double intensity) {
+        RandomSource random = level.getRandom();
         for (int i = 0; i < quantity; i++) {
             double vx = (random.nextDouble() - 0.5) * 2.0;
             double vy = (random.nextDouble() - 0.5) * 2.0;
