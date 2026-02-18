@@ -46,8 +46,6 @@ public class ModParticles {
 
     public static final RegistryObject<SimpleParticleType> STAR_EXPLOSION_PARTICLE =
             PARTICLE_TYPES.register("star_explosion_particle", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> BLACK_HOLE_PARTICLE =
-            PARTICLE_TYPES.register("black_hole_particle", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> MAGIC_WAVE_PARTICLE =
             PARTICLE_TYPES.register("magic_wave_particle", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> CYCLOPS_HALO_PARTICLE =
@@ -111,7 +109,13 @@ public class ModParticles {
                             return HollowRectangleOptions.CODEC;
                         }
                     });
-
+    public static final RegistryObject<ParticleType<BlackHoleParticleOptions>> BLACK_HOLE_PARTICLE =
+            PARTICLE_TYPES.register("black_hole_particle", () -> new ParticleType<>(false, BlackHoleParticleOptions.DESERIALIZER) {
+                @Override
+                public Codec<BlackHoleParticleOptions> codec() {
+                    return BlackHoleParticleOptions.CODEC;
+                }
+            });
 
 
     public static void register(IEventBus eventBus) {

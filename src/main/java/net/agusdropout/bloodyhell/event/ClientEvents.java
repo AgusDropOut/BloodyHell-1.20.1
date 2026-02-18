@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.event;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
@@ -24,6 +25,7 @@ import net.agusdropout.bloodyhell.particle.custom.*;
 import net.agusdropout.bloodyhell.screen.ModLabelTooltipData;
 import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.agusdropout.bloodyhell.util.ModItemProperties;
+import net.agusdropout.bloodyhell.util.ModShaders;
 import net.agusdropout.bloodyhell.util.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.client.Minecraft;
@@ -31,6 +33,7 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -44,6 +47,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent; // Moved here
+
+import java.io.IOException;
 
 public class ClientEvents {
 
@@ -199,6 +204,13 @@ public class ClientEvents {
                     42,
                     ClientModBusEvents::registerPlayerAnimation);
             ModItemProperties.addCustomItemProperties();
+        }
+
+        @SubscribeEvent
+        public static void registerShaders(RegisterShadersEvent event) throws IOException {
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "distortion"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
+                ModShaders.DISTORTION_SHADER = shaderInstance;
+            });
         }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {

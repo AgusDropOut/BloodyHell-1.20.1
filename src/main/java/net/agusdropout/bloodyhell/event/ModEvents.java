@@ -53,7 +53,7 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void EntityAttributeEvent(EntityAttributeCreationEvent event) {
-            // Existing Mobs
+
             event.put(BLOODTHIRSTYBEAST.get(), BloodThirstyBeastEntity.setAttributes());
             event.put(BLASPHEMOUS_ARM_ENTITY.get(), BlasphemousArmEntity.setAttributes());
             event.put(BLOOD_SEEKER.get(), BloodSeekerEntity.setAttributes());

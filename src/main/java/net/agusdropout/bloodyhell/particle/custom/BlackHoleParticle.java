@@ -4,8 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;
 import net.agusdropout.bloodyhell.util.RenderHelper;
+import net.agusdropout.bloodyhell.util.ShaderUtils;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -27,29 +30,36 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class BlackHoleParticle extends Particle {
 
-    // ==========================================
-    // COLORS
-    // ==========================================
-    private static final Vector3f COLOR_RIM = rgb(255, 110, 10);
-    private static final Vector3f COLOR_DISK = rgb(182, 139, 30);
-    private static final Vector3f COLOR_SPARKLES = rgb(255, 220, 150);
-    private static final Vector3f COLOR_LENS = rgb(255, 250, 240);
+    private static int captureTextureId = -1;
+    private static final Vector3f COLOR_RIM = new Vector3f(1.0f, 0.43f, 0.04f);
+    private static final Vector3f COLOR_LENS = new Vector3f(1.0f, 0.98f, 0.94f);
+    private static final Vector3f COLOR_SPARKLES_BASE = new Vector3f(1.0f, 0.86f, 0.59f);
 
-    private final float baseCoreSize = 2f;
-    private final float baseRingSize = 4f;
-    private final float baseLensSize = 2.5f;
-    private final int lifetime = 250;
+    private final float r, g, b;
+    private final float baseCoreSize;
+    private final float baseRingSize;
+    private final float vortexSize;
+    private final float baseLensSize;
     private final long starSeed;
 
-    protected BlackHoleParticle(ClientLevel level, double x, double y, double z) {
+    protected BlackHoleParticle(ClientLevel level, double x, double y, double z, float size, float r, float g, float b) {
         super(level, x, y, z);
         this.gravity = 0;
         this.hasPhysics = false;
+        this.lifetime = 250;
         this.starSeed = random.nextLong();
-    }
 
-    private static Vector3f rgb(int r, int g, int b) {
-        return new Vector3f(r / 255.0f, g / 255.0f, b / 255.0f);
+        this.baseCoreSize = size;
+        this.baseRingSize = size * 2.75f;
+        this.vortexSize = size * 2.0f;
+        this.baseLensSize = size * 1.25f;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+
+        if (captureTextureId == -1) {
+            captureTextureId = GL11.glGenTextures();
+        }
     }
 
     @Override
@@ -81,147 +91,104 @@ public class BlackHoleParticle extends Particle {
 
         float time = age + partialTicks;
         float lifeRatio = time / (float) lifetime;
-        float scale = 1.0f;
-
-        if (lifeRatio < 0.1f) scale = (float) Math.sin((lifeRatio / 0.1f) * Math.PI / 2);
-        else if (lifeRatio > 0.9f) scale = 1.0f - (lifeRatio - 0.9f) / 0.1f;
+        float scale = lifeRatio < 0.1f ? (float) Math.sin((lifeRatio / 0.1f) * Math.PI / 2) :
+                (lifeRatio > 0.9f ? 1.0f - (lifeRatio - 0.9f) / 0.1f : 1.0f);
 
         if (scale <= 0.01f) return;
 
-        float currentCoreSize = baseCoreSize * scale;
-        float currentRingSize = baseRingSize * scale;
-        float currentLensSize = baseLensSize * scale;
-        float rotation = time * 0.1f;
-
-        // Setup Render
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
-        RenderSystem.disableCull();
-        RenderSystem.enableDepthTest();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-        // We create a PoseStack to handle local transformations relative to the camera
         PoseStack poseStack = new PoseStack();
         poseStack.translate(px, py, pz);
 
-        // ==========================================
-        // 1. LENTE GRAVITACIONAL (Procedural Distortion)
-        // ==========================================
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.disableCull();
+        RenderSystem.enableDepthTest();
         RenderSystem.depthMask(false);
 
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        ShaderUtils.renderGravitationalLens(poseStack, captureTextureId, vortexSize * scale, new Vector3f(1, 1, 1), 1.0f, time);
 
-        // Use the new renderProceduralSphere to handle the noise logic
-        RenderHelper.renderProceduralSphere(buffer, poseStack.last().pose(), null,
-                24, 32,
-                (theta, phi) -> {
-                    // Replicated Noise Logic
-                    double p = phi + (-rotation * 0.5f);
-                    float noise = (float) Math.sin(p * 5 + (-rotation * 0.5f)) * 0.15f;
-                    return currentLensSize + noise;
-                },
-                COLOR_LENS.x(), COLOR_LENS.y(), COLOR_LENS.z(), 0.15f, 15728880);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.enableBlend();
 
-        tess.end();
-
-        // ==========================================
-        // 2. DISK & CORE
-        // ==========================================
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // Additive for energy
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
-        // --- DISCO DE ACRECIÓN ---
-        poseStack.pushPose();
-        // The disk is tilted 0.5 rads (~28 deg) on X axis
-        poseStack.mulPose(Axis.XP.rotation(0.5f));
-
-        float ringInner = currentCoreSize * 1.1f;
-        float diskAlpha = 0.8f * Math.min(1.0f, scale * 2.0f);
-        float[] cDiskIn = {COLOR_DISK.x(), COLOR_DISK.y(), COLOR_DISK.z(), diskAlpha};
-        float[] cDiskOut = {COLOR_DISK.x(), COLOR_DISK.y(), COLOR_DISK.z(), 0.0f};
-
-        RenderHelper.renderDisk(buffer, poseStack.last().pose(), null,
-                ringInner, currentRingSize, 48, rotation,
-                cDiskIn, cDiskOut, 15728880);
-        poseStack.popPose();
-
-        // --- BORDE BRILLANTE ---
-        RenderHelper.renderSphere(buffer, poseStack.last().pose(), null,
-                currentCoreSize * 1.15f, 16, 24,
-                COLOR_RIM.x(), COLOR_RIM.y(), COLOR_RIM.z(), 0.65f * scale, 15728880);
-
-        tess.end();
-
-        // ==========================================
-        // 3. CORE & STARS
-        // ==========================================
-
-        // --- NÚCLEO NEGRO ---
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
-        float coreFlicker = (float) (Math.sin(time * 45.0f) * 0.015f + Math.sin(time * 27.0f) * 0.005f);
-        float flickerCoreSize = currentCoreSize * (1.0f + coreFlicker);
-
-        RenderHelper.renderSphere(buffer, poseStack.last().pose(), null,
-                flickerCoreSize, 16, 24,
-                0f, 0f, 0f, 1f, 15728880);
+        RenderHelper.renderProceduralSphere(buffer, poseStack.last().pose(), null, 24, 32,
+                (theta, phi) -> (baseLensSize * scale) + (float) Math.sin(phi + (-time * 0.1f * 0.5f) * 5) * 0.15f,
+                COLOR_LENS.x(), COLOR_LENS.y(), COLOR_LENS.z(), 0.15f, 15728880);
         tess.end();
 
-        // --- ESTRELLAS (Orbiting Sparkles) ---
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        renderSparkles(buffer, poseStack, flickerCoreSize * 0.98f, scale, rotation, camera.rotation());
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.XP.rotation(0.5f));
+        poseStack.mulPose(Axis.YP.rotation(time * 0.1f));
 
+        float diskAlpha = 0.8f * Math.min(1.0f, scale * 2.0f);
+        float[] cDiskIn = {r, g, b, diskAlpha};
+        float[] cDiskOut = {r, g, b, 0.0f};
+
+        RenderHelper.renderDisk(buffer, poseStack.last().pose(), null,
+                baseCoreSize * scale * 1.1f, baseRingSize * scale, 48, 0,
+                cDiskIn, cDiskOut, 15728880);
+        poseStack.popPose();
+
+        RenderHelper.renderSphere(buffer, poseStack.last().pose(), null,
+                baseCoreSize * scale * 1.15f, 16, 24,
+                r, g, b, 0.65f * scale, 15728880);
+        tess.end();
+
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        float coreSize = (baseCoreSize * scale) * (1.0f + (float)(Math.sin(time * 45.0f) * 0.015f));
+        RenderHelper.renderSphere(buffer, poseStack.last().pose(), null, coreSize, 16, 24, 0f, 0f, 0f, 1.0f, 15728880);
+        tess.end();
+
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        renderSparkles(buffer, poseStack, coreSize * 1.2f, scale, time * 0.1f, camera.rotation());
         tess.end();
 
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
-        RenderSystem.enableCull();
+        RenderSystem.defaultBlendFunc();
     }
 
-    private void renderSparkles(BufferBuilder buffer, PoseStack stack, float radius, float scale, float globalRotation, Quaternionf camRot) {
-        RandomSource seededRandom = RandomSource.create(this.starSeed);
-        int starCount = 200;
-        float starSizeBase = 0.04f * scale;
+    private void renderSparkles(BufferBuilder buffer, PoseStack stack, float radius, float scale, float rot, Quaternionf camRot) {
+        RandomSource rand = RandomSource.create(this.starSeed);
 
-        for (int i = 0; i < starCount; i++) {
-            double theta = seededRandom.nextDouble() * Math.PI * 2;
-            double phi = Math.acos(2.0 * seededRandom.nextDouble() - 1.0);
+        for (int i = 0; i < 80; i++) {
+            float radialFactor = (float) Math.pow(rand.nextFloat(), 0.7);
+            double cRad = radius * radialFactor ;
+            double wobble = Math.sin(rot * 2.0 + i) * 0.2;
+            double theta = rand.nextDouble() * Math.PI * 2 + wobble;
+            double phi = Math.acos(2.0 * rand.nextDouble() - 1.0);
+            float speedMult = 1.0f / (radialFactor + 0.1f);
+            double aTheta = theta + (rot * speedMult * (0.5 + rand.nextDouble()));
 
-            double animTheta = theta + globalRotation * (0.5 + seededRandom.nextDouble() * 0.5);
-            double currentRadius = radius * (0.3 + seededRandom.nextDouble() * 0.7);
+            float dx = (float) (cRad * Math.sin(phi) * Math.cos(aTheta));
+            float dy = (float) (cRad * Math.sin(phi) * Math.sin(aTheta));
+            float dz = (float) (cRad * Math.cos(phi));
 
-            // Math to determine local position of the sparkle
-            float dx = (float) (currentRadius * Math.sin(phi) * Math.cos(animTheta));
-            float dy = (float) (currentRadius * Math.sin(phi) * Math.sin(animTheta));
-            float dz = (float) (currentRadius * Math.cos(phi));
+            float flicker = (float) Math.sin(rot * 15.0 + i * 1.5);
+            float alpha = (0.4f + 0.6f * Math.max(0, flicker)) * scale;
+            float finalSize = (0.03f + (rand.nextFloat() * 0.04f)) * scale;
 
-            float blink = 0.5f + 0.5f * (float) Math.sin(globalRotation * 5.0 + i);
-            float alpha = 0.8f * blink;
-
-            // RenderHelper does the quad creation logic
             RenderHelper.renderBillboardQuad(buffer, stack.last().pose(),
-                    dx, dy, dz, starSizeBase,
-                    COLOR_SPARKLES.x(), COLOR_SPARKLES.y(), COLOR_SPARKLES.z(), alpha,
-                    camRot, 15728880);
+                    dx, dy, dz, finalSize,
+                    r, g, b, // Personalize star color with the disk color
+                    alpha, camRot, 15728880);
         }
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.CUSTOM;
-    }
+    public ParticleRenderType getRenderType() { return ParticleRenderType.CUSTOM; }
 
     @OnlyIn(Dist.CLIENT)
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
-        @Nullable
-        @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-            return new BlackHoleParticle(world, x, y, z);
+    public static class Provider implements ParticleProvider<BlackHoleParticleOptions> {
+        @Nullable @Override
+        public Particle createParticle(BlackHoleParticleOptions data, ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
+            return new BlackHoleParticle(world, x, y, z, data.getSize(), data.getR(), data.getG(), data.getB());
         }
     }
 }
