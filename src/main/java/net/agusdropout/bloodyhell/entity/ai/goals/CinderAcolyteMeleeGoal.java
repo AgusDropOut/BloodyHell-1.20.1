@@ -52,7 +52,6 @@ public class CinderAcolyteMeleeGoal extends Goal {
             this.mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         }
 
-        System.out.println("Cinder Acolyte Melee Attack Tick: " + this.attackTicks);
 
         this.attackTicks++;
 

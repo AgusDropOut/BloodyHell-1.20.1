@@ -25,7 +25,6 @@ public class CinderAcolyteFlameAttackGoal extends Goal {
         if (target == null || !target.isAlive()) return false;
         double dist = this.mob.distanceToSqr(target);
 
-        // Range: 4 to 8 blocks (approx)
         return dist > minimunDistance && dist < 64.0D
                 && this.mob.isFlameReady()
                 && !this.mob.isMeleeAttacking();
@@ -53,10 +52,7 @@ public class CinderAcolyteFlameAttackGoal extends Goal {
     public void tick() {
         this.attackTicks++;
 
-        // --- LOCK DIRECTION LOGIC ---
-        // Only track the player during the "Windup" phase.
-        // Once DAMAGE_START_POINT is reached, we STOP calling setLookAt.
-        // This "locks" the mob's rotation, making the fire stream avoidable by strafing.
+
         if (this.attackTicks < DAMAGE_START_POINT) {
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
@@ -64,9 +60,8 @@ public class CinderAcolyteFlameAttackGoal extends Goal {
             }
         }
 
-        // --- DAMAGE & FX LOOP ---
+
         if (this.attackTicks >= DAMAGE_START_POINT) {
-            // Stream Logic: Fire every 4 ticks
             if (this.attackTicks % 4 == 0) {
                 this.mob.performFlameAreaDamage();
             }

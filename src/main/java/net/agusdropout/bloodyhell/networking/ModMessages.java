@@ -70,6 +70,12 @@ public class ModMessages {
                 .encoder(PacketFireRhnullImpaler::toBytes)
                 .consumerMainThread(PacketFireRhnullImpaler::handle)
                 .add();
+
+        net.messageBuilder(S2CPainThronePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CPainThronePacket::new)
+                .encoder(S2CPainThronePacket::toBytes)
+                .consumerMainThread(S2CPainThronePacket::handle)
+                .add();
     }
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);

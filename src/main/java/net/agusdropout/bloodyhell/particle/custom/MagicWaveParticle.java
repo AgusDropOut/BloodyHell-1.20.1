@@ -47,7 +47,6 @@ public class MagicWaveParticle extends Particle {
         double py = Mth.lerp(partialTicks, yo, y) - camPos.y;
         double pz = Mth.lerp(partialTicks, zo, z) - camPos.z;
 
-        // --- CONFIGURACIÓN SHADER ---
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         RenderSystem.disableCull();
