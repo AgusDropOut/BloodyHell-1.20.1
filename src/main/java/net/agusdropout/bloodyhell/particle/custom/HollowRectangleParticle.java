@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 public class HollowRectangleParticle extends TextureSheetParticle {
 
-    private final float width; // Changed to float for smoother rotation precision
+    private final float width;
     private final float height;
     private final float yaw;
     private final float jitterIntensity;
@@ -26,7 +26,7 @@ public class HollowRectangleParticle extends TextureSheetParticle {
     protected HollowRectangleParticle(ClientLevel level, double x, double y, double z, HollowRectangleOptions options) {
         super(level, x, y, z);
 
-        // --- Color Jittering Logic ---
+
          jitterIntensity = options.getJitter();
 
 

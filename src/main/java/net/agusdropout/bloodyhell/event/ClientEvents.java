@@ -265,6 +265,7 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.CHILL_BLACK_PARTICLE.get(), ChillBlackParticle.Provider::new);
             event.registerSpriteSet(ModParticles.BLOOD_DROP_PARTICLE.get(), BloodDropParticle.Provider::new);
             event.registerSpriteSet(ModParticles.BLOOD_STAIN_PARTICLE.get(), BloodStainParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.TETHER_PARTICLE.get(), TetherParticle.Provider::new);
         }
 
         @SubscribeEvent

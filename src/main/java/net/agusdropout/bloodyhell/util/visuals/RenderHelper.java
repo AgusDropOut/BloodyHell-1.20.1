@@ -1,6 +1,8 @@
 package net.agusdropout.bloodyhell.util.visuals;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -121,6 +123,50 @@ public class RenderHelper {
                 addTri(consumer, pose, normal, v1, v2, v3, r, g, b, a, light);
             }
         }
+    }
+
+
+    /**
+     * Renders an intersecting quad beam (Tether/Laser) between two exact points.
+     */
+    public static void renderBeam(PoseStack poseStack, VertexConsumer consumer,
+                                  net.minecraft.world.phys.Vec3 start, net.minecraft.world.phys.Vec3 end,
+                                  float thickness, float r, float g, float b, float a, int light) {
+
+        net.minecraft.world.phys.Vec3 diff = end.subtract(start);
+        float distance = (float) diff.length();
+
+
+
+
+        poseStack.translate(start.x, start.y, start.z);
+
+
+        float yRot = (float) (Mth.atan2(diff.z, diff.x) * (180F / Math.PI)) - 90.0F;
+        float xRot = (float) -(Mth.atan2(diff.y, Mth.sqrt((float)(diff.x * diff.x + diff.z * diff.z))) * (180F / Math.PI));
+
+
+        poseStack.mulPose(Axis.YP.rotationDegrees(yRot));
+        poseStack.mulPose(Axis.XP.rotationDegrees(xRot));
+
+        Matrix4f pose = poseStack.last().pose();
+        Matrix3f normal = poseStack.last().normal();
+        float halfW = thickness / 2.0f;
+        float[] color = new float[]{r, g, b, a};
+
+
+        vertex(consumer, pose, normal, -halfW, 0, 0, color, light, 0, 0, 0, 1, 0);
+        vertex(consumer, pose, normal, halfW, 0, 0, color, light, 1, 0, 0, 1, 0);
+        vertex(consumer, pose, normal, halfW, 0, distance, color, light, 1, 1, 0, 1, 0);
+        vertex(consumer, pose, normal, -halfW, 0, distance, color, light, 0, 1, 0, 1, 0);
+
+
+        vertex(consumer, pose, normal, 0, -halfW, 0, color, light, 0, 0, 1, 0, 0);
+        vertex(consumer, pose, normal, 0, halfW, 0, color, light, 1, 0, 1, 0, 0);
+        vertex(consumer, pose, normal, 0, halfW, distance, color, light, 1, 1, 1, 0, 0);
+        vertex(consumer, pose, normal, 0, -halfW, distance, color, light, 0, 1, 1, 0, 0);
+
+
     }
 
     /**

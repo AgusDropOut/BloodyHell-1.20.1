@@ -6,11 +6,14 @@ import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.HollowRectangleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.TetherParticleOptions;
+import net.agusdropout.bloodyhell.util.bones.BoneManipulation;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -70,6 +73,19 @@ public class EightBallItem extends Item {
 
 
         startThroneEffect(target);
+        if (!owner.level().isClientSide) {
+
+            double xSource = target.getX()+ (0.5 - owner.getRandom().nextDouble());
+            double ySource = target.getY() - 2.0;
+            double zSource = target.getZ()+ (0.5 - owner.getRandom().nextDouble());
+            ParticleHelper.spawn(owner.level(),
+                    new TetherParticleOptions(target.getUUID(), 0.6f, 0.0f, 0.0f, 1.0f, 40),
+                    xSource, ySource, zSource,
+                    0,
+                    0, 0
+            );
+        }
+
         return true;
 
     }
@@ -87,7 +103,7 @@ public class EightBallItem extends Item {
 
     public void startThroneEffect(LivingEntity victim) {
         if (!victim.level().isClientSide) {
-            ModMessages.sendToPlayersTrackingEntity(new S2CPainThronePacket(victim.getUUID(), 10), victim);
+            ModMessages.sendToPlayersTrackingEntity(new S2CPainThronePacket(victim.getUUID(), 1000, BoneManipulation.BREAK), victim);
         }
     }
 

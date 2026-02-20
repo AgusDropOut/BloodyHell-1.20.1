@@ -117,6 +117,14 @@ public class ModParticles {
                 }
             });
 
+    public static final RegistryObject<ParticleType<TetherParticleOptions>> TETHER_PARTICLE =
+            PARTICLE_TYPES.register("tether_particle", () -> new ParticleType<TetherParticleOptions>(false, TetherParticleOptions.DESERIALIZER) {
+                @Override
+                public Codec<TetherParticleOptions> codec() {
+                    return TetherParticleOptions.CODEC;
+                }
+            });
+
 
     public static void register(IEventBus eventBus) {
         PARTICLE_TYPES.register(eventBus);
