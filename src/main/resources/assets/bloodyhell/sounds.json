@@ -197,6 +197,12 @@
       "bloodyhell:dagger_attack_3"
     ]
   },
+  "creepy_bell": {
+    "subtitle": "sounds.bloodyhell.creepy_bell",
+    "sounds": [
+      "bloodyhell:creepy_bell"
+    ]
+  },
     "offspring_ambient": {
       "subtitle": "sounds.bloodyhell.offspring_ambient",
       "sounds": [

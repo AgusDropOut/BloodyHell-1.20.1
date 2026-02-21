@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IGemSpell {
     default void configureSpell(List<Gem> gems) {
+        if (gems == null) return;
         for (Gem gem : gems) {
             String statKey = gem.getStat(); // e.g. "damage"
             double value = gem.getValue();

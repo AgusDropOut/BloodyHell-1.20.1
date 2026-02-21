@@ -1,7 +1,9 @@
 package net.agusdropout.bloodyhell.item.custom;
 
+import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
+import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullPainThroneEntity;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -50,14 +52,19 @@ public class EightBallItem extends Item {
             }
 
 
-            RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 200);
+            //RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 200);
 
             // Offset the spawn position higher up if you want it to "fall" more dramatically
             // Vec3 spawnPos = player.position().add(0, 10, 0).add(player.getLookAngle().scale(5));
             // sword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 
             // Add the entity to the world
-            level.addFreshEntity(sword);
+           // level.addFreshEntity(sword);
+
+            RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
+            level.addFreshEntity(throne);
+
+
         }//
 
         // Visual Feedback (Client Side)

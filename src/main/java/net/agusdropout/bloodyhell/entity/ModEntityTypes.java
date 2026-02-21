@@ -239,6 +239,12 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<RhnullHeavySwordEntity>of(RhnullHeavySwordEntity::new, MobCategory.AMBIENT)
                             .sized(0.5f, 0.5f)
                             .build(new ResourceLocation(BloodyHell.MODID, "rhnull_heavy_sword_projectile").toString()));
+    public static final RegistryObject<EntityType<RhnullPainThroneEntity>> RHNULL_PAIN_THRONE =
+            ENTITY_TYPES.register("rhnull_pain_throne",
+                    () -> EntityType.Builder.<RhnullPainThroneEntity>of(RhnullPainThroneEntity::new, MobCategory.MISC)
+                            .sized(2f, 5.0f)
+                            .clientTrackingRange(10)
+                            .build("rhnull_pain_throne"));
 
 
 

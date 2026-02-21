@@ -42,7 +42,7 @@ public class RhnullHeavySwordEntity extends Projectile implements IGemSpell {
     public AnimationState fallAnimationState = new AnimationState();
 
     private static final float DEFAULT_DAMAGE = 200.0f;
-    private static final float DEFAULT_SIZE = 80.0f;
+    private static final float DEFAULT_SIZE = 10.0f;
     private static final int DEFAULT_DURATION = 80;
     private static final int SIZE_FACTOR_ON_VISUAL_EFFECTS = 10;
     private static final float DEFAULT_GRAVITY_FACTOR = 0.0005f;

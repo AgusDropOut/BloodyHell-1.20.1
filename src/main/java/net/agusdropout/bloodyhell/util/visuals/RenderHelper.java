@@ -142,7 +142,7 @@ public class RenderHelper {
         poseStack.translate(start.x, start.y, start.z);
 
 
-        float yRot = (float) (Mth.atan2(diff.z, diff.x) * (180F / Math.PI)) - 90.0F;
+        float yRot = ((float) (Mth.atan2(diff.z, diff.x) * (180F / Math.PI)) - 90.0F) *-1;
         float xRot = (float) -(Mth.atan2(diff.y, Mth.sqrt((float)(diff.x * diff.x + diff.z * diff.z))) * (180F / Math.PI));
 
 

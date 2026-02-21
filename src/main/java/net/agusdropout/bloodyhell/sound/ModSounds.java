@@ -47,6 +47,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> DAGGER_ATTACK_1 = registerSoundEvents("dagger_attack_1");
     public static final RegistryObject<SoundEvent> DAGGER_ATTACK_2 = registerSoundEvents("dagger_attack_2");
     public static final RegistryObject<SoundEvent> DAGGER_ATTACK_3 = registerSoundEvents("dagger_attack_3");
+    public static final RegistryObject<SoundEvent> CREEPY_BELL = registerSoundEvents("creepy_bell");
 
 
 

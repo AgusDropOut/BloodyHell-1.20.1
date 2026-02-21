@@ -286,6 +286,7 @@ public class ClientEvents {
             event.registerLayerDefinition(BloodFireMeteorModel.LAYER_LOCATION, BloodFireMeteorModel::createBodyLayer);
             event.registerLayerDefinition(RhnullImpalerModel.LAYER_LOCATION, RhnullImpalerModel::createBodyLayer);
             event.registerLayerDefinition(RhnullHeavySwordModel.LAYER_LOCATION, RhnullHeavySwordModel::createBodyLayer);
+            event.registerLayerDefinition(RhnullPainThroneModel.LAYER_LOCATION, RhnullPainThroneModel::createBodyLayer);
         }
 
         @SubscribeEvent

@@ -44,6 +44,24 @@ public class CrimsonVeilHelper {
         return success.get();
     }
 
+
+    /**
+     * Restores Crimson Veil and Syncs to Client.
+     * Should only be called on Server.
+     */
+    public static void restore(Player player, int amount) {
+        if (player.level().isClientSide) return;
+
+        player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(cap -> {
+            cap.addCrimsomveil(amount);
+
+            // Handle Syncing
+            if (player instanceof ServerPlayer serverPlayer) {
+                ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(cap.getCrimsonVeil()), serverPlayer);
+            }
+        });
+    }
+
     public static int getAmount(Player player) {
         var cap = player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).resolve();
         return cap.map(crimsonVeil -> crimsonVeil.getCrimsonVeil()).orElse(0);

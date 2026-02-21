@@ -42,19 +42,20 @@ public class TetherParticle extends Particle {
                 }
             }
         }
-        // Simple fade-out over time
+
         this.alpha = this.alphaFinal * (1.0f - ((float) this.age / this.lifetime));
     }
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
         Vec3 cam = camera.getPosition();
-        // Start is the fixed origin point in the world (The Throne)
+
         Vec3 start = new Vec3(this.x - cam.x, this.y - cam.y, this.z - cam.z);
         Vec3 end;
 
+
+
         if (cachedTarget != null) {
-            // Smoothly interpolate the entity position
             double tx = Mth.lerp(partialTicks, cachedTarget.xo, cachedTarget.getX());
             double ty = Mth.lerp(partialTicks, cachedTarget.yo, cachedTarget.getY()) + (cachedTarget.getBbHeight() / 1.5);
             double tz = Mth.lerp(partialTicks, cachedTarget.zo, cachedTarget.getZ());
@@ -62,6 +63,7 @@ public class TetherParticle extends Particle {
         } else {
             end = start.add(0, 1, 0);
         }
+
 
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
