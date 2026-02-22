@@ -3,7 +3,9 @@ package net.agusdropout.bloodyhell.util.visuals;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 import org.joml.Quaternionf;
@@ -105,33 +107,33 @@ public class ShaderUtils {
         int screenW = mc.getWindow().getWidth();
         int screenH = mc.getWindow().getHeight();
 
-        // 1. Pass Time Uniform
+
         if (ModShaders.DISTORTION_SHADER.getUniform("GameTime") != null) {
             ModShaders.DISTORTION_SHADER.getUniform("GameTime").set(time);
         }
 
-        // 2. Capture Screen
+
         RenderSystem.bindTexture(captureTextureId);
         GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, screenW, screenH, 0);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
-        // 3. Setup Shader
+
         RenderSystem.setShader(() -> ModShaders.DISTORTION_SHADER);
         if (ModShaders.DISTORTION_SHADER.getUniform("ScreenSize") != null) {
             ModShaders.DISTORTION_SHADER.getUniform("ScreenSize").set((float)screenW, (float)screenH);
         }
         RenderSystem.setShaderTexture(0, captureTextureId);
 
-        // 4. Drawing Logic
+
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         Quaternionf camRot = mc.gameRenderer.getMainCamera().rotation();
 
-        // --- POSITIONS ---
-        // These match your old method: -1 to 1 scaled by 'size'
+
+
         Vector3f[] corners = {
                 new Vector3f(-size, -size, 0),
                 new Vector3f(-size, size, 0),
@@ -139,8 +141,7 @@ public class ShaderUtils {
                 new Vector3f(size, -size, 0)
         };
 
-        // --- UVS ---
-        // These are absolute: always 0 to 1 so the shader knows where the center is
+
         float[][] uvs = {
                 {0.0f, 0.0f},
                 {0.0f, 1.0f},
@@ -150,9 +151,9 @@ public class ShaderUtils {
 
         for (int i = 0; i < 4; i++) {
             Vector3f posVec = new Vector3f(corners[i]);
-            posVec.rotate(camRot); // Face the camera
+            posVec.rotate(camRot);
 
-            // Multiply by the PoseStack matrix to move it to the particle's world position
+
             Vector4f finalPos = new Vector4f(posVec.x(), posVec.y(), posVec.z(), 1.0f);
             finalPos.mul(poseStack.last().pose());
 
@@ -164,4 +165,61 @@ public class ShaderUtils {
 
         tess.end();
     }
+
+    public static void renderDistortionPlane(PoseStack poseStack, int captureTextureId, float size, Vector3f color, float alpha, float time, Quaternionf customRotation, ShaderInstance shader) {
+        Minecraft mc = Minecraft.getInstance();
+        int screenW = mc.getWindow().getWidth();
+        int screenH = mc.getWindow().getHeight();
+
+        if (shader.getUniform("GameTime") != null) {
+            shader.getUniform("GameTime").set(time);
+        }
+
+        RenderSystem.bindTexture(captureTextureId);
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, screenW, screenH, 0);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+
+        RenderSystem.setShader(() -> shader);
+        if (shader.getUniform("ScreenSize") != null) {
+            shader.getUniform("ScreenSize").set((float)screenW, (float)screenH);
+        }
+        RenderSystem.setShaderTexture(0, captureTextureId);
+
+        Tesselator tess = Tesselator.getInstance();
+        BufferBuilder buffer = tess.getBuilder();
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
+        Quaternionf rotationToUse = (customRotation == null) ? mc.gameRenderer.getMainCamera().rotation() : customRotation;
+
+        Vector3f[] corners = {
+                new Vector3f(-size, -size, 0),
+                new Vector3f(-size, size, 0),
+                new Vector3f(size, size, 0),
+                new Vector3f(size, -size, 0)
+        };
+
+        float[][] uvs = { {0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f} };
+
+        for (int i = 0; i < 4; i++) {
+            Vector3f posVec = new Vector3f(corners[i]);
+            posVec.rotate(rotationToUse);
+
+            Vector4f finalPos = new Vector4f(posVec.x(), posVec.y(), posVec.z(), 1.0f);
+            finalPos.mul(poseStack.last().pose());
+
+            buffer.vertex(finalPos.x(), finalPos.y(), finalPos.z())
+                    .uv(uvs[i][0], uvs[i][1])
+                    .color(color.x(), color.y(), color.z(), alpha)
+                    .endVertex();
+        }
+        tess.end();
+    }
+
+
+
+
+
 }
+
+

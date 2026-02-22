@@ -208,8 +208,14 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void registerShaders(RegisterShadersEvent event) throws IOException {
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "distortion"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "distortion"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
                 ModShaders.DISTORTION_SHADER = shaderInstance;
+            });
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "radial_distortion"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
+                ModShaders.RADIAL_DISTORTION_SHADER = shaderInstance;
+            });
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "entity_glitter"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+                ModShaders.ENTITY_GLITTER_SHADER = shaderInstance;
             });
         }
 
@@ -252,6 +258,7 @@ public class ClientEvents {
             event.registerSpecial(ModParticles.BLOOD_RUNE_PARTICLE.get(), new BloodRuneParticle.Provider());
             event.registerSpecial(ModParticles.SIMPLE_BLOCK_PARTICLE.get(), new SimpleBlockParticle.Provider());
             event.registerSpecial(ModParticles.HOLLOW_RECTANGLE_PARTICLE.get(), new HollowRectangleParticle.Provider());
+            event.registerSpecial(ModParticles.RADIAL_DISTORION_PARTICLE.get(), new RadialDistortionParticle.Provider());
             event.registerSpriteSet(ModParticles.CYCLOPS_HALO_PARTICLE.get(), CyclopsHaloParticle.Provider::new);
             event.registerSpriteSet(ModParticles.EYE_PARTICLE.get(), EyeParticle.Provider::new);
             event.registerSpriteSet(ModParticles.SHOCKWAVE_RING.get(), ShockwaveParticle.Provider::new);

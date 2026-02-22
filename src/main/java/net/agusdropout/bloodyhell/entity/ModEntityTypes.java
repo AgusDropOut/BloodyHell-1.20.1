@@ -245,6 +245,18 @@ public class ModEntityTypes {
                             .sized(2f, 5.0f)
                             .clientTrackingRange(10)
                             .build("rhnull_pain_throne"));
+    public static final RegistryObject<EntityType<RhnullDropletEntity>> RHNULL_DROPLET_PROJECTILE =
+            ENTITY_TYPES.register("rhnull_droplet_projectile",
+                    () -> EntityType.Builder.<RhnullDropletEntity>of(RhnullDropletEntity::new, MobCategory.MISC)
+                            .sized(2f, 5.0f)
+                            .clientTrackingRange(10)
+                            .build("rhnull_droplet_projectile"));
+    public static final RegistryObject<EntityType<RhnullOrbEmitter>> RHNULL_ORB_EMITTER_ENTITY =
+            ENTITY_TYPES.register("rhnull_orb_emitter_entity",
+                    () -> EntityType.Builder.<RhnullOrbEmitter>of(RhnullOrbEmitter::new, MobCategory.MISC)
+                            .sized(2f, 5.0f)
+                            .clientTrackingRange(10)
+                            .build("rhnull_orb_emitter_entity"));
 
 
 

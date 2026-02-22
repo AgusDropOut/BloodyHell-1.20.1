@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
+import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullOrbEmitter;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullPainThroneEntity;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
@@ -44,27 +45,28 @@ public class EightBallItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
 
-            int quantity = 5;
-
-            for (int i = 0; i < quantity; i++) {
-                RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
-                level.addFreshEntity(impaler);
-            }
-
-
-            //RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 200);
-
-            // Offset the spawn position higher up if you want it to "fall" more dramatically
-            // Vec3 spawnPos = player.position().add(0, 10, 0).add(player.getLookAngle().scale(5));
-            // sword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-
-            // Add the entity to the world
-           // level.addFreshEntity(sword);
+          int quantity = 5;
+//
+           for (int i = 0; i < quantity; i++) {
+               RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
+               level.addFreshEntity(impaler);
+           }
+//
+//
+           RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 10);
+//
+          // // Offset the spawn position higher up if you want it to "fall" more dramatically
+            Vec3 spawnPos = player.position().add(0, 3, 0).add(player.getLookAngle().scale(5));
+            sword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+//
+          //// // Add the entity to the world
+           level.addFreshEntity(sword);
 
             RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
             level.addFreshEntity(throne);
 
-
+            //RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
+            //level.addFreshEntity(orb);
         }//
 
         // Visual Feedback (Client Side)
@@ -110,7 +112,7 @@ public class EightBallItem extends Item {
 
     public void startThroneEffect(LivingEntity victim) {
         if (!victim.level().isClientSide) {
-            ModMessages.sendToPlayersTrackingEntity(new S2CPainThronePacket(victim.getUUID(), 1000, BoneManipulation.BREAK), victim);
+            ModMessages.sendToPlayersTrackingEntity(new S2CPainThronePacket(victim.getUUID(), 1000, BoneManipulation.JITTER), victim);
         }
     }
 

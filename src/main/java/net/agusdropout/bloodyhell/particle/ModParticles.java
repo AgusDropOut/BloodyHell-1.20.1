@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.*;
 
+import net.agusdropout.bloodyhell.particle.custom.RadialDistortionParticle;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -124,6 +125,15 @@ public class ModParticles {
                     return TetherParticleOptions.CODEC;
                 }
             });
+
+    public static final RegistryObject<ParticleType<RadialDistortionParticleOptions>> RADIAL_DISTORION_PARTICLE =
+            PARTICLE_TYPES.register("radial_distortion_particle", () -> new ParticleType<RadialDistortionParticleOptions>(false, RadialDistortionParticleOptions.DESERIALIZER) {
+                @Override
+                public Codec<RadialDistortionParticleOptions> codec() {
+                    return RadialDistortionParticleOptions.CODEC;
+                }
+            });
+
 
 
     public static void register(IEventBus eventBus) {

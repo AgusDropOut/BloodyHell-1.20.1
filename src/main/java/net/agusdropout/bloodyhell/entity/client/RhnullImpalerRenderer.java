@@ -1,10 +1,13 @@
 package net.agusdropout.bloodyhell.entity.client;
 
+import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
+import net.agusdropout.bloodyhell.util.visuals.ModRenderTypes;
+import net.agusdropout.bloodyhell.util.visuals.ModShaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -48,9 +51,21 @@ public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
         poseStack.translate(0.0, -1.5, 0.0);
         this.model.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
 
+        if (ModShaders.ENTITY_GLITTER_SHADER != null) {
+            Uniform timeUniform = ModShaders.ENTITY_GLITTER_SHADER.getUniform("GlitterTime");
+            if (timeUniform == null) {
 
-        RenderType renderType = this.getRenderType(entity, false, false, false);
-        VertexConsumer vertexconsumer = buffer.getBuffer(renderType);
+                System.out.println("CRITICAL: GameTime uniform NOT FOUND in shader!");
+            } else {
+                float renderTime = entity.tickCount + partialTicks;
+                timeUniform.set(renderTime);
+                ModShaders.ENTITY_GLITTER_SHADER.apply();
+            }
+        }
+
+        RenderType glitterType = ModRenderTypes.getGlitterRenderType(TEXTURE);
+
+        VertexConsumer vertexconsumer = buffer.getBuffer(glitterType);
 
         if(entity.getLifeTicks() > 0.8 * entity.getLifeTimeTicks()) {
             this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, (float) (Math.sin(entity.getLifeTicks()*1.5f) * 0.5+ 0.5f));
