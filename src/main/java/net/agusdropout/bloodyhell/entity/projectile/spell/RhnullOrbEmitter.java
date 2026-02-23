@@ -2,6 +2,11 @@ package net.agusdropout.bloodyhell.entity.projectile.spell;
 
 import net.agusdropout.bloodyhell.entity.interfaces.IGemSpell;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.EtherealSwirlOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.SpellPalette;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,6 +19,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -22,7 +28,8 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     private int maxDuration = 100; // Lasts 5 seconds by default
     private float damage = 4.0f;   // Passed down to the droplets
     private float spread = 0.25f;  // How wide the cone is
-    private float fireRate = 3;    // Fires a droplet every 3 ticks
+    private float fireRate = 3;
+    private int lifeTicks;
 
     public RhnullOrbEmitter(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
@@ -42,6 +49,7 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     public void tick() {
         super.tick();
 
+
         // 1. Check Lifetime
         if (this.tickCount > maxDuration) {
             if (!this.level().isClientSide) this.discard();
@@ -54,13 +62,21 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
                 fireDropletInCone();
             }
         } else {
-            // 3. Client-side Orb Visuals (Floating magical core)
-            // You can replace this with a subtle version of your black hole lens later!
-            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.WITCH,
-                    this.getX() + (random.nextDouble() - 0.5) * 0.5,
-                    this.getY() + (random.nextDouble() - 0.5) * 0.5,
-                    this.getZ() + (random.nextDouble() - 0.5) * 0.5,
-                    0, 0, 0);
+
+            if(this.random.nextFloat() < 0.3f) {
+                Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), SpellPalette.RHNULL.getColor(0), SpellPalette.RHNULL.getColor(1), SpellPalette.RHNULL.getColor(2));
+                ParticleHelper.spawnRisingBurst(this.level(), new GlitterParticleOptions(gradientColor, 0.5f, false, 40, true), this.position(), 1,0.5, 0.01f, 0.05);
+                ParticleHelper.spawnRisingBurst(this.level(), new MagicParticleOptions(gradientColor, 0.5f, false, 40, true), this.position(), 1,0.5, 0.01f, -0.05);
+            }
+
+            if(this.lifeTicks  == 1) {
+
+                    ParticleHelper.spawn(this.level(), new EtherealSwirlOptions(SpellPalette.RHNULL.getColor(1), this.maxDuration, 1.0f), this.position(), 0, 1, 0);
+
+            }
+
+
+            lifeTicks++;
         }
     }
 
@@ -91,6 +107,8 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
         // Play a rapid, light firing sound
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 2.0f, 1.5f + (rand.nextFloat() * 0.5f));
     }
+
+    public int getLifeTicks() { return this.lifeTicks; }
 
     // --- IGemSpell ---
     @Override

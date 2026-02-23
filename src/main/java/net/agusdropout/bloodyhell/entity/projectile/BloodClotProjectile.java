@@ -42,25 +42,25 @@ public class BloodClotProjectile extends Projectile {
     public void tick() {
         super.tick();
 
-        // 1. LEECHING LOGIC (If riding an entity)
+
         if (this.isLeeching) {
             Entity vehicle = this.getVehicle();
             if (vehicle == null || !vehicle.isAlive() || leechTimer++ > 60) { // 3 Seconds max
-                pop(); // Explode if host dies or time is up
+                pop();
                 return;
             }
 
-            // Damage the host every second
+
             if (leechTimer % 20 == 0 && vehicle instanceof LivingEntity living) {
                 living.hurt(this.level().damageSources().mobProjectile(this, (LivingEntity)getOwner()), 2.0f);
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_STEP, this.getSoundSource(), 1.0f, 1.5f);
             }
-            return; // Skip normal movement physics
+            return;
         }
 
-        // 2. NORMAL FLIGHT
+
         if (this.level().isClientSide) {
-            // Thicker trail
+
             if (this.tickCount % 2 == 0) {
                 this.level().addParticle(ModParticles.BLOOD_PARTICLES.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
             }
@@ -83,15 +83,14 @@ public class BloodClotProjectile extends Projectile {
 
         Entity target = result.getEntity();
 
-        // Don't hit owner or other clots
+
         if (target == this.getOwner() || target instanceof BloodClotProjectile) return;
 
-        // START LEECHING
-        // Stick to the entity instead of exploding instantly
+
         this.startRiding(target, true);
         this.isLeeching = true;
 
-        // Initial impact sound
+
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_HIT, this.getSoundSource(), 1.0f, 1.0f);
     }
 
@@ -106,7 +105,6 @@ public class BloodClotProjectile extends Projectile {
         }
     }
 
-    // Called when the leech timer ends or we hit a block
     private void pop() {
         if (this.level().isClientSide) {
             for(int i=0; i<8; i++) {
@@ -115,7 +113,7 @@ public class BloodClotProjectile extends Projectile {
         } else {
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_BREAK, this.getSoundSource(), 1.0f, 0.5f);
 
-            // Apply final burst effects to the host (if any)
+
             if (this.getVehicle() instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
                 living.addEffect(new MobEffectInstance(MobEffects.WITHER, 100, 0));

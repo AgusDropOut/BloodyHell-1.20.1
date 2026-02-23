@@ -127,7 +127,7 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
         double xOffset = Math.cos(angle) * circleRadius;
         double yOffset = Math.sin(angle) * circleRadius;
 
-        Vec3 origin = owner.getEyePosition().subtract(lookVec.scale(distanceBehind));
+        Vec3 origin = owner.getEyePosition().subtract(lookVec.scale(distanceBehind)).add(0,0.5,0);
         Vec3 targetPos = origin.add(rightVec.scale(xOffset)).add(relativeUp.scale(yOffset));
 
         Vec3 current = this.position();
@@ -196,7 +196,7 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
         if (this.tickCount % 5 == 0) {
             for(int i = 0; i < 8; i++) {
                 Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), new Vector3f(1f, 0.97f, 0.0f), new Vector3f(1.0f, 0.8f, 0.0f), new Vector3f(1f, 0.5f, 0.0f));
-                ParticleHelper.spawnExplosion(this.level(), new SmallGlitterParticleOptions(gradientColor, 1.0f, false, 40, false), this.position().add(0,0,0), 5, 0.2, 2);
+                ParticleHelper.spawnExplosion(this.level(), new SmallGlitterParticleOptions(gradientColor, 0.7f, false, 40, false), this.position().add(0,0,0), 5, 0.2, 2);
             }
         }
     }

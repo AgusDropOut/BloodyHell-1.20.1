@@ -2,6 +2,8 @@ package net.agusdropout.bloodyhell.entity.projectile.spell;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.RadialDistortionParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,6 +16,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.joml.Vector3f;
 
 public class RhnullDropletEntity extends Projectile {
 
@@ -57,6 +60,8 @@ public class RhnullDropletEntity extends Projectile {
            //             0.0, 0.0, 0.0
            //     );
            // }
+
+            handleClientEffects();
         }
 
         this.setDeltaMovement(movement.scale(0.99f));
@@ -73,6 +78,23 @@ public class RhnullDropletEntity extends Projectile {
             target.hurt(this.damageSources().magic(), this.damage);
             target.invulnerableTime = 0;
             this.discard();
+        }
+    }
+    private void handleClientEffects(){
+        if(this.lifeTicks == 2){
+            ParticleHelper.spawn(this.level(), new RadialDistortionParticleOptions(this.getXRot(), this.getYRot(), 10), this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+        }
+
+
+        if(this.random.nextFloat() < 0.9f){
+
+            double vxPercent = this.getDeltaMovement().x / 15;
+            double vyPercent = this.getDeltaMovement().y / 15;
+            double vzPercent = this.getDeltaMovement().z / 15;
+
+            Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), new Vector3f(1f, 0.97f, 0.0f), new Vector3f(1.0f, 0.8f, 0.0f), new Vector3f(1f, 0.5f, 0.0f));
+
+            ParticleHelper.spawn(this.level(),new SmallGlitterParticleOptions(gradientColor, 0.7f, false, 10), this.getX(), this.getY(), this.getZ(), vxPercent , vyPercent, vzPercent);
         }
     }
 

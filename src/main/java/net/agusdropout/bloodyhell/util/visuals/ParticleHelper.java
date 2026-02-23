@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.util.function.Function;
@@ -22,6 +23,16 @@ public class ParticleHelper {
         } else {
             // Client
             level.addParticle(particle, x, y, z, vx, vy, vz);
+        }
+    }
+
+    public static void spawn(Level level, ParticleOptions particle, Vec3 pos, double vx, double vy, double vz) {
+        if (level instanceof ServerLevel serverLevel) {
+            // Server: count 0 allows defining exact velocity
+            serverLevel.sendParticles(particle, pos.x, pos.y, pos.z, 0, vx, vy, vz, 1.0);
+        } else {
+            // Client
+            level.addParticle(particle, pos.x, pos.y, pos.z, vx, vy, vz);
         }
     }
 
@@ -400,6 +411,33 @@ public class ParticleHelper {
 
             double randomSpeed = 0.5 + (random.nextDouble() * 0.5);
             spawn(level, particle, center.x, center.y, center.z, vx * randomSpeed, vy * randomSpeed, vz * randomSpeed);
+        }
+    }
+
+    /**
+     * Spawns a burst of particles that primarily rise upwards with an initial spawn area.
+     * * @param center      The spawn origin.
+     * @param count       Total particles.
+     * @param posSpread   The maximum random offset for the starting X, Y, and Z positions.
+     * @param horizontal  The maximum random spread for X and Z velocity.
+     * @param vertical    The base strength of the upward velocity.
+     */
+    public static void spawnRisingBurst(Level level, ParticleOptions particle, Vec3 center, int count, double posSpread, double horizontal, double vertical) {
+        RandomSource random = level.getRandom();
+        for (int i = 0; i < count; i++) {
+
+            double px = center.x + (random.nextDouble() - 0.5) * posSpread;
+            double py = center.y + (random.nextDouble() - 0.5) * posSpread;
+            double pz = center.z + (random.nextDouble() - 0.5) * posSpread;
+
+
+            double vx = (random.nextDouble() - 0.5) * horizontal;
+            double vz = (random.nextDouble() - 0.5) * horizontal;
+
+
+            double vy = vertical * (0.8 + random.nextDouble() * 0.4);
+
+            spawn(level, particle, px, py, pz, vx, vy, vz);
         }
     }
 }

@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullDropletEntity;
 import net.agusdropout.bloodyhell.util.visuals.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.ShaderUtils;
+import net.agusdropout.bloodyhell.util.visuals.SpellPalette;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -56,9 +57,7 @@ public class RhnullDropletRenderer extends EntityRenderer<RhnullDropletEntity> {
         RenderSystem.depthMask(false);
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
-        Quaternionf projectileRotation = Axis.YP.rotationDegrees(yRot - 90.0F).mul(Axis.ZP.rotationDegrees(xRot));
 
-        //ShaderUtils.renderDistortionPlane(poseStack, captureTextureId, 2.0f, new Vector3f(1, 1, 1), 1.0f, time, projectileRotation, ModShaders.RADIAL_DISTORTION_SHADER);
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
@@ -69,14 +68,14 @@ public class RhnullDropletRenderer extends EntityRenderer<RhnullDropletEntity> {
         Matrix4f pose = poseStack.last().pose();
 
 
-        float length = 1.2f;
-        float width = 0.15f;
+        float length = 0.8f;
+        float width = 0.05f;
 
+        Vector3f baseColor = SpellPalette.RHNULL.getColor(0);
+        float hR = baseColor.x, hG = baseColor.y, hB = baseColor.z, hA = 1.0f;
 
-        float hR = 1.0f, hG = 0.6f, hB = 0.7f, hA = 1.0f;
-
-
-        float tR = 0.6f, tG = 0.0f, tB = 0.0f, tA = 0.0f;
+        Vector3f highlightColor = SpellPalette.RHNULL.getColor(1);
+        float tR = highlightColor.x, tG = highlightColor.y, tB = highlightColor.z, tA = 0.0f;
 
 
 

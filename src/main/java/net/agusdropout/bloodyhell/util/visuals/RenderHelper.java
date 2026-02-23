@@ -1064,6 +1064,45 @@ public class RenderHelper {
         };
     }
 
+    /**
+     * Renders a sphere using strictly POSITION_COLOR format.
+     * Prevents memory misalignment when used with custom shaders that do not accept UVs.
+     */
+    public static void renderColorSphere(VertexConsumer consumer, Matrix4f pose,
+                                         float radius, int latSegs, int lonSegs,
+                                         float r, float g, float b, float a) {
+
+
+        int red = (int)(r * 255.0F);
+        int green = (int)(g * 255.0F);
+        int blue = (int)(b * 255.0F);
+        int alpha = (int)(a * 255.0F);
+
+        for (int i = 0; i < latSegs; i++) {
+            double theta1 = -Math.PI / 2 + Math.PI * i / latSegs;
+            double theta2 = -Math.PI / 2 + Math.PI * (i + 1) / latSegs;
+
+            for (int j = 0; j < lonSegs; j++) {
+                double phi1 = 2 * Math.PI * j / lonSegs;
+                double phi2 = 2 * Math.PI * (j + 1) / lonSegs;
+
+                colorSphereVertex(consumer, pose, radius, theta1, phi1, red, green, blue, alpha);
+                colorSphereVertex(consumer, pose, radius, theta2, phi1, red, green, blue, alpha);
+                colorSphereVertex(consumer, pose, radius, theta2, phi2, red, green, blue, alpha);
+                colorSphereVertex(consumer, pose, radius, theta1, phi2, red, green, blue, alpha);
+            }
+        }
+    }
+
+    private static void colorSphereVertex(VertexConsumer consumer, Matrix4f pose, float rad, double theta, double phi, int r, int g, int b, int a) {
+        float x = (float) (rad * Math.cos(theta) * Math.cos(phi));
+        float y = (float) (rad * Math.sin(theta));
+        float z = (float) (rad * Math.cos(theta) * Math.sin(phi));
+
+
+        consumer.vertex(pose, x, y, z).color(r, g, b, a).endVertex();
+    }
+
     public static class Perlin {
         private static final int[] perm = new int[512];
         private static final int[] p = new int[256];

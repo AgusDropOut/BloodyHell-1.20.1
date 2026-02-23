@@ -43,9 +43,7 @@ void main() {
     vec4 worldColor = texture(Sampler0, screenUV - offset);
 
 
-    if (dist < 0.25) {
-        fragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    } else if (dist > 0.5) {
+     if (dist > 0.5) {
         discard;
     } else {
         float laneScale = 60.0;

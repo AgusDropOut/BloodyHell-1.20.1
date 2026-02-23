@@ -323,7 +323,7 @@ public class BloodyHell
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
             EntityRenderers.register(ModEntityTypes.RHNULL_PAIN_THRONE.get(), RhnullPainThroneRenderer::new);
             EntityRenderers.register(ModEntityTypes.RHNULL_DROPLET_PROJECTILE.get(), RhnullDropletRenderer::new);
-            EntityRenderers.register(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), RenderNothing::new);
+            EntityRenderers.register(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), RhnullOrbEmitterRenderer::new);
 
 
 

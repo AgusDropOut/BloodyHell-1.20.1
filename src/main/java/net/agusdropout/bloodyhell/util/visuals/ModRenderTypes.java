@@ -25,4 +25,13 @@ public class ModRenderTypes extends RenderType {
                 .createCompositeState(true);
         return create("bloodyhell_glitter", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, state);
     }
+
+    public static RenderType getShapeGlitterRenderType() {
+        RenderType.CompositeState state = RenderType.CompositeState.builder()
+                .setShaderState(new RenderStateShard.ShaderStateShard(() -> ModShaders.SHAPE_GLITTER_SHADER))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                .createCompositeState(true);
+
+        return create("bloodyhell_shape_glitter", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, true, true, state);
+    }
 }

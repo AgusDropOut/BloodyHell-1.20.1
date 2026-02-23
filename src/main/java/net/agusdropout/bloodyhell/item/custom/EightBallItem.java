@@ -13,6 +13,7 @@ import net.agusdropout.bloodyhell.particle.ParticleOptions.HollowRectangleOption
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TetherParticleOptions;
 import net.agusdropout.bloodyhell.util.bones.BoneManipulation;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.SpellPalette;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -46,12 +47,12 @@ public class EightBallItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
 
-      int quantity = 5;
+     //int quantity = 5;
 //
-        for (int i = 0; i < quantity; i++) {
-           RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
-           level.addFreshEntity(impaler);
-       }
+      //  for (int i = 0; i < quantity; i++) {
+     //     RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
+     //     level.addFreshEntity(impaler);
+     // }
 //
 //
         //  RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 10);
@@ -66,13 +67,14 @@ public class EightBallItem extends Item {
         // RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
         // level.addFreshEntity(throne);
 
-           // RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
-           // level.addFreshEntity(orb);
+            RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
+            level.addFreshEntity(orb);
         } else {
 
             // Visual Feedback (Client Side)
            // ParticleHelper.spawn(level, new EtherealSwirlOptions(1f, 0.796f, 0f, 200, 20.0f), player.getX(), player.getY(), player.getZ(), 0, 0, 0);
            // System.out.println("Spawned Ethereal Swirl Particle at " + player.getX() + ", " + player.getY() + ", " + player.getZ());
+            //ParticleHelper.spawn(level, new EtherealSwirlOptions(SpellPalette.RHNULL.getColor(1), 300, 1.0f), player.position().add(0,1.5,0), 0, 0, 0);
         }
 
 

@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
+import org.joml.Vector3f;
 
 import java.util.Locale;
 
@@ -62,6 +63,14 @@ public class EtherealSwirlOptions implements ParticleOptions {
         this.r = r;
         this.g = g;
         this.b = b;
+        this.maxLifetime = maxLifetime;
+        this.size = size;
+    }
+
+    public EtherealSwirlOptions(Vector3f color, int maxLifetime, float size) {
+        this.r = color.x;
+        this.g = color.y;
+        this.b = color.z;
         this.maxLifetime = maxLifetime;
         this.size = size;
     }

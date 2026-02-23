@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.rmi.Remote;
 
 public class SmallGlitterParticle extends TextureSheetParticle {
 
@@ -26,6 +27,7 @@ public class SmallGlitterParticle extends TextureSheetParticle {
     private final float baseSat;
     private final float baseBri;
 
+
     private final float initialQuadSize;
 
     protected SmallGlitterParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, SmallGlitterParticleOptions options, SpriteSet spriteSet) {
@@ -34,7 +36,7 @@ public class SmallGlitterParticle extends TextureSheetParticle {
         this.spriteSet = spriteSet;
         this.jitter = options.shouldJitter();
         this.lifetime = options.getLifetime();
-        this.hasWhiteCore = options.hasWhiteCore();
+        this.hasWhiteCore = this.random.nextBoolean();
         // Convert RGB to HSB
         float[] hsb = Color.RGBtoHSB(
                 (int)(options.getColor().x() * 255),
@@ -50,9 +52,8 @@ public class SmallGlitterParticle extends TextureSheetParticle {
         this.gCol = options.getColor().y();
         this.bCol = options.getColor().z();
 
-        // Tiny Start Size (Sharper look for magic)
-        this.quadSize = options.getSize() * 0.5F;
-        this.initialQuadSize = this.quadSize;
+
+        this.initialQuadSize = !hasWhiteCore ?  this.quadSize * 1.2f : this.quadSize * 0.8F;
 
         this.lifetime = 20 + this.random.nextInt(10);
         this.gravity = 0.0F;
@@ -84,7 +85,7 @@ public class SmallGlitterParticle extends TextureSheetParticle {
         }
 
 
-        if (lifeRatio > 0.7F) {
+        if (lifeRatio > 0.7F && !this.hasWhiteCore) {
             this.alpha = 0.6F - ((lifeRatio - 0.7F) * 2.0F);
         } else {
             this.alpha = 0.6F;
@@ -112,27 +113,39 @@ public class SmallGlitterParticle extends TextureSheetParticle {
         float originalB = this.bCol;
         float originalSize = this.quadSize;
 
-        super.render(buffer, camera, partialTicks);
 
-        if(this.hasWhiteCore ) {
+
+        if(this.hasWhiteCore) {
+
+            this.rCol = originalR;
+            this.gCol = originalG;
+            this.bCol = originalB;
+            this.quadSize = originalSize * 0.9F;
+
+            super.render(buffer, camera, partialTicks);
+
             this.rCol = 1.0F;
             this.gCol = 1.0F;
             this.bCol = 1.0F;
-            this.quadSize = originalSize * 0.4F;
+            super.render(buffer, camera, partialTicks);
+
+
+        } else {
+            this.rCol = originalR;
+            this.gCol = originalG;
+            this.bCol = originalB;
+            this.quadSize = originalSize;
             super.render(buffer, camera, partialTicks);
         }
 
 
-        this.rCol = originalR;
-        this.gCol = originalG;
-        this.bCol = originalB;
-        this.quadSize = originalSize;
+
     }
 
 
     @Override
     protected int getLightColor(float partialTick) {
-        return 240;
+        return hasWhiteCore ?  15728880 : 240;
     }
 
 

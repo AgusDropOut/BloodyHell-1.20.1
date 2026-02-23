@@ -217,6 +217,9 @@ public class ClientEvents {
             event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "entity_glitter"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
                 ModShaders.ENTITY_GLITTER_SHADER = shaderInstance;
             });
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "shape_glitter"), DefaultVertexFormat.POSITION_COLOR), shaderInstance -> {
+                ModShaders.SHAPE_GLITTER_SHADER = shaderInstance;
+            });
             event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "ethereal_swirl"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
                 ModShaders.ETHEREAL_SWIRL_SHADER = shaderInstance;
             });
