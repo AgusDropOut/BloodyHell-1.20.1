@@ -217,6 +217,9 @@ public class ClientEvents {
             event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "entity_glitter"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
                 ModShaders.ENTITY_GLITTER_SHADER = shaderInstance;
             });
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "ethereal_swirl"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
+                ModShaders.ETHEREAL_SWIRL_SHADER = shaderInstance;
+            });
         }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
@@ -259,6 +262,7 @@ public class ClientEvents {
             event.registerSpecial(ModParticles.SIMPLE_BLOCK_PARTICLE.get(), new SimpleBlockParticle.Provider());
             event.registerSpecial(ModParticles.HOLLOW_RECTANGLE_PARTICLE.get(), new HollowRectangleParticle.Provider());
             event.registerSpecial(ModParticles.RADIAL_DISTORION_PARTICLE.get(), new RadialDistortionParticle.Provider());
+            event.registerSpecial(ModParticles.ETHEREAL_SWIRL_PARTICLE.get(), new EtherealSwirlParticle.Provider());
             event.registerSpriteSet(ModParticles.CYCLOPS_HALO_PARTICLE.get(), CyclopsHaloParticle.Provider::new);
             event.registerSpriteSet(ModParticles.EYE_PARTICLE.get(), EyeParticle.Provider::new);
             event.registerSpriteSet(ModParticles.SHOCKWAVE_RING.get(), ShockwaveParticle.Provider::new);
@@ -273,6 +277,8 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.BLOOD_DROP_PARTICLE.get(), BloodDropParticle.Provider::new);
             event.registerSpriteSet(ModParticles.BLOOD_STAIN_PARTICLE.get(), BloodStainParticle.Provider::new);
             event.registerSpriteSet(ModParticles.TETHER_PARTICLE.get(), TetherParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.GLITTER_PARTICLE.get(), GlitterParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.SMALL_GLITTER_PARTICLE.get(), SmallGlitterParticle.Provider::new);
         }
 
         @SubscribeEvent

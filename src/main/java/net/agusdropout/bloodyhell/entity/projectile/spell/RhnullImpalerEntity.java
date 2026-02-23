@@ -4,8 +4,10 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.interfaces.IGemSpell;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -90,6 +92,11 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
         } else {
             orbitLogic();
         }
+
+        if(this.level().isClientSide){
+            handleClientEffects();
+        }
+
     }
 
     private void orbitLogic() {
@@ -184,6 +191,17 @@ public class RhnullImpalerEntity extends Projectile implements IGemSpell {
             this.discard();
         }
     }
+
+    private void handleClientEffects() {
+        if (this.tickCount % 5 == 0) {
+            for(int i = 0; i < 8; i++) {
+                Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), new Vector3f(1f, 0.97f, 0.0f), new Vector3f(1.0f, 0.8f, 0.0f), new Vector3f(1f, 0.5f, 0.0f));
+                ParticleHelper.spawnExplosion(this.level(), new SmallGlitterParticleOptions(gradientColor, 1.0f, false, 40, false), this.position().add(0,0,0), 5, 0.2, 2);
+            }
+        }
+    }
+
+
 
     @Override
     protected void onHitEntity(EntityHitResult result) {

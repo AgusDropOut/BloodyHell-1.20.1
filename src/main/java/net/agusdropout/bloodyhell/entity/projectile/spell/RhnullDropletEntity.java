@@ -50,13 +50,13 @@ public class RhnullDropletEntity extends Projectile {
         if (this.level().isClientSide) {
             // Spawn the radial distortion shockwave every 3 ticks.
             // A lifespan of 10 ticks keeps it snappy and prevents screen clutter.
-            if (this.tickCount % 3 == 0) {
-                this.level().addParticle(
-                        new RadialDistortionParticleOptions(this.getXRot(), this.getYRot(), 10),
-                        this.getX(), this.getY(), this.getZ(),
-                        0.0, 0.0, 0.0
-                );
-            }
+           // if (this.tickCount % 3 == 0) {
+           //     this.level().addParticle(
+           //             new RadialDistortionParticleOptions(this.getXRot(), this.getYRot(), 10),
+           //             this.getX(), this.getY(), this.getZ(),
+           //             0.0, 0.0, 0.0
+           //     );
+           // }
         }
 
         this.setDeltaMovement(movement.scale(0.99f));

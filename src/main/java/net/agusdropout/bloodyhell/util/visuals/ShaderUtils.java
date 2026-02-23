@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModList;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -216,6 +217,62 @@ public class ShaderUtils {
         tess.end();
     }
 
+    public static void renderEtherealSwirlQuad(PoseStack poseStack,int captureTextureId, Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
+
+        Minecraft mc = Minecraft.getInstance();
+        int screenW = mc.getWindow().getWidth();
+        int screenH = mc.getWindow().getHeight();
+
+
+        if (ModShaders.ETHEREAL_SWIRL_SHADER.getUniform("EtherealTime") != null) {
+            ModShaders.ETHEREAL_SWIRL_SHADER.getUniform("EtherealTime").set(time);
+        }
+
+
+        RenderSystem.bindTexture(captureTextureId);
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, screenW, screenH, 0);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+
+
+        RenderSystem.setShader(() -> ModShaders.ETHEREAL_SWIRL_SHADER);
+        if (ModShaders.ETHEREAL_SWIRL_SHADER.getUniform("ScreenSize") != null) {
+            ModShaders.ETHEREAL_SWIRL_SHADER.getUniform("ScreenSize").set((float)screenW, (float)screenH);
+        }
+        RenderSystem.setShaderTexture(0, captureTextureId);
+
+
+        Tesselator tess = Tesselator.getInstance();
+        BufferBuilder buffer = tess.getBuilder();
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
+
+        Vector3f[] corners = {
+                new Vector3f(-size, -size, 0),
+                new Vector3f(-size, size, 0),
+                new Vector3f(size, size, 0),
+                new Vector3f(size, -size, 0)
+        };
+
+        float[][] uvs = {
+                {0.0f, 0.0f},
+                {0.0f, 1.0f},
+                {1.0f, 1.0f},
+                {1.0f, 0.0f}
+        };
+        for (int i = 0; i < 4; i++) {
+            Vector3f posVec = new Vector3f(corners[i]);
+            Vector4f finalPos = new Vector4f(posVec.x(), posVec.y(), posVec.z(), 1.0f);
+            finalPos.mul(poseStack.last().pose());
+
+            buffer.vertex(finalPos.x(), finalPos.y(), finalPos.z())
+                    .uv(uvs[i][0], uvs[i][1])
+                    .color(r, g, b, alpha)
+                    .endVertex();
+        }
+
+        tess.end();
+    }
 
 
 

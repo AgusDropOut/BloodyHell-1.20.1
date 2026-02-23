@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -12,9 +13,9 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.Color;
+import java.awt.*;
 
-public class MagicParticle extends TextureSheetParticle {
+public class GlitterParticle extends TextureSheetParticle {
 
     private final SpriteSet spriteSet;
     private final boolean jitter;
@@ -27,7 +28,7 @@ public class MagicParticle extends TextureSheetParticle {
 
     private final float initialQuadSize;
 
-    protected MagicParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, MagicParticleOptions options, SpriteSet spriteSet) {
+    protected GlitterParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, GlitterParticleOptions options, SpriteSet spriteSet) {
         super(level, x, y, z, vx, vy, vz);
 
         this.spriteSet = spriteSet;
@@ -168,14 +169,14 @@ public class MagicParticle extends TextureSheetParticle {
         }
     };
 
-    public static class Provider implements ParticleProvider<MagicParticleOptions> {
+    public static class Provider implements ParticleProvider<GlitterParticleOptions> {
         private final SpriteSet spriteSet;
         public Provider(SpriteSet spriteSet) { this.spriteSet = spriteSet; }
 
         @Nullable
         @Override
-        public Particle createParticle(MagicParticleOptions type, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-            return new MagicParticle(level, x, y, z, dx, dy, dz, type, this.spriteSet);
+        public Particle createParticle(GlitterParticleOptions type, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
+            return new GlitterParticle(level, x, y, z, dx, dy, dz, type, this.spriteSet);
         }
     }
 }

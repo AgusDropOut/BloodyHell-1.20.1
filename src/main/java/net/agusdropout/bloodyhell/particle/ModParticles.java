@@ -134,6 +134,28 @@ public class ModParticles {
                 }
             });
 
+    public static final RegistryObject<ParticleType<GlitterParticleOptions>> GLITTER_PARTICLE =
+            PARTICLE_TYPES.register("glitter_particle", () -> new ParticleType<GlitterParticleOptions>(false, GlitterParticleOptions.DESERIALIZER) {
+                @Override
+                public Codec<GlitterParticleOptions> codec() {
+                    return GlitterParticleOptions.CODEC;
+                }
+            });
+    public static final RegistryObject<ParticleType<SmallGlitterParticleOptions>> SMALL_GLITTER_PARTICLE =
+            PARTICLE_TYPES.register("small_glitter_particle", () -> new ParticleType<SmallGlitterParticleOptions>(false, SmallGlitterParticleOptions.DESERIALIZER) {
+                @Override
+                public Codec<SmallGlitterParticleOptions> codec() {
+                    return SmallGlitterParticleOptions.CODEC;
+                }
+            });
+    public static final RegistryObject<ParticleType<EtherealSwirlOptions>> ETHEREAL_SWIRL_PARTICLE =
+            PARTICLE_TYPES.register("etherial_swirl_particle", () -> new ParticleType<EtherealSwirlOptions>(false, EtherealSwirlOptions.DESERIALIZER) {
+                @Override
+                public Codec<EtherealSwirlOptions> codec() {
+                    return EtherealSwirlOptions.CODEC;
+                }
+            });
+
 
 
     public static void register(IEventBus eventBus) {

@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullPainThroneEntity
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.EtherealSwirlOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.HollowRectangleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TetherParticleOptions;
 import net.agusdropout.bloodyhell.util.bones.BoneManipulation;
@@ -45,34 +46,35 @@ public class EightBallItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
 
-          int quantity = 5;
+      int quantity = 5;
 //
-           for (int i = 0; i < quantity; i++) {
-               RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
-               level.addFreshEntity(impaler);
-           }
+        for (int i = 0; i < quantity; i++) {
+           RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
+           level.addFreshEntity(impaler);
+       }
 //
 //
-           RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 10);
+        //  RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 10);
 //
-          // // Offset the spawn position higher up if you want it to "fall" more dramatically
-            Vec3 spawnPos = player.position().add(0, 3, 0).add(player.getLookAngle().scale(5));
-            sword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+        // // // Offset the spawn position higher up if you want it to "fall" more dramatically
+       //   Vec3 spawnPos = player.position().add(0, 3, 0).add(player.getLookAngle().scale(5));
+       //   sword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 //
-          //// // Add the entity to the world
-           level.addFreshEntity(sword);
+        // //// // Add the entity to the world
+       //  level.addFreshEntity(sword);
 
-            RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
-            level.addFreshEntity(throne);
+        // RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
+        // level.addFreshEntity(throne);
 
-            //RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
-            //level.addFreshEntity(orb);
-        }//
+           // RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
+           // level.addFreshEntity(orb);
+        } else {
 
-        // Visual Feedback (Client Side)
-        if (level.isClientSide) {
-            ParticleHelper.spawnRing(level, ModParticles.BLOOD_PARTICLES.get(), player.position().add(0, 1, 0), 1.5, 20, 0.05);
+            // Visual Feedback (Client Side)
+           // ParticleHelper.spawn(level, new EtherealSwirlOptions(1f, 0.796f, 0f, 200, 20.0f), player.getX(), player.getY(), player.getZ(), 0, 0, 0);
+           // System.out.println("Spawned Ethereal Swirl Particle at " + player.getX() + ", " + player.getY() + ", " + player.getZ());
         }
+
 
         return InteractionResultHolder.success(player.getItemInHand(hand));
     }

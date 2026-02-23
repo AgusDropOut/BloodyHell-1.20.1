@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullDropletEntity;
+import net.agusdropout.bloodyhell.util.visuals.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.ShaderUtils;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
@@ -48,12 +50,15 @@ public class RhnullDropletRenderer extends EntityRenderer<RhnullDropletEntity> {
         poseStack.mulPose(Axis.ZP.rotationDegrees(xRot));
 
 
+
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
         RenderSystem.depthMask(false);
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
-        ShaderUtils.renderGravitationalLens(poseStack, captureTextureId, 2.0f, new Vector3f(1, 1, 1), 1.0f, time);
+        Quaternionf projectileRotation = Axis.YP.rotationDegrees(yRot - 90.0F).mul(Axis.ZP.rotationDegrees(xRot));
+
+        //ShaderUtils.renderDistortionPlane(poseStack, captureTextureId, 2.0f, new Vector3f(1, 1, 1), 1.0f, time, projectileRotation, ModShaders.RADIAL_DISTORTION_SHADER);
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 

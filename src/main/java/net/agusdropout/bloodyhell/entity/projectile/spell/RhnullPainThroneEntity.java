@@ -203,7 +203,7 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
         if(this.lifeTicks == 1){
             for(int i = 0; i < 20; i++) {
                 Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), new Vector3f(1f, 0.97f, 0.0f), new Vector3f(1.0f, 0.8f, 0.0f), new Vector3f(1f, 0.5f, 0.0f));
-                ParticleHelper.spawnExplosion(this.level(), new MagicParticleOptions(gradientColor, 4.0f, false, 40), this.position().add(0,HEIGHT_OFFSET+1,0), 5, 0.2, 2);
+                ParticleHelper.spawnExplosion(this.level(), new MagicParticleOptions(gradientColor, 4.0f, false, 40, true), this.position().add(0,HEIGHT_OFFSET+1,0), 5, 0.2, 2);
             }
             this.level().playLocalSound( this.blockPosition(), ModSounds.CREEPY_BELL.get(), SoundSource.MASTER, 1.0f, 0.8f, false);
         }
@@ -211,7 +211,7 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
         if(this.lifeTicks == this.maxDuration - 1){
             for(int i = 0; i < 20; i++) {
                 Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), new Vector3f(1f, 0.97f, 0.0f), new Vector3f(1.0f, 0.8f, 0.0f), new Vector3f(1f, 0.5f, 0.0f));
-                ParticleHelper.spawnExplosion(this.level(), new MagicParticleOptions(gradientColor, 4.0f, false, 40), this.position().add(0,HEIGHT_OFFSET+1,0), 5, 0.2, 2);
+                ParticleHelper.spawnExplosion(this.level(), new MagicParticleOptions(gradientColor, 4.0f, false, 40, true), this.position().add(0,HEIGHT_OFFSET+1,0), 5, 0.2, 2);
             }
         }
 
