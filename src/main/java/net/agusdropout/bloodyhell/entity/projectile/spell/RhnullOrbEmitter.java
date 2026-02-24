@@ -12,6 +12,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,9 +26,9 @@ import java.util.List;
 
 public class RhnullOrbEmitter extends Projectile implements IGemSpell {
 
-    private int maxDuration = 100; // Lasts 5 seconds by default
-    private float damage = 4.0f;   // Passed down to the droplets
-    private float spread = 0.25f;  // How wide the cone is
+    private int maxDuration = 100;
+    private float damage = 4.0f;
+    private float spread = 0.25f;
     private float fireRate = 3;
     private int lifeTicks;
 
@@ -48,64 +49,86 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     @Override
     public void tick() {
         super.tick();
+        Vec3 motion = this.getDeltaMovement();
+        this.setPos(this.getX()+ motion.x, this.getY() + motion.y, this.getZ() + motion.z);
 
-
-        // 1. Check Lifetime
         if (this.tickCount > maxDuration) {
             if (!this.level().isClientSide) this.discard();
             return;
         }
 
-        // 2. Server-side Firing Logic
         if (!this.level().isClientSide) {
             if (this.tickCount % fireRate == 0) {
                 fireDropletInCone();
             }
+            trackOwner();
         } else {
-
-            if(this.random.nextFloat() < 0.3f) {
-                Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), SpellPalette.RHNULL.getColor(0), SpellPalette.RHNULL.getColor(1), SpellPalette.RHNULL.getColor(2));
-                ParticleHelper.spawnRisingBurst(this.level(), new GlitterParticleOptions(gradientColor, 0.5f, false, 40, true), this.position(), 1,0.5, 0.01f, 0.05);
-                ParticleHelper.spawnRisingBurst(this.level(), new MagicParticleOptions(gradientColor, 0.5f, false, 40, true), this.position(), 1,0.5, 0.01f, -0.05);
-            }
-
-            if(this.lifeTicks  == 1) {
-
-                    ParticleHelper.spawn(this.level(), new EtherealSwirlOptions(SpellPalette.RHNULL.getColor(1), this.maxDuration, 1.0f), this.position(), 0, 1, 0);
-
-            }
-
+            handleClientEffects();
 
             lifeTicks++;
+        }
+    }
+
+
+    private void trackOwner() {
+        if (this.getOwner() instanceof LivingEntity owner) {
+
+            Vec3 forward = owner.getLookAngle();
+
+            Vec3 up = new Vec3(0, 1, 0);
+            Vec3 right = forward.cross(up).normalize();
+
+            Vec3 targetPos = owner.position()
+                    .add(0, owner.getEyeHeight() + 0.2, 0)
+                    .add(right.scale(1.5))
+                    .add(forward.scale(0.6));
+
+            targetPos = targetPos.add(0, Math.sin(this.tickCount * 0.1) * 0.1, 0);
+
+
+            Vec3 diff = targetPos.subtract(this.position());
+
+            this.setDeltaMovement(diff.scale(0.2));
         }
     }
 
     private void fireDropletInCone() {
         if (!(this.getOwner() instanceof LivingEntity owner)) return;
 
-        // 1. Get the base direction the owner is looking
+
         Vec3 lookVec = owner.getLookAngle();
 
-        // 2. Add randomized spread to create the "Cone"
         RandomSource rand = this.random;
         Vec3 randomizedDir = lookVec.add(
                 (rand.nextDouble() - 0.5) * spread,
                 (rand.nextDouble() - 0.5) * spread,
                 (rand.nextDouble() - 0.5) * spread
-        ).normalize(); // Normalize it so the droplets always travel at the exact same speed
+        ).normalize();
 
-        // 3. Spawn the Droplet (We will create this class next!)
+
         RhnullDropletEntity droplet = new RhnullDropletEntity(this.level(), this.getX(), this.getY(), this.getZ());
         droplet.setOwner(owner);
         droplet.setDamage(this.damage);
 
-        // Shoot it super fast (scale of 2.0 or 3.0 blocks per tick)
+
         droplet.setDeltaMovement(randomizedDir.scale(2.5));
 
         this.level().addFreshEntity(droplet);
 
-        // Play a rapid, light firing sound
+
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 2.0f, 1.5f + (rand.nextFloat() * 0.5f));
+    }
+
+    private void handleClientEffects(){
+        if(this.random.nextFloat() < 0.3f) {
+            Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), SpellPalette.RHNULL.getColor(0), SpellPalette.RHNULL.getColor(1), SpellPalette.RHNULL.getColor(2));
+            ParticleHelper.spawnRisingBurst(this.level(), new GlitterParticleOptions(gradientColor, 0.5f, false, 40, true), this.position(), 1,0.5, 0.01f, 0.05);
+            ParticleHelper.spawnRisingBurst(this.level(), new MagicParticleOptions(gradientColor, 0.5f, false, 40, true), this.position(), 1,0.5, 0.01f, -0.05);
+        }
+        if(this.lifeTicks  == 1) {
+
+            ParticleHelper.spawn(this.level(), new EtherealSwirlOptions(SpellPalette.RHNULL.getColor(1), this.maxDuration, 1.0f, this.getId()), this.position(), 0, 1, 0);
+        }
     }
 
     public int getLifeTicks() { return this.lifeTicks; }
@@ -114,11 +137,11 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     @Override
     public void increaseSpellDamage(double amount) { this.damage += amount; }
     @Override
-    public void increaseSpellSize(double amount) { this.spread += (amount * 0.1); } // Bigger gem = wider cone!
+    public void increaseSpellSize(double amount) { this.spread += (amount * 0.1); }
     @Override
     public void increaseSpellDuration(int amount) { this.maxDuration += amount; }
 
-    // --- BOILERPLATE ---
+
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) { }
     @Override

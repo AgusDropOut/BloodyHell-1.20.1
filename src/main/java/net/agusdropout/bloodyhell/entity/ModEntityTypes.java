@@ -254,7 +254,7 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<RhnullOrbEmitter>> RHNULL_ORB_EMITTER_ENTITY =
             ENTITY_TYPES.register("rhnull_orb_emitter_entity",
                     () -> EntityType.Builder.<RhnullOrbEmitter>of(RhnullOrbEmitter::new, MobCategory.MISC)
-                            .sized(2f, 5.0f)
+                            .sized(0.5f, 0.5f)
                             .clientTrackingRange(10)
                             .build("rhnull_orb_emitter_entity"));
 

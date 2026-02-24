@@ -20,17 +20,19 @@ public class EtherealSwirlOptions implements ParticleOptions {
     private final float b;
     private final int maxLifetime;
     private final float size;
+    private final int targetId;
 
     public static final Codec<EtherealSwirlOptions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("r").forGetter(EtherealSwirlOptions::getR),
             Codec.FLOAT.fieldOf("g").forGetter(EtherealSwirlOptions::getG),
             Codec.FLOAT.fieldOf("b").forGetter(EtherealSwirlOptions::getB),
             Codec.INT.fieldOf("maxLifetime").forGetter(EtherealSwirlOptions::getMaxLifetime),
-            Codec.FLOAT.fieldOf("size").forGetter(EtherealSwirlOptions::getSize)
+            Codec.FLOAT.fieldOf("size").forGetter(EtherealSwirlOptions::getSize),
+            Codec.INT.fieldOf("target_id").forGetter(EtherealSwirlOptions::getTargetId)
     ).apply(instance, EtherealSwirlOptions::new));
 
     @SuppressWarnings("deprecation")
-    public static final ParticleOptions.Deserializer<EtherealSwirlOptions> DESERIALIZER = new ParticleOptions.Deserializer<EtherealSwirlOptions>() {
+    public static final ParticleOptions.Deserializer<EtherealSwirlOptions> DESERIALIZER = new ParticleOptions.Deserializer<>() {
         @Override
         public EtherealSwirlOptions fromCommand(ParticleType<EtherealSwirlOptions> particleType, StringReader stringReader) throws CommandSyntaxException {
             stringReader.expect(' ');
@@ -43,62 +45,56 @@ public class EtherealSwirlOptions implements ParticleOptions {
             int life = stringReader.readInt();
             stringReader.expect(' ');
             float size = stringReader.readFloat();
-            return new EtherealSwirlOptions(r, g, b, life, size);
+            stringReader.expect(' ');
+            int targetId = stringReader.readInt();
+            return new EtherealSwirlOptions(r, g, b, life, size, targetId);
         }
 
         @Override
-        public EtherealSwirlOptions fromNetwork(ParticleType<EtherealSwirlOptions> particleType, FriendlyByteBuf friendlyByteBuf) {
+        public EtherealSwirlOptions fromNetwork(ParticleType<EtherealSwirlOptions> particleType, FriendlyByteBuf buf) {
             return new EtherealSwirlOptions(
-                    friendlyByteBuf.readFloat(),
-                    friendlyByteBuf.readFloat(),
-                    friendlyByteBuf.readFloat(),
-                    friendlyByteBuf.readInt(),
-                    friendlyByteBuf.readFloat()
-
+                    buf.readFloat(),
+                    buf.readFloat(),
+                    buf.readFloat(),
+                    buf.readInt(),
+                    buf.readFloat(),
+                    buf.readInt()
             );
         }
     };
 
-    public EtherealSwirlOptions(float r, float g, float b, int maxLifetime, float size) {
+    public EtherealSwirlOptions(float r, float g, float b, int maxLifetime, float size, int targetId) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.maxLifetime = maxLifetime;
         this.size = size;
+        this.targetId = targetId;
+    }
+
+    public EtherealSwirlOptions(Vector3f color, int maxLifetime, float size, int targetId) {
+        this(color.x(), color.y(), color.z(), maxLifetime, size, targetId);
+    }
+
+    public EtherealSwirlOptions(float r, float g, float b, int maxLifetime, float size) {
+        this(r, g, b, maxLifetime, size, -1);
     }
 
     public EtherealSwirlOptions(Vector3f color, int maxLifetime, float size) {
-        this.r = color.x;
-        this.g = color.y;
-        this.b = color.z;
-        this.maxLifetime = maxLifetime;
-        this.size = size;
+        this(color.x(), color.y(), color.z(), maxLifetime, size, -1);
     }
 
-    public float getR() {
-        return this.r;
-    }
-
-    public float getG() {
-        return this.g;
-    }
-
-    public float getB() {
-        return this.b;
-    }
-
-    public int getMaxLifetime() {
-        return this.maxLifetime;
-    }
-    public float getSize() {
-        return this.size;
-    }
+    public float getR() { return r; }
+    public float getG() { return g; }
+    public float getB() { return b; }
+    public int getMaxLifetime() { return maxLifetime; }
+    public float getSize() { return size; }
+    public int getTargetId() { return targetId; }
 
     @Override
     public ParticleType<?> getType() {
-        return  ModParticles.ETHEREAL_SWIRL_PARTICLE.get();
+        return ModParticles.ETHEREAL_SWIRL_PARTICLE.get();
     }
-
 
     @Override
     public void writeToNetwork(FriendlyByteBuf buffer) {
@@ -107,10 +103,13 @@ public class EtherealSwirlOptions implements ParticleOptions {
         buffer.writeFloat(this.b);
         buffer.writeInt(this.maxLifetime);
         buffer.writeFloat(this.size);
+        buffer.writeInt(this.targetId);
     }
 
     @Override
     public String writeToString() {
-        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %d %.2f", BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.r, this.g, this.b, this.maxLifetime, this.size);
+        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %d %.2f %d",
+                BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
+                this.r, this.g, this.b, this.maxLifetime, this.size, this.targetId);
     }
 }

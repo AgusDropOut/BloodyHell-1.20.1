@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.agusdropout.bloodyhell.particle.ParticleOptions.EtherealSwirlOptions;
 import net.agusdropout.bloodyhell.util.visuals.ShaderUtils;
 import net.minecraft.client.Camera;
@@ -11,12 +12,16 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
+
+import java.util.UUID;
 
 public class EtherealSwirlParticle extends Particle {
 
@@ -24,16 +29,18 @@ public class EtherealSwirlParticle extends Particle {
     private final float rCol;
     private final float gCol;
     private final float bCol;
+    private final int targetEntityId; // Changed to int
 
     private static int captureTextureId = -1;
 
-    protected EtherealSwirlParticle(ClientLevel level, double x, double y, double z, float r, float g, float b, int maxLifetime, float size) {
+    protected EtherealSwirlParticle(ClientLevel level, double x, double y, double z, float r, float g, float b, int maxLifetime, float size, int targetEntityId) {
         super(level, x, y, z);
         this.hasPhysics = false;
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
         this.quadSize = size;
+        this.targetEntityId = targetEntityId;
 
         if (captureTextureId == -1) {
             captureTextureId = GL11.glGenTextures();
@@ -50,6 +57,17 @@ public class EtherealSwirlParticle extends Particle {
     @Override
     public void tick() {
         super.tick();
+
+        if(this.targetEntityId != -1) {
+            Entity target = this.level.getEntity(this.targetEntityId);
+
+
+            if (target != null) {
+                this.x = target.getX();
+                this.y = target.getY() ;
+                this.z = target.getZ();
+            }
+        }
 
         float lifeRatio = (float) this.age / (float) this.lifetime;
         if (lifeRatio > 0.7F) {
@@ -105,7 +123,8 @@ public class EtherealSwirlParticle extends Particle {
         @Nullable
         @Override
         public Particle createParticle(EtherealSwirlOptions type, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-            return new EtherealSwirlParticle(level, x, y, z, type.getR(), type.getG(), type.getB(), type.getMaxLifetime(), type.getSize());
+            // Pass the ID from the options to the particle
+            return new EtherealSwirlParticle(level, x, y, z, type.getR(), type.getG(), type.getB(), type.getMaxLifetime(), type.getSize(), type.getTargetId());
         }
     }
 }
