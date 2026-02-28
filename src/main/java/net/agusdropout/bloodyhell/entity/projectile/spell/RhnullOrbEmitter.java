@@ -12,10 +12,10 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -29,7 +29,11 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     private int maxDuration = 100;
     private float damage = 4.0f;
     private float spread = 0.25f;
-    private float fireRate = 3;
+
+
+    private float shotsPerTick = 1.0f / 3.0f;
+    private float shotAccumulator = 0.0f;
+
     private int lifeTicks;
 
     public RhnullOrbEmitter(EntityType<? extends Projectile> type, Level level) {
@@ -49,8 +53,6 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     @Override
     public void tick() {
         super.tick();
-        Vec3 motion = this.getDeltaMovement();
-        this.setPos(this.getX()+ motion.x, this.getY() + motion.y, this.getZ() + motion.z);
 
         if (this.tickCount > maxDuration) {
             if (!this.level().isClientSide) this.discard();
@@ -58,23 +60,25 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
         }
 
         if (!this.level().isClientSide) {
-            if (this.tickCount % fireRate == 0) {
+            this.shotAccumulator += this.shotsPerTick;
+
+            /* While loop allows multiple shots per tick if rate exceeds 1.0 */
+            while (this.shotAccumulator >= 1.0f) {
                 fireDropletInCone();
+                this.shotAccumulator -= 1.0f;
             }
             trackOwner();
         } else {
             handleClientEffects();
-
             lifeTicks++;
         }
-    }
 
+        this.move(MoverType.SELF, this.getDeltaMovement());
+    }
 
     private void trackOwner() {
         if (this.getOwner() instanceof LivingEntity owner) {
-
             Vec3 forward = owner.getLookAngle();
-
             Vec3 up = new Vec3(0, 1, 0);
             Vec3 right = forward.cross(up).normalize();
 
@@ -85,9 +89,7 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
 
             targetPos = targetPos.add(0, Math.sin(this.tickCount * 0.1) * 0.1, 0);
 
-
             Vec3 diff = targetPos.subtract(this.position());
-
             this.setDeltaMovement(diff.scale(0.2));
         }
     }
@@ -95,9 +97,7 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     private void fireDropletInCone() {
         if (!(this.getOwner() instanceof LivingEntity owner)) return;
 
-
         Vec3 lookVec = owner.getLookAngle();
-
         RandomSource rand = this.random;
         Vec3 randomizedDir = lookVec.add(
                 (rand.nextDouble() - 0.5) * spread,
@@ -105,17 +105,12 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
                 (rand.nextDouble() - 0.5) * spread
         ).normalize();
 
-
         RhnullDropletEntity droplet = new RhnullDropletEntity(this.level(), this.getX(), this.getY(), this.getZ());
         droplet.setOwner(owner);
         droplet.setDamage(this.damage);
-
-
         droplet.setDeltaMovement(randomizedDir.scale(2.5));
 
         this.level().addFreshEntity(droplet);
-
-
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 2.0f, 1.5f + (rand.nextFloat() * 0.5f));
     }
 
@@ -126,14 +121,12 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
             ParticleHelper.spawnRisingBurst(this.level(), new MagicParticleOptions(gradientColor, 0.5f, false, 40, true), this.position(), 1,0.5, 0.01f, -0.05);
         }
         if(this.lifeTicks  == 1) {
-
             ParticleHelper.spawn(this.level(), new EtherealSwirlOptions(SpellPalette.RHNULL.getColor(1), this.maxDuration, 1.0f, this.getId()), this.position(), 0, 1, 0);
         }
     }
 
     public int getLifeTicks() { return this.lifeTicks; }
 
-    // --- IGemSpell ---
     @Override
     public void increaseSpellDamage(double amount) { this.damage += amount; }
     @Override
@@ -141,6 +134,10 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     @Override
     public void increaseSpellDuration(int amount) { this.maxDuration += amount; }
 
+    @Override
+    public void increaseSpellQuantity(double amount) {
+        this.shotsPerTick += (float) (amount * 0.15f);
+    }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) { }

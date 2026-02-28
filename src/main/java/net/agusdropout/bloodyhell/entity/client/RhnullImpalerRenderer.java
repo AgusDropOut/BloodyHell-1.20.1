@@ -13,8 +13,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
 import org.jetbrains.annotations.Nullable;
 
 public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
@@ -34,6 +37,13 @@ public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
         poseStack.pushPose();
 
 
+        float scale = entity.getSize()-0.5f;
+        if(scale > 1.0f) {
+            scale = 0.5f + (scale - 1.0f) * 0.5f;
+        }
+
+        poseStack.scale(scale , scale , scale );
+
         float yRot = Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot());
         float xRot = Mth.rotLerp(partialTicks, entity.xRotO, entity.getXRot());
 
@@ -44,8 +54,7 @@ public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
         poseStack.mulPose(Axis.XP.rotationDegrees(-xRot));
 
 
-        float scale = entity.getEntityData().get(RhnullImpalerEntity.SPELL_SCALE);
-        poseStack.scale(scale * 0.5f, scale * 0.5f, scale * 0.5f);
+
 
 
         poseStack.translate(0.0, -1.5, 0.0);
@@ -92,4 +101,6 @@ public class RhnullImpalerRenderer extends EntityRenderer<RhnullImpalerEntity> {
     protected RenderType getRenderType(RhnullImpalerEntity entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         return RenderType.entityTranslucentCull(this.getTextureLocation(entity));
     }
+
+
 }

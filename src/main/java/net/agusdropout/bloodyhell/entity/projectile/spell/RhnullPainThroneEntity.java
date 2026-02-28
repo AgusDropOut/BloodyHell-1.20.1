@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.projectile.spell;
 
-import dev.kosmx.playerAnim.core.util.Vec3f;
+
 import net.agusdropout.bloodyhell.entity.interfaces.IGemSpell;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulSize;
@@ -9,12 +9,14 @@ import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TetherParticleOptions;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.util.bones.BoneManipulation;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
-import net.minecraft.core.particles.ParticleTypes;
+import net.agusdropout.bloodyhell.util.visuals.SpellPalette;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -40,7 +42,6 @@ import java.util.List;
 
 public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
 
-    // --- STATES ---
     public static final int STATE_GRABBING = 0;
     public static final int STATE_CLOSING = 1;
     public static final int STATE_DAMAGING = 2;
@@ -52,18 +53,14 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(RhnullPainThroneEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_SCALE = SynchedEntityData.defineId(RhnullPainThroneEntity.class, EntityDataSerializers.FLOAT);
 
-
-    // Vanilla Animation States (Client Only)
     public final AnimationState grabAnimationState = new AnimationState();
     public final AnimationState closeAnimationState = new AnimationState();
     public final AnimationState damageAnimationState = new AnimationState();
 
-    // Spell Stats
     private float damage = 5.0f;
     private int maxDuration = 200;
     private int phaseTimer = 0;
     private int lifeTicks = 0;
-
 
     public RhnullPainThroneEntity(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
@@ -109,7 +106,6 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
             return;
         }
 
-        // SERVER LOGIC
         switch (state) {
             case STATE_GRABBING -> {
                 if (target instanceof LivingEntity livingTarget && livingTarget.isAlive()) {
@@ -152,7 +148,7 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
                     target.setDeltaMovement(Vec3.ZERO);
                 }
                 this.phaseTimer++;
-                if (this.phaseTimer >= 40) { // 2 seconds
+                if (this.phaseTimer >= 40) {
                     setSpellState(STATE_DAMAGING);
                     this.phaseTimer = 0;
                 }
@@ -169,9 +165,7 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
                         ModMessages.sendToPlayersTrackingEntity(new S2CPainThronePacket(livingTarget.getUUID(), 200, BoneManipulation.BREAK), livingTarget);
 
                         if (this.getOwner() instanceof Player playerOwner) {
-
                             BloodSoulEntity soul = new BloodSoulEntity(this.level(), playerOwner, BloodSoulType.BLOOD, this.determineSoulSize());
-
                             soul.setPos(this.getX(), this.getY() + 2.0, this.getZ());
                             this.level().addFreshEntity(soul);
                         }
@@ -184,7 +178,6 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
     }
 
     private void handleClientVisuals(int state, Entity target) {
-        // 1. Update Animation States
         if (state == STATE_GRABBING) {
             this.grabAnimationState.startIfStopped(this.tickCount);
             this.closeAnimationState.stop();
@@ -199,40 +192,45 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
             this.damageAnimationState.startIfStopped(this.tickCount);
         }
 
-        //start & end
         if(this.lifeTicks == 1){
-            for(int i = 0; i < 20; i++) {
-                Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), new Vector3f(1f, 0.97f, 0.0f), new Vector3f(1.0f, 0.8f, 0.0f), new Vector3f(1f, 0.5f, 0.0f));
-                ParticleHelper.spawnExplosion(this.level(), new MagicParticleOptions(gradientColor, 4.0f, false, 40, true), this.position().add(0,HEIGHT_OFFSET+1,0), 5, 0.2, 2);
-            }
-            this.level().playLocalSound( this.blockPosition(), ModSounds.CREEPY_BELL.get(), SoundSource.MASTER, 1.0f, 0.8f, false);
+            ParticleHelper.spawnRing(this.level(), new MagicFloorParticleOptions(SpellPalette.RHNULL.getColor(1), 2.0f, false, 50), this.position(), 1.5, 30, 0.05);
+            ParticleHelper.spawnRisingBurst(this.level(), new SmallGlitterParticleOptions(SpellPalette.RHNULL.getColor(0), 0.5f, false, 60, true), this.position().add(0, HEIGHT_OFFSET, 0), 20, 1.5, 0.02, 0.03);
+            this.level().playLocalSound(this.blockPosition(), ModSounds.CREEPY_BELL.get(), SoundSource.MASTER, 1.0f, 0.8f, false);
         }
 
         if(this.lifeTicks == this.maxDuration - 1){
-            for(int i = 0; i < 20; i++) {
-                Vector3f gradientColor = ParticleHelper.gradient3(random.nextFloat(), new Vector3f(1f, 0.97f, 0.0f), new Vector3f(1.0f, 0.8f, 0.0f), new Vector3f(1f, 0.5f, 0.0f));
-                ParticleHelper.spawnExplosion(this.level(), new MagicParticleOptions(gradientColor, 4.0f, false, 40, true), this.position().add(0,HEIGHT_OFFSET+1,0), 5, 0.2, 2);
-            }
+            ParticleHelper.spawnBurst(this.level(), new MagicParticleOptions(SpellPalette.RHNULL.getColor(2), 1.5f, false, 40, true), this.position().add(0, HEIGHT_OFFSET, 0), 25, 0.05);
+            ParticleHelper.spawnRing(this.level(), new MagicFloorParticleOptions(SpellPalette.RHNULL.getColor(0), 1.5f, false, 30), this.position(), 2.0, 20, 0.1);
         }
 
-
-
-        // 2. Spawn Particles
-        if (state == STATE_GRABBING && target != null && this.tickCount % 2 == 0) {
-            for(int i = 0; i < 5; i++) {
-                this.level().addParticle(new TetherParticleOptions(target.getUUID(), 1f, 0.914f, 0.0f, 0.6f, 10),
-                        this.getX()+ random.nextDouble(), this.getY() + 2.5, this.getZ() + random.nextDouble(), 0, 0, 0);
-
+        if (state == STATE_GRABBING) {
+            if (this.tickCount % 6 == 0) {
+                ParticleHelper.spawnCylinder(this.level(), new SmallGlitterParticleOptions(SpellPalette.RHNULL.getRandomColor(), 0.3f, false, 40, false), this.position(), 2.5, 3.0, 4, 0.01);
             }
-        } else if (state == STATE_DAMAGING && this.random.nextBoolean()) {
-            this.level().addParticle(ModParticles.BLOOD_DROP_PARTICLE.get(),
-                    this.getX() + (this.random.nextDouble() - 0.5),
-                    this.getY() + 1.0 + this.random.nextDouble(),
-                    this.getZ() + (this.random.nextDouble() - 0.5), 0, 0, 0);
+            if (target != null && this.tickCount % 2 == 0) {
+                Vector3f color = SpellPalette.RHNULL.getColor(0);
+                for(int i = 0; i < 3; i++) {
+                    this.level().addParticle(new TetherParticleOptions(target.getUUID(), color.x(), color.y(), color.z(), 0.6f, 10),
+                            this.getX()+ random.nextDouble() - 0.5, this.getY() + 2.5, this.getZ() + random.nextDouble() - 0.5, 0, 0, 0);
+                }
+            }
+        } else if (state == STATE_CLOSING) {
+            if (this.tickCount % 4 == 0) {
+                ParticleHelper.spawnHollowSphere(this.level(), new MagicParticleOptions(SpellPalette.RHNULL.getColor(1), 0.4f, false, 15, true), this.position().add(0, HEIGHT_OFFSET + 1.0, 0), 3.0, 12, -0.15);
+            }
+        } else if (state == STATE_DAMAGING) {
+            if (this.tickCount % 10 == 0) {
+                ParticleHelper.spawnRing(this.level(), new MagicParticleOptions(SpellPalette.RHNULL.getColor(0), 0.6f, false, 15, true), this.position().add(0, HEIGHT_OFFSET + 1.0, 0), 1.5, 15, 0.08);
+            }
+            if (this.random.nextBoolean()) {
+                this.level().addParticle(ModParticles.BLOOD_DROP_PARTICLE.get(),
+                        this.getX() + (this.random.nextDouble() - 0.5),
+                        this.getY() + 1.0 + this.random.nextDouble(),
+                        this.getZ() + (this.random.nextDouble() - 0.5), 0, 0, 0);
+            }
         }
     }
 
-    // --- IGemSpell ---
     @Override
     public void increaseSpellDamage(double amount) { this.damage += amount; }
     @Override
@@ -247,10 +245,8 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() { return NetworkHooks.getEntitySpawningPacket(this); }
 
-
     private void updateRotationTowardsTarget(Entity target) {
         if (target != null) {
-
             double dx = target.getX() - this.getX();
             double dz = target.getZ() - this.getZ();
             float targetYaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0F;
@@ -261,8 +257,6 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
             this.setYRot(newYaw);
         }
     }
-
-
 
     private boolean isValidTarget(LivingEntity target) {
         if (!target.isAlive() || target.isInvulnerable()) {
@@ -293,6 +287,4 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
             return BloodSoulSize.SMALL;
         }
     }
-
-
 }

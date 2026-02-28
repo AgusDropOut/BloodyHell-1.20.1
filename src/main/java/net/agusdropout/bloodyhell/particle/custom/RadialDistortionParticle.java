@@ -38,6 +38,8 @@ public class RadialDistortionParticle extends Particle {
             captureTextureId = GL11.glGenTextures();
         }
 
+
+
         this.customRotation = new Quaternionf();
         this.customRotation.mul(Axis.YP.rotationDegrees(-yaw));
         this.customRotation.mul(Axis.XP.rotationDegrees(pitch));
@@ -61,6 +63,7 @@ public class RadialDistortionParticle extends Particle {
 
         PoseStack poseStack = new PoseStack();
         poseStack.translate(px, py, pz);
+        poseStack.scale(0.5F, 0.5F, 0.5F);
 
         RenderSystem.disableCull();
         RenderSystem.enableDepthTest();

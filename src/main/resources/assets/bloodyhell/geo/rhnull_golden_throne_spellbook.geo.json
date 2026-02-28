@@ -1,0 +1,96 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "generic_spellbook_item",
+					"pivot": [-0.125, 4.03542, 0]
+				},
+				{
+					"name": "circle",
+					"parent": "generic_spellbook_item",
+					"pivot": [-0.25, 6.5, 0],
+					"cubes": [
+						{"origin": [-8.25, 6.5, -8], "size": [16, 0, 16], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "center",
+					"parent": "generic_spellbook_item",
+					"pivot": [0, 1.57085, 0],
+					"cubes": [
+						{"origin": [-1.5, -0.25, -9], "size": [2.5, 4, 18], "pivot": [0, 1.75, 0], "rotation": [0, 0, -90], "uv": [58, 71]},
+						{"origin": [-3.5, 1.75, -9], "size": [2, 0, 18], "pivot": [0, 1.75, 0], "rotation": [0, 0, -90], "uv": [0, 87]},
+						{"origin": [0, -0.25, 9], "size": [0, 4, 4], "pivot": [0, 1.75, 0], "rotation": [0, 0, -90], "uv": [40, 87]},
+						{"origin": [0, -0.25, -13], "size": [0, 4, 4], "pivot": [0, 1.75, -22], "rotation": [0, 0, -90], "uv": [48, 87]}
+					]
+				},
+				{
+					"name": "right",
+					"parent": "center",
+					"pivot": [-0.81021, 1.48127, 0],
+					"cubes": [
+						{"origin": [-12, 3.75, -9], "size": [12, 1, 18], "pivot": [-7, 2.75, 0], "rotation": [0, 0, -180], "uv": [0, 35]},
+						{"origin": [-13, 1.75, -8], "size": [13, 1, 16], "uv": [58, 54]}
+					]
+				},
+				{
+					"name": "rupperPage",
+					"parent": "right",
+					"pivot": [-0.07759, 2.94881, 0],
+					"cubes": [
+						{"origin": [-13, 3.5, -8], "size": [13, 0, 16], "pivot": [-7, 1.5, 0], "rotation": [0, 0, 5], "uv": [0, 71]}
+					]
+				},
+				{
+					"name": "runderPage",
+					"parent": "right",
+					"pivot": [-0.16324, 2.97629, 0],
+					"cubes": [
+						{"origin": [-13, 3, -8], "size": [13, 0, 16], "pivot": [-7, 1, 0], "rotation": [0, 0, 2.5], "uv": [64, 0]}
+					]
+				},
+				{
+					"name": "left",
+					"parent": "center",
+					"pivot": [0.81021, 1.48127, 0],
+					"cubes": [
+						{"origin": [2, 0.75, -9], "size": [12, 1, 18], "uv": [0, 16]},
+						{"origin": [0, 1.75, -8], "size": [13, 1, 16], "uv": [0, 54]},
+						{"origin": [9, 2.76, 6], "size": [1, 0, 5], "uv": [60, 48]}
+					]
+				},
+				{
+					"name": "lunderPage",
+					"parent": "left",
+					"pivot": [-0.08676, 2.97629, 0],
+					"cubes": [
+						{"origin": [-0.08676, 2.97629, -8], "size": [13, 0, 16], "pivot": [6.41324, 2.97629, 0], "rotation": [0, 0, -2.5], "uv": [60, 32]}
+					]
+				},
+				{
+					"name": "lupperPage",
+					"parent": "left",
+					"pivot": [-0.17241, 2.94881, 0],
+					"cubes": [
+						{"origin": [-0.17241, 3.44881, -8], "size": [13, 0, 16], "pivot": [6.32759, 3.44881, 0], "rotation": [0, 0, -5], "uv": [60, 16]}
+					]
+				},
+				{
+					"name": "particleCore",
+					"parent": "generic_spellbook_item",
+					"pivot": [-0.125, 5.03542, 0]
+				}
+			]
+		}
+	]
+}

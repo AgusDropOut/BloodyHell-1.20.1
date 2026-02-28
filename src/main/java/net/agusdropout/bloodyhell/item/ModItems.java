@@ -301,6 +301,14 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLOOD_DAGGERSRAIN_SPELLBOOK = ITEMS.register("blood_daggersrain_spellbook", () -> new BloodDaggersRainSpellBookItem(
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> RHNULL_IMPALERS_SPELLBOOK = ITEMS.register("rhnull_impalers_spellbook", () -> new RhnullImpalersSpellBookItem(
+            new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> RHNULL_HEAVY_SWORD_SPELLBOOK = ITEMS.register("rhnull_heavy_sword_spellbook", () -> new RhnullHeavySwordSpellBookItem(
+            new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> RHNULL_GOLDEN_THRONE_SPELLBOOK = ITEMS.register("rhnull_golden_throne_spellbook", () -> new RhnullGoldenThroneSpellBookItem(
+            new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> RHNULL_ORB_EMITTER_SPELLBOOK = ITEMS.register("rhnull_orb_emitter_spellbook", () -> new RhnullOrbEmitterSpellBookItem(
+            new Item.Properties().stacksTo(1)));
 
     //Sanctum of the unbound drops
 

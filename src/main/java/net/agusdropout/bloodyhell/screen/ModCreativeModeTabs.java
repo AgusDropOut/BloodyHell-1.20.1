@@ -245,6 +245,10 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BLOOD_SPHERE_SPELLBOOK.get());
                         output.accept(ModItems.BLOOD_NOVA_SPELLBOOK.get());
                         output.accept(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get());
+                        output.accept(ModItems.RHNULL_IMPALERS_SPELLBOOK.get());
+                        output.accept(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get());
+                        output.accept(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get());
+                        output.accept(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
 
                         // --- Blood Gems Items ---
                         output.accept(ModItems.PURE_BLOOD_GEM.get());

@@ -7,7 +7,7 @@ import java.util.List;
 public enum SpellPalette {
 
 
-    RHNULL(List.of(new Vector3f(1.0f, 0.9f, 0.0f), new Vector3f(1f, 0.8f, 0.0f), new Vector3f(1.0f,0.5f,0.0f)));
+    RHNULL(List.of(new Vector3f(1.0f, 0.9f, 0.0f), new Vector3f(1f, 0.8f, 0.0f), new Vector3f(1.0f,0.7f,0.0f)));
 
 
 
