@@ -73,6 +73,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
                 .add(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
                 .add(ModItems.RHNULL_IMPALERS_SPELLBOOK.get())
+                .add(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
+                .add(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
+                .add(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get())
                 .add(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
                 .add(ModItems.BLASPHEMOUS_IMPALER.get())
                 .add(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get());
