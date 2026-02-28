@@ -158,7 +158,13 @@ public class SanguiniteTankBlockEntity extends FilterableFluidBlockEntity {
     }
 
     public int getCapacity() {
-        if (!isController()) return getController().getCapacity();
+        if (!isController()) {
+            SanguiniteTankBlockEntity controller = getController();
+            if (controller != this && controller != null) {
+                return controller.getCapacity();
+            }
+        }
+
         if (!isStructureValid) return CAPACITY_PER_BLOCK;
         int totalBlocks = structureWidth * structureWidth * structureHeight;
         return totalBlocks * CAPACITY_PER_BLOCK;

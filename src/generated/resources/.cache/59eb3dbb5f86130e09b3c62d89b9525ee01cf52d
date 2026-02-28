@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-07T22:43:23.9329736	Loot Tables
+// 1.20.1	2026-02-28T13:38:37.0004202	Loot Tables
 bdc15ebc2a02a82e61a914b0bd6b6d56c3d69ab7 data/bloodyhell/loot_tables/blocks/ancient_bloody_lamp.json
 3e5464c67bd9f7358ce85ae0627c72b91b7537a6 data/bloodyhell/loot_tables/blocks/ancient_bloody_stone_bricks.json
 b5521909998c93d083cf6fe797817ca8fdad5feb data/bloodyhell/loot_tables/blocks/ancient_bloody_stone_bricks_column.json
@@ -148,6 +148,8 @@ b20739db9e26ec8c65c0a481b16a37818e46ef51 data/bloodyhell/loot_tables/entities/in
 8d8491dcc9eb51f704feba875e98d1837d6b2508 data/bloodyhell/loot_tables/entities/offspring_of_the_unknown.json
 1ac5481074a675979bdb791387e681a70dfca61c data/bloodyhell/loot_tables/entities/omen_gazer_entity.json
 5cf7c93bc0b9b76c44dc4ccb26e04aa332398e7c data/bloodyhell/loot_tables/entities/oni.json
+cd17a229acc0b797cdce46dd25532c590758ff74 data/bloodyhell/loot_tables/entities/rhnull_heavy_sword_projectile.json
+dccf7bac91e97f419391025f1becd82a98abfe57 data/bloodyhell/loot_tables/entities/rhnull_impaler_projectile.json
 0892476380d021ed03fec1bea0f3f55b5655e33b data/bloodyhell/loot_tables/entities/ritekeeper.json
 e16c99cff9556713f3a312b5a28b963fe857ff2d data/bloodyhell/loot_tables/entities/sanguine_sacrifice_entity.json
 d01fd441f22deb61cfaa67697e0b8eae7d305684 data/bloodyhell/loot_tables/entities/scarletspeckledfish.json

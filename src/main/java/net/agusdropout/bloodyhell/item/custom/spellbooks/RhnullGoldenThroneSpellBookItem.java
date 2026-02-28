@@ -23,7 +23,7 @@ import java.util.List;
 
 public class RhnullGoldenThroneSpellBookItem extends BaseSpellBookItem<RhnullGoldenThroneSpellBookItem> {
 
-    private static final int COST = 20;
+    private static final int COST = 30;
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 
     public RhnullGoldenThroneSpellBookItem(Properties properties) {

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavySwordSpellBookItem> {
 
-    private static final int COST = 20;
+    private static final int COST = 60;
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 
     public RhnullHeavySwordSpellBookItem(Properties properties) {

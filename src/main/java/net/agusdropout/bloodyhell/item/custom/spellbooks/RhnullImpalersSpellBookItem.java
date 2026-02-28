@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpalersSpellBookItem> {
 
-    private static final int COST = 20;
+    private static final int COST = 30;
     private static final int DEFAULT_PROJECTILE_COUNT = 3;
 
     public RhnullImpalersSpellBookItem(Properties properties) {

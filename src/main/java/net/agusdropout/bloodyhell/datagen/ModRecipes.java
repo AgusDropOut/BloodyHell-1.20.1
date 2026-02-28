@@ -4,10 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -173,6 +170,35 @@ public class ModRecipes extends ModRecipesProvider {
                 .requires(ModItems.FAILED_REMNANT_ASHES.get())
                 .unlockedBy("has_ritekeeper_heart", has(ModItems.RITEKEEPER_HEART.get()))
                 .save(consumer, name("ritual_spell_bloodfire_soul"));
+
+        // --- RHNULL SPELLBOOKS  ---
+        BloodAltarRecipeBuilder.ritual(ModItems.RHNULL_IMPALERS_SPELLBOOK.get())
+                .requires(ModItems.GREAT_ANCIENT_RHNULL_GEM.get())
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.RHNULL.get())
+                .unlockedBy("has_great_ancient_rhnull_gem", has(ModItems.GREAT_ANCIENT_RHNULL_GEM.get()))
+                .save(consumer, name("ritual_spell_rhnull_impalers"));
+
+        BloodAltarRecipeBuilder.ritual(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
+                .requires(ModItems.GREAT_ANCIENT_RHNULL_GEM.get())
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.RHNULL_SWORD.get())
+                .unlockedBy("has_great_ancient_rhnull_gem", has(ModItems.GREAT_ANCIENT_RHNULL_GEM.get()))
+                .save(consumer, name("ritual_spell_rhnull_heavy_sword"));
+
+        BloodAltarRecipeBuilder.ritual(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
+                .requires(ModItems.ANCIENT_RHNULL_GEM.get())
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.RHNULL_HOE.get())
+                .unlockedBy("has_ancient_rhnull_gem", has(ModItems.ANCIENT_RHNULL_GEM.get()))
+                .save(consumer, name("ritual_spell_rhnull_golden_throne"));
+
+        BloodAltarRecipeBuilder.ritual(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get())
+                .requires(ModItems.ANCIENT_RHNULL_GEM.get())
+                .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(ModItems.RHNULL.get())
+                .unlockedBy("has_ancient_rhnull_gem", has(ModItems.ANCIENT_RHNULL_GEM.get()))
+                .save(consumer, name("ritual_spell_rhnull_orb_emitter"));
 
 
         makePlanks(ModBlocks.BLOOD_PLANKS, ModTags.Items.BLOOD_LOGS).save(consumer);
@@ -515,12 +541,10 @@ public class ModRecipes extends ModRecipesProvider {
                 .save(consumer, name("chiseled_blasphemous_sandstone"));
 
         // --- ESCALERAS Y LOSAS (Smooth Sandstone) ---
-        // Ya tienes un helper makeStairs/makeSlab, úsalo:
         makeStairs(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
         makeSlab(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
 
         // --- STONECUTTING (Cortapiedras) ---
-        // Permite convertir Sandstone normal en todas sus variantes decorativas
 
         // Input: Blasphemous Sandstone
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
@@ -549,17 +573,14 @@ public class ModRecipes extends ModRecipesProvider {
                 .save(consumer, name("stonecutting_smooth_blasphemous_sandstone_slab"));
 
         // --- VASIIJA DECORADA (Decorated Pot) ---
-        // Requiere 4 ladrillos (o fragmentos de cerámica si tienes custom shards)
-        // Usamos Ladrillos de arcilla por defecto o algún material tuyo
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.DECORATED_POT_BLOCK.get())
                 .pattern("B B")
                 .pattern(" B ")
-                .define('B', Items.BRICK) // Puedes cambiar esto por ModItems.BLASPHEMITE_NUGGET si quieres que sea especial
+                .define('B', Items.BRICK)
                 .unlockedBy("has_brick", has(Items.BRICK))
                 .save(consumer, name("decorated_pot_block"));
 
         // --- STAR LAMP (Lámpara Estrella) ---
-        // Crafteo: 1 Antorcha/Glowstone + 4 Blasphemous Sandstone o Cristal
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.STAR_LAMP_BLOCK.get())
                 .pattern(" S ")
                 .pattern("SLS")
@@ -584,9 +605,6 @@ public class ModRecipes extends ModRecipesProvider {
         makeBoots(ModItems.BLASPHEMITE_BOOTS, ModItems.BLASPHEMITE).save(consumer);
 
         // --- BLASPHEMOUS IMPALER (Lanza) ---
-        // Se hace con el Impaler normal + Blasphemite (Upgrade) o directo?
-        // Aquí lo hago directo. Crafteo caro.
-        // Diseño: Punta de Blasphemita + Esencia + Mango reforzado de Rhnull
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLASPHEMOUS_IMPALER.get())
                 .pattern("  B")
                 .pattern(" S ")
@@ -613,8 +631,6 @@ public class ModRecipes extends ModRecipesProvider {
                 .save(consumer, name("blasphemous_twin_daggers"));
 
         // --- BLASPHEMOUS HULKING MASS OF IRON (Espadón Gigante) ---
-        // Diseño: Mucho material arriba (pesado), Esencia uniendo, Mango abajo.
-        // Uso BLOQUES de Blasphemita o muchos items para simular el peso "Hulking".
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
                 .pattern("BBB")
                 .pattern("BSB") // Bordeado de metal con el alma en el centro
@@ -768,8 +784,26 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_aureal_revenant_dagger", has(ModItems.AUREAL_REVENANT_DAGGER.get()))
                 .save(consumer, name("heretic_sacrificial_dagger"));
 
+        //Gem sprout seed
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_GEM_SPROUT_SEED.get())
+                .requires(ModBlocks.BLOOD_FLOWER.get())
+                .requires(ModItems.BLOODY_SOUL_DUST.get())
+                .requires(ModItems.SANGUINITE.get())
+                .unlockedBy("has_dirty_blood_flower", has(ModItems.DIRTY_BLOOD_FLOWER.get()))
+                .save(consumer, name("ritual_blood_gem_sprout_seed"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.BLOOD_GEM_SPROUT_SEED.get())
+                .requires(Items.WHEAT_SEEDS)
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModItems.BLOODY_SOUL_DUST.get())
+                .unlockedBy("has_filled_blood_flask", has(ModItems.FILLED_BLOOD_FLASK.get()))
+                .save(consumer, name("blood_gem_sprout_seed_crafting"));
+
 
         makeInfusion(consumer, ModItems.RHNULL.get(), ModItems.SANGUINITE.get(), 500, 500, "rhnull_ingot_infusion");
+        makeInfusion(consumer, ModItems.FILLED_RHNULL_BLOOD_FLASK.get(), ModItems.FILLED_BLOOD_FLASK.get(), 500, 500, "filled_rhnull_flask_infusion");
+        makeInfusion(consumer, ModItems.ANCIENT_RHNULL_GEM.get(), ModItems.ANCIENT_GEM.get(), 1000, 1000, "ancient_rhnull_gem_infusion");
+        makeInfusion(consumer, ModItems.GREAT_ANCIENT_RHNULL_GEM.get(), ModItems.GREAT_ANCIENT_GEM.get(), 2000, 2000, "great_ancient_rhnull_gem_infusion");
+
     }
 
 

@@ -273,14 +273,6 @@ public class ModItems {
 
 
 
-    // public static final RegistryObject<Item> BLASPHEMOUS_TWIN_DAGGERS = ITEMS.register("blasphemous_twin_daggers", () -> new Item(
-    //         new Item.Properties().stacksTo(1)));
-    // public static final RegistryObject<Item> BLASPHEMOUS_HULKING_MASS_OF_IRON = ITEMS.register("blasphemous_hulking_mass_of_iron", () -> new Item(
-    //         new Item.Properties().stacksTo(1)));
-    // public static final RegistryObject<Item> BLASPHEMOUS_IMPALER = ITEMS.register("blasphemous_impaler", () ->
-    //         new Item(new Item.Properties().stacksTo(0)));
-
-
     //Ancient
     public static final RegistryObject<Item> ANCIENT_TORCH_ITEM = ITEMS.register("ancient_torch",
             () -> new AncientTorchItem(ModBlocks.ANCIENT_TORCH_BLOCK.get(), new Item.Properties()));
@@ -326,9 +318,13 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> ANCIENT_GEM = ITEMS.register("ancient_gem", () -> new Item(
             new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> ANCIENT_RHNULL_GEM = ITEMS.register("ancient_rhnull_gem", () -> new Item(
+            new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> GREAT_AMULET_OF_ANCESTRAL_BLOOD = ITEMS.register("great_amulet_of_ancestral_blood", () -> new GreatAmuletOfAncestralBlood(
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> GREAT_ANCIENT_GEM = ITEMS.register("great_ancient_gem", () -> new Item(
+            new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> GREAT_ANCIENT_RHNULL_GEM = ITEMS.register("great_ancient_rhnull_gem", () -> new Item(
             new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> CRIMSON_WARD_RING = ITEMS.register("crimson_ward_ring", () -> new CrimsonWardRing(
             new Item.Properties().stacksTo(1)));

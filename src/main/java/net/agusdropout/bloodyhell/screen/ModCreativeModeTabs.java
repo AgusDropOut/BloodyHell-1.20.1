@@ -260,8 +260,10 @@ public class ModCreativeModeTabs {
                         // --- Crimson Blood Items ---
                         output.accept(ModItems.AMULET_OF_ANCESTRAL_BLOOD.get());
                         output.accept(ModItems.ANCIENT_GEM.get());
+                        output.accept(ModItems.ANCIENT_RHNULL_GEM.get());
                         output.accept(ModItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD.get());
                         output.accept(ModItems.GREAT_ANCIENT_GEM.get());
+                        output.accept(ModItems.GREAT_ANCIENT_RHNULL_GEM.get());
                         output.accept(ModItems.CRIMSON_WARD_RING.get());
                         output.accept(ModItems.BLASPHEMOUS_RING.get());
 

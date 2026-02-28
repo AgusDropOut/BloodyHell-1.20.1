@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom.mechanism;
 
 import net.agusdropout.bloodyhell.block.base.IFilterableBlock;
+import net.agusdropout.bloodyhell.block.base.IFlaskInteractableBlock;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteTankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +24,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidUtil;
 import org.jetbrains.annotations.Nullable;
 
-public class SanguiniteTankBlock extends BaseEntityBlock implements IFilterableBlock {
+public class SanguiniteTankBlock extends BaseEntityBlock implements IFilterableBlock, IFlaskInteractableBlock {
 
     public static final EnumProperty<ConnectionType> NORTH = EnumProperty.create("north", ConnectionType.class);
     public static final EnumProperty<ConnectionType> SOUTH = EnumProperty.create("south", ConnectionType.class);
@@ -71,40 +72,27 @@ public class SanguiniteTankBlock extends BaseEntityBlock implements IFilterableB
     }
 
     private ConnectionType getConnection(LevelAccessor level, BlockPos pos, Direction face) {
-        // 1. Internal Wall check
         if (isTank(level, pos.relative(face))) return ConnectionType.NONE;
 
-        // 2. Identify neighbors (GLOBAL FIX)
-        // We use ClockWise for Left because visually, looking at a face,
-        // the block to the "Left" is the Clockwise neighbor.
-        Direction leftDir = face.getClockWise();       // Visual Left
-        Direction rightDir = face.getCounterClockWise(); // Visual Right
+        Direction leftDir = face.getClockWise();
+        Direction rightDir = face.getCounterClockWise();
 
         boolean tankLeft = isTank(level, pos.relative(leftDir));
         boolean tankRight = isTank(level, pos.relative(rightDir));
 
-        // 3. Identify Distant Neighbors (Neighbors of Neighbors) for 2x2 vs 3x3
         boolean tankLeftOfLeft = isTank(level, pos.relative(leftDir).relative(leftDir));
         boolean tankRightOfRight = isTank(level, pos.relative(rightDir).relative(rightDir));
 
-        // 4. TEXTURE SELECTION LOGIC (No special swaps needed anymore!)
 
-        // CASE: 1x1 or Middle -> Single
-        // (If both are Empty OR If both are Tanks)
         if ((!tankLeft && !tankRight) || (tankLeft && tankRight)) return ConnectionType.SINGLE;
 
-        // CASE: Left Side (Air Left, Tank Right)
-        // We need a texture with a Frame on the LEFT (and open on the Right) to connect.
+
         if (!tankLeft && tankRight) {
-            // Check width: If the neighbor to the right has no right neighbor -> Width 2.
             if (!tankRightOfRight) return ConnectionType.LEFT_SMALL;
             return ConnectionType.LEFT_BIG;
         }
 
-        // CASE: Right Side (Tank Left, Air Right)
-        // We need a texture with a Frame on the RIGHT (and open on the Left) to connect.
         if (tankLeft && !tankRight) {
-            // Check width: If the neighbor to the left has no left neighbor -> Width 2.
             if (!tankLeftOfLeft) return ConnectionType.RIGHT_SMALL;
             return ConnectionType.RIGHT_BIG;
         }
@@ -116,7 +104,6 @@ public class SanguiniteTankBlock extends BaseEntityBlock implements IFilterableB
         return level.getBlockState(pos).getBlock() == this;
     }
 
-    // ... (Rest of InteractionResult and newBlockEntity methods remain the same) ...
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
@@ -137,9 +124,14 @@ public class SanguiniteTankBlock extends BaseEntityBlock implements IFilterableB
                 return filterResult;
             }
 
+            InteractionResult flaskResult = handleFlaskInteraction(state, level, pos, player, hand);
+
+            if (flaskResult != InteractionResult.PASS) {
+                return flaskResult;
+            }
+
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof SanguiniteTankBlockEntity cistern) {
-                // IMPORTANT: Always interact with the Controller to fill the WHOLE structure
                 BlockEntity controller = cistern.getController();
                 if (controller != null) {
                     boolean success = FluidUtil.interactWithFluidHandler(player, hand, controller.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null));
@@ -155,10 +147,7 @@ public class SanguiniteTankBlock extends BaseEntityBlock implements IFilterableB
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof SanguiniteTankBlockEntity tank) {
-                // Optional: Force neighbours to rescan immediately to avoid visual glitches
-                // or accessing the removed controller.
-                // Since our BE logic re-scans every 20 ticks or on access, this handles itself,
-                // but setting a flag here can help.
+
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }

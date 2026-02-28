@@ -131,11 +131,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         //Crimson Veil Items
         normalItem(ModItems.AMULET_OF_ANCESTRAL_BLOOD);
         normalItem(ModItems.ANCIENT_GEM);
+        normalItem(ModItems.ANCIENT_RHNULL_GEM);
         normalItem(ModItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD);
         normalItem(ModItems.GREAT_ANCIENT_GEM);
+        normalItem(ModItems.GREAT_ANCIENT_RHNULL_GEM);
         normalItem(ModItems.CRIMSON_WARD_RING);
         normalItem(ModItems.BLASPHEMOUS_RING);
-
 
 
 
@@ -145,9 +146,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(ModBlocks.BLOOD_GRASS);
 
         simpleBlockItemBlockTexture(ModBlocks.VISCERAL_INFECTED_VEIN);
-
-
-
 
 
         evenSimplerBlockItem(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);

@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-07T22:43:23.9379744	Item Models: bloodyhell
+// 1.20.1	2026-02-28T13:38:37.0029239	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 0daad63d3db69ced8f0038465c04abe47a00815e assets/bloodyhell/models/item/ancient_bloody_lamp.json
 77c198480c0204d88a6582721584ec72818df45b assets/bloodyhell/models/item/ancient_bloody_stone_bricks.json
@@ -9,6 +9,7 @@ dc88dd282eb46d564dae1024f361772568b56d9b assets/bloodyhell/models/item/ancient_b
 4bee998d6132b862246f3c185631d8ae47b1d2ac assets/bloodyhell/models/item/ancient_chiseled_bloody_stone_bricks.json
 ee9f663134c8320ba7d8eb2ffe2c50f79b0f767c assets/bloodyhell/models/item/ancient_detailed_bloody_stone_bricks.json
 14a952b98c00afd133a0e452445054b35e60ecf8 assets/bloodyhell/models/item/ancient_gem.json
+08375ea0c6a28072f9618fab47fdf43fdab633b4 assets/bloodyhell/models/item/ancient_rhnull_gem.json
 b1ecf22cfc0f17c3561b3c355b19f96e35815db2 assets/bloodyhell/models/item/ancient_torch.json
 f49a02ab718c1273b0986d09260a7eedd70e35a7 assets/bloodyhell/models/item/aureal_revenant_dagger.json
 5993d52688b8a93d3962bff331587b58c0d00711 assets/bloodyhell/models/item/aventurine_blood_gem.json
@@ -95,6 +96,7 @@ e637ce4d7504def3bcc70caf0f997cf4e759c27c assets/bloodyhell/models/item/gorehog_c
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/grave_walker_entity_spawn_egg.json
 fba7ac8b0eaf78b398a28eca9c2ba8455ddd7893 assets/bloodyhell/models/item/great_amulet_of_ancestral_blood.json
 5200afc2caadb8de7936ce944b382d61f4f23c92 assets/bloodyhell/models/item/great_ancient_gem.json
+6957c798e6f23ed489a3940fd1a6d486a2aa55ec assets/bloodyhell/models/item/great_ancient_rhnull_gem.json
 4c952dd758467b86eb9c5a5e36b2074800e74213 assets/bloodyhell/models/item/hanging_bloodtree_leaves.json
 6fb8b9c78f4725650867573003c1d815a8ee8509 assets/bloodyhell/models/item/heretic_sacrificial_dagger.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/horned_worm_spawn_egg.json
