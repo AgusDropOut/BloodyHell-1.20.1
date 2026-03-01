@@ -217,6 +217,9 @@ public class ClientEvents {
             event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "entity_glitter"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
                 ModShaders.ENTITY_GLITTER_SHADER = shaderInstance;
             });
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "insight_distortion"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+                ModShaders.INSIGHT_DISTORTION_SHADER = shaderInstance;
+            });
             event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "shape_glitter"), DefaultVertexFormat.POSITION_COLOR), shaderInstance -> {
                 ModShaders.SHAPE_GLITTER_SHADER = shaderInstance;
             });
