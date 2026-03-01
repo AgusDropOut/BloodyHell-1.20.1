@@ -1,15 +1,12 @@
-package net.agusdropout.bloodyhell.client;
+package net.agusdropout.bloodyhell.client.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.effect.ModEffects;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 

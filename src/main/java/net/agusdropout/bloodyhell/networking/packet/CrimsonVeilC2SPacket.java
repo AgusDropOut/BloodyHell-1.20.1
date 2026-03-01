@@ -1,12 +1,10 @@
 package net.agusdropout.bloodyhell.networking.packet;
 
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;

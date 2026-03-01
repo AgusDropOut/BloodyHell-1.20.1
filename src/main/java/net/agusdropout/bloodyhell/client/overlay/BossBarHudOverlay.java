@@ -1,8 +1,9 @@
-package net.agusdropout.bloodyhell.client;
+package net.agusdropout.bloodyhell.client.overlay;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.client.data.ClientBossBarData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;

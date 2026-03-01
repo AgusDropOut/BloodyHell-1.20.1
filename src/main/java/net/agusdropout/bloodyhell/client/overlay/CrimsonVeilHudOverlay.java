@@ -1,26 +1,17 @@
-package net.agusdropout.bloodyhell.client;
+package net.agusdropout.bloodyhell.client.overlay;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.client.data.ClientCrimsonVeilData;
 import net.agusdropout.bloodyhell.datagen.ModTags;
-import net.agusdropout.bloodyhell.item.ModItems;
-import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class CrimsonVeilHudOverlay  {
 

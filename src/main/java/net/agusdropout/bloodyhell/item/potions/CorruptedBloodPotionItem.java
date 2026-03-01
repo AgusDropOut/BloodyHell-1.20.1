@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.potions;
 
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;

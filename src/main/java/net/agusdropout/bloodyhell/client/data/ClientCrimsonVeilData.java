@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.client;
+package net.agusdropout.bloodyhell.client.data;
 
 public class ClientCrimsonVeilData {
     private static int playerCrimsonVeil;

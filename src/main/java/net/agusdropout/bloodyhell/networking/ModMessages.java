@@ -27,8 +27,6 @@ public class ModMessages {
         INSTANCE = net;
 
 
-
-
         net.messageBuilder(CrimsonVeilC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(CrimsonVeilC2SPacket::new)
                 .encoder(CrimsonVeilC2SPacket::toBytes)
@@ -75,6 +73,12 @@ public class ModMessages {
                 .decoder(S2CPainThronePacket::new)
                 .encoder(S2CPainThronePacket::toBytes)
                 .consumerMainThread(S2CPainThronePacket::handle)
+                .add();
+
+        net.messageBuilder(S2CDataSyncInsightPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CDataSyncInsightPacket::new)
+                .encoder(S2CDataSyncInsightPacket::toBytes)
+                .consumerMainThread(S2CDataSyncInsightPacket::handle)
                 .add();
     }
     public static <MSG> void sendToServer(MSG message) {

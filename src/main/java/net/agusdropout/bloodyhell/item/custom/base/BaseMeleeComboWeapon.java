@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.item.client.ClientItemHooks;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
@@ -18,8 +18,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 

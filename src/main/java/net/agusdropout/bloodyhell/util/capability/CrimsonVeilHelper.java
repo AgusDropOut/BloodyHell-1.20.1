@@ -1,6 +1,6 @@
-package net.agusdropout.bloodyhell.util;
+package net.agusdropout.bloodyhell.util.capability;
 
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.minecraft.server.level.ServerPlayer;

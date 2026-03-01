@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.CrimsonveilPower;
+package net.agusdropout.bloodyhell.capability.crimsonveilPower;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

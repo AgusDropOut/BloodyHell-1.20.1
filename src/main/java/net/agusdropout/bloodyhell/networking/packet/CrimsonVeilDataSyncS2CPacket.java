@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.networking.packet;
 
-import net.agusdropout.bloodyhell.client.ClientCrimsonVeilData;
+import net.agusdropout.bloodyhell.client.data.ClientCrimsonVeilData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 

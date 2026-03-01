@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSlashEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;

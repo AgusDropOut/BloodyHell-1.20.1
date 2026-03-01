@@ -27,25 +27,46 @@ public class InsightDistortingVertexConsumer implements VertexConsumer {
     @Override
     public VertexConsumer color(int red, int green, int blue, int alpha) {
         float noise = calculateNoise(this.currentX, this.currentY, this.currentZ, this.time);
+        boolean isGlitching = Math.sin(this.time * 0.5f) > 0.95f;
 
-        int degradedRed = (int) (red * 0.35f * noise);
-        int degradedGreen = (int) (green * 0.35f * noise);
-        int degradedBlue = (int) (blue * 0.45f * noise);
+        float tintR = 0.5f;
+        float tintG = 0.6f;
+        float tintB = 0.8f;
 
-        float dynamicAlpha = this.baseAlpha * (0.1f + 0.9f * noise);
+        float brightness = 0.6f + (noise * 0.4f);
+        if (isGlitching) {
+            brightness += 0.4f;
+        }
+
+        int finalRed = (int) Math.min(255, (red * tintR * brightness));
+        int finalGreen = (int) Math.min(255, (green * tintG * brightness));
+        int finalBlue = (int) Math.min(255, (blue * tintB * brightness));
+
+        float dynamicAlpha = this.baseAlpha * (0.35f + 0.65f * noise);
+        if (isGlitching) {
+            dynamicAlpha *= 0.5f;
+        }
         int newAlpha = (int) (alpha * dynamicAlpha);
 
-        return this.delegate.color(degradedRed, degradedGreen, degradedBlue, newAlpha);
+        return this.delegate.color(finalRed, finalGreen, finalBlue, newAlpha);
     }
 
     @Override
     public VertexConsumer uv(float u, float v) {
-        float noise = calculateNoise(this.currentX, this.currentZ, this.currentY, this.time * 0.8f);
+        float fastTime = this.time * 1.5f;
+        boolean isGlitching = Math.sin(this.time * 0.5f) > 0.95f;
 
-        float distortedU = u + (float) (Math.sin(v * 35.0f + this.time * 2.5f) * 0.02f) + (noise * 0.02f);
-        float distortedV = v + (float) (Math.cos(u * 35.0f + this.time * 2.5f) * 0.02f) + (noise * 0.02f);
+        float warpX = Math.abs((float) Math.sin(v * 12.0f + fastTime)) * (float) Math.cos(u * 18.0f - fastTime * 0.8f);
+        float warpY = Math.abs((float) Math.cos(u * 12.0f + fastTime * 1.2f)) * (float) Math.sin(v * 18.0f - fastTime);
 
-        return this.delegate.uv(distortedU, distortedV);
+        warpX = Math.signum(warpX) * (warpX * warpX) * 0.15f;
+        warpY = Math.signum(warpY) * (warpY * warpY) * 0.15f;
+
+        if (isGlitching) {
+            warpX += (float) Math.sin(v * 50.0f) * 0.05f;
+        }
+
+        return this.delegate.uv(u + warpX, v + warpY);
     }
 
     @Override

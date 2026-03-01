@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.soul;
 
 import net.agusdropout.bloodyhell.block.entity.custom.SanguiniteBloodHarvesterBlockEntity;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.util.CrimsonVeilHelper;
+import net.agusdropout.bloodyhell.util.capability.CrimsonVeilHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;

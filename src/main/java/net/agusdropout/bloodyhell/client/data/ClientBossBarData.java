@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.client;
+package net.agusdropout.bloodyhell.client.data;
 
 
 

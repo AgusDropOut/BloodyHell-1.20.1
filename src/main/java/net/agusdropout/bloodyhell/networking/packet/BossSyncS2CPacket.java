@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.networking.packet;
 
-import net.agusdropout.bloodyhell.client.ClientBossBarData;
+import net.agusdropout.bloodyhell.client.data.ClientBossBarData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 

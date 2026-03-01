@@ -1,13 +1,12 @@
 package net.agusdropout.bloodyhell.event;
 
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonVeil;
-import net.agusdropout.bloodyhell.CrimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonVeil;
+import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.event.handlers.BloodHarvestHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
-import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
 import net.agusdropout.bloodyhell.item.custom.base.IComboWeapon;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;

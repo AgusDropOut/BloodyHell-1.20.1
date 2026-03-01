@@ -1,8 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
-import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookModel;
 import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookRenderer;
-import net.agusdropout.bloodyhell.util.CrimsonVeilHelper;
+import net.agusdropout.bloodyhell.util.capability.CrimsonVeilHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;

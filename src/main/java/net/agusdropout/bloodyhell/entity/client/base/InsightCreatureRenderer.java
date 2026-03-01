@@ -41,16 +41,14 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 
         float playerInsight = 80;
-        float calculatedAlpha = 0.07f;
+        float calculatedAlpha ;
 
-        if (calculatedAlpha <= 0.01f) {
-            return;
-        }
 
         boolean shadersActive = ShaderUtils.areShadersActive();
 
         if (!shadersActive) {
             if (ModShaders.INSIGHT_DISTORTION_SHADER != null) {
+                calculatedAlpha =  0.07f;
                 Uniform timeUniform = ModShaders.INSIGHT_DISTORTION_SHADER.getUniform("GameTime");
                 if (timeUniform != null) timeUniform.set(entity.tickCount + partialTick);
 
@@ -62,6 +60,7 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
 
         } else {
             float renderTime = entity.tickCount + partialTick;
+            calculatedAlpha = 0.5f;
 
             MultiBufferSource wrappedBufferSource = renderType -> {
                 VertexConsumer originalBuffer = bufferSource.getBuffer(renderType);

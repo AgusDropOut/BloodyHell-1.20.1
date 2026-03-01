@@ -6,11 +6,8 @@ import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory; // Moved here
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.client.BloodFireOverlay;
-import net.agusdropout.bloodyhell.client.BossBarHudOverlay;
+import net.agusdropout.bloodyhell.client.overlay.*;
 import net.agusdropout.bloodyhell.client.ClientModLabelTooltip;
-import net.agusdropout.bloodyhell.client.CrimsonVeilHudOverlay;
-import net.agusdropout.bloodyhell.client.VisceralEffectHudOverlay;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
 import net.agusdropout.bloodyhell.entity.client.*;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
@@ -293,6 +290,7 @@ public class ClientEvents {
             event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), "visceral_overlay", VisceralEffectHudOverlay.OVERLAY);
             event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "boss_bar", BossBarHudOverlay.OVERLAY);
             event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "blood_fire", BloodFireOverlay.HUD_BLOOD_FIRE);
+            event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "insight", InsightHudOverlay.OVERLAY);
         }
 
         @SubscribeEvent
