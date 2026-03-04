@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
+import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
 import net.agusdropout.bloodyhell.event.handlers.BloodHarvestHandler;
 import net.agusdropout.bloodyhell.event.handlers.PlayerCapabilityHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
@@ -81,6 +82,7 @@ public class ModEvents {
             event.put(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneEntity.createAttributes().build());
             event.put(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantEntity.setAttributes().build());
             event.put(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), FailedSonOfTheUnknown.setAttributes().build());
+            event.put(ModEntityTypes.WEEPING_OCULAR.get(), WeepingOcularEntity.setAttributes().build());
         }
 
         public static AttributeSupplier.Builder createGenericAttributes() {

@@ -125,7 +125,6 @@ public class FailedSonOfTheUnknown extends AbstractMinionEntity {
     @Override
     public int getStripeColor() {
         return 0xffc400;
-        //return 0xff0000;
     }
 
     @Override

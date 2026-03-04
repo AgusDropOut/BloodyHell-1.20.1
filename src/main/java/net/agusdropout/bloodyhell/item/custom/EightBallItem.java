@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
+import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullOrbEmitter;
@@ -52,10 +53,15 @@ public class EightBallItem extends Item {
             InsightHelper.addInsight( serverPlayer,10);
 
 
-            FailedSonOfTheUnknown son = new FailedSonOfTheUnknown(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), level);
-            son.setOwnerUUID(player.getUUID());
-            son.setPos(player.getX(), player.getY(), player.getZ());
-            level.addFreshEntity(son);
+         //   FailedSonOfTheUnknown son = new FailedSonOfTheUnknown(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), level);
+         //   son.setOwnerUUID(player.getUUID());
+         //   son.setPos(player.getX(), player.getY(), player.getZ());
+         //   level.addFreshEntity(son);
+
+              WeepingOcularEntity son = new WeepingOcularEntity(ModEntityTypes.WEEPING_OCULAR.get(), level);
+              son.setOwnerUUID(player.getUUID());
+              son.setPos(player.getX(), player.getY(), player.getZ());
+              level.addFreshEntity(son);
 
      //int quantity = 5;
 //

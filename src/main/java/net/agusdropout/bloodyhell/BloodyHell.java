@@ -330,6 +330,8 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), RhnullOrbEmitterRenderer::new);
             EntityRenderers.register(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(),
                     context -> new GenericMinionRenderer<>(context, new GenericMinionModel<>()));
+            EntityRenderers.register(ModEntityTypes.WEEPING_OCULAR.get(),
+                    context -> new GenericMinionRenderer<>(context, new GenericMinionModel<>()));
 
 
 

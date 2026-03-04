@@ -6,6 +6,7 @@ import net.agusdropout.bloodyhell.entity.custom.*;
 
 import net.agusdropout.bloodyhell.entity.effects.*;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
+import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
 import net.agusdropout.bloodyhell.entity.projectile.*;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.*;
@@ -264,6 +265,12 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.of(FailedSonOfTheUnknown::new, MobCategory.MONSTER)
                             .sized(0.8F, 1.8F)
                             .build("failed_son_of_the_unknown"));
+    public static final RegistryObject<EntityType<WeepingOcularEntity>> WEEPING_OCULAR =
+            ENTITY_TYPES.register("weeping_ocular",
+                    () -> EntityType.Builder.of(WeepingOcularEntity::new, MobCategory.MONSTER)
+                            .sized(0.7F, 0.7F) // Adjust width and height to match the model
+                            .clientTrackingRange(8)
+                            .build("weeping_ocular"));
 
 
 

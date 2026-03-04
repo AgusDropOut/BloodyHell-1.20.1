@@ -25,12 +25,10 @@ public class ModStructuresTagGenerator extends StructureTagsProvider {
         this.tag(ModTags.Structures.SANCTUM_OF_THE_UNBOUND)
                 .add(ModStructures.SANCTUM_OF_THE_UNBOUND);
 
+        this.tag(ModTags.Structures.VESPER_HUT)
+                .add(ModStructures.VESPERS_HUT);
 
-
-
-
-
-        this.tag(ModTags.Structures.POOL)
+        this.tag(ModTags.Structures.SELIORA_PYRAMID)
                 .add(ModStructures.POOL_KEY);
     }
 }

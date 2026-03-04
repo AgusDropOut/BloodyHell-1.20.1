@@ -1,0 +1,111 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "the_weeping_ocular",
+					"pivot": [0, 7.66667, 0],
+					"cubes": [
+						{
+							"origin": [-3, 4, -3],
+							"size": [6, 6, 6],
+							"uv": {
+								"north": {"uv": [29, 50], "uv_size": [7, 7]},
+								"east": {"uv": [0, 57], "uv_size": [6, 6]},
+								"south": {"uv": [18, 57], "uv_size": [6, 6]},
+								"west": {"uv": [12, 57], "uv_size": [6, 6]},
+								"up": {"uv": [6, 51], "uv_size": [6, 6]},
+								"down": {"uv": [12, 57], "uv_size": [6, -6]}
+							}
+						}
+					]
+				},
+				{
+					"name": "rightWing",
+					"parent": "the_weeping_ocular",
+					"pivot": [3, 8, 0],
+					"cubes": [
+						{
+							"origin": [3, 8, -8],
+							"size": [9, 0, 16],
+							"uv": {
+								"north": {"uv": [16, 16], "uv_size": [9, 0]},
+								"east": {"uv": [0, 16], "uv_size": [16, 0]},
+								"south": {"uv": [41, 16], "uv_size": [9, 0]},
+								"west": {"uv": [25, 16], "uv_size": [16, 0]},
+								"up": {"uv": [16, 0], "uv_size": [9, 16]},
+								"down": {"uv": [25, 16], "uv_size": [9, -16]}
+							}
+						}
+					]
+				},
+				{
+					"name": "rightFlap",
+					"parent": "rightWing",
+					"pivot": [12, 8, 0],
+					"cubes": [
+						{
+							"origin": [12, 8, -8],
+							"size": [6, 0, 16],
+							"uv": {
+								"north": {"uv": [16, 50], "uv_size": [6, 0]},
+								"east": {"uv": [0, 50], "uv_size": [16, 0]},
+								"south": {"uv": [38, 50], "uv_size": [6, 0]},
+								"west": {"uv": [22, 50], "uv_size": [16, 0]},
+								"up": {"uv": [16, 34], "uv_size": [6, 16]},
+								"down": {"uv": [22, 50], "uv_size": [6, -16]}
+							}
+						}
+					]
+				},
+				{
+					"name": "leftWing",
+					"parent": "the_weeping_ocular",
+					"pivot": [-3, 8, 0],
+					"cubes": [
+						{
+							"origin": [-12, 8, -8],
+							"size": [9, 0, 16],
+							"uv": {
+								"north": {"uv": [16, 33], "uv_size": [9, 0]},
+								"east": {"uv": [0, 33], "uv_size": [16, 0]},
+								"south": {"uv": [41, 33], "uv_size": [9, 0]},
+								"west": {"uv": [25, 33], "uv_size": [16, 0]},
+								"up": {"uv": [16, 17], "uv_size": [9, 16]},
+								"down": {"uv": [25, 33], "uv_size": [9, -16]}
+							}
+						}
+					]
+				},
+				{
+					"name": "leftFlap",
+					"parent": "leftWing",
+					"pivot": [-12, 7, 0],
+					"cubes": [
+						{
+							"origin": [-18, 8, -8],
+							"size": [6, 0, 16],
+							"uv": {
+								"north": {"uv": [61, 50], "uv_size": [6, 0]},
+								"east": {"uv": [45, 50], "uv_size": [16, 0]},
+								"south": {"uv": [83, 50], "uv_size": [6, 0]},
+								"west": {"uv": [67, 50], "uv_size": [16, 0]},
+								"up": {"uv": [61, 34], "uv_size": [6, 16]},
+								"down": {"uv": [67, 50], "uv_size": [6, -16]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

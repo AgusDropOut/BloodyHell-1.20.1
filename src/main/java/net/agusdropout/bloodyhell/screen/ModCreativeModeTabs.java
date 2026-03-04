@@ -217,8 +217,6 @@ public class ModCreativeModeTabs {
 
 
                         output.accept(ModItems.BLOOD_ALTAR.get());
-
-                        // FIX: Same for Main Blood Altar
                         output.accept(ModItems.MAIN_BLOOD_ALTAR.get());
 
                         output.accept(ModItems.RELIQUARY.get());

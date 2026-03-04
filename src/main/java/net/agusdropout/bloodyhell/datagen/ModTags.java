@@ -74,7 +74,8 @@ public class ModTags {
 
         public static final TagKey<Structure> MAUSOLEUM = tag("mausoleum");
         public static final TagKey<Structure> SANCTUM_OF_THE_UNBOUND = tag("sanctum_of_the_unbound");
-        public static final TagKey<Structure> POOL = tag("pool");
+        public static final TagKey<Structure> VESPER_HUT = tag("vesper_hut");
+        public static final TagKey<Structure> SELIORA_PYRAMID = tag("seliora_pyramid");
 
         private static TagKey<Structure> tag(String name) {
             return StructureTags.create(new ResourceLocation(BloodyHell.MODID, name).toString());
