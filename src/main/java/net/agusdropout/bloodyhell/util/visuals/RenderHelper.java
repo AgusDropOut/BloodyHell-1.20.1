@@ -420,11 +420,6 @@ public class RenderHelper {
             float theta = i * angleStep;
             float nextTheta = (i + 1) * angleStep;
 
-            // --- YOUR TURN ---
-            // 1. Calculate the 4 corners of a "strip" of the cylinder.
-            // 2. Front corners will have z = 0.
-            // 3. Back corners will have z = length.
-            // 4. Use Mth.cos(theta) and Mth.sin(theta) for X and Y.
             x = (radius * Mth.cos(theta));
             z = (radius * Mth.sin(theta));
             nextx = (radius * Mth.cos(nextTheta));
@@ -435,7 +430,7 @@ public class RenderHelper {
             consumer.vertex(pose, nextx, y+10, nextz).color(rCol, 0.5f, bCol, alpha).endVertex();
             consumer.vertex(pose, x, y+10, z).color(rCol, gCol, 1.0f, alpha).endVertex();
 
-            //invertido
+
             consumer.vertex(pose, x, y+10, z).color(rCol, gCol, 1.0f, alpha).endVertex();
             consumer.vertex(pose, nextx, y+10, nextz).color(rCol, 0.5f, bCol, alpha).endVertex();
             consumer.vertex(pose, nextx, y, nextz).color(1.0f, gCol, bCol, alpha).endVertex();

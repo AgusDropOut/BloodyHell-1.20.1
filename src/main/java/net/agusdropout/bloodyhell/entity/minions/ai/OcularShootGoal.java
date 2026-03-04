@@ -65,7 +65,6 @@ public class OcularShootGoal extends Goal {
                 return;
             }
 
-            // Triggers the MoLang/Blockbench recoil animation
             this.ocular.triggerShootAnimation();
 
             this.performAttack(this.target);
