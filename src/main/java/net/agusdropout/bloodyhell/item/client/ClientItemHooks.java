@@ -34,6 +34,8 @@ public class ClientItemHooks {
         }
     }
 
+
+
     public static LocalPlayer getLocalPlayer() {
         return Minecraft.getInstance().player;
     }

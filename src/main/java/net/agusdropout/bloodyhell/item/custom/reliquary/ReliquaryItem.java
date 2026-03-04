@@ -1,5 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom.reliquary;
 
+
+import net.agusdropout.bloodyhell.item.client.ClientItemHooks;
 import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoItem;
 import net.agusdropout.bloodyhell.screen.custom.menu.ReliquaryMenu;
 import net.minecraft.nbt.CompoundTag;
@@ -50,20 +52,18 @@ public class ReliquaryItem extends BaseGeckoItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
 
-            ItemStack itemstack = player.getItemInHand(hand);
-
-            if (player.isShiftKeyDown()) {
-                if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                    NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
-                            (containerId, playerInventory, p) -> new ReliquaryMenu(containerId, playerInventory, itemstack),
-                            Component.literal("Ocular Reliquary")
-                    ), buf -> buf.writeEnum(hand));
-                }
-                return InteractionResultHolder.sidedSuccess(itemstack,level.isClientSide());
+        if (player.isShiftKeyDown()) {
+            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
+                        (containerId, playerInventory, p) -> new ReliquaryMenu(containerId, playerInventory, itemstack),
+                        Component.literal("Ocular Reliquary")
+                ), buf -> buf.writeEnum(hand));
             }
+            return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+        }
 
-            player.startUsingItem(hand);
         player.startUsingItem(hand);
 
         if (!level.isClientSide) {
@@ -90,18 +90,10 @@ public class ReliquaryItem extends BaseGeckoItem {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 5, state -> {
-            LivingEntity entity = null;
 
-            if (state.getData(DataTickets.ENTITY) instanceof LivingEntity livingEntity) {
-                entity = livingEntity;
-            } else {
-                net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
-                if (mc.player != null && (mc.player.getMainHandItem().getItem() == this || mc.player.getOffhandItem().getItem() == this)) {
-                    entity = mc.player;
-                }
-            }
+            ItemStack stack = state.getData(DataTickets.ITEMSTACK);
 
-            if (entity != null && entity.isUsingItem() && entity.getUseItem().getItem() == this) {
+            if (ClientItemHooks.getLocalPlayer().isUsingItem() && ClientItemHooks.getLocalPlayer().getUseItem() == stack) {
                 return state.setAndContinue(CHARGING_ANIM);
             }
 

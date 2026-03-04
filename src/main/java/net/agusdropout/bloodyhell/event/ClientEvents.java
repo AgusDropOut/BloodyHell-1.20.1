@@ -86,8 +86,10 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void onComputeFov(ViewportEvent.ComputeFov event) {
-            Player player = (Player) event.getCamera().getEntity();
-            if (player == null) return;
+
+            if (!(event.getCamera().getEntity() instanceof Player player)) {
+                return;
+            }
 
             float cyclopsZoomMultiplier = 1.0f;
             CyclopsEntity cyclops = player.level().getEntitiesOfClass(CyclopsEntity.class, player.getBoundingBox().inflate(64.0))
