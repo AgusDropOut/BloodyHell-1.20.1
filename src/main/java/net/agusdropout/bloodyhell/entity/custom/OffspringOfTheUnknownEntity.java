@@ -1,7 +1,9 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.capability.insight.PlayerInsight;
 import net.agusdropout.bloodyhell.entity.ai.goals.FleeFromTargetGoal;
 import net.agusdropout.bloodyhell.entity.ai.goals.OffspringOfTheUnknownAttack;
+import net.agusdropout.bloodyhell.entity.base.InsightEntity;
 import net.agusdropout.bloodyhell.entity.client.OffspringOfTheUnknownRenderer;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.core.BlockPos;
@@ -38,7 +40,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 
-public class OffspringOfTheUnknownEntity extends Monster implements GeoEntity {
+public class OffspringOfTheUnknownEntity extends Monster implements GeoEntity, InsightEntity {
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
 
@@ -221,8 +223,8 @@ public class OffspringOfTheUnknownEntity extends Monster implements GeoEntity {
     }
 
 
-
-    
-
-
+    @Override
+    public float getMinimumInsight() {
+        return PlayerInsight.INSIGHT_FOR_LEVEL_1;
+    }
 }

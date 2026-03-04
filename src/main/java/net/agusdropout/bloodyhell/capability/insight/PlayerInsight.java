@@ -7,6 +7,9 @@ public class PlayerInsight {
     public static final int MIN_INSIGHT = 0;
     public static final int MAX_INSIGHT = 100;
 
+    public static final int INSIGHT_FOR_LEVEL_1 = 30;
+    public static final int INSIGHT_FOR_LEVEL_2 = 60;
+
     public int getInsight() {
         return insight;
     }

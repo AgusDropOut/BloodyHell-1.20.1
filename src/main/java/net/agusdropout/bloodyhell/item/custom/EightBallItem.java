@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
+import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullOrbEmitter;
@@ -50,6 +51,12 @@ public class EightBallItem extends Item {
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
             InsightHelper.addInsight( serverPlayer,10);
 
+
+            FailedSonOfTheUnknown son = new FailedSonOfTheUnknown(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), level);
+            son.setOwnerUUID(player.getUUID());
+            son.setPos(player.getX(), player.getY(), player.getZ());
+            level.addFreshEntity(son);
+
      //int quantity = 5;
 //
       //  for (int i = 0; i < quantity; i++) {
@@ -70,8 +77,8 @@ public class EightBallItem extends Item {
         // RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
         // level.addFreshEntity(throne);
 
-            RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
-            level.addFreshEntity(orb);
+            //RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
+            //level.addFreshEntity(orb);
         } else {
 
             // Visual Feedback (Client Side)

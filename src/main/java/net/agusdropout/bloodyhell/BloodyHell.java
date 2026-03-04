@@ -12,6 +12,8 @@ import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
 
+import net.agusdropout.bloodyhell.entity.minions.client.base.GenericMinionModel;
+import net.agusdropout.bloodyhell.entity.minions.client.base.GenericMinionRenderer;
 import net.agusdropout.bloodyhell.fluid.ModFluidTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModCreativeModeTab;
@@ -326,6 +328,8 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.RHNULL_PAIN_THRONE.get(), RhnullPainThroneRenderer::new);
             EntityRenderers.register(ModEntityTypes.RHNULL_DROPLET_PROJECTILE.get(), RhnullDropletRenderer::new);
             EntityRenderers.register(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), RhnullOrbEmitterRenderer::new);
+            EntityRenderers.register(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(),
+                    context -> new GenericMinionRenderer<>(context, new GenericMinionModel<>()));
 
 
 

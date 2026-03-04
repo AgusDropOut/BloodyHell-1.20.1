@@ -32,8 +32,10 @@ public class BloodDimensionSkyRenderer {
     // [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, using our own stars at full brightness, and lowering void horizon threshold height from getHorizonHeight (63) to 0
     private static final ResourceLocation SKY_TEXTURE =
             new ResourceLocation(BloodyHell.MODID, "textures/environment/bloodsky.png");
-    private static final ResourceLocation FOG_OVERLAY =
-            new ResourceLocation(BloodyHell.MODID, "textures/environment/blood_fog_overlay.png");
+    private static final ResourceLocation FOG_OVERLAY_1 =
+            new ResourceLocation(BloodyHell.MODID, "textures/environment/fog_overlay_1.png");
+    private static final ResourceLocation FOG_OVERLAY_2 =
+            new ResourceLocation(BloodyHell.MODID, "textures/environment/fog_overlay_2.png");
     private static final ResourceLocation BLOOD_MOON = new ResourceLocation(BloodyHell.MODID, "textures/environment/blood_moon.png");
 
     public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack poseStack,
@@ -88,66 +90,82 @@ public class BloodDimensionSkyRenderer {
         }
 
         BufferUploader.drawWithShader(buffer.end());
-        renderFogOverlay(poseStack, projectionMatrix, partialTicks);
+       // renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_1, 0f, 0.3f );
+
+        renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_2, 0.8f, -0.3f);
         renderBloodMoon(poseStack, projectionMatrix, partialTicks);
-        return true; // evita dibujar el cielo vanilla
+        renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_2, 0.8f, 0.5f);
+
+        return true;
     }
 
 
 
-    private static void renderFogOverlay(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks) {
+    private static void renderFogOverlay(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, ResourceLocation overlayTexture, float alphaMult, float velocityMult) {
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.SRC_ALPHA);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, FOG_OVERLAY);
+        RenderSystem.setShaderTexture(0, overlayTexture);
 
-        final float R = 520f; // radio un poco mayor que el skybox
-        final int SEG = 48;   // suavidad
-        final float OPACITY_MULT = 0.9f;
-        RenderSystem.setShaderColor(1f, 1f, 1f, OPACITY_MULT);
+        final float R = 520f;
+        final int SEG = 48;
+        final int RINGS = 24;
+
+        RenderSystem.setShaderColor(1f, 0f, 0f, alphaMult);
 
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        // Animación: rotación lenta
         Minecraft mc = Minecraft.getInstance();
         float time = (mc.level != null ? (mc.level.getGameTime() + partialTicks) : partialTicks);
-        float rot = time * 0.06f; // velocidad
+        float rot = time * velocityMult;
 
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(rot)); // aplicar la rotación
+        poseStack.mulPose(Axis.YP.rotationDegrees(rot));
 
-        // Media esfera superior
-        for (int i = 0; i < SEG; i++) {
-            double t1 = (2 * Math.PI) * (i / (double) SEG);
-            double t2 = (2 * Math.PI) * ((i + 1) / (double) SEG);
+        for (int i = 0; i < RINGS; i++) {
+            double phi1 = Math.PI * (i / (double) RINGS);
+            double phi2 = Math.PI * ((i + 1) / (double) RINGS);
 
-            float x1 = (float)(R * Math.cos(t1));
-            float z1 = (float)(R * Math.sin(t1));
-            float x2 = (float)(R * Math.cos(t2));
-            float z2 = (float)(R * Math.sin(t2));
+            float y1 = (float)(R * Math.cos(phi1));
+            float y2 = (float)(R * Math.cos(phi2));
 
-            float yTop = 220f;  // altura de la cúpula
-            float yMid = -30f;   // borde cercano al horizonte
+            float r1 = (float)(R * Math.sin(phi1));
+            float r2 = (float)(R * Math.sin(phi2));
 
-            // UV polar (para evitar costuras duras)
-            float u1 = (float)(0.5 + 0.5 * Math.cos(t1));
-            float v1 = (float)(0.5 + 0.5 * Math.sin(t1));
-            float u2 = (float)(0.5 + 0.5 * Math.cos(t2));
-            float v2 = (float)(0.5 + 0.5 * Math.sin(t2));
+            float v1 = i / (float) RINGS;
+            float v2 = (i + 1) / (float) RINGS;
 
-            // Quad del segmento
-            Matrix4f m = poseStack.last().pose(); //  ahora sí usamos la matriz con la rotación aplicada
-            buf.vertex(m, x1, yMid, z1).uv(u1, v1).endVertex();
-            buf.vertex(m, x2, yMid, z2).uv(u2, v2).endVertex();
-            buf.vertex(m, 0,  yTop,  0).uv(0.5f, 0.5f).endVertex();
-            buf.vertex(m, 0,  yTop,  0).uv(0.5f, 0.5f).endVertex();
+            for (int j = 0; j < SEG; j++) {
+                double theta1 = (2 * Math.PI) * (j / (double) SEG);
+                double theta2 = (2 * Math.PI) * ((j + 1) / (double) SEG);
+
+                float x1_1 = (float)(r1 * Math.cos(theta1));
+                float z1_1 = (float)(r1 * Math.sin(theta1));
+
+                float x2_1 = (float)(r1 * Math.cos(theta2));
+                float z2_1 = (float)(r1 * Math.sin(theta2));
+
+                float x1_2 = (float)(r2 * Math.cos(theta1));
+                float z1_2 = (float)(r2 * Math.sin(theta1));
+
+                float x2_2 = (float)(r2 * Math.cos(theta2));
+                float z2_2 = (float)(r2 * Math.sin(theta2));
+
+                float u1 = j / (float) SEG;
+                float u2 = (j + 1) / (float) SEG;
+
+                Matrix4f m = poseStack.last().pose();
+                buf.vertex(m, x1_1, y1, z1_1).uv(u1, v1).endVertex();
+                buf.vertex(m, x1_2, y2, z1_2).uv(u1, v2).endVertex();
+                buf.vertex(m, x2_2, y2, z2_2).uv(u2, v2).endVertex();
+                buf.vertex(m, x2_1, y1, z2_1).uv(u2, v1).endVertex();
+            }
         }
 
         BufferUploader.drawWithShader(buf.end());
-        poseStack.popPose(); // restaurar transformaciones
+        poseStack.popPose();
 
-        // Limpieza
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.disableBlend();
     }

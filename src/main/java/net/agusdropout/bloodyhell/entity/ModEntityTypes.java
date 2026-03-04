@@ -5,6 +5,7 @@ import net.agusdropout.bloodyhell.entity.custom.*;
 
 
 import net.agusdropout.bloodyhell.entity.effects.*;
+import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.projectile.*;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.*;
@@ -257,6 +258,12 @@ public class ModEntityTypes {
                             .sized(0.5f, 0.5f)
                             .clientTrackingRange(10)
                             .build("rhnull_orb_emitter_entity"));
+
+    public static final RegistryObject<EntityType<FailedSonOfTheUnknown>> FAILED_SON_OF_THE_UNKNOWN =
+            ENTITY_TYPES.register("failed_son_of_the_unknown",
+                    () -> EntityType.Builder.of(FailedSonOfTheUnknown::new, MobCategory.MONSTER)
+                            .sized(0.8F, 1.8F)
+                            .build("failed_son_of_the_unknown"));
 
 
 
