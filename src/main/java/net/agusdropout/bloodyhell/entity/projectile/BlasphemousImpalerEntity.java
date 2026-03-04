@@ -5,7 +5,9 @@ import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.ShockwaveParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
+import net.agusdropout.bloodyhell.util.visuals.SpellPalette;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -33,6 +35,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,10 +51,9 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
     public int clientShakeTime = 0;
     private int clientSideReturnTickCount;
 
-    // --- CONFIGURACIÓN DE ZONA ---
     private static final int RETURN_THRESHOLD = 300;
-    private static final double AOE_RADIUS = 3.5D; // Radio de daño
-    private static final float AOE_DAMAGE = 2.0F;  // Daño por tick (muy rápido, bajo daño)
+    private static final double AOE_RADIUS = 3.5D;
+    private static final float AOE_DAMAGE = 2.0F;
 
     public BlasphemousImpalerEntity(EntityType<? extends AbstractArrow> type, Level level) {
         super(type, level);
@@ -69,53 +71,46 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
 
     @Override
     public void tick() {
-        super.tick(); // Física vanilla (actualiza inGround automáticamente)
+        super.tick();
 
         if (this.clientShakeTime > 0) this.clientShakeTime--;
 
-        // 1. LÓGICA DE RETORNO (PRIORIDAD ALTA)
+
         if (this.entityData.get(RETURNING)) {
             handleReturnLogic();
             return;
         }
 
-        // 2. LÓGICA CLIENTE (PARTÍCULAS DE VUELO)
         if (this.level().isClientSide) {
             handleClientFlightParticles();
         }
 
-        // --- LÓGICA DE SERVIDOR ---
+
         if (!this.level().isClientSide) {
 
-            // 3. NUEVA FUNCIONALIDAD: ZONA DE DAÑO (AoE)
-            // Ejecutar si:
-            // - Está clavada en un bloque (inGround es true por defecto en AbstractArrow al chocar)
-            // - NO tiene a nadie atrapado (caughtEntity == null)
-            // - NO está volviendo (ya chequeado arriba)
+
             if (this.inGround && this.caughtEntity == null) {
                 tickGroundEffects();
             }
 
-            // 4. Lógica de Pinning (Si tiene a alguien atrapado)
-            // Aquí usamos isPinning O simplemente chequeamos caughtEntity != null
+
             if (this.caughtEntity != null && this.isPinning) {
                 handlePinningLogic();
-                // Nota: No hacemos return aquí para permitir que corra el lifetime logic
+
             }
 
-            // 5. Arrastre en vuelo (Si tiene a alguien pero aún no choca pared)
+
             if (this.caughtEntity != null && !this.isPinning) {
                 handleDraggingLogic();
             }
 
-            // 6. Auto-Retorno / Despawn
+
             handleLifetimeLogic();
         }
     }
 
     private void tickGroundEffects() {
-        // --- A. AREA OF EFFECT DAMAGE ---
-        // Runs every 5 ticks (4 times/sec)
+
         if (this.tickCount % 5 == 0) {
             AABB area = this.getBoundingBox().inflate(AOE_RADIUS, 1.0D, AOE_RADIUS);
             List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class, area);
@@ -127,35 +122,32 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
                 }
             }
 
-            // --- B. VISUALS: EXPANDING WAVE ---
-            // Using Helper: Ring Shape
-            // Radius starts at 0.5, expands outward at speed 0.35
+
             ParticleHelper.spawnRing(this.level(), ModParticles.MAGIC_LINE_PARTICLE.get(),
                     this.position().add(0, 0.1, 0), 0.5, 16, 0.35);
         }
 
-        // --- C. VISUALS: SPIRALS ---
-        // Specific animation logic kept here, but spawning delegated to helper
+
         if (!this.level().isClientSide) {
             double spiralRadius = 0.8;
             double angle = (this.tickCount * 0.2) % (Math.PI * 2);
 
-            // Bobbing Y offset calculation
+
             double yOffset1 = 0.2 + (Math.sin(this.tickCount * 0.1) * 0.5 + 0.5);
             double yOffset2 = 0.2 + (Math.cos(this.tickCount * 0.1) * 0.5 + 0.5);
 
-            // Spiral 1
+
             double x1 = this.getX() + Math.cos(angle) * spiralRadius;
             double z1 = this.getZ() + Math.sin(angle) * spiralRadius;
             ParticleHelper.spawn(this.level(), ModParticles.MAGIC_LINE_PARTICLE.get(), x1, this.getY() + yOffset1, z1, 0, 0, 0);
 
-            // Spiral 2 (Opposite side)
+
             double x2 = this.getX() + Math.cos(angle + Math.PI) * spiralRadius;
             double z2 = this.getZ() + Math.sin(angle + Math.PI) * spiralRadius;
             ParticleHelper.spawn(this.level(), ModParticles.MAGIC_LINE_PARTICLE.get(), x2, this.getY() + yOffset2, z2, 0, 0, 0);
         }
     }
-    // --- MÓDULOS DE LÓGICA EXISTENTES (Refactorizados para limpieza) ---
+
 
     private void handleReturnLogic() {
         this.setNoPhysics(true);
@@ -205,9 +197,15 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
         if (!this.inGround && !this.isPinning && this.getDeltaMovement().lengthSqr() > 0.01) {
             if (this.tickCount % 2 == 0) {
                 Vec3 motion = this.getDeltaMovement();
-                this.level().addParticle(ModParticles.SHOCKWAVE_RING.get(),
+                this.level().addParticle(
+                        new ShockwaveParticleOptions(
+                                new Vector3f(SpellPalette.RHNULL.getColor(0)),
+                                0.5f,
+                                3.0f
+                        ),
                         this.getX(), this.getY(), this.getZ(),
-                        motion.x, motion.y, motion.z);
+                        motion.x, motion.y, motion.z
+                );
             }
         }
     }
@@ -244,7 +242,7 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
         if (this.tickCount > 60) caughtEntity = null;
     }
 
-    // --- EVENTOS DE IMPACTO (Sin cambios drásticos) ---
+
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
@@ -255,7 +253,7 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
             float damage = (float) this.getBaseDamage() * 2.0f;
             Vec3 motion = this.getDeltaMovement().normalize();
 
-            // Raycast para pared
+
             Vec3 start = livingTarget.position();
             Vec3 end = start.add(motion.scale(8.0));
             BlockHitResult wallCheck = this.level().clip(new net.minecraft.world.level.ClipContext(
@@ -264,7 +262,6 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
             boolean hitWall = wallCheck.getType() != HitResult.Type.MISS;
 
             if (hitWall) {
-                // PINNING (Impacto contra pared)
                 this.caughtEntity = livingTarget;
                 this.caughtEntityUUID = livingTarget.getUUID();
                 livingTarget.hurt(this.damageSources().trident(this, this.getOwner()), damage);
@@ -278,23 +275,20 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
                 this.playSound(SoundEvents.TRIDENT_HIT, 1.0f, 1.0f);
                 this.playSound(SoundEvents.ANVIL_LAND, 0.5f, 0.5f);
 
-                // --- NUEVO: CAMERA SHAKE AL EMPALAR ---
-                // Un poco más fuerte (0.8) porque es un golpe brutal
+
                 EntityCameraShake.cameraShake(this.level(), this.position(), 20.0f, 0.8f, 10, 5);
 
                 if (this.level() instanceof ServerLevel serverLevel) {
                     spawnWallImplosionParticles(serverLevel, wallPos, wallCheck.getDirection());
                 }
             } else {
-                // GOLPE NORMAL (Sin Shake o muy leve)
                 livingTarget.hurt(this.damageSources().trident(this, this.getOwner()), damage);
                 livingTarget.knockback(1.5, motion.x, motion.z);
                 this.setDeltaMovement(this.getDeltaMovement().scale(-0.1));
                 this.setYRot(this.getYRot() + 180.0F);
                 this.yRotO += 180.0F;
 
-                // Opcional: Shake muy leve al golpear entidad sin pared
-                // EntityCameraShake.cameraShake(this.level(), this.position(), 10.0f, 0.2f, 5, 2);
+
             }
         }
     }
@@ -315,11 +309,10 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
 
         if (this.level() instanceof ServerLevel serverLevel && !hitState.isAir()) {
 
-            // --- NUEVO: CAMERA SHAKE ---
-            // Radio: 15 bloques, Magnitud: 0.5 (medio), Duración: 10 ticks, Fade: 5 ticks
+
             EntityCameraShake.cameraShake(this.level(), this.position(), 15.0f, 0.5f, 10, 5);
 
-            // Efecto Falling Blocks (Debris)
+
             for (int i = 0; i < 6; i++) {
                 double spawnX = hitPos.getX() + 0.5 + face.getStepX() * 0.6;
                 double spawnY = hitPos.getY() + 0.5 + face.getStepY() * 0.6;
@@ -336,11 +329,11 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
                 debris.setDeltaMovement(velX, velY, velZ);
                 this.level().addFreshEntity(debris);
             }
-            // Partículas de impacto
+
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, hitState),
                     this.getX(), this.getY(), this.getZ(), 20, 0.3, 0.3, 0.3, 0.1);
 
-            // Círculo Mágico en la pared
+
             if (this.caughtEntity == null) {
                 spawnWallImplosionParticles(serverLevel, result.getLocation(), face);
             }
@@ -348,7 +341,7 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
     }
 
     private void spawnWallImplosionParticles(ServerLevel level, Vec3 pos, Direction face) {
-        // Tu lógica de anillos de impacto (sin cambios)
+
         double ox = pos.x + face.getStepX() * 0.05;
         double oy = pos.y + face.getStepY() * 0.05;
         double oz = pos.z + face.getStepZ() * 0.05;
@@ -376,7 +369,7 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
         level.sendParticles(ParticleTypes.SONIC_BOOM, ox, oy, oz, 1, 0,0,0, 0);
     }
 
-    // --- METODOS STANDARD ---
+
     @Override public void playerTouch(Player player) {
         if (this.ownedBy(player) || this.getOwner() == null) {
             if (this.entityData.get(RETURNING)) {

@@ -270,7 +270,7 @@ public class ClientEvents {
             event.registerSpecial(ModParticles.ETHEREAL_SWIRL_PARTICLE.get(), new EtherealSwirlParticle.Provider());
             event.registerSpriteSet(ModParticles.CYCLOPS_HALO_PARTICLE.get(), CyclopsHaloParticle.Provider::new);
             event.registerSpriteSet(ModParticles.EYE_PARTICLE.get(), EyeParticle.Provider::new);
-            event.registerSpriteSet(ModParticles.SHOCKWAVE_RING.get(), ShockwaveParticle.Provider::new);
+            event.registerSpriteSet(ModParticles.SHOCKWAVE_PARTICLE.get(), ShockwaveParticle.Provider::new);
             event.registerSpriteSet(ModParticles.BLOOD_PULSE_PARTICLE.get(), BloodPulseParticle.Provider::new);
             event.registerSpriteSet(ModParticles.BLOOD_FLAME.get(), BloodFlameParticle.Provider::new);
             event.registerSpriteSet(ModParticles.CHILL_FLAME_PARTICLE.get(), ChillFlameParticle.Provider::new);

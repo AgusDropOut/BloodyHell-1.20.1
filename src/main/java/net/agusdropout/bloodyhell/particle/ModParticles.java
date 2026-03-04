@@ -80,8 +80,7 @@ public class ModParticles {
                         }
                     });
 
-    public static final RegistryObject<SimpleParticleType> SHOCKWAVE_RING = PARTICLE_TYPES.register("shockwave_ring",
-            () -> new SimpleParticleType(true));
+
     public static final RegistryObject<SimpleParticleType> BLOOD_FLAME =
             PARTICLE_TYPES.register("blood_flame", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> SMALL_BLOOD_FLAME_PARTICLE =
@@ -158,6 +157,13 @@ public class ModParticles {
                 @Override
                 public Codec<ChillFallingParticleOptions> codec() {
                     return ChillFallingParticleOptions.CODEC;
+                }
+            });
+    public static final RegistryObject<ParticleType<ShockwaveParticleOptions>> SHOCKWAVE_PARTICLE =
+            PARTICLE_TYPES.register("shockwave_particle", () -> new ParticleType<ShockwaveParticleOptions>(false, ShockwaveParticleOptions.DESERIALIZER) {
+                @Override
+                public Codec<ShockwaveParticleOptions> codec() {
+                    return ShockwaveParticleOptions.CODEC;
                 }
             });
 

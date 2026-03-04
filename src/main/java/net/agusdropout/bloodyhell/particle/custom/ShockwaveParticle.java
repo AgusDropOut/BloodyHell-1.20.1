@@ -1,10 +1,10 @@
 package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.ShockwaveParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
@@ -12,15 +12,26 @@ import org.joml.Vector3f;
 
 public class ShockwaveParticle extends TextureSheetParticle {
 
-    protected ShockwaveParticle(ClientLevel level, double x, double y, double z, double xDir, double yDir, double zDir, SpriteSet spriteSet) {
+    private final float growthPerTick;
+
+    protected ShockwaveParticle(ClientLevel level, double x, double y, double z, double xDir, double yDir, double zDir, SpriteSet spriteSet, ShockwaveParticleOptions options) {
         super(level, x, y, z, 0, 0, 0);
 
         this.xd = xDir;
         this.yd = yDir;
         this.zd = zDir;
 
-        this.lifetime = 10;
-        this.quadSize = 0.5f;
+        this.rCol = options.getColor().x();
+        this.gCol = options.getColor().y();
+        this.bCol = options.getColor().z();
+
+        this.quadSize = options.getInitialSize();
+        float sizeDifference = Math.max(0.1f, options.getMaxSize() - options.getInitialSize());
+
+        // 10 ticks of lifetime per 1.0f unit of size growth
+        this.lifetime = (int) Math.max(1, sizeDifference * 10.0f);
+        this.growthPerTick = sizeDifference / this.lifetime;
+
         this.alpha = 1.0f;
 
         this.pickSprite(spriteSet);
@@ -36,8 +47,8 @@ public class ShockwaveParticle extends TextureSheetParticle {
         if (this.age++ >= this.lifetime) {
             this.remove();
         } else {
-            this.quadSize += 0.35f; // Expansión
-            this.alpha = 1.0f - ((float)this.age / (float)this.lifetime); // Fade out
+            this.quadSize += this.growthPerTick;
+            this.alpha = 1.0f - ((float)this.age / (float)this.lifetime);
         }
     }
 
@@ -48,17 +59,14 @@ public class ShockwaveParticle extends TextureSheetParticle {
         float y = (float) (Mth.lerp(partialTicks, this.yo, this.y) - camPos.y());
         float z = (float) (Mth.lerp(partialTicks, this.zo, this.z) - camPos.z());
 
-
         Quaternionf baseRotation = new Quaternionf();
 
         double horizontalDist = Math.sqrt(this.xd * this.xd + this.zd * this.zd);
         float yRot = (float) (Mth.atan2(this.xd, this.zd));
         float xRot = (float) (Mth.atan2(this.yd, horizontalDist));
 
-
         baseRotation.rotateY(yRot);
         baseRotation.rotateX(-xRot + (float)(Math.PI));
-
 
         Vector3f[] vertices = new Vector3f[]{
                 new Vector3f(-1.0F, -1.0F, 0.0F),
@@ -74,29 +82,13 @@ public class ShockwaveParticle extends TextureSheetParticle {
         float v1 = this.getV1();
         int light = this.getLightColor(partialTicks);
 
-
         for (int i = 0; i < 2; i++) {
 
-
             Quaternionf currentRot = new Quaternionf(baseRotation);
-
 
             if (i == 1) {
                 currentRot.rotateY((float) Math.PI);
             }
-
-
-            for (Vector3f baseVertex : vertices) {
-
-                Vector3f vertex = new Vector3f(baseVertex);
-
-                vertex.rotate(currentRot);
-                vertex.mul(size);
-                vertex.add(x, y, z);
-
-
-            }
-
 
             Vector3f v_0 = transform(vertices[0], currentRot, size, x, y, z);
             buffer.vertex(v_0.x(), v_0.y(), v_0.z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
@@ -112,7 +104,6 @@ public class ShockwaveParticle extends TextureSheetParticle {
         }
     }
 
-
     private Vector3f transform(Vector3f original, Quaternionf rot, float scale, float x, float y, float z) {
         Vector3f v = new Vector3f(original);
         v.rotate(rot);
@@ -126,12 +117,13 @@ public class ShockwaveParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<ShockwaveParticleOptions> {
         private final SpriteSet spriteSet;
         public Provider(SpriteSet spriteSet) { this.spriteSet = spriteSet; }
+
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
-            return new ShockwaveParticle(level, x, y, z, xd, yd, zd, this.spriteSet);
+        public Particle createParticle(ShockwaveParticleOptions options, ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
+            return new ShockwaveParticle(level, x, y, z, xd, yd, zd, this.spriteSet, options);
         }
     }
 }
