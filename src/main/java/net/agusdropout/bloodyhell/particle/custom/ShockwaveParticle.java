@@ -28,8 +28,7 @@ public class ShockwaveParticle extends TextureSheetParticle {
         this.quadSize = options.getInitialSize();
         float sizeDifference = Math.max(0.1f, options.getMaxSize() - options.getInitialSize());
 
-        // 10 ticks of lifetime per 1.0f unit of size growth
-        this.lifetime = (int) Math.max(1, sizeDifference * 10.0f);
+        this.lifetime = (int) Math.max(10, sizeDifference * 10.0f);
         this.growthPerTick = sizeDifference / this.lifetime;
 
         this.alpha = 1.0f;
@@ -102,6 +101,11 @@ public class ShockwaveParticle extends TextureSheetParticle {
             Vector3f v_3 = transform(vertices[3], currentRot, size, x, y, z);
             buffer.vertex(v_3.x(), v_3.y(), v_3.z()).uv(u0, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
         }
+    }
+
+    @Override
+    protected int getLightColor(float tint) {
+        return 0xF000F0;
     }
 
     private Vector3f transform(Vector3f original, Quaternionf rot, float scale, float x, float y, float z) {

@@ -5,8 +5,9 @@ import net.agusdropout.bloodyhell.entity.client.base.InsightCreatureRenderer;
 import net.agusdropout.bloodyhell.entity.custom.OffspringOfTheUnknownEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class OffspringOfTheUnknownRenderer extends InsightCreatureRenderer<OffspringOfTheUnknownEntity> {
+public class OffspringOfTheUnknownRenderer extends GeoEntityRenderer<OffspringOfTheUnknownEntity> {
 
     public OffspringOfTheUnknownRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OffspringOfTheUnknownModel());

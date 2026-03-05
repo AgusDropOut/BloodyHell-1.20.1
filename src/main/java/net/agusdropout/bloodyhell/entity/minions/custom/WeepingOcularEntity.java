@@ -117,7 +117,8 @@ public class WeepingOcularEntity extends AbstractMinionEntity {
 
     @Override
     public int getStripeColor() {
-        return 0xffc400;
+        //return 0xffc400;
+        return 0xfc0303;
     }
 
     @Override

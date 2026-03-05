@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.entity.minions.ai;
 
 import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
+import net.agusdropout.bloodyhell.entity.projectile.WeepingTearEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -65,6 +66,7 @@ public class OcularShootGoal extends Goal {
                 return;
             }
 
+
             this.ocular.triggerShootAnimation();
 
             this.performAttack(this.target);
@@ -83,22 +85,10 @@ public class OcularShootGoal extends Goal {
                 target.getZ() - this.ocular.getZ()
         );
 
-
-        Arrow projectile = new Arrow(this.ocular.level(), this.ocular);
-        projectile.setPos(this.ocular.getX(), this.ocular.getY(0.5D), this.ocular.getZ());
-        projectile.shoot(shootVector.x, shootVector.y, shootVector.z, 1.5F, 1.0F);
+        WeepingTearEntity projectile = new WeepingTearEntity(this.ocular.level(), this.ocular.getX(), this.ocular.getY(0.5D), this.ocular.getZ(), this.ocular);
+        projectile.setOwners(this.ocular);
+        projectile.shoot(shootVector.x, shootVector.y, shootVector.z, 1.2F, 1.0F); // Speed and inaccuracy
         this.ocular.level().addFreshEntity(projectile);
-
-
-        // TODO: Replace 'CustomProjectileEntity' with the actual projectile class used by the minion
-        /*
-        CustomProjectileEntity projectile = new CustomProjectileEntity(this.ocular.level(), this.ocular);
-        projectile.setPos(this.ocular.getX(), this.ocular.getY(0.5D), this.ocular.getZ());
-        projectile.shoot(shootVector.x, shootVector.y, shootVector.z, 1.5F, 1.0F);
-        this.ocular.level().addFreshEntity(projectile);
-        */
-
-        // Optional: Add a sound effect for the shot
-        this.ocular.playSound(SoundEvents.ENDER_DRAGON_SHOOT, 1.0F, 1.2F);
+        this.ocular.playSound(SoundEvents.GHAST_SHOOT, 1.0F, 1.2F);
     }
 }

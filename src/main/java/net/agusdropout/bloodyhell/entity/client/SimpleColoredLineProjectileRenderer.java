@@ -1,0 +1,105 @@
+package net.agusdropout.bloodyhell.entity.client;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
+import net.agusdropout.bloodyhell.entity.client.base.SimpleColorProjectile;
+import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullDropletEntity;
+import net.agusdropout.bloodyhell.util.visuals.SpellPalette;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.projectile.Projectile;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
+
+import javax.swing.text.html.parser.Entity;
+
+public class SimpleColoredLineProjectileRenderer <T extends Projectile & SimpleColorProjectile> extends EntityRenderer<T> {
+
+
+        public SimpleColoredLineProjectileRenderer(EntityRendererProvider.Context context) {
+            super(context);
+        }
+
+        @Override
+        public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+
+
+
+            if (buffer instanceof MultiBufferSource.BufferSource bufferSource) {
+                bufferSource.endBatch();
+            }
+
+            poseStack.pushPose();
+
+
+            float yRot = Mth.lerp(partialTicks, entity.yRotO, entity.getYRot());
+            float xRot = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
+
+
+            poseStack.mulPose(Axis.YP.rotationDegrees(yRot - 90.0F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(xRot));
+
+
+
+            RenderSystem.disableCull();
+            RenderSystem.enableBlend();
+            RenderSystem.depthMask(false);
+            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+
+
+
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+
+            Tesselator tess = Tesselator.getInstance();
+            BufferBuilder builder = tess.getBuilder();
+            builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
+            Matrix4f pose = poseStack.last().pose();
+
+
+            float length = 0.8f;
+            float width = 0.05f;
+
+            Vector3f baseColor = entity.getBaseColor();
+            float hR = baseColor.x, hG = baseColor.y, hB = baseColor.z, hA = 1.0f;
+
+            Vector3f highlightColor = entity.getHighlightColor();
+            float tR = highlightColor.x, tG = highlightColor.y, tB = highlightColor.z, tA = 0.0f;
+
+
+
+            builder.vertex(pose, -length, 0, -width).color(tR, tG, tB, tA).endVertex();
+            builder.vertex(pose, 0.2f, 0, -width / 2f).color(hR, hG, hB, hA).endVertex();
+            builder.vertex(pose, 0.2f, 0, width / 2f).color(hR, hG, hB, hA).endVertex();
+            builder.vertex(pose, -length, 0, width).color(tR, tG, tB, tA).endVertex();
+
+            builder.vertex(pose, -length, -width, 0).color(tR, tG, tB, tA).endVertex();
+
+            builder.vertex(pose, 0.2f, -width / 2f, 0).color(hR, hG, hB, hA).endVertex();
+            builder.vertex(pose, 0.2f, width / 2f, 0).color(hR, hG, hB, hA).endVertex();
+            builder.vertex(pose, -length, width, 0).color(tR, tG, tB, tA).endVertex();
+
+            tess.end();
+
+            RenderSystem.depthMask(true);
+            RenderSystem.disableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableCull();
+
+            poseStack.popPose();
+
+            super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(T entity) {
+            return null;
+        }
+
+}

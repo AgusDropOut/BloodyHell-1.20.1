@@ -268,9 +268,15 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<WeepingOcularEntity>> WEEPING_OCULAR =
             ENTITY_TYPES.register("weeping_ocular",
                     () -> EntityType.Builder.of(WeepingOcularEntity::new, MobCategory.MONSTER)
-                            .sized(0.7F, 0.7F) // Adjust width and height to match the model
+                            .sized(0.7F, 0.7F)
                             .clientTrackingRange(8)
                             .build("weeping_ocular"));
+    public static final RegistryObject<EntityType<WeepingTearEntity>> WEEPING_TEAR_PROJECTILE =
+            ENTITY_TYPES.register("weeping_tear_projectile",
+                    () -> EntityType.Builder.<WeepingTearEntity>of(WeepingTearEntity::new, MobCategory.MISC)
+                            .sized(1.0f, 1.0f)
+                            .clientTrackingRange(10)
+                            .build("weeping_tear_projectile"));
 
 
 

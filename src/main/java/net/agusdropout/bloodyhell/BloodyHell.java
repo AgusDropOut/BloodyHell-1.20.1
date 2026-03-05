@@ -314,12 +314,12 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.RHNULL_HEAVY_SWORD_PROJECTILE.get(), RhnullIHeavySwordRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
             EntityRenderers.register(ModEntityTypes.RHNULL_PAIN_THRONE.get(), RhnullPainThroneRenderer::new);
-            EntityRenderers.register(ModEntityTypes.RHNULL_DROPLET_PROJECTILE.get(), RhnullDropletRenderer::new);
+            EntityRenderers.register(ModEntityTypes.RHNULL_DROPLET_PROJECTILE.get(), SimpleColoredLineProjectileRenderer::new);
             EntityRenderers.register(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), RhnullOrbEmitterRenderer::new);
-            EntityRenderers.register(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(),
-                    context -> new GenericMinionRenderer<>(context, new GenericMinionModel<>()));
+            EntityRenderers.register(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), context -> new GenericMinionRenderer<>(context, new GenericMinionModel<>()));
             EntityRenderers.register(ModEntityTypes.WEEPING_OCULAR.get(), WeepingOcularRenderer::new);
             EntityRenderers.register(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), FailedSonOfTheUnknownRenderer::new);
+            EntityRenderers.register(ModEntityTypes.WEEPING_TEAR_PROJECTILE.get(), SimpleColoredLineProjectileRenderer::new);
 
 
 
