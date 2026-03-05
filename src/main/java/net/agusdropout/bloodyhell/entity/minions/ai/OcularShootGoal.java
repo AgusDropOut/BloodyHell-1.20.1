@@ -89,6 +89,5 @@ public class OcularShootGoal extends Goal {
         projectile.setOwners(this.ocular);
         projectile.shoot(shootVector.x, shootVector.y, shootVector.z, 1.2F, 1.0F); // Speed and inaccuracy
         this.ocular.level().addFreshEntity(projectile);
-        this.ocular.playSound(SoundEvents.GHAST_SHOOT, 1.0F, 1.2F);
     }
 }

@@ -5,7 +5,10 @@ import net.agusdropout.bloodyhell.entity.minions.ai.FollowSummonerGoal;
 import net.agusdropout.bloodyhell.entity.minions.ai.OcularFlightControl;
 import net.agusdropout.bloodyhell.entity.minions.ai.OcularShootGoal;
 import net.agusdropout.bloodyhell.entity.minions.base.AbstractMinionEntity;
+import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -72,12 +76,37 @@ public class WeepingOcularEntity extends AbstractMinionEntity {
     }
 
     @Override
+    public void aiStep() {
+        super.aiStep();
+
+        if (!this.level().isClientSide && this.isAlive() && !this.getIsSummoning() && this.tickCount % 8 == 0) {
+            double dx = this.getX() - this.xo;
+            double dy = this.getY() - this.yo;
+            double dz = this.getZ() - this.zo;
+
+            if (dx * dx + dy * dy + dz * dz > 0.002D) {
+                this.playSound(ModSounds.WEEPING_OCULAR_WING.get(), 0.5F, 0.8F + this.random.nextFloat() * 0.4F);
+            }
+        }
+    }
+
+    @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
     @Override
     protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.SLIME_HURT;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return 0.7F + this.random.nextFloat() * 0.6F;
     }
 
     private PlayState movementPredicate(AnimationState<WeepingOcularEntity> state) {
@@ -117,7 +146,6 @@ public class WeepingOcularEntity extends AbstractMinionEntity {
 
     @Override
     public int getStripeColor() {
-        //return 0xffc400;
         return 0xfc0303;
     }
 
@@ -128,5 +156,6 @@ public class WeepingOcularEntity extends AbstractMinionEntity {
 
     public void triggerShootAnimation() {
         this.triggerAnim("action_controller", "shoot");
+        this.playSound(ModSounds.WEEPING_TEAR_SHOOT.get(), 1.0F, 1.2F);
     }
 }

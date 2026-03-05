@@ -1,7 +1,5 @@
 package net.agusdropout.bloodyhell.entity.minions.custom;
 
-
-
 import net.agusdropout.bloodyhell.capability.insight.PlayerInsight;
 import net.agusdropout.bloodyhell.entity.minions.ai.FollowSummonerGoal;
 import net.agusdropout.bloodyhell.entity.minions.base.AbstractMinionEntity;
@@ -24,8 +22,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -55,26 +51,14 @@ public class FailedSonOfTheUnknown extends AbstractMinionEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.1D, true)); // 1.5x speed triggers running
-        this.goalSelector.addGoal(3, new FollowSummonerGoal(this, 0.95D, 7,15)); // 1.5x speed triggers running
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.95D)); // 1.0x speed triggers walking
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.1D, true));
+        this.goalSelector.addGoal(3, new FollowSummonerGoal(this, 0.95D, 7,15));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.95D));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false, target -> target instanceof Enemy && !this.isAlliedTo(target)
         ));
     }
-
-
-  // @Override
-  // protected int getSummonDuration() {
-  //     return 50;
-  // }
-
-  // // Adjusts duration to match the specific unsummon/death animation length
-  // @Override
-  // protected int getUnsummonDuration() {
-  //     return 45;
-  // }
 
     private PlayState predicate(AnimationState<FailedSonOfTheUnknown> state) {
         if (this.isDeadOrDying()) {
@@ -88,7 +72,6 @@ public class FailedSonOfTheUnknown extends AbstractMinionEntity {
         }
 
         if (state.isMoving()) {
-            // Evaluates horizontal velocity to differentiate between strolling and chasing/running
             double velocitySq = this.getDeltaMovement().horizontalDistanceSqr();
             if (velocitySq > 0.005D) {
                 state.getController().setAnimation(RawAnimation.begin().thenLoop("running"));
@@ -109,17 +92,27 @@ public class FailedSonOfTheUnknown extends AbstractMinionEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.getIsSummoning() ? null : ModSounds.OFFSPRING_AMBIENT.get();
+        return this.getIsSummoning() ? null : ModSounds.FAILED_SON_OF_THE_UNKNOWN_AMBIENCE.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return ModSounds.OFFSPRING_HURT.get();
+    public int getAmbientSoundInterval() {
+        return 300 + this.random.nextInt(200);
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return 0.3F;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return 0.8F + this.random.nextFloat() * 0.4F;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(ModSounds.OFFSPRING_STEP.get(), 0.8F, 0.2F);
+        this.playSound(ModSounds.FAILED_SON_OF_THE_UNKNOWN_STEP.get(), 0.8F, 0.2F);
     }
 
     @Override

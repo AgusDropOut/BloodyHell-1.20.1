@@ -48,6 +48,10 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> DAGGER_ATTACK_2 = registerSoundEvents("dagger_attack_2");
     public static final RegistryObject<SoundEvent> DAGGER_ATTACK_3 = registerSoundEvents("dagger_attack_3");
     public static final RegistryObject<SoundEvent> CREEPY_BELL = registerSoundEvents("creepy_bell");
+    public static final RegistryObject<SoundEvent> FAILED_SON_OF_THE_UNKNOWN_AMBIENCE = registerSoundEvents("failed_son_of_the_unknown_ambience");
+    public static final RegistryObject<SoundEvent> FAILED_SON_OF_THE_UNKNOWN_STEP = registerSoundEvents("failed_son_of_the_unknown_step");
+    public static final RegistryObject<SoundEvent> WEEPING_OCULAR_WING = registerSoundEvents("weeping_ocular_wing");
+    public static final RegistryObject<SoundEvent> WEEPING_TEAR_SHOOT = registerSoundEvents("weeping_tear_shoot");
 
 
 

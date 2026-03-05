@@ -208,7 +208,31 @@
       "sounds": [
         "bloodyhell:offspring_ambient"
       ]
-    }
-
+    },
+  "failed_son_of_the_unknown_ambience": {
+    "subtitle": "bloodyhell.subtitle.failed_son_of_the_unknown_ambience",
+    "sounds": [
+      "bloodyhell:failed_son_of_the_unknown_ambience"
+    ]
+  },
+  "failed_son_of_the_unknown_step": {
+    "subtitle": "bloodyhell.subtitle.failed_son_of_the_unknown_step",
+    "sounds": [
+      "bloodyhell:failed_son_of_the_unknown_foot1",
+      "bloodyhell:failed_son_of_the_unknown_foot2"
+    ]
+  },
+  "weeping_ocular_wing": {
+    "subtitle": "bloodyhell.subtitle.weeping_ocular_wing",
+    "sounds": [
+      "bloodyhell:weeping_ocular_wing"
+    ]
+  },
+  "weeping_tear_shoot": {
+    "subtitle": "bloodyhell.subtitle.weeping_tear_shoot",
+    "sounds": [
+      "bloodyhell:weeping_tear_shoot"
+    ]
+  }
 
 }

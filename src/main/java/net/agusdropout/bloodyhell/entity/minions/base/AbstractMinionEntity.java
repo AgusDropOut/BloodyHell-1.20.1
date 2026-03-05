@@ -1,17 +1,21 @@
 package net.agusdropout.bloodyhell.entity.minions.base;
 
+import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.entity.base.InsightEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -186,4 +190,32 @@ public abstract class AbstractMinionEntity extends Monster implements GeoEntity,
     }
 
     public abstract String getMinionId();
+
+    protected boolean hasSufficientClientInsight() {
+        if (this.level().isClientSide) {
+            return ClientInsightData.getPlayerInsight() >= this.getMinimumInsight();
+        }
+        return true;
+    }
+
+    @Override
+    public void playAmbientSound() {
+        if (this.hasSufficientClientInsight()) {
+            super.playAmbientSound();
+        }
+    }
+
+    @Override
+    public void playSound(SoundEvent sound, float volume, float pitch) {
+        if (this.hasSufficientClientInsight()) {
+            super.playSound(sound, volume, pitch);
+        }
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {
+        if (this.hasSufficientClientInsight()) {
+            super.playStepSound(pos, blockIn);
+        }
+    }
 }
