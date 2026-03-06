@@ -90,7 +90,9 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(ModBlocks.BLOODY_STONE_BLOCK.get());
 
             this.dropOther(ModBlocks.SANGUINITE_PIPE.get(),ModItems.SANGUINITE_PIPE_ITEM.get());
+            this.dropOther(ModBlocks.RHNULL_PIPE.get(),ModItems.RHNULL_PIPE_ITEM.get());
             this.dropSelf(ModBlocks.SANGUINITE_TANK.get());
+            this.dropSelf(ModBlocks.RHNULL_TANK.get());
             this.dropSelf(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get());
 
 
@@ -405,6 +407,17 @@ public class ModLootTables extends LootTableProvider {
                     )
             );
             this.add(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+
+            this.add(ModEntityTypes.BLACK_HOLE.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                    )
+            );
+            this.add(ModEntityTypes.WEEPING_OCULAR.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
                     )

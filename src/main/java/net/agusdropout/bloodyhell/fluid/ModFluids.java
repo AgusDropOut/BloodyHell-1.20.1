@@ -75,6 +75,7 @@ public class ModFluids {
     // ========================================================================
     // 3. VISCOUS BLASPHEMY (Black & Yellow)
     // ========================================================================
+
     public static final RegistryObject<FluidType> VISCOUS_BLASPHEMY_TYPE = register("viscous_blasphemy",
             FluidType.Properties.create()
                     .lightLevel(15)

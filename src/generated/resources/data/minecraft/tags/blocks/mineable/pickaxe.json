@@ -58,6 +58,9 @@
     "bloodyhell:cracked_blasphemous_sandstone",
     "bloodyhell:fully_eroded_blasphemous_sandstone",
     "bloodyhell:blasphemite_ore",
-    "bloodyhell:sanguinite_pipe"
+    "bloodyhell:sanguinite_pipe",
+    "bloodyhell:rhnull_pipe",
+    "bloodyhell:rhnull_tank",
+    "bloodyhell:sanguinite_tank"
   ]
 }

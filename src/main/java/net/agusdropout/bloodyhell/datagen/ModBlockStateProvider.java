@@ -153,21 +153,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     public void log(Supplier<? extends Block> block) {
-        // 1. Get the block instance
         Block blockInstance = block.get();
-
-        // 2. Ensure it is actually a RotatedPillarBlock before casting
         if (blockInstance instanceof RotatedPillarBlock rotatedPillarBlock) {
-            // 3. Automatically generate texture location: "modid:block/registry_name"
             ResourceLocation texture = blockTexture(blockInstance);
-
-            // 4. Generate the model (Same texture on all sides, rotated by axis)
             axisBlock(rotatedPillarBlock, texture);
 
-            // NOTE: If you want a separate top texture (e.g. column_top), use this instead:
-            // axisBlock(rotatedPillarBlock, texture, extend(texture, "_top"));
         } else {
-            // Fallback for safety (optional)
             simpleBlockWithItem(blockInstance, cubeAll(blockInstance));
         }
     }
@@ -266,32 +257,24 @@ public class ModBlockStateProvider extends BlockStateProvider {
         Block block = blockSupplier.get();
         String blockName = name(block);
 
-        // Create the base cube model if it doesn't exist yet
         ModelFile modelFile = models().cubeAll(blockName, blockTexture(block));
-
-        // Generate the 4 rotation variants
         getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {
                 new ConfiguredModel(modelFile, 0, 0, false),    // 0°
                 new ConfiguredModel(modelFile, 0, 90, false),   // 90°
                 new ConfiguredModel(modelFile, 0, 180, false),  // 180°
                 new ConfiguredModel(modelFile, 0, 270, false)   // 270°
         });
-
-        // Generate item model automatically (like blockWithItem)
         simpleBlockItem(block, modelFile);
     }
     public void tallPlantBlock(Supplier<? extends Block> blockSupplier) {
         Block block = blockSupplier.get();
-        String baseName = name(block); // 🔥 obtiene el nombre del bloque
-        ResourceLocation baseTexture = texture(baseName);
-
-        // Modelos para las tres partes
+        String baseName = name(block);
         ModelFile root = models().cross(baseName + "_root", modLoc("block/" + baseName + "_root")).renderType("cutout");
         ModelFile stem = models().cross(baseName + "_stem", modLoc("block/" + baseName + "_stem")).renderType("cutout");
         ModelFile top  = models().cross(baseName + "_top",  modLoc("block/" + baseName + "_top")).renderType("cutout");
 
         getVariantBuilder(block).forAllStates(state -> {
-            String part = state.getValue(TallPlantBlock.PART).getSerializedName(); // <-- clave
+            String part = state.getValue(TallPlantBlock.PART).getSerializedName();
             ModelFile chosen = switch (part) {
                 case "root" -> root;
                 case "stem" -> stem;
@@ -302,41 +285,27 @@ public class ModBlockStateProvider extends BlockStateProvider {
         });
     }
 
-    // Add this method to your class
     public void wallBlockHorizontal(Supplier<? extends Block> block) {
-        // 1. Get the model file from existing JSON or generate it if you prefer
-        // Assuming the model is at "assets/bloodyhell/models/block/modelName.json"
         String modelName = name(block);
         ModelFile model = models().getExistingFile(modLoc("block/" + modelName));
 
 
-        // 2. Generate the variants
         getVariantBuilder(block.get()).forAllStates(state -> {
             Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
             return ConfiguredModel.builder()
                     .modelFile(model)
-                    // Logic to match vanilla rotation:
-                    // North = 0 (No rotation needed usually if model faces North)
-                    // East = 90
-                    // South = 180
-                    // West = 270
+
                     .rotationY((int) dir.toYRot())
                     .build();
         });
     }
 
     public void simpleHorizontalBlock(Supplier<? extends Block> block) {
-        // Automatically find the model based on the block's registry name
-        // e.g., "sanguine_crucible" -> "bloodyhell:block/sanguine_crucible"
         ModelFile model = models().getExistingFile(modLoc("block/" + name(block)));
 
         getVariantBuilder(block.get()).forAllStates(state -> {
             Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-            // Rotation Logic:
-            // Assumes your Blockbench model faces NORTH (-Z).
-            // Minecraft Directions: South=0, West=90, North=180, East=270
-            // We add 180 so that North (180) becomes 0 rotation in the JSON.
             int rotY = ((int) dir.toYRot() + 180) % 360;
 
             return ConfiguredModel.builder()
@@ -351,25 +320,19 @@ public class ModBlockStateProvider extends BlockStateProvider {
         ResourceLocation texture = blockTexture(block);
         String name = name(block);
 
-        // 1. FIXED MODEL: Defined at Z=0 (North Face) instead of Z=16
-        // This aligns with the "North" property having 0 rotation.
         ModelFile model = models().getBuilder(name)
                 .parent(models().getExistingFile(mcLoc("block/block")))
                 .texture("particle", texture)
                 .texture("vein", texture)
                 .renderType("cutout") // Ensure transparency works
                 .element()
-                .from(0.0f, 0.0f, 0.0f)  // Start at Z=0 (North Face)
-                .to(16.0f, 16.0f, 1.0f)  // Thickness of 1 pixel
+                .from(0.0f, 0.0f, 0.0f)
+                .to(16.0f, 16.0f, 1.0f)
                 .shade(false)
-                // We render the SOUTH face of this element because it points INTO the block center
-                // (The player sees this when looking at the wall)
                 .face(Direction.SOUTH).texture("#vein").uvs(0, 0, 16, 16).end()
-                // Render North face too just in case (pointing into the wall)
                 .face(Direction.NORTH).texture("#vein").uvs(16, 0, 0, 16).end()
                 .end();
 
-        // 2. Build the Multipart State (Logic remains the same, but now rotations work)
         var builder = getMultipartBuilder(block);
 
         Direction[] directions = { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN };
@@ -377,18 +340,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (Direction dir : directions) {
             int rotX = 0;
             int rotY = 0;
-
-            // Standard rotations for a North-facing model
             switch (dir) {
-                case NORTH: rotX = 0;   rotY = 0;   break; // Default (Z=0)
-                case EAST:  rotX = 0;   rotY = 90;  break; // Rotates Z=0 to X=0
-                case SOUTH: rotX = 0;   rotY = 180; break; // Rotates Z=0 to Z=16
-                case WEST:  rotX = 0;   rotY = 270; break; // Rotates Z=0 to X=16
-                case UP:    rotX = 270; rotY = 0;   break; // Rotates Z=0 to Y=16 (Ceiling)
-                case DOWN:  rotX = 90;  rotY = 0;   break; // Rotates Z=0 to Y=0 (Floor)
+                case NORTH: rotX = 0;   rotY = 0;   break;
+                case EAST:  rotX = 0;   rotY = 90;  break;
+                case SOUTH: rotX = 0;   rotY = 180; break;
+                case WEST:  rotX = 0;   rotY = 270; break;
+                case UP:    rotX = 270; rotY = 0;   break;
+                case DOWN:  rotX = 90;  rotY = 0;   break;
             }
 
-            // Part A: Render when this face is ACTIVE
             builder.part()
                     .modelFile(model)
                     .rotationX(rotX)
@@ -397,7 +357,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .addModel()
                     .condition(MultifaceBlock.getFaceProperty(dir), true);
 
-            // Part B: The "All False" Fallback (Prevents invisible blocks)
             var fallbackPart = builder.part()
                     .modelFile(model)
                     .rotationX(rotX)

@@ -3,9 +3,7 @@ package net.agusdropout.bloodyhell.block.entity;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.entity.custom.*;
-import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteInfusorBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteTankBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.*;
 import net.agusdropout.bloodyhell.block.entity.custom.mushroom.VoraciousMushroomBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.plant.BloodGemSproutBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -52,10 +50,18 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("sanguine_pipe_be", () ->
                     BlockEntityType.Builder.of(SanguinitePipeBlockEntity::new,
                             ModBlocks.SANGUINITE_PIPE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<RhnullPipeBlockEntity>> RHNULL_PIPE_BE =
+            BLOCK_ENTITIES.register("rhnull_pipe_be", () ->
+                    BlockEntityType.Builder.of(RhnullPipeBlockEntity::new,
+                            ModBlocks.RHNULL_PIPE.get()).build(null));
     public static final RegistryObject<BlockEntityType<SanguiniteTankBlockEntity>> SANGUINITE_TANK_BE =
             BLOCK_ENTITIES.register("sanguinite_tank_be", () ->
                     BlockEntityType.Builder.of(SanguiniteTankBlockEntity::new,
                             ModBlocks.SANGUINITE_TANK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<RhnullTankBlockEntity>> RHNULL_TANK_BE =
+            BLOCK_ENTITIES.register("rhnull_tank_be", () ->
+                    BlockEntityType.Builder.of(RhnullTankBlockEntity::new,
+                            ModBlocks.RHNULL_TANK.get()).build(null));
     public static final RegistryObject<BlockEntityType<SanguiniteBloodHarvesterBlockEntity>> SANGUINITE_BLOOD_HARVESTER_BE =
             BLOCK_ENTITIES.register("sanguinite_blood_harvester_be", () ->
                     BlockEntityType.Builder.of(SanguiniteBloodHarvesterBlockEntity::new,

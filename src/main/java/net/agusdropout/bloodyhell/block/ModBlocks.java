@@ -4,10 +4,7 @@ package net.agusdropout.bloodyhell.block;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteBloodHarvesterBlock;
-import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteInfusorBlock;
-import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
-import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteTankBlock;
+import net.agusdropout.bloodyhell.block.custom.mechanism.*;
 import net.agusdropout.bloodyhell.block.custom.mushroom.VoraciousMushroomBlock;
 import net.agusdropout.bloodyhell.block.custom.mushroom.InfestationVeinBlock;
 import net.agusdropout.bloodyhell.block.custom.plant.BloodGemSproutBlock;
@@ -481,8 +478,14 @@ public class ModBlocks {
     public static final RegistryObject<Block> SANGUINITE_PIPE = registerBlock("sanguinite_pipe",
             () -> new SanguinitePipeBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> RHNULL_PIPE = registerBlock("rhnull_pipe",
+            () -> new RhnullPipeBlock(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SANGUINITE_TANK = registerBlock("sanguinite_tank",
             () -> new SanguiniteTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> RHNULL_TANK = registerBlock("rhnull_tank",
+            () -> new RhnullTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .noOcclusion().strength(3f).noParticlesOnBreak().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SANGUINITE_BLOOD_HARVESTER = registerBlock("sanguinite_blood_harvester",
             () -> new SanguiniteBloodHarvesterBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)

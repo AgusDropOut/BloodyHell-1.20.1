@@ -25,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 public abstract class FilterableFluidBlockEntity extends BlockEntity implements IFluidFilterable {
 
     protected Fluid filter = Fluids.EMPTY;
-    protected final FluidTank fluidTank;
-    protected final LazyOptional<IFluidHandler> lazyFluidHandler;
+    protected FluidTank fluidTank;
+    protected  LazyOptional<IFluidHandler> lazyFluidHandler;
 
     public FilterableFluidBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int capacity) {
         super(type, pos, state);

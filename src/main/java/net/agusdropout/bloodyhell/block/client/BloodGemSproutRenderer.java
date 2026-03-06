@@ -46,11 +46,9 @@ public class BloodGemSproutRenderer implements BlockEntityRenderer<BaseGemSprout
             System.out.println("Rendering Item Inside");
 
             poseStack.pushPose();
-            // Center the item floating above
             poseStack.translate(0.5f, 1.25f, 0.5f);
             poseStack.scale(0.7f, 0.7f, 0.7f);
 
-            // Spin item slowly
             long time = be.getLevel().getGameTime();
             float rotation = (time + partialTick) * 2.0f;
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation));

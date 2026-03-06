@@ -2,8 +2,8 @@ package net.agusdropout.bloodyhell.block.client.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.agusdropout.bloodyhell.block.custom.mechanism.SanguinitePipeBlock;
-import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguinitePipeBlockEntity;
+import net.agusdropout.bloodyhell.block.base.AbstractPipeBlock;
+import net.agusdropout.bloodyhell.block.entity.base.AbstractPipeBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -20,49 +20,35 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.util.RenderUtils;
 
-public class SanguinitePipeFluidLayer extends GeoRenderLayer<SanguinitePipeBlockEntity> {
+public class PipeFluidLayer<T extends AbstractPipeBlockEntity> extends GeoRenderLayer<T> {
 
-    public SanguinitePipeFluidLayer(GeoRenderer<SanguinitePipeBlockEntity> entityRendererIn) {
+    public PipeFluidLayer(GeoRenderer<T> entityRendererIn) {
         super(entityRendererIn);
     }
 
     @Override
-    public void render(PoseStack poseStack, SanguinitePipeBlockEntity animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-
-        // --- 1. GET STATE ---
+    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
         BlockState state = animatable.getBlockState();
-        boolean n = state.getValue(SanguinitePipeBlock.NORTH);
-        boolean s = state.getValue(SanguinitePipeBlock.SOUTH);
-        boolean e = state.getValue(SanguinitePipeBlock.EAST);
-        boolean w = state.getValue(SanguinitePipeBlock.WEST);
-        boolean u = state.getValue(SanguinitePipeBlock.UP);
-        boolean d = state.getValue(SanguinitePipeBlock.DOWN);
+        boolean n = state.getValue(AbstractPipeBlock.NORTH);
+        boolean s = state.getValue(AbstractPipeBlock.SOUTH);
+        boolean e = state.getValue(AbstractPipeBlock.EAST);
+        boolean w = state.getValue(AbstractPipeBlock.WEST);
+        boolean u = state.getValue(AbstractPipeBlock.UP);
+        boolean d = state.getValue(AbstractPipeBlock.DOWN);
 
-        // --- 2. ANALYZE SHAPE ---
-        // Is it a simple straight line?
-        boolean isVerticalLine = (u || d) && !n && !s && !e && !w; // Vertical (Up/Down)
-        boolean isZLine = (n || s) && !u && !d && !e && !w;        // North/South
-        boolean isXLine = (e || w) && !u && !d && !n && !s;        // East/West
+        boolean isVerticalLine = (u || d) && !n && !s && !e && !w;
+        boolean isZLine = (n || s) && !u && !d && !e && !w;
+        boolean isXLine = (e || w) && !u && !d && !n && !s;
 
-        // Guard: If it is NOT a simple line, it is a Complex Connector.
-        // Connectors have their own model structure and generally hide the internal fluid.
-        if (!isVerticalLine && !isZLine && !isXLine) {
-            return; // SKIP RENDERING
-        }
+        if (!isVerticalLine && !isZLine && !isXLine) return;
 
-        // Also Guard: If more than 2 connections (T-Junction/Cross), it's a Connector.
         int connections = (n ? 1 : 0) + (s ? 1 : 0) + (e ? 1 : 0) + (w ? 1 : 0) + (u ? 1 : 0) + (d ? 1 : 0);
-        if (connections > 2) {
-            return; // SKIP RENDERING
-        }
-
-        // --- 3. RENDER FLUID ---
-        // If we reached here, it is a simple pipe. Render the fluid!
+        if (connections > 2) return;
 
         GeoBone fluidBone = bakedModel.getBone("fluid_inner").orElse(null);
         if (fluidBone == null) return;
 
-        FluidStack fluidStack = animatable.getFluidInTank();
+        FluidStack fluidStack = animatable.getFluidTank().getFluid();
         if (fluidStack.isEmpty()) return;
 
         IClientFluidTypeExtensions fluidProps = IClientFluidTypeExtensions.of(fluidStack.getFluid());
@@ -83,74 +69,54 @@ public class SanguinitePipeFluidLayer extends GeoRenderLayer<SanguinitePipeBlock
         VertexConsumer builder = bufferSource.getBuffer(RenderType.translucent());
         Matrix4f matrix = poseStack.last().pose();
 
-        // --- COORDINATES ---
-
         float radius = 3.95f / 16.0f;
         float length = 8.0f / 16.0f;
-
-        // Offsets
         float horizontalPipeOffset = 8.0f / 16.0f;
         float verticalPipeOffset = 8.0f / 16.0f;
-
-        // --- REPLACED AXIS LOGIC ---
-        // Instead of asking for AXIS (which no longer exists), we use the boolean logic from above.
 
         float xMin, xMax, yMin, yMax, zMin, zMax;
 
         if (isVerticalLine) {
-            // === VERTICAL CASE ===
             xMin = -radius;
             xMax = radius;
             zMin = -radius;
             zMax = radius;
-
             yMin = -length + verticalPipeOffset;
             yMax = length + verticalPipeOffset;
         } else {
-            // === HORIZONTAL CASE (X or Z) ===
             xMin = -radius;
             xMax = radius;
-
             yMin = -radius + horizontalPipeOffset;
             yMax = radius + horizontalPipeOffset;
-
             zMin = -length;
             zMax = length;
         }
 
-        // --- DRAWING FACES ---
-
-        // TOP (Y+)
         vertex(builder, matrix, sprite, xMin, yMax, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, 1, 0, 0, 0);
         vertex(builder, matrix, sprite, xMin, yMax, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, 1, 0, 0, 1);
         vertex(builder, matrix, sprite, xMax, yMax, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, 1, 0, 1, 1);
         vertex(builder, matrix, sprite, xMax, yMax, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, 1, 0, 1, 0);
 
-        // BOTTOM (Y-)
         vertex(builder, matrix, sprite, xMin, yMin, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, -1, 0, 0, 0);
         vertex(builder, matrix, sprite, xMin, yMin, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, -1, 0, 0, 1);
         vertex(builder, matrix, sprite, xMax, yMin, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, -1, 0, 1, 1);
         vertex(builder, matrix, sprite, xMax, yMin, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, -1, 0, 1, 0);
 
-        // NORTH (Z-)
         vertex(builder, matrix, sprite, xMax, yMax, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, -1, 0, 0);
         vertex(builder, matrix, sprite, xMax, yMin, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, -1, 0, 1);
         vertex(builder, matrix, sprite, xMin, yMin, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, -1, 1, 1);
         vertex(builder, matrix, sprite, xMin, yMax, zMin, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, -1, 1, 0);
 
-        // SOUTH (Z+)
         vertex(builder, matrix, sprite, xMin, yMax, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, 1, 0, 0);
         vertex(builder, matrix, sprite, xMin, yMin, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, 1, 0, 1);
         vertex(builder, matrix, sprite, xMax, yMin, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, 1, 1, 1);
         vertex(builder, matrix, sprite, xMax, yMax, zMax, red, green, blue, alpha, packedLight, packedOverlay, 0, 0, 1, 1, 0);
 
-        // WEST (X-)
         vertex(builder, matrix, sprite, xMin, yMax, zMin, red, green, blue, alpha, packedLight, packedOverlay, -1, 0, 0, 0, 0);
         vertex(builder, matrix, sprite, xMin, yMin, zMin, red, green, blue, alpha, packedLight, packedOverlay, -1, 0, 0, 0, 1);
         vertex(builder, matrix, sprite, xMin, yMin, zMax, red, green, blue, alpha, packedLight, packedOverlay, -1, 0, 0, 1, 1);
         vertex(builder, matrix, sprite, xMin, yMax, zMax, red, green, blue, alpha, packedLight, packedOverlay, -1, 0, 0, 1, 0);
 
-        // EAST (X+)
         vertex(builder, matrix, sprite, xMax, yMax, zMax, red, green, blue, alpha, packedLight, packedOverlay, 1, 0, 0, 0, 0);
         vertex(builder, matrix, sprite, xMax, yMin, zMax, red, green, blue, alpha, packedLight, packedOverlay, 1, 0, 0, 0, 1);
         vertex(builder, matrix, sprite, xMax, yMin, zMin, red, green, blue, alpha, packedLight, packedOverlay, 1, 0, 0, 1, 1);

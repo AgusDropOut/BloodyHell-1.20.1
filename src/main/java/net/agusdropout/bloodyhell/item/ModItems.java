@@ -9,6 +9,7 @@ import net.agusdropout.bloodyhell.item.custom.*;
 
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
 import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
+import net.agusdropout.bloodyhell.item.custom.mechanism.RhnullPipeItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguiniteBloodHarvesterItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguinitePipeItem;
 import net.agusdropout.bloodyhell.item.custom.reliquary.ReliquaryItem;
@@ -255,6 +256,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> SANGUINITE_PIPE_ITEM = ITEMS.register("sanguinite_pipe_item",
             () -> new SanguinitePipeItem(ModBlocks.SANGUINITE_PIPE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> RHNULL_PIPE_ITEM = ITEMS.register("rhnull_pipe_item",
+            () -> new RhnullPipeItem(ModBlocks.RHNULL_PIPE.get(), new Item.Properties()));
     public static final RegistryObject<Item> SANGUINITE_BLOOD_HARVESTER_ITEM = ITEMS.register("sanguinite_blood_harvester_item",
             () -> new SanguiniteBloodHarvesterItem(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get(), new Item.Properties()));
 

@@ -1,0 +1,109 @@
+package net.agusdropout.bloodyhell.block.base;
+
+
+import net.agusdropout.bloodyhell.block.entity.base.AbstractPipeBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+
+public abstract class AbstractPipeBlock extends BaseEntityBlock implements IFilterableBlock {
+
+    public static final BooleanProperty NORTH = BooleanProperty.create("north");
+    public static final BooleanProperty SOUTH = BooleanProperty.create("south");
+    public static final BooleanProperty EAST = BooleanProperty.create("east");
+    public static final BooleanProperty WEST = BooleanProperty.create("west");
+    public static final BooleanProperty UP = BooleanProperty.create("up");
+    public static final BooleanProperty DOWN = BooleanProperty.create("down");
+
+    private static final VoxelShape CENTER_SHAPE = Block.box(6, 6, 6, 10, 10, 10);
+
+    public AbstractPipeBlock(Properties properties) {
+        super(properties);
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(NORTH, false).setValue(SOUTH, false)
+                .setValue(EAST, false).setValue(WEST, false)
+                .setValue(UP, false).setValue(DOWN, false));
+    }
+
+    public abstract String getPipeId();
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        InteractionResult filterResult = checkFilterInteraction(state, level, pos, player, hand);
+        if (filterResult != InteractionResult.PASS) return filterResult;
+
+        if (!level.isClientSide) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof AbstractPipeBlockEntity pipe) {
+                pipe.togglePullMode();
+                boolean isPulling = pipe.isPullMode();
+                String mode = isPulling ? "§c[Mode]: EXTRACTION (Pull)" : "§a[Mode]: TRANSPORT (Push)";
+                player.displayClientMessage(Component.literal(mode), true);
+                level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.5f, isPulling ? 0.6f : 0.5f);
+            }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return calculateState(this.defaultBlockState(), context.getLevel(), context.getClickedPos());
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
+        return calculateState(state, level, currentPos);
+    }
+
+    private BlockState calculateState(BlockState state, LevelAccessor level, BlockPos pos) {
+        return state
+                .setValue(NORTH, canConnect(level, pos, Direction.NORTH))
+                .setValue(SOUTH, canConnect(level, pos, Direction.SOUTH))
+                .setValue(EAST, canConnect(level, pos, Direction.EAST))
+                .setValue(WEST, canConnect(level, pos, Direction.WEST))
+                .setValue(UP, canConnect(level, pos, Direction.UP))
+                .setValue(DOWN, canConnect(level, pos, Direction.DOWN));
+    }
+
+    private boolean canConnect(LevelAccessor level, BlockPos pos, Direction dir) {
+        BlockPos neighborPos = pos.relative(dir);
+        BlockEntity neighborBE = level.getBlockEntity(neighborPos);
+        if (neighborBE == null) return false;
+        return neighborBE.getCapability(ForgeCapabilities.FLUID_HANDLER, dir.getOpposite()).isPresent();
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return CENTER_SHAPE;
+    }
+}

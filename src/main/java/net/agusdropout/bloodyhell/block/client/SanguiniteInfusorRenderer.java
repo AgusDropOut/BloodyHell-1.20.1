@@ -28,14 +28,11 @@ public class SanguiniteInfusorRenderer implements BlockEntityRenderer<Sanguinite
 
         ItemStack itemStack = be.getRenderStack();
 
-        // 1. RENDER ITEM
         if (!itemStack.isEmpty()) {
             poseStack.pushPose();
-            // Center the item floating above
             poseStack.translate(0.5f, 1.25f, 0.5f);
             poseStack.scale(0.7f, 0.7f, 0.7f);
 
-            // Spin item slowly
             long time = be.getLevel().getGameTime();
             float rotation = (time + partialTick) * 2.0f;
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
@@ -46,18 +43,14 @@ public class SanguiniteInfusorRenderer implements BlockEntityRenderer<Sanguinite
             poseStack.popPose();
         }
 
-        // 2. RENDER ATLAS HEART (If Active)
-        // 2. RENDER ATLAS HEART (If Active)
         if (be.isWorking()) {
             poseStack.pushPose();
             poseStack.translate(0.5f, 1.35f, 0.5f);
 
             VertexConsumer consumer = buffer.getBuffer(RenderType.lightning());
 
-            // GET DYNAMIC COLOR
             Vector3f c = be.getHeartColor();
 
-            // Pass color to RenderHelper
             RenderHelper.renderAtlasHeart(consumer, poseStack.last().pose(), null,
                     be.getLevel().getGameTime(), partialTick,
                     c.x(), c.y(), c.z(), // RGB
