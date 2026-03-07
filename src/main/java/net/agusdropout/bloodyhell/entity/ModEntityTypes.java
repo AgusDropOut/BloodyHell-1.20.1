@@ -285,6 +285,15 @@ public class ModEntityTypes {
                             .clientTrackingRange(10)
                             .build("weeping_tear_projectile"));
 
+        public static final RegistryObject<EntityType<HostileUnknownEntityArms>> HOSTILE_UNKNOWN_ENTITY_ARMS =
+                ENTITY_TYPES.register("hostile_unknown_entity_arms", () -> EntityType.Builder.<HostileUnknownEntityArms>of(HostileUnknownEntityArms::new, MobCategory.MISC)
+                        .sized(1.0f, 1.0f)
+                        .clientTrackingRange(64)
+                        .updateInterval(1)
+                        .build("hostile_unknown_entity_arms"));
+
+
+
 
 
 

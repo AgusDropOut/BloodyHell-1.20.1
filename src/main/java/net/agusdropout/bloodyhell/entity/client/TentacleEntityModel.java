@@ -142,11 +142,7 @@ public class TentacleEntityModel extends HierarchicalModel<TentacleEntity> {
 
         if (entity.getTargetAltar() != null) {
 
-            // 1. PROCEDURAL SPINE (Cuerpo)
             applyProceduralSpine(entity, realAge);
-
-            // 2. KEYFRAME ANIMATION (Dedos)
-            // Empieza en tick 20 para anticipar el agarre
             if (realAge >= 20f) {
                 this.animate(entity.grabAnimationState, TentacleAnimations.GRAB, realAge);
             }
@@ -169,7 +165,6 @@ public class TentacleEntityModel extends HierarchicalModel<TentacleEntity> {
         double dz = target.z - origin.z;
         double dh = Math.sqrt(dx * dx + dz * dz);
 
-        // CORRECCIÓN DE ORIENTACIÓN (SUMAR en vez de restar para girar 180 si es necesario)
         float targetYaw = (float) (Math.atan2(dz, dx)) + 1.5707F;
         float targetPitch = (float) (-(Math.atan2(dy, dh)));
 
@@ -182,7 +177,6 @@ public class TentacleEntityModel extends HierarchicalModel<TentacleEntity> {
         float accumulatedRotZ = this.v1.zRot;
         float waveIntensity = 1.0f - progress;
 
-        // --- APLICACIÓN DEL CAOS A TODOS LOS HUESOS (v2 a v15) ---
         accumulatedRotX += applyChaosMotion(this.v2, baseCurl, realAge, 1, waveIntensity, speedRandom, seed, directionRandom).x;
         accumulatedRotX += applyChaosMotion(this.v3, baseCurl, realAge, 2, waveIntensity, speedRandom, seed, directionRandom).x;
         accumulatedRotX += applyChaosMotion(this.v4, baseCurl, realAge, 3, waveIntensity, speedRandom, seed, directionRandom).x;
@@ -201,21 +195,17 @@ public class TentacleEntityModel extends HierarchicalModel<TentacleEntity> {
         accumulatedRotX += applyChaosMotion(this.v14, baseCurl, realAge, 13, waveIntensity, speedRandom, seed, directionRandom).x;
         accumulatedRotX += applyChaosMotion(this.v15, baseCurl, realAge, 14, waveIntensity, speedRandom, seed, directionRandom).x;
 
-        // --- NUEVO ESTABILIZADOR (v16 y v17) ---
         float desiredTotalX = targetPitch;
         float correctionNeededX = desiredTotalX - accumulatedRotX;
 
-        // v16 absorbe el 60% del error
         this.v16.xRot = correctionNeededX * 0.6f;
         this.v16.zRot = -accumulatedRotZ * 0.6f;
         accumulatedRotX += this.v16.xRot;
         accumulatedRotZ += this.v16.zRot;
 
-        // v17 (Mano/Garra) hace la corrección final (Gimbal)
         this.v17.xRot = (desiredTotalX - accumulatedRotX);
         this.v17.zRot = -accumulatedRotZ;
 
-        // Respiración final en v17
         if (realAge > 45 && realAge < 80) {
             this.v17.xRot += Math.sin((realAge + seed) * 0.1f) * 0.05f;
         }

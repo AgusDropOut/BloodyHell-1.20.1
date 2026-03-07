@@ -80,6 +80,12 @@ public class ModMessages {
                 .encoder(S2CDataSyncInsightPacket::toBytes)
                 .consumerMainThread(S2CDataSyncInsightPacket::handle)
                 .add();
+
+        net.messageBuilder(SyncGrabBonePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SyncGrabBonePacket::new)
+                .encoder(SyncGrabBonePacket::toBytes)
+                .consumerMainThread(SyncGrabBonePacket::handle)
+                .add();
     }
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);
