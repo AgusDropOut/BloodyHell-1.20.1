@@ -95,12 +95,9 @@ public class TentacleEntity extends Entity {
     public void tick() {
         super.tick();
 
-        // --- EFECTOS AMBIENTALES (CLIENTE & SERVIDOR) ---
-        // 1. Partículas de oscuridad goteando
+
         if (this.level().isClientSide && this.entityData.get(LIFE_TICKS) > 0) {
             if (random.nextInt(3) == 0) {
-                // Generar partículas a lo largo de una línea imaginaria hacia el objetivo
-                // (Simulación barata de que el cuerpo emite humo)
                 this.level().addParticle(ParticleTypes.SQUID_INK,
                         this.getX() + (random.nextDouble() - 0.5),
                         this.getY() + 1.0 + (random.nextDouble() * 2),
@@ -109,7 +106,7 @@ public class TentacleEntity extends Entity {
             }
         }
 
-        // CLIENTE
+
         if (this.level().isClientSide) {
             this.prevClientAge = this.clientAge;
             if (this.entityData.get(LIFE_TICKS) > 0) {
@@ -119,7 +116,7 @@ public class TentacleEntity extends Entity {
                 grabAnimationState.start(this.tickCount);
             }
         }
-        // SERVIDOR
+
         else {
             this.setDeltaMovement(Vec3.ZERO);
 
@@ -128,16 +125,15 @@ public class TentacleEntity extends Entity {
                 return;
             }
 
-            // SONIDO DE APARICIÓN (Solo una vez cuando empieza a vivir)
+
             if (!hasPlayedSpawnSound) {
-                // Sonido de WARDEN EMERGE pero más agudo y rápido (desgarro)
+
                 this.level().playSound(null, this.blockPosition(), SoundEvents.WARDEN_EMERGE, SoundSource.HOSTILE, 1.0f, 1.5f);
                 hasPlayedSpawnSound = true;
             }
 
-            // SONIDO AMBIENTAL (Latido/Susurro)
+
             if (this.tickCount % 20 == 0 && random.nextInt(3) == 0) {
-                // Click de Sculk (sensación insectoide/alienígena)
                 this.level().playSound(null, this.blockPosition(), SoundEvents.SCULK_CLICKING, SoundSource.HOSTILE, 0.5f, 0.5f);
             }
 
@@ -184,8 +180,7 @@ public class TentacleEntity extends Entity {
 
             this.level().addFreshEntity(itemEntity);
 
-            // SONIDO DE RECOMPENSA DARK:
-            // Un sonido místico pero oscuro (Respawn Anchor o Beacon Ambient)
+
             this.level().playSound(null, new BlockPos((int)spawnX, (int)spawnY, (int)spawnZ), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1.0f, 1.2f);
             this.level().playSound(null, new BlockPos((int)spawnX, (int)spawnY, (int)spawnZ), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 2.0f, 0.5f);
 
@@ -198,17 +193,15 @@ public class TentacleEntity extends Entity {
         if (target == null) return;
         if (level().getBlockState(target).getBlock() instanceof BloodAltarBlock) {
 
-            // Partículas Eldritch al impactar
+
             spawnEldritchImpactParticles(target);
 
             if (level().getBlockEntity(target) instanceof BloodAltarBlockEntity tile) {
                 List<Item> items = tile.getItemsInside();
                 if (!items.isEmpty()) {
 
-                    // SONIDOS DE IMPACTO HORROR:
-                    // 1. Grito del Shrieker (Susto)
+
                     this.level().playSound(null, target, SoundEvents.SCULK_SHRIEKER_SHRIEK, SoundSource.HOSTILE, 1.0f, 1.2f);
-                    // 2. Ruptura húmeda (Sculk Break) en vez de piedra
                     this.level().playSound(null, target, SoundEvents.SCULK_BLOCK_BREAK, SoundSource.HOSTILE, 1.0f, 0.8f);
 
                     if (items.size() > 0) this.entityData.set(ITEM_1, new ItemStack(items.get(0)));
@@ -220,25 +213,25 @@ public class TentacleEntity extends Entity {
         }
     }
 
-    // Nuevo método de partículas para el impacto
+
     private void spawnEldritchImpactParticles(BlockPos pos) {
         if (level() instanceof ServerLevel serverLevel) {
             BlockState state = level().getBlockState(pos);
 
-            // 1. Debris del bloque (Base física)
+
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state),
                     pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
                     20, 0.3, 0.3, 0.3, 0.15);
 
-            // 2. Almas escapando (SCULK_SOUL)
+
             serverLevel.sendParticles(ParticleTypes.SCULK_SOUL,
                     pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
                     15, 0.2, 0.2, 0.2, 0.05);
 
-            // 3. Onda Expansiva oscura (SONIC_BOOM o SQUID_INK rápido)
+
             serverLevel.sendParticles(ParticleTypes.SONIC_BOOM,
                     pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
-                    1, 0, 0, 0, 0); // 1 sola onda sónica queda brutal
+                    1, 0, 0, 0, 0);
         }
     }
 

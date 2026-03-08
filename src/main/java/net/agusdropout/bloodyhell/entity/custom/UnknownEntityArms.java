@@ -91,13 +91,6 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
     public void tick() {
         super.tick();
 
-
-
-
-
-
-
-
         if(!this.level().isClientSide()){
             if (!target.isAlive()){
                 entityData.set(IS_TARGET_ALIVE, false);
@@ -105,7 +98,6 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
         }
 
         isTargetAlive = entityData.get(IS_TARGET_ALIVE);
-        // 🔹 Actualizar fases en CLIENTE leyendo de SynchedEntityData
         if (this.level().isClientSide) {
             emergePhase = entityData.get(EMERGE_PHASE);
             idlePhase = entityData.get(IDLE_PHASE);
@@ -114,7 +106,6 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
             lifeTicks = entityData.get(LIFE_TICKS);
         }
 
-        // 🔹 Efecto sobre flechas cercanas
         List<Arrow> arrows = this.level().getEntitiesOfClass(Arrow.class, this.getBoundingBox().inflate(1.2D));
         for (Arrow arrow : arrows) {
             Vec3 selfPos = this.position().add(0, 1.6f, 0);
@@ -152,13 +143,13 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
                 retractPhase = true;
                 lifeTicks = 40;
             } else {
-                // 🔹 Manejo de daño a entidades cercanas
+
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2, 0.0, 0.2));
                 for (LivingEntity livingEntity : list) {
                     this.dealDamageTo(livingEntity);
                 }
 
-                // 🔹 Manejo de fases en SERVIDOR
+
                 if (emergePhase && lifeTicks < 150) {
                     idlePhase = true;
                     emergePhase = false;
@@ -168,7 +159,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
                     idlePhase = false;
                 }
 
-                // 🔹 Efectos visuales y de sonido al final del ciclo de vida
+
                 if (lifeTicks == 5) {
                     if (this.level().isClientSide) {
                         spawnExpandingCircleParticles(this.level(), this, 1.5, 25, 0.1);
@@ -177,7 +168,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
                 }
             }
 
-            // 🔹 Sincronizar fases con SynchedEntityData (solo en servidor)
+
             entityData.set(EMERGE_PHASE, emergePhase);
             entityData.set(RETRACT_PHASE, retractPhase);
             entityData.set(IDLE_PHASE, idlePhase);
@@ -277,15 +268,15 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
     }
     public void spawnExpandingCircleParticles(Level level, Entity entity, double radius, int particleCount, double speed) {
         for (int i = 0; i < particleCount; i++) {
-            double angle = 2 * Math.PI * i / particleCount; // Ángulo para cada partícula
+            double angle = 2 * Math.PI * i / particleCount;
             double offsetX = radius * Math.cos(angle);
             double offsetZ = radius * Math.sin(angle);
 
             double particleX = entity.getX() + offsetX;
-            double particleY = entity.getY() + 1.0; // Un poco arriba de la entidad
+            double particleY = entity.getY() + 1.0;
             double particleZ = entity.getZ() + offsetZ;
 
-            // Velocidad radial (dirigida hacia afuera)
+
             double velocityX = speed * Math.cos(angle);
             double velocityZ = speed * Math.sin(angle);
 

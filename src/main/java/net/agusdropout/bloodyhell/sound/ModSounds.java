@@ -52,6 +52,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> FAILED_SON_OF_THE_UNKNOWN_STEP = registerSoundEvents("failed_son_of_the_unknown_step");
     public static final RegistryObject<SoundEvent> WEEPING_OCULAR_WING = registerSoundEvents("weeping_ocular_wing");
     public static final RegistryObject<SoundEvent> WEEPING_TEAR_SHOOT = registerSoundEvents("weeping_tear_shoot");
+    public static final RegistryObject<SoundEvent> HOSTILE_ARM_SCREAM = registerSoundEvents("hostile_arm_scream");
 
 
 

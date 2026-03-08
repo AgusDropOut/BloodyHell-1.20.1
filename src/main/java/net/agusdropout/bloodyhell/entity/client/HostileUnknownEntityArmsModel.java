@@ -88,13 +88,7 @@ public class HostileUnknownEntityArmsModel extends GeoModel<HostileUnknownEntity
                 rootBone.setRotX(animatable.cachedGrabPitch + (swayY * Mth.DEG_TO_RAD));
 
 
-            if (animatable.level().isClientSide()) {
-                float boneX = (float) (armBaseBone.getWorldPosition().x);
-                float boneY = (float) (armBaseBone.getWorldPosition().y);
-                float boneZ = (float) (armBaseBone.getWorldPosition().z);
 
-                ModMessages.sendToServer(new SyncGrabBonePacket(animatable.getUUID(), boneX, boneY, boneZ));
-            }
         }
 
         if (animatable.hasGrabbed() || target == null) {

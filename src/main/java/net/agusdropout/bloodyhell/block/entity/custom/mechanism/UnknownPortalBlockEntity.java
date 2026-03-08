@@ -9,6 +9,8 @@ import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOpti
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -27,17 +29,19 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UnknownPortalBlockEntity extends BaseGeckoBlockEntity {
 
     private static final int BLOOD_PER_TICK = 5;
     private static final float PROGRESS_STEP = 0.5f;
-
     public static final float Y_OFFSET = 4.0f;
+    public static final int MAX_SUMMONED_ARMS = 4;
 
     public float portalProgress = 0.0f;
-    private UUID summonedArmsId = null;
+    private final List<UUID> summonedArmsIds = new ArrayList<>();
 
     public final FluidTank inputTank = new FluidTank(4000, fluid -> fluid.getFluid() == ModFluids.CORRUPTED_BLOOD_SOURCE.get()) {
         @Override
@@ -91,19 +95,25 @@ public class UnknownPortalBlockEntity extends BaseGeckoBlockEntity {
             }
         }
 
-        if (entity.portalProgress >= 100.0f && entity.summonedArmsId == null) {
-            HostileUnknownEntityArms arms = new HostileUnknownEntityArms(ModEntityTypes.HOSTILE_UNKNOWN_ENTITY_ARMS.get(), level);
-            arms.setPos(pos.getX() + 0.5D, pos.getY()+1 , pos.getZ() + 0.5D);
-            arms.setPortalPos(pos);
-            level.addFreshEntity(arms);
-            entity.summonedArmsId = arms.getUUID();
-            isDirty = true;
-        } else if (entity.portalProgress < 100.0f && entity.summonedArmsId != null) {
-            Entity arms = ((ServerLevel) level).getEntity(entity.summonedArmsId);
-            if (arms instanceof HostileUnknownEntityArms) {
-                arms.discard();
+        if (entity.portalProgress >= 100.0f && entity.summonedArmsIds.size() < MAX_SUMMONED_ARMS) {
+            int armsToSpawn = MAX_SUMMONED_ARMS - entity.summonedArmsIds.size();
+            for (int i = 0; i < armsToSpawn; i++) {
+                HostileUnknownEntityArms arms = new HostileUnknownEntityArms(ModEntityTypes.HOSTILE_UNKNOWN_ENTITY_ARMS.get(), level);
+                arms.setPos(pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D);
+                arms.setYRot(level.random.nextFloat() * 360.0F);
+                arms.setPortalPos(pos);
+                level.addFreshEntity(arms);
+                entity.summonedArmsIds.add(arms.getUUID());
             }
-            entity.summonedArmsId = null;
+            isDirty = true;
+        } else if (entity.portalProgress < 100.0f && !entity.summonedArmsIds.isEmpty()) {
+            for (UUID uuid : entity.summonedArmsIds) {
+                Entity arms = ((ServerLevel) level).getEntity(uuid);
+                if (arms instanceof HostileUnknownEntityArms) {
+                    arms.discard();
+                }
+            }
+            entity.summonedArmsIds.clear();
             isDirty = true;
         }
 
@@ -162,9 +172,14 @@ public class UnknownPortalBlockEntity extends BaseGeckoBlockEntity {
         tag.put("InputTank", inputTank.writeToNBT(new CompoundTag()));
         tag.put("OutputTank", outputTank.writeToNBT(new CompoundTag()));
         tag.putFloat("PortalProgress", portalProgress);
-        if (summonedArmsId != null) {
-            tag.putUUID("SummonedArmsId", summonedArmsId);
+
+
+        ListTag uuidList = new ListTag();
+        for (UUID uuid : summonedArmsIds) {
+            uuidList.add(NbtUtils.createUUID(uuid));
         }
+        tag.put("SummonedArmsIds", uuidList);
+
         super.saveAdditional(tag);
     }
 
@@ -174,14 +189,15 @@ public class UnknownPortalBlockEntity extends BaseGeckoBlockEntity {
         inputTank.readFromNBT(tag.getCompound("InputTank"));
         outputTank.readFromNBT(tag.getCompound("OutputTank"));
         portalProgress = tag.getFloat("PortalProgress");
-        if (tag.hasUUID("SummonedArmsId")) {
-            summonedArmsId = tag.getUUID("SummonedArmsId");
-        } else {
-            summonedArmsId = null;
+
+        summonedArmsIds.clear();
+        if (tag.contains("SummonedArmsIds", 9)) {
+            ListTag uuidList = tag.getList("SummonedArmsIds", 11);
+            for (int i = 0; i < uuidList.size(); i++) {
+                summonedArmsIds.add(NbtUtils.loadUUID(uuidList.get(i)));
+            }
         }
     }
-
-
 
     @Nullable
     @Override
@@ -200,12 +216,14 @@ public class UnknownPortalBlockEntity extends BaseGeckoBlockEntity {
     }
 
     public void destroySummonedArms(Level level) {
-        if (!level.isClientSide() && this.summonedArmsId != null) {
-            Entity arms = ((ServerLevel) level).getEntity(this.summonedArmsId);
-            if (arms instanceof HostileUnknownEntityArms) {
-                arms.discard();
+        if (!level.isClientSide() && !this.summonedArmsIds.isEmpty()) {
+            for (UUID uuid : this.summonedArmsIds) {
+                Entity arms = ((ServerLevel) level).getEntity(uuid);
+                if (arms instanceof HostileUnknownEntityArms) {
+                    arms.discard();
+                }
             }
-            this.summonedArmsId = null;
+            this.summonedArmsIds.clear();
         }
     }
 }

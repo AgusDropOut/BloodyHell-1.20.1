@@ -233,6 +233,12 @@
     "sounds": [
       "bloodyhell:weeping_tear_shoot"
     ]
+  },
+  "hostile_arm_scream": {
+    "category": "hostile",
+    "subtitle": "bloodyhell.subtitle.hostile_arm_scream",
+    "sounds": [
+      "bloodyhell:hostile_arm_scream"
+    ]
   }
-
 }
