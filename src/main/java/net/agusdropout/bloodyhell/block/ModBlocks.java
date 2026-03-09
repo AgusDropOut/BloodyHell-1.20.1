@@ -338,7 +338,7 @@ public class ModBlocks {
             BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
     public static final RegistryObject<Block> MAIN_BLOOD_ALTAR = BLOCKS.register("main_blood_altar", ()-> new MainBloodAltarBlock(
             BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
-    public static final RegistryObject<Block> UNKNOWN_PORTAL_BLOCK = registerBlock("unknown_portal",
+    public static final RegistryObject<Block> UNKNOWN_PORTAL_BLOCK = registerBlock("unknown_portal_block",
             () -> new UnknownPortalBlock(BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.STONE).noOcclusion()));
 
     //Blasphemous Biome Blocks

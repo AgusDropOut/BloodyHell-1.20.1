@@ -35,7 +35,7 @@ public abstract class AbstractPipeBlock extends BaseEntityBlock implements IFilt
     public static final BooleanProperty UP = BooleanProperty.create("up");
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
-    private static final VoxelShape CENTER_SHAPE = Block.box(6, 6, 6, 10, 10, 10);
+    private static final VoxelShape CENTER_SHAPE = Block.box(16, 16, 16, 16, 16, 16);
 
     public AbstractPipeBlock(Properties properties) {
         super(properties);
@@ -71,6 +71,11 @@ public abstract class AbstractPipeBlock extends BaseEntityBlock implements IFilt
     }
 
     @Override
+    public VoxelShape getCollisionShape(BlockState p_60572_, BlockGetter p_60573_, BlockPos p_60574_, CollisionContext p_60575_) {
+        return super.getCollisionShape(p_60572_, p_60573_, p_60574_, p_60575_);
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
@@ -102,8 +107,5 @@ public abstract class AbstractPipeBlock extends BaseEntityBlock implements IFilt
         return neighborBE.getCapability(ForgeCapabilities.FLUID_HANDLER, dir.getOpposite()).isPresent();
     }
 
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return CENTER_SHAPE;
-    }
+
 }

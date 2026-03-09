@@ -12,6 +12,7 @@ import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.RhnullPipeItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguiniteBloodHarvesterItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguinitePipeItem;
+import net.agusdropout.bloodyhell.item.custom.mechanism.UnknownPortalItem;
 import net.agusdropout.bloodyhell.item.custom.reliquary.ReliquaryItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.agusdropout.bloodyhell.item.potions.BloodFlaskItem;
@@ -262,6 +263,8 @@ public class ModItems {
             () -> new RhnullPipeItem(ModBlocks.RHNULL_PIPE.get(), new Item.Properties()));
     public static final RegistryObject<Item> SANGUINITE_BLOOD_HARVESTER_ITEM = ITEMS.register("sanguinite_blood_harvester_item",
             () -> new SanguiniteBloodHarvesterItem(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get(), new Item.Properties()));
+    public static final RegistryObject<Item> UNKNOWN_PORTAL_ITEM = ITEMS.register("unknown_portal_item",
+            () -> new UnknownPortalItem(ModBlocks.UNKNOWN_PORTAL_BLOCK.get(), new Item.Properties()));
 
     //Flasks
     public static final RegistryObject<Item> BLOOD_FLASK = ITEMS.register("blood_flask", () -> new BloodFlaskItem(

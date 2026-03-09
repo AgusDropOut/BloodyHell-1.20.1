@@ -4,6 +4,8 @@ import net.agusdropout.bloodyhell.block.base.AbstractPipeBlock;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.RhnullPipeBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -35,4 +37,6 @@ public class RhnullPipeBlock extends AbstractPipeBlock {
         return createTickerHelper(type, ModBlockEntities.RHNULL_PIPE_BE.get(),
                 (lvl, pos, st, be) -> be.tick(lvl, pos, st));
     }
+
+
 }

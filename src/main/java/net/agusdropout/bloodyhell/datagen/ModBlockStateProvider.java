@@ -121,6 +121,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 blockTexture(ModBlocks.ROUNDED_GRASS.get())).renderType("cutout"));
         tallPlantBlock(ModBlocks.STING_FLOWER);
 
+        block(ModBlocks.SANGUINITE_PIPE);
+        block(ModBlocks.RHNULL_PIPE);
+        //block(ModBlocks.MAIN_BLOOD_ALTAR);
+        //block(ModBlocks.BLOOD_ALTAR);
+        block(ModBlocks.UNKNOWN_PORTAL_BLOCK);
+        block(ModBlocks.SANGUINITE_BLOOD_HARVESTER);
+
 
     }
     private String name(Block block) {

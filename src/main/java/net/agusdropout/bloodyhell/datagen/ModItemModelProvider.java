@@ -147,7 +147,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 
 
-
+        block(ModBlocks.SANGUINITE_PIPE);
+        block(ModBlocks.RHNULL_PIPE);
+        //block(ModBlocks.MAIN_BLOOD_ALTAR);
+        //block(ModBlocks.BLOOD_ALTAR);
+        block(ModBlocks.UNKNOWN_PORTAL_BLOCK);
+        block(ModBlocks.SANGUINITE_BLOOD_HARVESTER);
 
         evenSimplerBlockItem(ModBlocks.SANGUINE_CRUCIBLE);
         evenSimplerBlockItem(ModBlocks.RHNULL_BLOCK);
