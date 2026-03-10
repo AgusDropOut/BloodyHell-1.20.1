@@ -1,4 +1,4 @@
-// 1.20.1	2026-03-09T11:10:35.2861399	Item Models: bloodyhell
+// 1.20.1	2026-03-09T22:41:38.0926007	Item Models: bloodyhell
 e033c901896a75f6a136de4a515a0448261803b7 assets/bloodyhell/models/item/amulet_of_ancestral_blood.json
 0daad63d3db69ced8f0038465c04abe47a00815e assets/bloodyhell/models/item/ancient_bloody_lamp.json
 77c198480c0204d88a6582721584ec72818df45b assets/bloodyhell/models/item/ancient_bloody_stone_bricks.json
@@ -26,6 +26,7 @@ b5f951d815994d5f2a4406230c4f0d38c5946133 assets/bloodyhell/models/item/blasphemi
 d1d631fda32903c17c836e23119caa375408c451 assets/bloodyhell/models/item/blasphemite_pickaxe.json
 68c1b267ef02371ee65c70166bce8668c1ce1663 assets/bloodyhell/models/item/blasphemite_shovel.json
 864b3edb5372ad87a4141c9ee155a26e081876c7 assets/bloodyhell/models/item/blasphemite_sword.json
+6da742e91323157144366968bb33992ef1906e61 assets/bloodyhell/models/item/blasphemous_blood_altar.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/blasphemous_malformation_spawn_egg.json
 f033cfa90759abfa4ce16fcefd9953989c951df2 assets/bloodyhell/models/item/blasphemous_ocular_lense.json
 d9b1928eed3676e2a3a445ba727c500867f7f66f assets/bloodyhell/models/item/blasphemous_ring.json
@@ -103,6 +104,7 @@ fba7ac8b0eaf78b398a28eca9c2ba8455ddd7893 assets/bloodyhell/models/item/great_amu
 4c952dd758467b86eb9c5a5e36b2074800e74213 assets/bloodyhell/models/item/hanging_bloodtree_leaves.json
 6fb8b9c78f4725650867573003c1d815a8ee8509 assets/bloodyhell/models/item/heretic_sacrificial_dagger.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/horned_worm_spawn_egg.json
+9c7f101709138853584e001fb6926b34f9690013 assets/bloodyhell/models/item/main_blasphemous_blood_altar.json
 72e8c1185728b90c69a17ba66c292202673c7c74 assets/bloodyhell/models/item/mark_of_the_restless_slumber.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/bloodyhell/models/item/offspring_of_the_unknown_spawn_egg.json
 3d3d71936a869a8f5ca9d53e9e4f1220091793d2 assets/bloodyhell/models/item/polished_bloody_stone_block.json

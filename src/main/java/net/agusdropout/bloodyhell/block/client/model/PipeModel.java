@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.block.client;
+package net.agusdropout.bloodyhell.block.client.model;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.base.AbstractPipeBlock;

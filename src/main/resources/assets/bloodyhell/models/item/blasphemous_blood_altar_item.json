@@ -1,6 +1,6 @@
 {
   "credit": "Made with Blockbench",
-    "parent": "builtin/entity",
+  "parent": "builtin/entity",
   "texture_size": [
     128,
     128
@@ -8,43 +8,43 @@
   "display": {
     "thirdperson_righthand": {
       "scale": [
-        0.3,
-        0.3,
-        0.3
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "thirdperson_lefthand": {
       "scale": [
-        0.3,
-        0.3,
-        0.3
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "firstperson_righthand": {
       "scale": [
-        0.3,
-        0.3,
-        0.3
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "firstperson_lefthand": {
       "scale": [
-        0.3,
-        0.3,
-        0.3
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "ground": {
       "scale": [
-        0.3,
-        0.3,
-        0.3
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "gui": {
       "translation": [
         0,
-        -6,
+        -4.75,
         0
       ],
       "scale": [
@@ -56,7 +56,7 @@
     "fixed": {
       "translation": [
         0,
-        -5,
+        -4.75,
         0
       ],
       "scale": [
@@ -65,8 +65,5 @@
         0.4
       ]
     }
-  },
-  "textures": {
-    "particle": "block/main_blood_altar_active"
   }
 }

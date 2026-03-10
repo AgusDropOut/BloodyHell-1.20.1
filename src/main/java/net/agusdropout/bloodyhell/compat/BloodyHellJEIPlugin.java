@@ -26,10 +26,8 @@ public class BloodyHellJEIPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        // Existing Altar category...
-        registration.addRecipeCategories(new BloodAltarCategory(registration.getJeiHelpers().getGuiHelper()));
 
-        // NEW: Infusor Category
+        registration.addRecipeCategories(new BloodAltarCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new SanguiniteInfusorCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
@@ -37,21 +35,18 @@ public class BloodyHellJEIPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
-        // Existing Altar recipes...
+
         List<BloodAltarRecipe> altarRecipes = recipeManager.getAllRecipesFor(BloodAltarRecipe.Type.INSTANCE);
         registration.addRecipes(BloodAltarCategory.RECIPE_TYPE, altarRecipes);
 
-        // NEW: Infusor Recipes
+
         List<SanguiniteInfusorRecipe> infusorRecipes = recipeManager.getAllRecipesFor(SanguiniteInfusorRecipe.Type.INSTANCE);
         registration.addRecipes(SanguiniteInfusorCategory.RECIPE_TYPE, infusorRecipes);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        // Existing...
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.MAIN_BLOOD_ALTAR.get()), BloodAltarCategory.RECIPE_TYPE);
-
-        // NEW:
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get()), BloodAltarCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.SANGUINITE_INFUSOR.get()), SanguiniteInfusorCategory.RECIPE_TYPE);
     }
 }

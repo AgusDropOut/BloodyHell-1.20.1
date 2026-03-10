@@ -1,8 +1,8 @@
-package net.agusdropout.bloodyhell.block.custom;
+package net.agusdropout.bloodyhell.block.custom.altar;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.entity.custom.BloodAltarBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.custom.MainBloodAltarBlockEntity;
+
+import net.agusdropout.bloodyhell.block.base.AbstractMainAltarBlock;
+import net.agusdropout.bloodyhell.block.entity.custom.altar.MainBlasphemousBloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.TentacleEntity;
@@ -29,13 +29,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -46,25 +46,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MainBloodAltarBlock extends BaseEntityBlock {
-    private MainBloodAltarBlockEntity mainBloodAltarEntity;
+public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
+
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public MainBloodAltarBlock(Properties properties) {
+    private static final VoxelShape LOWER_SHAPE = Block.box(0, 0, 0, 16, 32, 16);
+    private static final VoxelShape UPPER_SHAPE = Block.box(0, -16, 0, 16, 16, 16);
+
+    public MainBlasphemousBloodAltarBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(ACTIVE, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(ACTIVE);
     }
 
-    private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 35, 16);
-
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER ? LOWER_SHAPE : UPPER_SHAPE;
     }
 
     @Override
@@ -75,22 +77,12 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        mainBloodAltarEntity = new MainBloodAltarBlockEntity(pos, state);
-        return mainBloodAltarEntity;
-    }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof MainBloodAltarBlockEntity) {
-                ((MainBloodAltarBlockEntity) blockEntity).drops();
-            }
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+            return new MainBlasphemousBloodAltarBlockEntity(pos, state);
         }
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        return null;
     }
 
-    // --- ESTO ES IMPORTANTE PARA EL HACK DEL BLOCK EVENT ---
     @Override
     public boolean triggerEvent(BlockState pState, Level pLevel, BlockPos pPos, int pId, int pParam) {
         super.triggerEvent(pState, pLevel, pPos, pId, pParam);
@@ -100,14 +92,20 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!(level.getBlockEntity(blockPos) instanceof MainBloodAltarBlockEntity altar)) {
+        // Redirect upper half clicks to the lower half
+        if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            BlockPos below = blockPos.below();
+            BlockState belowState = level.getBlockState(below);
+            return belowState.use(level, player, interactionHand, blockHitResult.withPosition(below));
+        }
+
+        if (!(level.getBlockEntity(blockPos) instanceof MainBlasphemousBloodAltarBlockEntity altar)) {
             return InteractionResult.PASS;
         }
 
         if (interactionHand == InteractionHand.MAIN_HAND) {
             ItemStack heldItem = player.getMainHandItem();
 
-            // 1. ACTIVACIÓN
             if (heldItem.is(ModItems.FILLED_BLOOD_FLASK.get())) {
                 if(!level.isClientSide()) {
                     altar.setActive(true);
@@ -122,17 +120,15 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
                     }
                     VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
                     level.setBlock(blockPos, blockState.setValue(ACTIVE, true), 3);
+                    level.setBlock(blockPos.above(), level.getBlockState(blockPos.above()).setValue(ACTIVE, true), 3);
                     level.playSound(null, blockPos, SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide());
 
-                // 2. RITUAL
-            } else if (altar.isActive() && isAltarSetupReady(level, blockPos)) {
+            } else if (altar.isActive() && isAltarSetupReady(level, blockPos, BlasphemousBloodAltarBlock.class)) {
 
-                // Lado Cliente: Solo predecir éxito si la estructura está bien. NO verificar receta.
                 if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-                // Lado Servidor:
                 List<List<Item>> itemsFromAltars = getItemsFromAltars(level, blockPos);
                 if (itemsFromAltars.size() != 4) return InteractionResult.FAIL;
 
@@ -157,18 +153,7 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
                     Item resultItem = result.getItem();
                     consumeItemsFromAltars(level, blockPos);
 
-                    if (resultItem == Items.LEATHER) {
-                        performSummonCow(level, blockPos);
-                        return finalizeRitualServer(level, blockPos, player, blockState, altar, ItemStack.EMPTY);
-                    }
-                    if (resultItem == Items.RECOVERY_COMPASS) {
-                        performFindMausoleum(level, blockPos, player);
-                        return finalizeRitualServer(level, blockPos, player, blockState, altar, ItemStack.EMPTY);
-                    }
-                    if (resultItem == Items.RED_DYE) {
-                        performBloodTransformation(level, blockPos);
-                        return finalizeRitualServer(level, blockPos, player, blockState, altar, ItemStack.EMPTY);
-                    }
+
 
                     return finalizeRitualServer(level, blockPos, player, blockState, altar, result);
 
@@ -182,13 +167,12 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult finalizeRitualServer(Level level, BlockPos blockPos, Player player, BlockState blockState, MainBloodAltarBlockEntity altar, ItemStack rewardStack) {
+    private InteractionResult finalizeRitualServer(Level level, BlockPos blockPos, Player player, BlockState blockState, MainBlasphemousBloodAltarBlockEntity altar, ItemStack rewardStack) {
         altar.setActive(false);
         level.setBlock(blockPos, blockState.setValue(ACTIVE, false), 3);
+        level.setBlock(blockPos.above(), level.getBlockState(blockPos.above()).setValue(ACTIVE, false), 3);
         VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
 
-        // HACK: ENVIAR SEÑAL AL CLIENTE PARA ACTIVAR EL AMBIENCE
-        // ID 1 = Ejecutar efectos de ritual
         level.blockEvent(blockPos, this, 1, 0);
 
         if (level instanceof ServerLevel serverLevel) {
@@ -203,7 +187,7 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
             level.playSound(null, center, SoundEvents.WARDEN_SONIC_CHARGE, SoundSource.BLOCKS, 2.0f, 0.5f);
 
             for (BlockPos targetAltar : targets) {
-                if (level.getBlockState(targetAltar).getBlock() instanceof BloodAltarBlock) {
+                if (level.getBlockState(targetAltar).getBlock() instanceof BlasphemousBloodAltarBlock) {
                     TentacleEntity tentacle = new TentacleEntity(ModEntityTypes.TENTACLE_ENTITY.get(), level);
                     tentacle.setPos(center.getX() + 0.5, center.getY() + 1.5, center.getZ() + 0.5);
                     tentacle.setTargetAltar(targetAltar);
@@ -253,58 +237,12 @@ public class MainBloodAltarBlock extends BaseEntityBlock {
         }
     }
 
-    private void performBloodTransformation(Level level, BlockPos pos) {
-        BlockPos below = pos.below();
-        BlockPos[] area = {
-                below.north(), below.east(), below.south(), below.west(),
-                below.north().east(), below.north().west(), below.south().east(), below.south().west()
-        };
-        for (BlockPos p : area) {
-            if (level.getBlockState(p).is(ModBlocks.BLOOD_FLUID_BLOCK.get())) {
-                //level.setBlockAndUpdate(p, ModBlocks.RHNULL_BLOOD_FLUID_BLOCK.get().defaultBlockState());
-                if(level instanceof ServerLevel sl) {
-                    sl.sendParticles(ModParticles.BLOOD_PARTICLES.get(), p.getX()+0.5, p.getY()+1, p.getZ()+0.5, 5, 0.2, 0.2, 0.2, 0.05);
-                }
-            }
-        }
-    }
+
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (random.nextInt(100) == 0 && state.getValue(ACTIVE)) {
             level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.WARDEN_AMBIENT, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
-        }
-    }
-
-    public boolean isAltarSetupReady(Level level, BlockPos pos) {
-        BlockPos[] pillars = {pos.north(4), pos.east(4), pos.south(4), pos.west(4)};
-        for(BlockPos p : pillars) {
-            if (!(level.getBlockState(p).getBlock() instanceof BloodAltarBlock)) return false;
-        }
-        return true;
-    }
-
-    public List<List<Item>> getItemsFromAltars(Level level, BlockPos pos) {
-        List<List<Item>> items = new ArrayList<>();
-        BlockPos[] altarPositions = {pos.north(4), pos.east(4), pos.south(4), pos.west(4)};
-        for (BlockPos altarPos : altarPositions) {
-            if (level.getBlockEntity(altarPos) instanceof BloodAltarBlockEntity entity) {
-                if (!entity.getItemsInside().isEmpty()) {
-                    items.add(entity.getItemsInside());
-                } else {
-                    items.add(new ArrayList<>());
-                }
-            }
-        }
-        return items;
-    }
-
-    public void consumeItemsFromAltars(Level level, BlockPos pos) {
-        BlockPos[] posArr = {pos.north(4), pos.east(4), pos.south(4), pos.west(4)};
-        for(BlockPos p : posArr) {
-            if (level.getBlockEntity(p) instanceof BloodAltarBlockEntity entity) {
-                entity.clearItemsInside();
-            }
         }
     }
 }

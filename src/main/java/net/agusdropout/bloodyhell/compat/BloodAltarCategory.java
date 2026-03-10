@@ -24,7 +24,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.List;
 
 public class BloodAltarCategory implements IRecipeCategory<BloodAltarRecipe> {
-    public static final ResourceLocation UID = new ResourceLocation(BloodyHell.MODID, "blood_altar");
+    public static final ResourceLocation UID = new ResourceLocation(BloodyHell.MODID, "blasphemous_blood_altar");
     public static final RecipeType<BloodAltarRecipe> RECIPE_TYPE = new RecipeType<>(UID, BloodAltarRecipe.class);
 
     private final IDrawable background;
@@ -35,7 +35,7 @@ public class BloodAltarCategory implements IRecipeCategory<BloodAltarRecipe> {
 
     public BloodAltarCategory(IGuiHelper helper) {
         this.background = helper.createBlankDrawable(WIDTH, HEIGHT);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.MAIN_BLOOD_ALTAR.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get()));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BloodAltarCategory implements IRecipeCategory<BloodAltarRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.bloodyhell.main_blood_altar");
+        return Component.translatable("block.bloodyhell.main_blasphemous_blood_altar");
     }
 
     @Override

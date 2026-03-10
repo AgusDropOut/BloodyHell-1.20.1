@@ -1,10 +1,11 @@
-package net.agusdropout.bloodyhell.block.client;
+package net.agusdropout.bloodyhell.block.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.block.base.AbstractPipeBlock;
 
+import net.agusdropout.bloodyhell.block.client.model.PipeModel;
 import net.agusdropout.bloodyhell.block.client.layer.PipeFluidLayer;
 import net.agusdropout.bloodyhell.block.entity.base.AbstractPipeBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;

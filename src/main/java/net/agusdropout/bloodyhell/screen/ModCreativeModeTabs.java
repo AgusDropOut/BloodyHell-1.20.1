@@ -220,8 +220,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.ONI_STATUE.get());
 
 
-                        output.accept(ModItems.BLOOD_ALTAR.get());
-                        output.accept(ModItems.MAIN_BLOOD_ALTAR.get());
+                        output.accept(ModItems.BLASPHEMOUS_BLOOD_ALTAR_ITEM.get());
+                        output.accept(ModItems.MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM.get());
                         output.accept(ModItems.UNKNOWN_PORTAL_ITEM.get());
 
                         output.accept(ModItems.RELIQUARY.get());

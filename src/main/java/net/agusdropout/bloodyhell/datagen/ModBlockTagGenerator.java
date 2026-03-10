@@ -83,8 +83,8 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
 
                 .add(ModBlocks.SMALL_ROCKS.get())
 
-                .add(ModBlocks.BLOOD_ALTAR.get())
-                .add(ModBlocks.MAIN_BLOOD_ALTAR.get())
+                .add(ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get())
+                .add(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get())
 
                 .add(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get())

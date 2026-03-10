@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.item.client.generic;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.item.custom.BloodAltarItem;
 import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoBlockItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;

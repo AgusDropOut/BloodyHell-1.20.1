@@ -27,7 +27,7 @@ public class ModRecipes extends ModRecipesProvider {
 
         //---------------------------------Altars----------------------------------//
         //Blood altar
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLOOD_ALTAR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
                 .pattern("GDG")
                 .pattern("SCS")
                 .pattern("TST")
@@ -43,7 +43,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
                 .save(consumer, name("blood_altar"));
         //Main blood altar
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MAIN_BLOOD_ALTAR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
                 .pattern("GDG")
                 .pattern("SCS")
                 .pattern("TST")

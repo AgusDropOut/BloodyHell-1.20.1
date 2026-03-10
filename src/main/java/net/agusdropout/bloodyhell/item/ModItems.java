@@ -8,6 +8,8 @@ import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.custom.*;
 
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
+import net.agusdropout.bloodyhell.item.custom.altar.BlasphemousBloodAltarItem;
+import net.agusdropout.bloodyhell.item.custom.altar.MainBlasphemousBloodAltarItem;
 import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.RhnullPipeItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.SanguiniteBloodHarvesterItem;
@@ -21,8 +23,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -251,10 +251,10 @@ public class ModItems {
             ModBlocks.BLOOD_LILY_BLOCK.get(),new Item.Properties()));
 
     // Animated Items
-    public static final RegistryObject<Item> BLOOD_ALTAR = ITEMS.register("blood_altar", () -> new BloodAltarItem(
-            ModBlocks.BLOOD_ALTAR.get(),new Item.Properties()));
-    public static final RegistryObject<Item> MAIN_BLOOD_ALTAR = ITEMS.register("main_blood_altar", () -> new MainBloodAltarItem(
-            ModBlocks.MAIN_BLOOD_ALTAR.get(),new Item.Properties()));
+    public static final RegistryObject<Item> BLASPHEMOUS_BLOOD_ALTAR_ITEM = ITEMS.register("blasphemous_blood_altar_item", () -> new BlasphemousBloodAltarItem(
+            ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get(),new Item.Properties()));
+    public static final RegistryObject<Item> MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM = ITEMS.register("main_blasphemous_blood_altar_item", () -> new MainBlasphemousBloodAltarItem(
+            ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(),new Item.Properties()));
 
 
     public static final RegistryObject<Item> SANGUINITE_PIPE_ITEM = ITEMS.register("sanguinite_pipe_item",

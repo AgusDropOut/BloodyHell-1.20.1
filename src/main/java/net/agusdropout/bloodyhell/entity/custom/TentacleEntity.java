@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
-import net.agusdropout.bloodyhell.block.custom.BloodAltarBlock;
-import net.agusdropout.bloodyhell.block.entity.custom.BloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.block.custom.altar.BlasphemousBloodAltarBlock;
+import net.agusdropout.bloodyhell.block.entity.custom.altar.BlasphemousBloodAltarBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -191,12 +191,12 @@ public class TentacleEntity extends Entity {
     private void performGrab() {
         BlockPos target = getTargetAltar();
         if (target == null) return;
-        if (level().getBlockState(target).getBlock() instanceof BloodAltarBlock) {
+        if (level().getBlockState(target).getBlock() instanceof BlasphemousBloodAltarBlock) {
 
 
             spawnEldritchImpactParticles(target);
 
-            if (level().getBlockEntity(target) instanceof BloodAltarBlockEntity tile) {
+            if (level().getBlockEntity(target) instanceof BlasphemousBloodAltarBlockEntity tile) {
                 List<Item> items = tile.getItemsInside();
                 if (!items.isEmpty()) {
 

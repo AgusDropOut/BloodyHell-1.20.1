@@ -5,6 +5,8 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
 import net.agusdropout.bloodyhell.block.custom.SanguiniteCondenserBlock;
+import net.agusdropout.bloodyhell.block.custom.altar.BlasphemousBloodAltarBlock;
+import net.agusdropout.bloodyhell.block.custom.altar.MainBlasphemousBloodAltarBlock;
 import net.agusdropout.bloodyhell.block.custom.mechanism.*;
 import net.agusdropout.bloodyhell.block.custom.mushroom.CrimsonLureMushroomBlock;
 import net.agusdropout.bloodyhell.block.custom.mushroom.VoraciousMushroomBlock;
@@ -334,10 +336,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> BLOOD_GLOWING_CHAINS_BLOCK = registerBlock("blood_glowing_chains_block", () -> new ChainBlock(
             BlockBehaviour.Properties.copy(Blocks.CHAIN).strength(1F).lightLevel((state)-> 7).noOcclusion()));
 
-    //Tranfusion Power Generating Mushrooms
-    public static final RegistryObject<Block> BLOOD_ALTAR = BLOCKS.register("blood_altar", ()-> new BloodAltarBlock(
+
+    public static final RegistryObject<Block> BLASPHEMOUS_BLOOD_ALTAR = BLOCKS.register("blasphemous_blood_altar", ()-> new BlasphemousBloodAltarBlock(
             BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
-    public static final RegistryObject<Block> MAIN_BLOOD_ALTAR = BLOCKS.register("main_blood_altar", ()-> new MainBloodAltarBlock(
+    public static final RegistryObject<Block> MAIN_BLASPHEMOUS_BLOOD_ALTAR = BLOCKS.register("main_blasphemous_blood_altar", ()-> new MainBlasphemousBloodAltarBlock(
             BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
     public static final RegistryObject<Block> UNKNOWN_PORTAL_BLOCK = registerBlock("unknown_portal_block",
             () -> new UnknownPortalBlock(BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.STONE).noOcclusion()));

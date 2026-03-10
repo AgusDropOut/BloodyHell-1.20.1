@@ -2,9 +2,10 @@ package net.agusdropout.bloodyhell;
 
 import com.mojang.logging.LogUtils;
 
+import net.agusdropout.bloodyhell.block.client.renderer.BlasphemousBloodAltarRenderer;
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.client.*;
 import net.agusdropout.bloodyhell.block.client.generic.BaseGeckoBlockRenderer;
+import net.agusdropout.bloodyhell.block.client.renderer.*;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
 import net.agusdropout.bloodyhell.effect.ModEffects;
@@ -276,7 +277,7 @@ public class BloodyHell
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_INFUSOR_BE.get(), SanguiniteInfusorRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SANGUINE_LAPIDARY_BE.get(), SanguineLapidaryRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_LAPIDARY.get(), RenderType.cutout());
-            BlockEntityRenderers.register(ModBlockEntities.BLOOD_ALTAR.get(), BloodAltarRenderer::new);
+
             BlockEntityRenderers.register(ModBlockEntities.UNKNOWN_PORTAL_BE.get(), UnknownPortalRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_PIPE_BE.get(), PipeRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.RHNULL_PIPE_BE.get(), PipeRenderer::new);
@@ -285,7 +286,8 @@ public class BloodyHell
             BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_BLOOD_HARVESTER_BE.get(), BaseGeckoBlockRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.STAR_LAMP.get(), StarLampRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.SELIORA_RESTING.get(), SelioraRestingBlockRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.MAIN_BLOOD_ALTAR.get(), MainBloodAltarRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.BLASPHEMOUS_BLOOD_ALTAR.get(), BlasphemousBloodAltarRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), MainBlasphemousBloodAltarRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.BLOOD_GEM_SPROUT_BE.get(), BloodGemSproutRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_CON.get(), RenderType.cutout());

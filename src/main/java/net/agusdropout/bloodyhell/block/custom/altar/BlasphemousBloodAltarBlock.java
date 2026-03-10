@@ -1,6 +1,6 @@
-package net.agusdropout.bloodyhell.block.custom;
+package net.agusdropout.bloodyhell.block.custom.altar;
 
-import net.agusdropout.bloodyhell.block.entity.custom.BloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.altar.BlasphemousBloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -9,7 +9,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -22,13 +21,11 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+public class BlasphemousBloodAltarBlock extends BaseEntityBlock {
 
-public class BloodAltarBlock extends BaseEntityBlock {
-    private BloodAltarBlockEntity mainBloodAltarEntity;
     public static final BooleanProperty ITEMINSIDE = BooleanProperty.create("iteminside");
 
-    public BloodAltarBlock(Properties properties) {
+    public BlasphemousBloodAltarBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(ITEMINSIDE, false));
     }
@@ -47,16 +44,15 @@ public class BloodAltarBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        mainBloodAltarEntity = new BloodAltarBlockEntity(pos, state);
-        return mainBloodAltarEntity;
+        return new BlasphemousBloodAltarBlockEntity(pos, state);
     }
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof BloodAltarBlockEntity) {
-                ((BloodAltarBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof BlasphemousBloodAltarBlockEntity) {
+                ((BlasphemousBloodAltarBlockEntity) blockEntity).drops();
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
@@ -64,7 +60,7 @@ public class BloodAltarBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!(level.getBlockEntity(blockPos) instanceof BloodAltarBlockEntity altar)) {
+        if (!(level.getBlockEntity(blockPos) instanceof BlasphemousBloodAltarBlockEntity altar)) {
             return InteractionResult.PASS;
         }
 
@@ -109,13 +105,5 @@ public class BloodAltarBlock extends BaseEntityBlock {
             level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.WARDEN_AMBIENT, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
         }
         super.animateTick(state, level, pos, random);
-    }
-
-    public List<Item> getItemsInside() {
-        return mainBloodAltarEntity.getItemsInside();
-    }
-
-    public boolean clearItemsInside() {
-        return mainBloodAltarEntity.clearItemsInside();
     }
 }

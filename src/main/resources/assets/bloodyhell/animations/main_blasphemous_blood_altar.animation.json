@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.model.active": {
+		"active": {
 			"loop": true,
 			"animation_length": 3.625,
 			"bones": {
@@ -332,7 +332,7 @@
 				}
 			}
 		},
-		"animation.model.idle": {
+		"idle": {
 			"loop": true
 		}
 	},
