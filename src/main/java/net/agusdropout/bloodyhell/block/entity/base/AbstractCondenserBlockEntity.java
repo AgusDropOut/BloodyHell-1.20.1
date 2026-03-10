@@ -94,7 +94,6 @@ public abstract class AbstractCondenserBlockEntity extends BlockEntity {
 
         if (match.isPresent()) {
             net.agusdropout.bloodyhell.recipe.CondenserRecipe recipe = match.get();
-            System.out.println("Found matching recipe: " + recipe.getId());
 
             this.fluidTank.drain(recipe.getFluidInput().getAmount(), IFluidHandler.FluidAction.EXECUTE);
 
@@ -115,7 +114,6 @@ public abstract class AbstractCondenserBlockEntity extends BlockEntity {
             itemEntity.setDeltaMovement(0, 0.1, 0);
             this.level.addFreshEntity(itemEntity);
 
-            // 5. Add a little visual/audio feedback
             this.level.playSound(null, this.worldPosition, net.minecraft.sounds.SoundEvents.LAVA_EXTINGUISH, net.minecraft.sounds.SoundSource.BLOCKS, 0.5F, 1.5F);
 
             this.setChanged();

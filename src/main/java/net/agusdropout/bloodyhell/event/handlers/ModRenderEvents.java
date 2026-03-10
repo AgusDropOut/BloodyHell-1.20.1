@@ -25,6 +25,8 @@ public class ModRenderEvents {
             RadialDistortionRenderManager.renderAllAndClear();
             EntityGlitterRenderManager.renderAllAndClear();
             ShapeGlitterRenderManager.renderAllAndClear();
+            BlackHoleEntityRenderManager.renderAllAndClear();
+            InsightRenderManager.renderAllAndClear();
         }
     }
 }

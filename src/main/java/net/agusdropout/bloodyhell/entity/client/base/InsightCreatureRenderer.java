@@ -2,15 +2,13 @@ package net.agusdropout.bloodyhell.entity.client.base;
 
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.entity.base.InsightEntity;
 import net.agusdropout.bloodyhell.entity.client.layer.InsightGlowingLayer;
-
-import net.agusdropout.bloodyhell.util.visuals.InsightDistortingVertexConsumer;
 import net.agusdropout.bloodyhell.util.visuals.ModRenderTypes;
 import net.agusdropout.bloodyhell.util.visuals.ModShaders;
-import net.agusdropout.bloodyhell.util.visuals.ShaderUtils;
+import net.agusdropout.bloodyhell.util.visuals.manager.InsightRenderManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -26,7 +24,6 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
     public InsightCreatureRenderer(EntityRendererProvider.Context renderManager, GeoModel<T> model) {
         this(renderManager, model, true);
     }
-
 
     public InsightCreatureRenderer(EntityRendererProvider.Context renderManager, GeoModel<T> model, boolean applyDefaultGlow) {
         super(renderManager, model);
@@ -46,9 +43,7 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
             return super.getRenderType(animatable, texture, bufferSource, partialTick);
         }
 
-        if (ShaderUtils.areShadersActive()) {
-            return RenderType.entityTranslucent(texture);
-        }
+        // Fallback deleted: Will always natively output the Insight Distortion shader mapping
         return ModRenderTypes.getInsightDistortion(texture);
     }
 
@@ -61,9 +56,13 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
             return;
         }
 
-        boolean shadersActive = ShaderUtils.areShadersActive();
 
-        if (!shadersActive) {
+        PoseStack copiedPose = new PoseStack();
+        copiedPose.last().pose().set(poseStack.last().pose());
+        copiedPose.last().normal().set(poseStack.last().normal());
+
+
+        InsightRenderManager.queueInsightRender(() -> {
             if (ModShaders.INSIGHT_DISTORTION_SHADER != null) {
                 Uniform timeUniform = ModShaders.INSIGHT_DISTORTION_SHADER.getUniform("GameTime");
                 if (timeUniform != null) timeUniform.set(entity.tickCount + partialTick);
@@ -71,14 +70,11 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
                 Uniform alphaUniform = ModShaders.INSIGHT_DISTORTION_SHADER.getUniform("InsightAlpha");
                 if (alphaUniform != null) alphaUniform.set(0.07f);
             }
-            super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
 
-        } else {
-            MultiBufferSource wrappedBufferSource = renderType -> {
-                VertexConsumer originalBuffer = bufferSource.getBuffer(renderType);
-                return new InsightDistortingVertexConsumer(originalBuffer, entity.tickCount + partialTick, 0.5f);
-            };
-            super.render(entity, entityYaw, partialTick, poseStack, wrappedBufferSource, packedLight);
-        }
+
+            MultiBufferSource.BufferSource immediateBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
+            super.render(entity, entityYaw, partialTick, copiedPose, immediateBuffer, packedLight);
+            immediateBuffer.endBatch();
+        });
     }
 }
