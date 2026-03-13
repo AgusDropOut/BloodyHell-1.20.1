@@ -14,6 +14,7 @@ public class PatchouliUtils {
 
     // Colors
     public static String blood(String text) { return "$(#f20000)" + text + "$()"; }
+    public static String corrupted(String text) { return "$(#820000)" + text + "$()"; }
     public static String madness(String text) { return "$(#171200)" + text + "$()"; }
     public static String gold(String text) { return "$(#ffcc00)" + text + "$()"; }
     public static String green(String text) { return "$(#2b9900)" + text + "$()"; }
@@ -32,6 +33,6 @@ public class PatchouliUtils {
     }
 
     public static String imagePath(String name) {
-        return BloodyHell.MODID + ":gui/patchouli/" + name;
+        return BloodyHell.MODID + ":textures/gui/patchouli/" + name + ".png";
     }
 }

@@ -29,7 +29,39 @@ public class PatchouliProvider implements DataProvider {
         generateBloodDimension(cache);
         generateBloodMechanisms(cache);
         generateBloodFluids(cache);
+        generateBloodSpells(cache);
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+    }
+
+    private void generateBloodSpells(CachedOutput cache) {
+        PatchouliCategoryBuilder category = PatchouliCategoryBuilder.create(
+                "blood_spells", "Blood Spells & Gems",
+                "Harnessing crystallized blood to cast devastating magic.", "bloodyhell:pure_blood_gem"
+        );
+        saveCategory(cache, category);
+
+        // --- ENTRY: BLOOD GEMS ---
+        PatchouliEntryBuilder powerGems = PatchouliEntryBuilder.create("power_gems", category.getId(), "Blood Gems", "bloodyhell:pure_blood_gem")
+                .addTextPage("Blood Gems are the crystallized manifestation of raw power, essential for upgrading your spell books." + br() + br() +
+                        "These gems are exclusively obtained by nurturing a " + entryLink("blood_mechanisms", "blood_gem_sprout", "Blood Gem Sprout") + "." + br() + br() +
+                        "When harvested, each gem rolls a random stat value based on a rarity curve. The type and color of the gem is dictated by the mineral fed to the sprout.")
+                .addSpotlightPage("bloodyhell:pure_blood_gem", blood("Pure Blood Gem") + br() +
+                        "Cultivated from " + blood("Sanguinite") + "." + br() + br() +
+                        "This crimson gem significantly amplifies the destructive force of a spell." + br() + br() +
+                        link("Stat Roll:") + " +2.0 to +10.0 Damage")
+                .addSpotlightPage("bloodyhell:aventurine_blood_gem", "$(9)Aventurine Blood Gem$()" + br() +
+                        "Cultivated from " + "$(9)Lapis Lazuli$()." + br() + br() +
+                        "This azure gem expands the physical presence and area of effect of a spell." + br() + br() +
+                        link("Stat Roll:") + " +10% to +50% Size")
+                .addSpotlightPage("bloodyhell:citrine_blood_gem", gold("Citrine Blood Gem") + br() +
+                        "Cultivated from a " + gold("Gold Nugget") + "." + br() + br() +
+                        "This radiant gem fractures the spell, multiplying its output." + br() + br() +
+                        link("Stat Roll:") + " +1 to +3 Projectiles")
+                .addSpotlightPage("bloodyhell:tanzarine_blood_gem", madness("Tanzarine Blood Gem") + br() +
+                        "Cultivated from an " + madness("Amethyst Shard") + "." + br() + br() +
+                        "This violet gem bends time, extending the lifespan of a spell." + br() + br() +
+                        link("Stat Roll:") + " +0.5s to +3.0s Duration");
+        saveEntry(cache, powerGems);
     }
 
     private void generateBloodMechanisms(CachedOutput cache) {
@@ -47,10 +79,44 @@ public class PatchouliProvider implements DataProvider {
         saveEntry(cache, daggerEntry);
 
         // --- ENTRY: BLOOD ALTARS ---
-        PatchouliEntryBuilder altars = PatchouliEntryBuilder.create("blood_altars", category.getId(), "The Altars", "bloodyhell:main_blasphemous_blood_altar_item")
-                .addTextPage("The " + blood("Blood Altar") + " is the centerpiece of your dark arts. It allows you to perform rituals and infuse items with raw essence.")
-                .addSpotlightPage("bloodyhell:main_blood_altar", "The standard Altar used for basic blood manipulation.")
-                .addSpotlightPage("bloodyhell:main_blasphemous_blood_altar_item", "An advanced, corrupted version required for the most " + madness("Blasphemous") + " of rituals.");
+        // Setup the Altar Multiblock
+        JsonObject altarMultiblock = new JsonObject();
+        com.google.gson.JsonArray altarPattern = new com.google.gson.JsonArray();
+
+        // Define the 9x9 grid layer.
+        // 0 = Main Altar (Center)
+        // A = Standard Altar (Placed 3 blocks away in cardinal directions)
+        // _ = Air/Empty Space
+        altarPattern.add("____A____");
+        altarPattern.add("_________");
+        altarPattern.add("_________");
+        altarPattern.add("_________");
+        altarPattern.add("A___0___A");
+        altarPattern.add("_________");
+        altarPattern.add("_________");
+        altarPattern.add("_________");
+        altarPattern.add("____A____");
+
+        com.google.gson.JsonArray layerArray = new com.google.gson.JsonArray();
+        for(int i = 0; i < altarPattern.size(); i++) {
+            layerArray.add(altarPattern.get(i).getAsString());
+        }
+
+        com.google.gson.JsonArray finalPattern = new com.google.gson.JsonArray();
+        finalPattern.add(layerArray);
+        altarMultiblock.add("pattern", finalPattern);
+
+        JsonObject altarMapping = new JsonObject();
+        altarMapping.addProperty("0", "bloodyhell:main_blood_altar");
+        altarMapping.addProperty("A", "bloodyhell:blood_altar");
+        altarMultiblock.add("mapping", altarMapping);
+
+        PatchouliEntryBuilder altars = PatchouliEntryBuilder.create("blood_altars", category.getId(), "Blood Altars", "bloodyhell:main_blood_altar")
+                .addTextPage("The " + blood("Blood Altar") + " is the centerpiece of your dark arts. By utilizing it, you are directly interacting with the " + link("Ancient Blood Gods") + ", offering sacrifices in exchange for their power.")
+                .addTextPage("Through these rituals, you can summon powerful " + link("Spell Books") + " and craft specialized items necessary to resist the horrors of the Unknown.")
+                .addSpotlightPage("bloodyhell:main_blood_altar", "The Main Altar where the catalyst is placed." + br() + br() + "Critically, before the Main Altar can be used for any crafting ritual, it must first be filled using a " + corrupted("Corrupted Blood Flask") + ".")
+                .addSpotlightPage("bloodyhell:blood_altar", "Standard Blood Altars act as pedestals. They hold the ingredients required for the ritual.")
+                .addMultiblockPage("Ritual Setup", "The Main Altar sits in the center. Four standard Blood Altars must be placed in the cardinal directions, exactly 3 empty blocks away from the center.", altarMultiblock);
         saveEntry(cache, altars);
 
         // --- ENTRY: HARVESTING ---
@@ -73,8 +139,6 @@ public class PatchouliProvider implements DataProvider {
         saveEntry(cache, pipes);
 
         // --- ENTRY: STORAGE (TANKS) ---
-
-
         JsonObject tankMultiblock = new JsonObject();
         com.google.gson.JsonArray pattern = new com.google.gson.JsonArray();
 
@@ -93,7 +157,6 @@ public class PatchouliProvider implements DataProvider {
         mapping.addProperty("T", "bloodyhell:sanguinite_tank");
         tankMultiblock.add("mapping", mapping);
 
-        // 2. Build the Entry
         PatchouliEntryBuilder tanks = PatchouliEntryBuilder.create("blood_tanks", category.getId(), "Essence Storage", "bloodyhell:sanguinite_tank")
                 .addTextPage("Tanks allow you to safely store vast amounts of collected fluids for later use." + br() + br() +
                         "The " + link("only") + " ways to extract fluids from a tank is with buckets, flasks, or by connecting pipes in " + green("pull") + " mode.")
@@ -107,22 +170,62 @@ public class PatchouliProvider implements DataProvider {
 
         saveEntry(cache, tanks);
 
-        // --- ENTRY: PROCESSING (INFUSION & CONDENSING) ---
-        PatchouliEntryBuilder processing = PatchouliEntryBuilder.create("blood_processing", category.getId(), "Infusion & Condensing", "bloodyhell:sanguinite_infusor")
+        // --- ENTRY: INFUSORS ---
+        PatchouliEntryBuilder infusor = PatchouliEntryBuilder.create("sanguinite_infusor", category.getId(), "Blood Infusion", "bloodyhell:sanguinite_infusor")
                 .addSpotlightPage("bloodyhell:sanguinite_infusor", "Uses stored blood to imbue items with powerful, dark properties.")
-                .addSpotlightPage("bloodyhell:sanguinite_condenser", "Turns liquid blood into solid, crystallized fragments over time.")
-                .addSpotlightPage("bloodyhell:rhnull_condenser", "A faster, more efficient condenser made of " + gold("Rhnull") + ".");
-        saveEntry(cache, processing);
+                .addTextPage("To function, the Infusor must be supplied with fluid via pipes set to " + blood("Push") + " mode." + br() + br() +
+                        "It can " + link("only") + " process " + blood("Normal Blood") + " and " + infected("Infected Blood") + ".");
+        saveEntry(cache, infusor);
+
+        // --- ENTRY: GEM FRAMES ---
+        PatchouliEntryBuilder gemFrames = PatchouliEntryBuilder.create("gem_frames", category.getId(), "Gem Frames", "bloodyhell:sanguinite_gem_frame")
+                .addTextPage("To crystallize blood properly within a Condenser, a frame must be used to give it shape and structure.")
+                .addSpotlightPage("bloodyhell:sanguinite_gem_frame", "Standard frame for shaping blood crystals.")
+                .addSpotlightPage("bloodyhell:rhnull_gem_frame", "An advanced frame capable of containing denser, more volatile energies.")
+                .addTextPage("The type of frame you use directly determines both the resulting " + link("gem's size") + " and the " + link("amount of blood") + " that will be consumed during the condensation process.");
+        saveEntry(cache, gemFrames);
+
+        // --- ENTRY: CONDENSERS ---
+        PatchouliEntryBuilder condensers = PatchouliEntryBuilder.create("blood_condensers", category.getId(), "Blood Condensers", "bloodyhell:sanguinite_condenser")
+                .addTextPage("Condensers turn liquid blood into solid, crystallized fragments. The process requires a " + entryLink("blood_mechanisms", "gem_frames", "Gem Frame") + " to shape the crystal." + br() + br() +
+                        "A condenser can " + link("only") + " be pumped with " + link("one") + " type of fluid at a time.")
+                .addSpotlightPage("bloodyhell:sanguinite_condenser", "Standard condenser." + br() + br() + "Can " + link("only") + " hold " + blood("Normal Blood") + " and " + infected("Infected Blood") + ".")
+                .addSpotlightPage("bloodyhell:rhnull_condenser", "A highly resilient condenser made of " + gold("Rhnull") + "." + br() + br() +
+                        "Can safely hold " + link("all") + " fluid types.");
+        saveEntry(cache, condensers);
 
         // --- ENTRY: GEM CRAFTING (LAPIDARY) ---
         PatchouliEntryBuilder lapidary = PatchouliEntryBuilder.create("sanguine_lapidary", category.getId(), "The Lapidary", "bloodyhell:sanguine_lapidary")
-                .addTextPage("Crystallized blood is fragile. To harness its true power, it must be refined and grown.")
-                .addSpotlightPage("bloodyhell:sanguine_lapidary", "A specialized workstation for refining and polishing Blood Gems.")
-                .addSpotlightPage("bloodyhell:blood_gem_sprout", "A delicate sprout that, when nourished with blood, will slowly grow into a usable Blood Gem.");
+                .addTextPage("The Sanguinite Lapidary is a specialized workstation designed to imbue and upgrade Spell Books with crystallized power." + br() + br() +
+                        "By placing a Spell Book within, you can socket up to " + link("3") + " " + entryLink("blood_spells", "power_gems", "Blood Gems") + " into it.")
+                .addSpotlightPage("bloodyhell:sanguine_lapidary", "Socketing gems significantly amplifies the spell's potential, altering its damage, range, or effect.");
         saveEntry(cache, lapidary);
+
+        // --- ENTRY: BLOOD GEM SPROUT (1x1 Multiblock Trick) ---
+        JsonObject sproutMultiblock = new JsonObject();
+        com.google.gson.JsonArray sproutPattern = new com.google.gson.JsonArray();
+        com.google.gson.JsonArray sproutLayer = new com.google.gson.JsonArray();
+        sproutLayer.add("0");
+        sproutPattern.add(sproutLayer);
+        sproutMultiblock.add("pattern", sproutPattern);
+
+        JsonObject sproutMapping = new JsonObject();
+        sproutMapping.addProperty("0", "bloodyhell:blood_gem_sprout[age=2]");
+        sproutMultiblock.add("mapping", sproutMapping);
+
+        PatchouliEntryBuilder sprout = PatchouliEntryBuilder.create("blood_gem_sprout", category.getId(), "Blood Gem Sprout", "bloodyhell:blood_gem_sprout_seed")
+                .addSpotlightPage("bloodyhell:blood_gem_sprout_seed", "A delicate sprout that must be carefully nurtured to grow Blood Gems.")
+                .addTextPage("The sprout must be constantly supplied with fluid. You must connect pipes to it and set them to " + blood("Push") + " mode." + br() + br() +
+                        "As it drinks the blood, it will slowly grow through various phases.")
+                .addMultiblockPage("Asking Phase", "When the sprout reaches this state, it is waiting for a mineral catalyst.", sproutMultiblock)
+                .addTextPage("Eventually, the sprout will reach a critical phase where it requires a specific mineral catalyst to crystallize properly. " + br() + br() +
+                        "Depending on the mineral you give it, it will produce a different " + entryLink("blood_spells", "power_gems", "Blood Gem") + ":")
+                .addTextPage("- " + link("Lapis Lazuli") + " -> Aventurine" + br() +
+                        "- " + link("Amethyst Shard") + " -> Tanzarine" + br() +
+                        "- " + link("Sanguinite") + " -> Pure Blood Gem" + br() +
+                        "- " + link("Gold Nugget") + " -> Citrine");
+        saveEntry(cache, sprout);
     }
-
-
 
     private void generateBloodDimension(CachedOutput cache) {
         PatchouliCategoryBuilder category = PatchouliCategoryBuilder.create(
@@ -180,13 +283,22 @@ public class PatchouliProvider implements DataProvider {
         PatchouliEntryBuilder variants = PatchouliEntryBuilder.create("blood_variants", category.getId(), "Blood Variants", "bloodyhell:blood_bucket")
                 .addSpotlightPage("bloodyhell:blood_bucket", link(blood("Normal Blood")) + br() +
                         "Harvested from the slaughter of innocent, friendly creatures. Used for basic infusions. (pigs, cows, sheep, etc.)")
-                .addSpotlightPage("bloodyhell:corrupted_blood_bucket", link(madness("Corrupted Blood")) + br() +
+                .addSpotlightPage("bloodyhell:corrupted_blood_bucket", link(corrupted("Corrupted Blood")) + br() +
                         "Extracted from the corpses of hostile foes, both mundane and otherworldly. (zombies, skeletons, endermen, etc. and mod mobs alike)")
                 .addSpotlightPage("bloodyhell:visceral_blood_bucket", link(infected("Infected Blood")) + br() +
                         "A highly infectious substance, harvested from friend or foes infected with an otherworldy illness." + br() + br() + "(Further research required.)")
                 .addSpotlightPage("bloodyhell:viscous_blasphemy_bucket", link(blasphemous("Viscous Blasphemy")) + br() +
                         "A highly dangerous and complex substance. The exact nature of this fluid is yet to be fully understood..." + br() + br() + "(Further research required.)");
         saveEntry(cache, variants);
+
+        // --- ENTRY: SOULS ---
+        PatchouliEntryBuilder souls = PatchouliEntryBuilder.create("souls", category.getId(), "Manifested Souls", "bloodyhell:blood_flask")
+                .addTextPage("Fluids are not the only essence that can be extracted from the living. By slaying a creature with the " + entryLink("blood_mechanisms", "sacrificial_dagger", "Sacrificial Dagger") + ", you can force its soul to manifest upon death.")
+                .addTextPage("These souls are highly volatile and will " + link("vanish after a few seconds") + ". To capture them, you must quickly interact with the floating soul while holding an " + link("empty Blood Flask") + " in your hand.")
+                .addImagePage("Normal Soul", imagePath("blood_soul_preview"), true)
+                .addTextPage("Much like fluids, the nature of the soul is determined by the creature it belonged to. " + blood("Normal Souls") + " come from passive animals, while " + madness("Corrupted Souls") + " are torn from aggressive monsters.")
+                .addImagePage("Corrupted Soul", imagePath("corrupted_soul_preview"), true);
+        saveEntry(cache, souls);
     }
 
     private void writeBookBase(CachedOutput cache) {
