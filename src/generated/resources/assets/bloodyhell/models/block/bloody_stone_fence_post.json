@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/fence_post",
-  "textures": {
-    "texture": "bloodyhell:block/bloody_stone_block"
-  }
-}

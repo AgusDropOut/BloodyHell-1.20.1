@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "bloodyhell:block/blood_glow_stone"
-  }
-}

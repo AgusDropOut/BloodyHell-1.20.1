@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "bloodyhell:block/bloody_stone_block",
-    "side": "bloodyhell:block/bloody_stone_block",
-    "top": "bloodyhell:block/bloody_stone_block"
-  }
-}

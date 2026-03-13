@@ -32,6 +32,7 @@ run/
 run-client/
 run-server/
 run-data/
+/run-data/logs/
 
 # Logs and Crash Reports (just in case they generate outside the run folders)
 logs/
@@ -40,3 +41,4 @@ usercache.json
 
 # Files from Forge MDK
 forge*changelog.txt
+

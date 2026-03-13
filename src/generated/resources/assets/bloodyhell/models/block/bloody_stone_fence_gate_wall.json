@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/template_fence_gate_wall",
-  "textures": {
-    "texture": "bloodyhell:block/bloody_stone_block"
-  }
-}
