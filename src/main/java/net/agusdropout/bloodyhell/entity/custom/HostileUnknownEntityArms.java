@@ -183,8 +183,10 @@ public class HostileUnknownEntityArms extends Entity implements GeoEntity {
 
             calculateBonePos(target);
 
-            if (this.stateTicks > 30 && this.stateTicks <= 60) {
+            if (this.stateTicks > 30 && this.stateTicks < 60) {
                 target.setPos(this.grabBoneX, this.grabBoneY, this.grabBoneZ);
+                target.setDeltaMovement(0, 0, 0); // Prevent gravity from pulling them down
+                target.fallDistance = 0.0F; // Reset fall distance so they don't take damage mid-air
                 target.hurtMarked = true;
             }
 
@@ -259,7 +261,7 @@ public class HostileUnknownEntityArms extends Entity implements GeoEntity {
 
         if (this.stateTicks <= 30) {
             double dx = target.getX() - this.getX();
-            double dz = target.getZ() - this.getZ();
+            double dz = target.getZ() - this.getZ()+2;
             float targetYaw = (float) -Math.atan2(dz, dx) + 1.5707F;
 
             float reachProgress = this.stateTicks / 30.0F;
@@ -291,7 +293,7 @@ public class HostileUnknownEntityArms extends Entity implements GeoEntity {
             double endY = this.getY() + this.getBbHeight();
             double endZ = this.getZ();
 
-            float verticalArc = (float) Math.sin(pullProgress * Math.PI) * 1.5F;
+            float verticalArc = (float) Math.sin(pullProgress * Math.PI) * 1.9F;
 
             this.grabBoneX = (float) Mth.lerp(easedHorizontal, this.initialGrabX, endX);
             this.grabBoneY = (float) Mth.lerp(easedPull, this.initialGrabY, endY) + verticalArc;

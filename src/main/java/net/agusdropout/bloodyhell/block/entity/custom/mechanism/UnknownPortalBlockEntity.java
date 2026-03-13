@@ -43,7 +43,7 @@ public class UnknownPortalBlockEntity extends BaseGeckoBlockEntity {
     public float portalProgress = 0.0f;
     private final List<UUID> summonedArmsIds = new ArrayList<>();
 
-    public final FluidTank inputTank = new FluidTank(4000, fluid -> fluid.getFluid() == ModFluids.CORRUPTED_BLOOD_SOURCE.get()) {
+    public final FluidTank inputTank = new FluidTank(4000, fluid -> fluid.getFluid() == ModFluids.BLOOD_SOURCE.get()) {
         @Override
         protected void onContentsChanged() {
             setChanged();

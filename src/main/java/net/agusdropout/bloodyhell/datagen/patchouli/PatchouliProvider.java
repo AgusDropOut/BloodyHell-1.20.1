@@ -29,7 +29,7 @@ public class PatchouliProvider implements DataProvider {
         generateBloodDimension(cache);
         generateBloodMechanisms(cache);
         generateBloodFluids(cache);
-        generateBloodSpells(cache);
+        generateBloodSpells(cache); // NEW: Spells Category
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
     }
 
@@ -227,6 +227,8 @@ public class PatchouliProvider implements DataProvider {
         saveEntry(cache, sprout);
     }
 
+
+
     private void generateBloodDimension(CachedOutput cache) {
         PatchouliCategoryBuilder category = PatchouliCategoryBuilder.create(
                 "blood_dimension", "The Blood Dimension",
@@ -271,6 +273,17 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("This shard will resonate when near a " + madness("Rift") + "." + br() + br() +
                         "Highly recommended for those with low " + insight("") + ".");
         saveEntry(cache, echoShard);
+
+        // --- NEW ENTRY: UNKNOWN PORTAL BLOCK ---
+        PatchouliEntryBuilder unknownPortal = PatchouliEntryBuilder.create("unknown_portal", category.getId(), "Unknown Portal", "bloodyhell:unknown_portal_item")
+                .addSpotlightPage("bloodyhell:unknown_portal_item", "A dormant gateway to places best left untouched.")
+                .addTextPage("To awaken this structure, you must force-feed it raw life. Connect pipes to the block and supply it with blood in " + blood("Push") + " mode.")
+                .addTextPage("Once enough blood is supplied, the portal will tear open and hostile arms will begin to emerge from the void. " + br() + br() +
+                        "To stabilize the tear, you must feed " + link("living entities") + " directly into the grasp of the portal.")
+                .addTextPage("As it consumes life, the portal will begin to secrete a dark, volatile byproduct. " + br() + br() +
+                        "This substance must be extracted using pipes set to " + green("Pull") + " mode." + br() + br() +
+                        "For details on what this fluid is, refer to the " + entryLink("blood_fluids", "blood_variants", "Blood Variants") + " section.");
+        saveEntry(cache, unknownPortal);
     }
 
     private void generateBloodFluids(CachedOutput cache) {
@@ -287,8 +300,9 @@ public class PatchouliProvider implements DataProvider {
                         "Extracted from the corpses of hostile foes, both mundane and otherworldly. (zombies, skeletons, endermen, etc. and mod mobs alike)")
                 .addSpotlightPage("bloodyhell:visceral_blood_bucket", link(infected("Infected Blood")) + br() +
                         "A highly infectious substance, harvested from friend or foes infected with an otherworldy illness." + br() + br() + "(Further research required.)")
+                // UPDATED ENTRY TO LINK TO UNKNOWN PORTAL
                 .addSpotlightPage("bloodyhell:viscous_blasphemy_bucket", link(blasphemous("Viscous Blasphemy")) + br() +
-                        "A highly dangerous and complex substance. The exact nature of this fluid is yet to be fully understood..." + br() + br() + "(Further research required.)");
+                        "A highly dangerous and complex substance. It is a byproduct generated exclusively by the " + entryLink("the_unknown", "unknown_portal", "Unknown Portal") + " when it consumes living flesh.");
         saveEntry(cache, variants);
 
         // --- ENTRY: SOULS ---
