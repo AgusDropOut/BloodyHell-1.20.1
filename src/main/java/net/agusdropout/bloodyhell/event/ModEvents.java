@@ -56,34 +56,37 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void EntityAttributeEvent(EntityAttributeCreationEvent event) {
+            // --- BOSSES & ELITES ---
+            event.put(UNKNOWN_LANTERN.get(), UnknownLanternEntity.createAttributes().build());
+            event.put(SELIORA.get(), SelioraEntity.createAttributes().build());
+            event.put(RITEKEEPER.get(), RitekeeperEntity.createAttributes().build());
+            event.put(BLASPHEMOUS_MALFORMATION.get(), BlasphemousMalformationEntity.createAttributes().build());
 
-            event.put(BLOODTHIRSTYBEAST.get(), BloodThirstyBeastEntity.setAttributes());
-            event.put(BLASPHEMOUS_ARM_ENTITY.get(), BlasphemousArmEntity.setAttributes());
-            event.put(BLOOD_SEEKER.get(), BloodSeekerEntity.setAttributes());
-            event.put(OMEN_GAZER_ENTITY.get(), OmenGazerEntity.setAttributes());
-            event.put(VEINRAVER_ENTITY.get(), VeinraverEntity.setAttributes());
-            event.put(BLOODY_SOUL_ENTITY.get(), BloodySoulEntity.setAttributes());
-            event.put(OFFSPRING_OF_THE_UNKNOWN.get(), OffspringOfTheUnknownEntity.setAttributes());
-            event.put(SELIORA.get(), SelioraEntity.setAttributes());
-            event.put(BLASPHEMOUS_MALFORMATION.get(), BlasphemousMalformationEntity.setAttributes());
-            event.put(GRAVE_WALKER_ENTITY.get(), GraveWalkerEntity.setAttributes());
-            event.put(HORNED_WORM.get(), HornedWormEntity.setAttributes());
-            event.put(CYCLOPS_ENTITY.get(), CyclopsEntity.setAttributes());
-            event.put(VEIL_STALKER.get(), VeilStalkerEntity.setAttributes());
-            event.put(CORRUPTED_BLOODY_SOUL_ENTITY.get(), CorruptedBloodySoulEntity.setAttributes());
-            event.put(CRIMSON_RAVEN.get(), CrimsonRavenEntity.setAttributes());
-            event.put(EYESHELL_SNAIL.get(), EyeshellSnailEntity.setAttributes());
-            event.put(SCARLETSPECKLED_FISH.get(), ScarletSpeckledFishEntity.setAttributes());
-            event.put(BLOODPIG.get(), BloodPigEntity.setAttributes());
-            event.put(ONI.get(), OniEntity.setAttributes());
-            event.put(VESPER.get(), VesperEntity.setAttributes());
-            event.put(CINDER_ACOLYTE.get(), CinderAcolyteEntity.setAttributes());
-            event.put(ModEntityTypes.RITEKEEPER.get(), RitekeeperEntity.createAttributes().build());
-            event.put(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneEntity.createAttributes().build());
-            event.put(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantEntity.setAttributes().build());
-            event.put(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), FailedSonOfTheUnknown.setAttributes().build());
-            event.put(ModEntityTypes.WEEPING_OCULAR.get(), WeepingOcularEntity.setAttributes().build());
-            event.put(ModEntityTypes.UNKNOWN_LANTERN.get(), UnknownLanternEntity.setAttributes().build());
+            // --- HOSTILE MONSTERS ---
+            event.put(BLOODTHIRSTYBEAST.get(), BloodThirstyBeastEntity.createAttributes().build());
+            event.put(OMEN_GAZER_ENTITY.get(), OmenGazerEntity.createAttributes().build());
+            event.put(VEINRAVER_ENTITY.get(), VeinraverEntity.createAttributes().build());
+            event.put(GRAVE_WALKER_ENTITY.get(), GraveWalkerEntity.createAttributes().build());
+            event.put(HORNED_WORM.get(), HornedWormEntity.createAttributes().build());
+            event.put(VEIL_STALKER.get(), VeilStalkerEntity.createAttributes().build());
+            event.put(ONI.get(), OniEntity.createAttributes().build());
+            event.put(VESPER.get(), VesperEntity.createAttributes().build());
+            event.put(CINDER_ACOLYTE.get(), CinderAcolyteEntity.createAttributes().build());
+            event.put(FAILED_REMNANT.get(), FailedRemnantEntity.createAttributes().build());
+
+            // --- PASSIVE & NEUTRAL CREATURES ---
+            event.put(BLOOD_SEEKER.get(), BloodSeekerEntity.createAttributes().build());
+            event.put(BLOODY_SOUL_ENTITY.get(), BloodySoulEntity.createAttributes().build());
+            event.put(CORRUPTED_BLOODY_SOUL_ENTITY.get(), CorruptedBloodySoulEntity.createAttributes().build());
+            event.put(OFFSPRING_OF_THE_UNKNOWN.get(), OffspringOfTheUnknownEntity.createAttributes().build());
+            event.put(CRIMSON_RAVEN.get(), CrimsonRavenEntity.createAttributes().build());
+            event.put(EYESHELL_SNAIL.get(), EyeshellSnailEntity.createAttributes().build());
+            event.put(SCARLETSPECKLED_FISH.get(), ScarletSpeckledFishEntity.createAttributes().build());
+            event.put(BLOODPIG.get(), BloodPigEntity.createAttributes().build());
+
+            // --- MINIONS ---
+            event.put(FAILED_SON_OF_THE_UNKNOWN.get(), FailedSonOfTheUnknown.createAttributes().build());
+            event.put(WEEPING_OCULAR.get(), WeepingOcularEntity.createAttributes().build());
         }
 
         public static AttributeSupplier.Builder createGenericAttributes() {

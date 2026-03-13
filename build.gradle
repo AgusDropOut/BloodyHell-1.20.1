@@ -167,6 +167,9 @@ dependencies {
     implementation("com.eliotlash.mclib:mclib:20")
     implementation fg.deobf("curse.maven:playeranimator-658587:${playeranimator_file_id}")
 
+    implementation fg.deobf("curse.maven:patchouli-306770:7731017")
+
+
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html

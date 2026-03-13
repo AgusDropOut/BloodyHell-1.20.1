@@ -51,14 +51,13 @@ public class BlasphemousMalformationEntity extends AbstractInsightMonster implem
         super(entityType, level);
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 45.0D)
                 .add(Attributes.ATTACK_DAMAGE, 7.0D)
                 .add(Attributes.ATTACK_SPEED, 0.8D)
                 .add(Attributes.MOVEMENT_SPEED, 0.2D)
-                .add(Attributes.FOLLOW_RANGE, 20.0D)
-                .build();
+                .add(Attributes.FOLLOW_RANGE, 20.0D);
     }
 
     @Override

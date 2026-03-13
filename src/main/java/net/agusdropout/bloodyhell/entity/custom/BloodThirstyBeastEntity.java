@@ -32,12 +32,12 @@ public class BloodThirstyBeastEntity extends Monster implements GeoEntity {
     public BloodThirstyBeastEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 65)
                 .add(Attributes.ATTACK_DAMAGE, 7.0f)
                 .add(Attributes.ATTACK_SPEED, 2.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.2D).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
     @Override

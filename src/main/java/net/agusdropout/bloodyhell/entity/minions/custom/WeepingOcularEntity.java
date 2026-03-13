@@ -55,7 +55,7 @@ public class WeepingOcularEntity extends AbstractMinionEntity {
         return navigation;
     }
 
-    public static AttributeSupplier.Builder setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 25.0D)
                 .add(Attributes.FLYING_SPEED, 0.6D)

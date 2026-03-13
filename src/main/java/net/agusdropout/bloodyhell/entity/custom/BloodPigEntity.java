@@ -47,12 +47,12 @@ public class BloodPigEntity extends Animal implements GeoEntity, NeutralMob {
     private EatBlockGoal eatBlockGoal;
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private static final EntityDataAccessor<Byte> DATA_EYE_ID = SynchedEntityData.defineId(BloodPigEntity.class, EntityDataSerializers.BYTE);
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 25)
                 .add(Attributes.ATTACK_SPEED, 2.0f)
                 .add(Attributes.ATTACK_DAMAGE, 7.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.2f);
     }
 
     @Override

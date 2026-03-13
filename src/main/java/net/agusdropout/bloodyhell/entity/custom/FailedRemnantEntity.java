@@ -31,7 +31,7 @@ public class FailedRemnantEntity extends Monster implements GeoEntity {
         this.xpReward = 10;
     }
 
-    public static AttributeSupplier.Builder setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0D) // Decent health
                 .add(Attributes.ATTACK_DAMAGE, 6.0f)

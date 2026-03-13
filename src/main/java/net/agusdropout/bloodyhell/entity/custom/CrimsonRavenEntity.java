@@ -76,12 +76,12 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
 
         return super.finalizeSpawn(p_29389_, p_29390_, p_29391_, p_29392_, p_29393_);
     }
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20)
                 .add(Attributes.FLYING_SPEED, 9.0f)
 
-                .add(Attributes.MOVEMENT_SPEED, 0.2D).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
 

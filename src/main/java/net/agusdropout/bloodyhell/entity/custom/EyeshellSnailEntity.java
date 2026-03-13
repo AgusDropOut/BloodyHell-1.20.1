@@ -47,12 +47,12 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
     public EyeshellSnailEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
 
                 .add(Attributes.ATTACK_SPEED, 2.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.4D).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.4D);
     }
 
     @Override

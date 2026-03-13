@@ -47,13 +47,13 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
         this.moveControl = new FlyingMoveControl(this, 20, true);
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D) // Lower health since it explodes
+                .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.FLYING_SPEED, 0.6F)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)
-                .add(Attributes.FOLLOW_RANGE, 32.0D).build(); // Sees you from far away
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     @Override

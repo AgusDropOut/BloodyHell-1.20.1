@@ -255,347 +255,105 @@ public class ModLootTables extends LootTableProvider {
 
         @Override
         public void generate() {
-            this.add(ModEntityTypes.HORNED_WORM.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.VEIL_STALKER.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_ARROW.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.CRYSTAL_PILLAR.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.SMALL_CRIMSON_DAGGER.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.UNKNOWN_EYE_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.UNKNOWN_ENTITY_ARMS.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.SANGUINE_SACRIFICE_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_SLASH_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.VISCERAL_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLASPHEMOUS_ARM_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLASPHEMOUS_SMALL_WHIRLWIND_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLASPHEMOUS_WHIRLWIND_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.STARFALL_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_NOVA_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOODY_SOUL_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.CORRUPTED_BLOODY_SOUL_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.OFFSPRING_OF_THE_UNKNOWN.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.VESPER.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.VIRULENT_ANCHOR_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            )
-            ;
-            this.add(ModEntityTypes.GRAVE_WALKER_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_SOUL.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-
-            this.add(ModEntityTypes.BLOOD_FIRE_SOUL.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.INFESTATION_DECAL.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.RHNULL_IMPALER_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.RHNULL_HEAVY_SWORD_PROJECTILE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-
-            this.add(ModEntityTypes.BLACK_HOLE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-            this.add(ModEntityTypes.WEEPING_OCULAR.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
-
+            // --- BOSSES & ELITES ---
             this.add(ModEntityTypes.UNKNOWN_LANTERN.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                    )
-            );
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
+            this.add(ModEntityTypes.SELIORA.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.SELIORA_ESSENCE.get()))));
 
-            this.add(ModEntityTypes.BLOOD_SEEKER.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.VEINREAVER_HORN.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+            this.add(ModEntityTypes.RITEKEEPER.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(4))
+                            .add(LootItem.lootTableItem(ModItems.RITEKEEPER_HEART.get()))));
 
+            this.add(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
+
+            // --- HOSTILE MONSTERS ---
             this.add(ModEntityTypes.BLOODTHIRSTYBEAST.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(ModItems.AUREAL_REVENANT_DAGGER.get())
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
+            this.add(ModEntityTypes.OMEN_GAZER_ENTITY.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.AUREAL_REVENANT_DAGGER.get())
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+
+            this.add(ModEntityTypes.VEINRAVER_ENTITY.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.VEINREAVER_HORN.get())
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+
+            this.add(ModEntityTypes.HORNED_WORM.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
+
+            this.add(ModEntityTypes.VEIL_STALKER.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
+
+            this.add(ModEntityTypes.ONI.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.SANGUINE_CRUCIBLE_CORE.get())
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+
+            this.add(ModEntityTypes.VESPER.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
+
+            this.add(ModEntityTypes.CINDER_ACOLYTE.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
+                                    .when(LootItemRandomChanceCondition.randomChance(0.45F))
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+
+            this.add(ModEntityTypes.FAILED_REMNANT.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ModItems.FAILED_REMNANT_ASHES.get())
+                                    .when(LootItemRandomChanceCondition.randomChance(0.45F))
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+
+            // --- PASSIVE & NEUTRAL CREATURES ---
             this.add(ModEntityTypes.BLOODPIG.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.GOREHOG_RAW_STEAK.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(Items.LEATHER)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOREHOG_RAW_STEAK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))))
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
+
+            this.add(ModEntityTypes.BLOOD_SEEKER.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.VEINREAVER_HORN.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.CRIMSON_RAVEN.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.SCARLET_RAW_CHICKEN.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                            .add(LootItem.lootTableItem(ModItems.SCARLET_FEATHER.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+                            .add(LootItem.lootTableItem(ModItems.SCARLET_RAW_CHICKEN.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))
+                            .add(LootItem.lootTableItem(ModItems.SCARLET_FEATHER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.EYESHELL_SNAIL.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.CRIMSON_SHELL.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.CRIMSON_SHELL.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.SCARLETSPECKLED_FISH.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.CRIMSON_SHELL.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.CRIMSON_SHELL.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
-            this.add(ModEntityTypes.CYCLOPS_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.CRIMSON_SHELL.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+            this.add(ModEntityTypes.BLOODY_SOUL_ENTITY.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
-            this.add(ModEntityTypes.ONI.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.SANGUINE_CRUCIBLE_CORE.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+            this.add(ModEntityTypes.CORRUPTED_BLOODY_SOUL_ENTITY.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
-            this.add(ModEntityTypes.OMEN_GAZER_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.AUREAL_REVENANT_DAGGER.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+            this.add(ModEntityTypes.OFFSPRING_OF_THE_UNKNOWN.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
-            this.add(ModEntityTypes.VEINRAVER_ENTITY.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.VEINREAVER_HORN.get())
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
+            // --- MINIONS & SUMMONS ---
+            this.add(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
-            this.add(ModEntityTypes.SELIORA.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.SELIORA_ESSENCE.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
-                            )
-                    )
-            );
-
-            // Added Ritekeeper Drops (Boss Item)
-            this.add(ModEntityTypes.RITEKEEPER.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(4))
-                            .add(LootItem.lootTableItem(ModItems.RITEKEEPER_HEART.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
-                            )
-                    )
-            );
-
-            this.add(ModEntityTypes.CINDER_ACOLYTE.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.45F))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
-
-            this.add(ModEntityTypes.FAILED_REMNANT.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.FAILED_REMNANT_ASHES.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.45F))
-                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                            )
-                    )
-            );
-
-
-
-
-
-
-
-
+            this.add(ModEntityTypes.WEEPING_OCULAR.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
+            this.add(ModEntityTypes.GRAVE_WALKER_ENTITY.get(), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
         }
+
 
         @Override
         protected Stream<EntityType<?>> getKnownEntityTypes() {

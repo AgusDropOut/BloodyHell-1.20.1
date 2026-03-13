@@ -166,10 +166,10 @@ public class CyclopsEntity extends Mob {
         return Mth.lerp(partialTicks, prevPitch, currentPitch);
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.0).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.0);
     }
 
     @Override

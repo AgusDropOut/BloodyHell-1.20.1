@@ -41,7 +41,7 @@ public class FailedSonOfTheUnknown extends AbstractMinionEntity {
         return "failed_son_of_the_unknown";
     }
 
-    public static AttributeSupplier.Builder setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 45.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D)

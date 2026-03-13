@@ -49,10 +49,10 @@ public class BloodySoulEntity extends Animal implements GeoEntity {
     public BloodySoulEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 50)
-                .add(Attributes.MOVEMENT_SPEED, 0.2D).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
     @Override

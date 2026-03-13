@@ -66,12 +66,12 @@ public class OniEntity extends Monster implements GeoEntity {
 
     private static final EntityDataAccessor<Byte> DATA_EYE_ID = SynchedEntityData.defineId(OniEntity.class, EntityDataSerializers.BYTE);
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, MAX_HEALTH)
                 .add(Attributes.ATTACK_SPEED, 0.5f)
                 .add(Attributes.ATTACK_DAMAGE, 7.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.23).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.23);
     }
 
     public void aiStep() {

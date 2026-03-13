@@ -54,12 +54,12 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
         currentInteractionCount = 0;
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 150)
                 .add(Attributes.ATTACK_SPEED, 1f)
                 .add(Attributes.ATTACK_DAMAGE, 10.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.25f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.25f);
     }
     @Override
     protected void registerGoals() {

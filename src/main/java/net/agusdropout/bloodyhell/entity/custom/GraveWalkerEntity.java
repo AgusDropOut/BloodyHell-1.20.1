@@ -55,14 +55,14 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         this.xpReward = 20;
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 60.0D)
                 .add(Attributes.ATTACK_DAMAGE, 12.0D)
                 .add(Attributes.ATTACK_SPEED, 0.5f)
                 .add(Attributes.MOVEMENT_SPEED, 0.18D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.7D)
-                .add(Attributes.FOLLOW_RANGE, 30.0D).build();
+                .add(Attributes.FOLLOW_RANGE, 30.0D);
     }
 
     @Override

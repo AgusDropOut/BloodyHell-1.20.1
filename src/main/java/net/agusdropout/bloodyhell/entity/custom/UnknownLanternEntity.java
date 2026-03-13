@@ -86,7 +86,7 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
     }
 
-    public static AttributeSupplier.Builder setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.22D)
@@ -98,11 +98,19 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(IS_SUMMONING, true);
+
+        this.entityData.define(IS_SUMMONING, false);
         this.entityData.define(TARGET_PLAYER, Optional.empty());
         this.entityData.define(IS_GAZING, false);
         this.entityData.define(GAZE_INTENSITY, 0.0f);
     }
+
+
+    public void setSummoning(boolean isSummoning) {
+        this.entityData.set(IS_SUMMONING, isSummoning);
+    }
+
+
 
     public void setTargetPlayer(UUID uuid) {
         this.entityData.set(TARGET_PLAYER, Optional.ofNullable(uuid));
@@ -115,7 +123,6 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
     public BlockMemoryManager getBlockMemoryManager() {
         return this.blockMemoryManager;
     }
-
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -127,6 +134,8 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
             tag.putDouble("OriginY", this.playerOriginPosition.y);
             tag.putDouble("OriginZ", this.playerOriginPosition.z);
         }
+
+        tag.putBoolean("IsSummoning", this.isSummoning());
     }
 
     @Override
@@ -142,6 +151,11 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
                     tag.getDouble("OriginZ")
             );
         }
+
+
+        if (tag.contains("IsSummoning")) {
+            this.entityData.set(IS_SUMMONING, tag.getBoolean("IsSummoning"));
+        }
     }
 
     @Override
@@ -150,7 +164,7 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
         if (targetId != null) {
             Entity attacker = source.getEntity();
 
-            if(targetId.equals(attacker.getUUID())){
+            if( attacker != null && targetId.equals(attacker.getUUID())){
                 if(attacker instanceof ServerPlayer player) {
                     float currentInsight = InsightHelper.getInsight(player);
                     if (currentInsight < this.getMinimumInsight()) {

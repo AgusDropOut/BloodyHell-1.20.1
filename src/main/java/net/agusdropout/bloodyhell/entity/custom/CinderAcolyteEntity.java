@@ -57,14 +57,14 @@ public class CinderAcolyteEntity extends Monster implements GeoEntity , IBloodFl
         this.xpReward = 20;
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 60.0D)
-                .add(Attributes.ATTACK_DAMAGE, 8.0f) // Heavy hit
+                .add(Attributes.ATTACK_DAMAGE, 8.0f)
                 .add(Attributes.ATTACK_SPEED, 0.5f)
                 .add(Attributes.MOVEMENT_SPEED, 0.22D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D) // High resistance
-                .add(Attributes.FOLLOW_RANGE, 32.0D).build();
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     @Override

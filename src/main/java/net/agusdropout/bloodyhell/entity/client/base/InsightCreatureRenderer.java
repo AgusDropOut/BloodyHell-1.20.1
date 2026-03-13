@@ -39,11 +39,10 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        if (ClientInsightData.getPlayerInsight() >= animatable.getMinimumInsight()) {
+        if (Minecraft.getInstance().screen != null || ClientInsightData.getPlayerInsight() >= animatable.getMinimumInsight()) {
             return super.getRenderType(animatable, texture, bufferSource, partialTick);
         }
 
-        // Fallback deleted: Will always natively output the Insight Distortion shader mapping
         return ModRenderTypes.getInsightDistortion(texture);
     }
 
@@ -51,10 +50,11 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         float playerInsight = ClientInsightData.getPlayerInsight();
 
-        if (playerInsight >= entity.getMinimumInsight()) {
+        if (Minecraft.getInstance().screen != null || playerInsight >= entity.getMinimumInsight()) {
             super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
             return;
         }
+
 
 
         PoseStack copiedPose = new PoseStack();

@@ -40,6 +40,7 @@ public class GazeOfTheUnknownItem extends Item {
             UnknownLanternEntity lantern = ModEntityTypes.UNKNOWN_LANTERN.get().create(serverLevel);
             if (lantern != null) {
                 lantern.moveTo(spawnX, spawnY, spawnZ, level.random.nextFloat() * 360.0F, 0.0F);
+                lantern.setSummoning(true);
                 lantern.setTargetPlayer(player.getUUID());
                 serverLevel.addFreshEntity(lantern);
             }

@@ -50,10 +50,10 @@ public class ScarletSpeckledFishEntity extends AbstractFish implements GeoEntity
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes(){
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 150)
-                .add(Attributes.MOVEMENT_SPEED, 0.4D).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.4D);
     }
 
 
@@ -77,10 +77,6 @@ public class ScarletSpeckledFishEntity extends AbstractFish implements GeoEntity
         return p_27475_.height * 0.65F;
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 3.0D)
-                .add(Attributes.MOVEMENT_SPEED,0.8D);
-    }
 
     public boolean requiresCustomPersistence() {
         return super.requiresCustomPersistence() || this.fromBucket();

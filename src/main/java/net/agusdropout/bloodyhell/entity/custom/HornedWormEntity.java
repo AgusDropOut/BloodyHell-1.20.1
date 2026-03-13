@@ -88,13 +88,13 @@ public class HornedWormEntity extends Monster implements GeoEntity {
     public HornedWormEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 35)
                 .add(Attributes.ATTACK_DAMAGE, 7.0f)
                 .add(Attributes.ATTACK_SPEED, 0.8F)
                 .add(Attributes.MOVEMENT_SPEED, 0.20f)
-                .add(Attributes.FOLLOW_RANGE,20).build();
+                .add(Attributes.FOLLOW_RANGE,20);
 
 
     }

@@ -57,14 +57,13 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
         this.setNoGravity(true);
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.FLYING_SPEED, 0.05D)
-                .add(Attributes.FOLLOW_RANGE, 50.0D)
-                .build();
+                .add(Attributes.FOLLOW_RANGE, 50.0D);
     }
 
     @Override
