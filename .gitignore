@@ -1,26 +1,42 @@
-# eclipse
-bin
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Eclipse
+bin/
 *.launch
-.settings
-.metadata
+.settings/
+.metadata/
 .classpath
 .project
+eclipse/
 
-# idea
-out
+# IntelliJ IDEA
+out/
 *.ipr
 *.iws
 *.iml
-.idea
+.idea/
 
-# gradle
-build
-.gradle
+# VS Code (just in case you or a contributor uses it)
+.vscode/
 
-# other
-eclipse
-run
+# Gradle
+build/
+.gradle/
+src/generated/resources/
+
+# Minecraft Forge Runtime Directories
+# (These contain your local test worlds, window settings, and local configs)
+run/
+run-client/
+run-server/
+run-data/
+
+# Logs and Crash Reports (just in case they generate outside the run folders)
+logs/
+crash-reports/
+usercache.json
 
 # Files from Forge MDK
 forge*changelog.txt
-/src/generated/resources/
