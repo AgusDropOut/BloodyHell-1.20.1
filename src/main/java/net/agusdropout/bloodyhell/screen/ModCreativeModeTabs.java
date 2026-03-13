@@ -21,6 +21,9 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.bloody_hell_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
 
+                        // --- Guide Book ---
+                        output.accept(ModItems.UNKNOWN_GUIDE_BOOK.get());
+
                         // --- Sanguinite Items ---
                         output.accept(ModItems.RAW_SANGUINITE.get());
                         output.accept(ModItems.SANGUINITE.get());
@@ -67,14 +70,14 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.RHNULL_BOOTS.get());
 
                         // --- Spawn Eggs ---
-                        output.accept(ModItems.BLOODTHIRSTYBEAST_SPAWN_EGG.get());
+                        //output.accept(ModItems.BLOODTHIRSTYBEAST_SPAWN_EGG.get());
                         output.accept(ModItems.BLOOD_SEEKER_SPAWN_EGG.get());
                         output.accept(ModItems.CRIMSON_RAVEN_SPAWN_EGG.get());
                         output.accept(ModItems.EYESHELLSNAIL_SPAWN_EGG.get());
                         output.accept(ModItems.BLOOD_PIG_SPAWN_EGG.get());
                         output.accept(ModItems.SCARLETSPECKLED_FISH_SPAWN_EGG.get());
                         output.accept(ModItems.OMEN_GAZER_ENTITY_SPAWN_EGG.get());
-                        output.accept(ModItems.VEINRAVER_ENTITY_SPAWN_EGG.get());
+                        //output.accept(ModItems.VEINRAVER_ENTITY_SPAWN_EGG.get());
                         output.accept(ModItems.OFFSPRING_OF_THE_UNKNOWN_SPAWN_EGG.get());
                         output.accept(ModItems.BLASPHEMOUS_MALFORMATION_SPAWN_EGG.get());
                         output.accept(ModItems.SELIORA_SPAWN_EGG.get());
@@ -116,7 +119,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.Eight_ball.get());
                         output.accept(ModItems.DIRTY_BLOOD_FLOWER.get());
                         output.accept(ModItems.BLOOD_LILY.get());
-                        output.accept(ModItems.SANGUINE_CRUCIBLE_CORE.get());
+                        //output.accept(ModItems.SANGUINE_CRUCIBLE_CORE.get());
 
                         // --- Sanguinite (Blocks) ---
                         output.accept(ModBlocks.SANGUINE_CRUCIBLE.get());
@@ -217,7 +220,7 @@ public class ModCreativeModeTabs {
                         // --- Misc (Blocks) ---
                         output.accept(ModBlocks.SMALL_ROCKS.get());
                         output.accept(ModBlocks.BLEEDING_BLOCK.get());
-                        output.accept(ModBlocks.ONI_STATUE.get());
+                        //output.accept(ModBlocks.ONI_STATUE.get());
 
                         output.accept(ModBlocks.BLOOD_ALTAR.get());
                         output.accept(ModBlocks.MAIN_BLOOD_ALTAR.get());

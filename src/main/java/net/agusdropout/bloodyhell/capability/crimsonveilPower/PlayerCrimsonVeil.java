@@ -8,7 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 public class PlayerCrimsonVeil {
     private int crimsonVeil;
     private final int MIN_CRIMSONVEIL = 0;
-    private final int MAX_CRIMSOMVEIL = 100;
+    public static final int MAX_CRIMSOMVEIL = 100;
 
     public int getCrimsonVeil() {
         return crimsonVeil;

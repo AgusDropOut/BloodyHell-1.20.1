@@ -145,6 +145,26 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.SANGUINITE_GREAT_GEM_FRAME.get())
                 .add(ModItems.RHNULL_GREAT_GEM_FRAME.get())
                 .add( ModItems.RHNULL_GEM_FRAME.get());
+
+        this.tag(ModTags.Items.CRIMSONVEIL_PASSIVE_RECHARGER)
+                .add(ModItems.AMULET_OF_ANCESTRAL_BLOOD.get())
+                .add(ModItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD.get());
+
+
+
+
+        this.tag(ModTags.Items.SPELLBOOKS)
+                .add(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
+                .add(ModItems.BLOOD_SPHERE_SPELLBOOK.get())
+                .add(ModItems.BLOOD_NOVA_SPELLBOOK.get())
+                .add(ModItems.BLOOD_SCRATCH_SPELLBOOK.get())
+                .add(ModItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
+                .add(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
+                .add(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
+                .add(ModItems.RHNULL_IMPALERS_SPELLBOOK.get())
+                .add(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
+                .add(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
+                .add(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
     }
 
 

@@ -40,6 +40,9 @@ public class ModItemModelProvider extends ItemModelProvider {
     }
     @Override
     protected void registerModels() {
+        // Guide book
+        normalItem(ModItems.UNKNOWN_GUIDE_BOOK);
+
         //Sanguinite Items
         toolItem(ModItems.SANGUINITE_SWORD);
         toolItem(ModItems.SANGUINITE_PICKAXE);

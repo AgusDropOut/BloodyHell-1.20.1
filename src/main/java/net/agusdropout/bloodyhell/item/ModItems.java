@@ -269,12 +269,19 @@ public class ModItems {
     //Flasks
     public static final RegistryObject<Item> BLOOD_FLASK = ITEMS.register("blood_flask", () -> new BloodFlaskItem(
             new Item.Properties().stacksTo(64)));
+
     public static final RegistryObject<Item> CORRUPTED_BLOOD_FLASK = ITEMS.register("corrupted_blood_flask", () -> new BloodPotionItem(
-            new Item.Properties().stacksTo(64),new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
+            new Item.Properties().stacksTo(64), 10)); // Grants less power
+
     public static final RegistryObject<Item> FILLED_BLOOD_FLASK = ITEMS.register("filled_blood_flask", () -> new BloodPotionItem(
-            new Item.Properties().stacksTo(64), new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
+            new Item.Properties().stacksTo(64), 20)); // Standard power
+
     public static final RegistryObject<Item> FILLED_RHNULL_BLOOD_FLASK = ITEMS.register("filled_rhnull_blood_flask", () -> new BloodPotionItem(
-            new Item.Properties().stacksTo(64), new MobEffectInstance(ModEffects.BLOOD_LUST.get(), 6000, 0)));
+            new Item.Properties().stacksTo(64), 30)); // Grants more power
+
+
+    public static final RegistryObject<Item> UNKNOWN_GUIDE_BOOK = ITEMS.register("unknown_guide_book",
+            () -> new UnknownGuideBookItem(new Item.Properties().stacksTo(1)));
 
 
 

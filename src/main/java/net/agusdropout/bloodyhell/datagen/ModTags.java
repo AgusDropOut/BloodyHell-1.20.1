@@ -14,7 +14,10 @@ public class ModTags {
 
     public static class Items {
         public static final TagKey<Item> BLOOD_LOGS = tag("blood_logs");
-        public static final TagKey<Item> CRIMSONVEIL_CONSUMER = tag("spell_books");
+        public static final TagKey<Item> CRIMSONVEIL_CONSUMER = tag("crimson_veil_consumer");
+        public static final TagKey<Item> SPELLBOOKS = tag("spellbooks");
+
+        public static final TagKey<Item> CRIMSONVEIL_PASSIVE_RECHARGER = tag("crimson_veil_passive_recharger");
         public static final TagKey<Item> RELIQUARY_UPGRADE_ITEM = tag("reliquary_upgrade_item");
         public static final TagKey<Item> RELIQUARY_RUNE_ITEM = tag("reliquary_rune_item");
         public static final TagKey<Item> GEM_FRAMES = tag("gem_frames");

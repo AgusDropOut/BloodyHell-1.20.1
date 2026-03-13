@@ -25,11 +25,39 @@ public class ModRecipes extends ModRecipesProvider {
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 
         // =================================================================
+        // GUIDE BOOKS
+        // =================================================================
+
+        // Unknown Guide Book (Primary: Sanguinite)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNKNOWN_GUIDE_BOOK.get(), 1)
+                .pattern(" S ")
+                .pattern(" B ")
+                .pattern("   ")
+                .define('S', ModItems.SANGUINITE.get())
+                .define('B', Items.BOOK)
+                .unlockedBy("has_book", has(Items.BOOK))
+                .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
+                .save(consumer, name("unknown_guide_book"));
+
+        // Unknown Guide Book (Alternative: Redstone + Gold Ingot)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNKNOWN_GUIDE_BOOK.get(), 1)
+                .pattern(" R ")
+                .pattern("GB ")
+                .pattern("   ")
+                .define('R', Items.REDSTONE)
+                .define('G', Items.GOLD_INGOT)
+                .define('B', Items.BOOK)
+                .unlockedBy("has_book", has(Items.BOOK))
+                .unlockedBy("has_redstone", has(Items.REDSTONE))
+                .unlockedBy("has_gold", has(Items.GOLD_INGOT))
+                .save(consumer, name("unknown_guide_book_alt"));
+
+        // =================================================================
         // ALTARS CRAFTING
         // =================================================================
 
-        // Secondary Blood Altar
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
+        // Standard Blood Altar
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLOOD_ALTAR.get(), 1)
                 .pattern("GDG")
                 .pattern("SCS")
                 .pattern("TST")
@@ -39,14 +67,10 @@ public class ModRecipes extends ModRecipesProvider {
                 .define('D', ModItems.BLOODY_SOUL_DUST.get())
                 .define('T', ModBlocks.BLOODY_STONE_TILES_BLOCK.get())
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
-                .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
-                .unlockedBy("has_bloody_stone_tiles_block", has(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()))
-                .unlockedBy("has_corrupted_blood_flask", has(ModItems.CORRUPTED_BLOOD_FLASK.get()))
-                .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
                 .save(consumer, name("blood_altar"));
 
         // Main Blood Altar
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MAIN_BLOOD_ALTAR.get(), 1)
                 .pattern("GDG")
                 .pattern("SCS")
                 .pattern("TST")
@@ -56,37 +80,37 @@ public class ModRecipes extends ModRecipesProvider {
                 .define('D', ModItems.CHALICE_OF_THE_DAMMED.get())
                 .define('T', ModBlocks.BLOODY_STONE_TILES_BLOCK.get())
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
-                .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
-                .unlockedBy("has_bloody_stone_tiles_block", has(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()))
-                .unlockedBy("has_corrupted_blood_flask", has(ModItems.CORRUPTED_BLOOD_FLASK.get()))
-                .unlockedBy("has_chalice_of_the_dammed", has(ModItems.CHALICE_OF_THE_DAMMED.get()))
                 .save(consumer, name("main_blood_altar"));
 
+        // Blasphemous Blood Altar
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
+                .pattern("BDB")
+                .pattern("SFS")
+                .pattern("UBU")
+                .define('S', ModItems.SANGUINITE.get())
+                .define('B', ModItems.BLASPHEMITE.get())
+                .define('F', ModItems.FILLED_BLOOD_FLASK.get())
+                .define('D', ModItems.BLOODY_SOUL_DUST.get())
+                .define('U', ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .unlockedBy("has_blasphemite", has(ModItems.BLASPHEMITE.get()))
+                .save(consumer, name("blasphemous_blood_altar"));
+
+        // Main Blasphemous Blood Altar
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
+                .pattern("BCB")
+                .pattern("SFS")
+                .pattern("UBU")
+                .define('S', ModItems.SANGUINITE.get())
+                .define('B', ModItems.BLASPHEMITE.get())
+                .define('F', ModItems.FILLED_BLOOD_FLASK.get())
+                .define('C', ModItems.CHALICE_OF_THE_DAMMED.get())
+                .define('U', ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .unlockedBy("has_blasphemite", has(ModItems.BLASPHEMITE.get()))
+                .save(consumer, name("main_blasphemous_blood_altar"));
 
         // =================================================================
-        // BLASPHEMOUS RITUALS (3 ITEMS)
+        // BLASPHEMOUS RITUALS
         // =================================================================
-
-      //  BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.ANCIENT_GEM.get())
-      //          .requires(ModItems.VEINREAVER_HORN.get())
-      //          .requires(ModItems.FILLED_BLOOD_FLASK.get())
-      //          .requires(ModItems.SANGUINITE.get())
-      //          .unlockedBy("has_horn", has(ModItems.VEINREAVER_HORN.get()))
-      //          .save(consumer, name("ritual_ancient_gem"));
-//
-      //  BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.GREAT_ANCIENT_GEM.get())
-      //          .requires(ModBlocks.GLOWING_CRYSTAL.get())
-      //          .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-      //          .requires(ModItems.RHNULL.get())
-      //          .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
-      //          .save(consumer, name("ritual_great_amulet"));
-//
-        BlasphemousBloodAltarRecipeBuilder.ritual(Items.LEATHER)
-                .requires(Items.WHEAT)
-                .requires(Items.MILK_BUCKET)
-                .requires(Items.WHEAT)
-                .unlockedBy("has_milk", has(Items.MILK_BUCKET))
-                .save(consumer, name("ritual_summon_cow"));
 
         BlasphemousBloodAltarRecipeBuilder.ritual(Items.RECOVERY_COMPASS)
                 .requires(ModItems.VEINREAVER_HORN.get())
@@ -95,19 +119,6 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_dagger", has(ModItems.AUREAL_REVENANT_DAGGER.get()))
                 .save(consumer, name("ritual_find_mausoleum"));
 
-        BlasphemousBloodAltarRecipeBuilder.ritual(Items.RED_DYE)
-                .requires(ModItems.BLOODY_SOUL_DUST.get())
-                .requires(Items.GOLD_INGOT)
-                .requires(ModItems.GLOW_MUSHROOM.get())
-                .unlockedBy("has_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
-                .save(consumer, name("ritual_transmute_rhnull"));
-
-        BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.VORACIOUS_MUSHROOM.get())
-                .requires(ModItems.GLOW_MUSHROOM.get())
-                .requires(ModItems.UNKNOWN_ENTITY_FINGER.get())
-                .requires(ModItems.BLOODY_SOUL_DUST.get())
-                .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
-                .save(consumer, name("ritual_voracious_mushroom"));
 
         BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.BLOOD_GEM_SPROUT_SEED.get())
                 .requires(ModBlocks.BLOOD_FLOWER.get())
@@ -118,11 +129,37 @@ public class ModRecipes extends ModRecipesProvider {
 
 
         // =================================================================
-        // STANDARD BLOOD ALTAR RITUALS (4 ITEMS - SPELLBOOKS)
+        // BLOOD FLORA (MUSHROOMS)
         // =================================================================
 
-        // --- BASIC SPELLBOOKS ---
+        BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.VORACIOUS_MUSHROOM.get())
+                .requires(ModItems.GLOW_MUSHROOM.get())
+                .requires(ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .requires(ModItems.BLOODY_SOUL_DUST.get())
+                .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
+                .save(consumer, name("ritual_voracious_mushroom"));
 
+        BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.CRIMSON_LURE_MUSHROOM.get())
+                .requires(ModItems.GLOW_MUSHROOM.get())
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(Items.ROTTEN_FLESH)
+                .unlockedBy("has_glow_mushroom", has(ModItems.GLOW_MUSHROOM.get()))
+                .save(consumer, name("ritual_crimson_lure_mushroom"));
+
+
+        // =================================================================
+        // STANDARD BLOOD ALTAR RITUALS (SPELLBOOKS & ITEMS)
+        // =================================================================
+
+        BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_ECHO_SHARD.get())
+                .requires(Items.AMETHYST_SHARD)
+                .requires(ModItems.SANGUINITE.get())
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModBlocks.GLOWING_CRYSTAL.get())
+                .unlockedBy("has_glowing_crystal", has(ModBlocks.GLOWING_CRYSTAL.get()))
+                .save(consumer, name("ritual_blood_echo_shard"));
+
+        // --- BASIC SPELLBOOKS ---
         BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SCRATCH_SPELLBOOK.get())
                 .requires(Items.BOOK)
                 .requires(ModItems.FILLED_BLOOD_FLASK.get())
@@ -134,7 +171,7 @@ public class ModRecipes extends ModRecipesProvider {
         BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SPHERE_SPELLBOOK.get())
                 .requires(Items.BOOK)
                 .requires(ModItems.FILLED_BLOOD_FLASK.get())
-                .requires(ModItems.AUREAL_REVENANT_DAGGER.get())
+                .requires(ModItems.ANCIENT_GEM.get())
                 .requires(ModItems.BLOODY_SOUL_DUST.get())
                 .unlockedBy("has_book", has(Items.BOOK))
                 .save(consumer, name("ritual_spell_sphere"));
@@ -142,7 +179,7 @@ public class ModRecipes extends ModRecipesProvider {
         BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_NOVA_SPELLBOOK.get())
                 .requires(Items.BOOK)
                 .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-                .requires(ModItems.ANCIENT_GEM.get())
+                .requires(ModItems.AUREAL_REVENANT_DAGGER.get())
                 .requires(ModItems.RHNULL.get())
                 .unlockedBy("has_book", has(Items.BOOK))
                 .save(consumer, name("ritual_spell_nova"));
@@ -151,18 +188,17 @@ public class ModRecipes extends ModRecipesProvider {
                 .requires(Items.BOOK)
                 .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
                 .requires(ModItems.VEINREAVER_HORN.get())
-                .requires(ModItems.RHNULL.get())
+                .requires(ModItems.ANCIENT_RHNULL_GEM.get())
                 .unlockedBy("has_book", has(Items.BOOK))
                 .save(consumer, name("ritual_spell_daggersrain"));
 
 
         // --- BLOOD FIRE SPELLBOOKS (Boss Tier) ---
-
         BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
                 .requires(Items.BOOK)
                 .requires(ModItems.GREAT_ANCIENT_GEM.get())
                 .requires(ModItems.RITEKEEPER_HEART.get())
-                .requires(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
+                .requires(Items.FIRE_CHARGE)
                 .unlockedBy("has_ritekeeper_heart", has(ModItems.RITEKEEPER_HEART.get()))
                 .save(consumer, name("ritual_spell_bloodfire_meteor"));
 
@@ -184,12 +220,11 @@ public class ModRecipes extends ModRecipesProvider {
 
 
         // --- RHNULL SPELLBOOKS ---
-
         BloodAltarRecipeBuilder.ritual(ModItems.RHNULL_IMPALERS_SPELLBOOK.get())
                 .requires(Items.BOOK)
                 .requires(ModItems.GREAT_ANCIENT_RHNULL_GEM.get())
                 .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-                .requires(ModItems.RHNULL.get())
+                .requires(ModItems.RHNULL_PICKAXE.get())
                 .unlockedBy("has_great_ancient_rhnull_gem", has(ModItems.GREAT_ANCIENT_RHNULL_GEM.get()))
                 .save(consumer, name("ritual_spell_rhnull_impalers"));
 
@@ -205,7 +240,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .requires(Items.BOOK)
                 .requires(ModItems.ANCIENT_RHNULL_GEM.get())
                 .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-                .requires(ModItems.RHNULL_HOE.get())
+                .requires(Items.GOLD_BLOCK)
                 .unlockedBy("has_ancient_rhnull_gem", has(ModItems.ANCIENT_RHNULL_GEM.get()))
                 .save(consumer, name("ritual_spell_rhnull_golden_throne"));
 
@@ -213,10 +248,9 @@ public class ModRecipes extends ModRecipesProvider {
                 .requires(Items.BOOK)
                 .requires(ModItems.ANCIENT_RHNULL_GEM.get())
                 .requires(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-                .requires(ModItems.RHNULL.get())
+                .requires(ModItems.RHNULL_HOE.get())
                 .unlockedBy("has_ancient_rhnull_gem", has(ModItems.ANCIENT_RHNULL_GEM.get()))
                 .save(consumer, name("ritual_spell_rhnull_orb_emitter"));
-
 
         // =================================================================
         // BLOCKS & DECORATIONS
@@ -458,7 +492,7 @@ public class ModRecipes extends ModRecipesProvider {
         //---------------------------------Flasks----------------------------------//
 
         // Blood flask
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLOOD_FLASK.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLOOD_FLASK.get(), 3)
                 .pattern("G G")
                 .pattern(" G ")
                 .define('G', Items.GOLD_INGOT)
@@ -480,6 +514,19 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .unlockedBy("has_aureal_revenant_dagger", has(ModItems.AUREAL_REVENANT_DAGGER.get()))
                 .save(consumer, name("sacrificial_dagger"));
+
+        // Heretic Sacrificial Dagger
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HERETIC_SACRIFICIAL_DAGGER.get(), 1)
+                .pattern(" BB")
+                .pattern("GB ")
+                .pattern("DG ")
+                .define('G', Items.GOLD_INGOT)
+                .define('B', ModItems.BLASPHEMITE.get())
+                .define('D', ModItems.AUREAL_REVENANT_DAGGER.get())
+                .unlockedBy("has_blasphemite", has(ModItems.BLASPHEMITE.get()))
+                .unlockedBy("has_aureal_revenant_dagger", has(ModItems.AUREAL_REVENANT_DAGGER.get()))
+                .save(consumer, name("heretic_sacrificial_dagger"));
+
 
         //---------------------------------Crimson Veil----------------------------------//
 
@@ -730,6 +777,92 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_ancient_torch", has(ModItems.ANCIENT_TORCH_ITEM.get()))
                 .save(consumer, name("ancient_bloody_lamp"));
 
+
+        // =================================================================
+        // MECHANISMS & UNKNOWN TECH
+        // =================================================================
+
+        // Unknown Portal Block
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNKNOWN_PORTAL_ITEM.get(), 1)
+                .pattern("FRF")
+                .pattern("PTP")
+                .pattern("FRF")
+                .define('F', ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .define('R', ModItems.RHNULL.get())
+                .define('T', ModBlocks.RHNULL_TANK.get())
+                .define('P', ModItems.RHNULL_PIPE_ITEM.get())
+                .unlockedBy("has_finger", has(ModItems.UNKNOWN_ENTITY_FINGER.get()))
+                .save(consumer, name("unknown_portal_block"));
+
+        // Reliquary
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.RELIQUARY.get(), 1)
+                .pattern(" F ")
+                .pattern("RGR")
+                .pattern(" F ")
+                .define('F', ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .define('R', ModItems.RHNULL.get())
+                .define('G', ModItems.GAZE_OF_THE_UNKNOWN.get())
+                .unlockedBy("has_gaze", has(ModItems.GAZE_OF_THE_UNKNOWN.get()))
+                .save(consumer, name("reliquary"));
+
+        // Ancient Ocular Lense
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ANCIENT_OCULAR_LENSE.get(), 1)
+                .pattern(" G ")
+                .pattern("GAG")
+                .pattern(" G ")
+                .define('G', Items.GOLD_NUGGET)
+                .define('A', ModItems.ANCIENT_GEM.get())
+                .unlockedBy("has_ancient_gem", has(ModItems.ANCIENT_GEM.get()))
+                .save(consumer, name("ancient_ocular_lense"));
+
+        // Blasphemous Ocular Lense
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLASPHEMOUS_OCULAR_LENSE.get(), 1)
+                .pattern(" B ")
+                .pattern("GAG")
+                .pattern(" B ")
+                .define('B', ModItems.BLASPHEMITE_NUGGET.get())
+                .define('G', Items.GLASS_PANE)
+                .define('A', ModItems.ANCIENT_RHNULL_GEM.get())
+                .unlockedBy("has_ancient_rhnull_gem", has(ModItems.ANCIENT_RHNULL_GEM.get()))
+                .save(consumer, name("blasphemous_ocular_lense"));
+
+        // Sanguinite Gem Frame
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_GEM_FRAME.get(), 1)
+                .pattern(" N ")
+                .pattern("N N")
+                .pattern(" N ")
+                .define('N', ModItems.SANGUINITE_NUGGET.get())
+                .unlockedBy("has_sanguinite_nugget", has(ModItems.SANGUINITE_NUGGET.get()))
+                .save(consumer, name("sanguinite_gem_frame"));
+
+        // Sanguinite Great Gem Frame
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_GREAT_GEM_FRAME.get(), 1)
+                .pattern(" S ")
+                .pattern("S S")
+                .pattern(" S ")
+                .define('S', ModItems.SANGUINITE.get())
+                .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
+                .save(consumer, name("sanguinite_great_gem_frame"));
+
+        // Rhnull Gem Frame
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.RHNULL_GEM_FRAME.get(), 1)
+                .pattern(" N ")
+                .pattern("N N")
+                .pattern(" N ")
+                .define('N', ModItems.RHNULL_NUGGET.get())
+                .unlockedBy("has_rhnull_nugget", has(ModItems.RHNULL_NUGGET.get()))
+                .save(consumer, name("rhnull_gem_frame"));
+
+        // Rhnull Great Gem Frame
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.RHNULL_GREAT_GEM_FRAME.get(), 1)
+                .pattern(" R ")
+                .pattern("R R")
+                .pattern(" R ")
+                .define('R', ModItems.RHNULL.get())
+                .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
+                .save(consumer, name("rhnull_great_gem_frame"));
+
+        // Sanguinite Pipe
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_PIPE_ITEM.get(), 8)
                 .pattern("GGG")
                 .pattern("SSS")
@@ -738,6 +871,16 @@ public class ModRecipes extends ModRecipesProvider {
                 .define('S', ModItems.SANGUINITE.get())
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("sanguinite_pipe"));
+
+        // Rhnull Pipe
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.RHNULL_PIPE_ITEM.get(), 8)
+                .pattern("GGG")
+                .pattern("RRR")
+                .pattern("GGG")
+                .define('G', Items.GLASS_PANE)
+                .define('R', ModItems.RHNULL.get())
+                .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
+                .save(consumer, name("rhnull_pipe"));
 
         // Sanguinite Tank
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINITE_TANK.get())
@@ -749,13 +892,43 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("sanguinite_tank"));
 
-        // Sanguinite Blood Harvester
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get())
-                .pattern("ISI")
-                .pattern("RDR")
-                .pattern("ISI")
+        // Rhnull Tank
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RHNULL_TANK.get())
+                .pattern("RGR")
+                .pattern("G G")
+                .pattern("RGR")
+                .define('R', ModItems.RHNULL.get())
+                .define('G', Items.GLASS)
+                .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
+                .save(consumer, name("rhnull_tank"));
+
+        // Sanguinite Condenser
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINITE_CONDENSER.get(), 1)
+                .pattern("SGS")
+                .pattern("G G")
+                .pattern("SSS")
                 .define('S', ModItems.SANGUINITE.get())
-                .define('I', Items.IRON_INGOT)
+                .define('G', Items.GLASS)
+                .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
+                .save(consumer, name("sanguinite_condenser"));
+
+        // Rhnull Condenser
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RHNULL_CONDENSER.get(), 1)
+                .pattern("RGR")
+                .pattern("G G")
+                .pattern("RRR")
+                .define('R', ModItems.RHNULL.get())
+                .define('G', Items.GLASS)
+                .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
+                .save(consumer, name("rhnull_condenser"));
+
+        // Sanguinite Blood Harvester (Reworked Iron -> Gold)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get())
+                .pattern("GSG")
+                .pattern("RDR")
+                .pattern("GSG")
+                .define('S', ModItems.SANGUINITE.get())
+                .define('G', Items.GOLD_INGOT)
                 .define('R', Items.REDSTONE)
                 .define('D', ModItems.SACRIFICIAL_DAGGER.get())
                 .unlockedBy("has_sacrificial_dagger", has(ModItems.SACRIFICIAL_DAGGER.get()))
@@ -785,24 +958,10 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("sanguine_lapidary"));
 
-        // Heretic Sacrificial Dagger
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HERETIC_SACRIFICIAL_DAGGER.get(), 1)
-                .pattern(" BB")
-                .pattern("GB ")
-                .pattern("DG ")
-                .define('G', Items.GOLD_INGOT)
-                .define('B', ModItems.BLASPHEMITE.get())
-                .define('D', ModItems.AUREAL_REVENANT_DAGGER.get())
-                .unlockedBy("has_blasphemite", has(ModItems.BLASPHEMITE.get()))
-                .unlockedBy("has_aureal_revenant_dagger", has(ModItems.AUREAL_REVENANT_DAGGER.get()))
-                .save(consumer, name("heretic_sacrificial_dagger"));
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.BLOOD_GEM_SPROUT_SEED.get())
-                .requires(Items.WHEAT_SEEDS)
-                .requires(ModItems.FILLED_BLOOD_FLASK.get())
-                .requires(ModItems.BLOODY_SOUL_DUST.get())
-                .unlockedBy("has_filled_blood_flask", has(ModItems.FILLED_BLOOD_FLASK.get()))
-                .save(consumer, name("blood_gem_sprout_seed_crafting"));
+        // =================================================================
+        // FLUID INFUSION
+        // =================================================================
 
         makeInfusion(consumer, ModItems.RHNULL.get(), ModItems.SANGUINITE.get(), 500, 500, "rhnull_ingot_infusion");
         makeInfusion(consumer, ModItems.FILLED_RHNULL_BLOOD_FLASK.get(), ModItems.FILLED_BLOOD_FLASK.get(), 500, 500, "filled_rhnull_flask_infusion");
@@ -834,3 +993,14 @@ public class ModRecipes extends ModRecipesProvider {
         return new ResourceLocation(BloodyHell.MODID, name);
     }
 }
+/*
+=========================================
+PENDING RECIPES / LOOT TABLES:
+=========================================
+1. Gaze of the Unknown:
+   - Need to modify the EntityLootProvider so ModEntityTypes.UNKNOWN_LANTERN drops it.
+2. Reliquary Runes:
+   - ModItems.MARK_OF_THE_RESTLESS_SLUMBER (No recipe yet)
+   - ModItems.RUNE_OF_THE_RAVENOUS_GAZE (No recipe yet)
+=========================================
+*/

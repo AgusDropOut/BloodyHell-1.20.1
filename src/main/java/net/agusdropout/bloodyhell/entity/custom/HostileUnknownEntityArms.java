@@ -185,8 +185,8 @@ public class HostileUnknownEntityArms extends Entity implements GeoEntity {
 
             if (this.stateTicks > 30 && this.stateTicks < 60) {
                 target.setPos(this.grabBoneX, this.grabBoneY, this.grabBoneZ);
-                target.setDeltaMovement(0, 0, 0); // Prevent gravity from pulling them down
-                target.fallDistance = 0.0F; // Reset fall distance so they don't take damage mid-air
+                target.setDeltaMovement(0, 0, 0);
+                target.fallDistance = 0.0F;
                 target.hurtMarked = true;
             }
 
