@@ -28,7 +28,7 @@ public class EyeParticle extends TextureSheetParticle {
 
 
     private static final float MAX_IRIS_OFFSET = 0.125f;
-    private static final float Z_FIGHT_OFFSET = 0.001f;
+    private static final float Z_FIGHT_OFFSET = 0.0001f;
 
     protected EyeParticle(ClientLevel pLevel, double pX, double pY, double pZ,
                           TextureAtlasSprite spriteBase, TextureAtlasSprite spriteIris) {
@@ -111,14 +111,16 @@ public class EyeParticle extends TextureSheetParticle {
         rotateVectorYawPitch(irisDisplacement, facingYaw, facingPitch);
         irisDisplacement.mul(this.quadSize);
 
-
-        drawQuad(vertexConsumer, relX, relY, relZ, this.spriteBase, 1.0F);
         drawQuad(vertexConsumer,
                 relX + irisDisplacement.x(),
                 relY + irisDisplacement.y(),
                 relZ + irisDisplacement.z(),
                 this.spriteIris,
                 0.5F);
+
+
+        drawQuad(vertexConsumer, relX, relY, relZ, this.spriteBase, 1.0F);
+
     }
 
     private static void rotateVectorYawPitch(Vector3f v, float yawDeg, float pitchDeg) {
@@ -187,6 +189,7 @@ public class EyeParticle extends TextureSheetParticle {
         @Override
         public void begin(BufferBuilder builder, TextureManager textureManager) {
             RenderSystem.enableBlend();
+            //RenderSystem.depthMask(false);
             RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA,
                     com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
@@ -201,7 +204,10 @@ public class EyeParticle extends TextureSheetParticle {
 
         @Override
         public void end(Tesselator tesselator) {
+
             tesselator.end();
+            RenderSystem.disableBlend();
+           // RenderSystem.depthMask(false);
         }
 
         @Override

@@ -74,3 +74,11 @@ mandatory = true
 versionRange = "[1.0,)"
 ordering = "NONE"
 side = "BOTH"
+
+# 5. Patchouli Dependency (OBLIGATORIA)
+[[dependencies."${mod_id}"]]
+modId = "patchouli"
+mandatory = true
+versionRange = "[1.0,)"
+ordering = "NONE"
+side = "BOTH"

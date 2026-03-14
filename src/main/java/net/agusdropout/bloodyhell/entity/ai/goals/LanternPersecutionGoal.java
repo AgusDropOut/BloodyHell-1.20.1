@@ -22,6 +22,12 @@ public class LanternPersecutionGoal extends Goal {
 
     private static final double MAX_VISIBLE_DISTANCE = 15.0D;
 
+    // --- Speed Bonus Constants ---
+    private static final double BASE_SPEED = 1.07D;
+    private static final double MAX_SPEED_BONUS = 0.10D; // 10% faster
+    private static final double MIN_BONUS_DISTANCE = 7.0D; // Starts increasing bonus past this distance
+    private static final double MAX_BONUS_DISTANCE = 15.0D; // Reaches max 10% bonus at this distance
+
     public LanternPersecutionGoal(UnknownLanternEntity lantern) {
         this.lantern = lantern;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -69,6 +75,7 @@ public class LanternPersecutionGoal extends Goal {
 
         double distanceToPlayerSqr = this.lantern.distanceToSqr(this.targetPlayer);
 
+        // Fail condition if it catches the player
         if (distanceToPlayerSqr <= 3.0D) {
             if (!this.lantern.level().isClientSide()) {
                 this.lantern.fail();
@@ -76,8 +83,28 @@ public class LanternPersecutionGoal extends Goal {
             return;
         }
 
-        this.lantern.getNavigation().moveTo(this.targetPlayer, 1.07D);
+        // Calculate dynamic speed based on distance
+        double distance = Math.sqrt(distanceToPlayerSqr);
+        double currentSpeed = BASE_SPEED;
 
+        if (distance > MIN_BONUS_DISTANCE) {
+            if (distance >= MAX_BONUS_DISTANCE) {
+                currentSpeed = BASE_SPEED * (1.0D + MAX_SPEED_BONUS);
+            } else {
+                // Smoothly interpolate between 0% and 10% bonus
+                double bonusFraction = (distance - MIN_BONUS_DISTANCE) / (MAX_BONUS_DISTANCE - MIN_BONUS_DISTANCE);
+                currentSpeed = BASE_SPEED * (1.0D + (MAX_SPEED_BONUS * bonusFraction));
+            }
+        }
+
+        // Massive speed multiplier if the entity is stuck in water
+        if (this.lantern.isInWater()) {
+            currentSpeed *= 2.5D;
+        }
+
+        this.lantern.getNavigation().moveTo(this.targetPlayer, currentSpeed);
+
+        // Anti-stuck and block breaking logic
         this.checkTimer++;
         if (this.checkTimer >= 10) {
             double distanceMovedSqr = this.lantern.position().distanceToSqr(this.lastPosition);
@@ -97,6 +124,7 @@ public class LanternPersecutionGoal extends Goal {
             }
         }
 
+        // Gaze damage logic
         boolean isPlayerLooking = this.isPlayerLookingAtMe(this.targetPlayer, this.lantern);
 
         if (isPlayerLooking) {

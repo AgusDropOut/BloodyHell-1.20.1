@@ -9,27 +9,11 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.material.FogType;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.renderable.IRenderable;
-import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
-import org.lwjgl.opengl.GL11;
 
 public class BloodDimensionSkyRenderer {
 
-
-    private static VertexBuffer starBuffer;
-    /*Twilight Forest Mod Code*/
-    // [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, using our own stars at full brightness, and lowering void horizon threshold height from getHorizonHeight (63) to 0
     private static final ResourceLocation SKY_TEXTURE =
             new ResourceLocation(BloodyHell.MODID, "textures/environment/bloodsky.png");
     private static final ResourceLocation FOG_OVERLAY_1 =
@@ -41,11 +25,15 @@ public class BloodDimensionSkyRenderer {
     public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack poseStack,
                                     Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
 
+        // FIX 1: Run the vanilla fog setup FIRST, then override it to MAX_VALUE for the sky.
+        setupFog.run();
         RenderSystem.setShaderFogStart(Float.MAX_VALUE);
         RenderSystem.setShaderFogEnd(Float.MAX_VALUE);
-        setupFog.run();
 
-
+        // FIX 2: Disable depth test and mask so the sky renders in the deep background
+        // without writing to the depth buffer (which breaks particle rendering).
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, SKY_TEXTURE);
@@ -96,16 +84,17 @@ public class BloodDimensionSkyRenderer {
         }
 
         BufferUploader.drawWithShader(buffer.end());
-       // renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_1, 0f, 0.3f );
 
         renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_2, 0.8f, -0.3f);
         renderBloodMoon(poseStack, projectionMatrix, partialTicks);
         renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_2, 0.8f, 0.5f);
 
+        // FIX 3: Always restore depth state at the end of a custom sky renderer!
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+
         return true;
     }
-
-
 
     private static void renderFogOverlay(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, ResourceLocation overlayTexture, float alphaMult, float velocityMult) {
         RenderSystem.enableBlend();
@@ -176,8 +165,6 @@ public class BloodDimensionSkyRenderer {
         RenderSystem.disableBlend();
     }
 
-
-
     private static void renderBloodMoon(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -187,14 +174,12 @@ public class BloodDimensionSkyRenderer {
         BufferBuilder buffer = Tesselator.getInstance().getBuilder();
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        float size = 40.0F;   // más razonable
-        float y = -100.0F;    // siempre negativo en el sistema de cielo
+        float size = 40.0F;
+        float y = -100.0F;
 
         poseStack.pushPose();
-
-        //  rotación: inclina la luna hacia el horizonte que quieras
-        poseStack.mulPose(Axis.YP.rotationDegrees(45.0F)); // este ángulo la mueve horizontalmente
-        poseStack.mulPose(Axis.XP.rotationDegrees(130.0F)); // este la sube/baja en la cúpula
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(130.0F));
 
         Matrix4f matrix = poseStack.last().pose();
 
@@ -208,12 +193,4 @@ public class BloodDimensionSkyRenderer {
 
         RenderSystem.disableBlend();
     }
-
-
-
-
-
-    }
-
-
-
+}
