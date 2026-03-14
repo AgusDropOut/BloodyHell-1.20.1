@@ -19,8 +19,6 @@ public class ModStructuresTagGenerator extends StructureTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
 
-        this.tag(ModTags.Structures.MAUSOLEUM)
-                .add(ModStructures.MAUSOLEUM);
 
         this.tag(ModTags.Structures.SANCTUM_OF_THE_UNBOUND)
                 .add(ModStructures.SANCTUM_OF_THE_UNBOUND);

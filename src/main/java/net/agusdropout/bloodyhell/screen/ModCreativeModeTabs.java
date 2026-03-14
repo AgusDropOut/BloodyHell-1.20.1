@@ -137,7 +137,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.MAIN_BLOOD_ALTAR.get());
                         output.accept(ModItems.BLASPHEMOUS_BLOOD_ALTAR_ITEM.get());
                         output.accept(ModItems.MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM.get());
-                        output.accept(ModBlocks.SANGUINE_CRUCIBLE.get());
+                        //output.accept(ModBlocks.SANGUINE_CRUCIBLE.get());
                         output.accept(ModBlocks.SANGUINE_LAPIDARY.get());
                         output.accept(ModBlocks.SANGUINITE_CONDENSER.get());
                         output.accept(ModBlocks.RHNULL_CONDENSER.get());
@@ -219,7 +219,6 @@ public class ModCreativeModeTabs {
 
                         output.accept(ModItems.BLOOD_GEM_SPROUT_SEED.get());
                         output.accept(ModItems.GLOW_MUSHROOM.get());
-                        output.accept(ModBlocks.LIGHT_MUSHROOM_BLOCK.get());
                         output.accept(ModBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get());
                         output.accept(ModItems.VORACIOUS_MUSHROOM.get());
                         output.accept(ModItems.CRIMSON_LURE_MUSHROOM.get());
@@ -317,6 +316,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.GRAVE_WALKER_SPAWN_EGG.get());
                         output.accept(ModItems.CYCLOPS_ENTITY_SPAWN_EGG.get());
                         output.accept(ModItems.CINDER_ACOLYTE_SPAWN_EGG.get());
+                        output.accept(ModItems.FAILED_REMNANT_SPAWN_EGG.get());
                         output.accept(ModItems.FAILED_REMNANT_SPAWN_EGG.get());
 
                     })

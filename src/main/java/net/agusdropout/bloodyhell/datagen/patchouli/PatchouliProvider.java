@@ -307,7 +307,7 @@ public class PatchouliProvider implements DataProvider {
         saveCategory(cache, category);
 
         // --- ENTRY: INSIGHT ---
-        PatchouliEntryBuilder insightEntry = PatchouliEntryBuilder.create("insight", category.getId(), "Insight", "minecraft:ender_eye")
+        PatchouliEntryBuilder insightEntry = PatchouliEntryBuilder.create("insight", category.getId(), "Insight", "bloodyhell:blasphemous_eye")
                 .addTextPage("Insight represents your comprehension of the cosmic horrors that lurk around you. You will begin this dark journey with " + link("0 Insight") + ".")
                 .addTextPage("The primary way to gain Insight is by consuming the " + entryLink("the_unknown", "unknown_lantern", "Gaze of the Unknown") + "." + br() + br() +
                         "However, you must be careful: gaining Insight attracts the attention of visitors from other planes.")
@@ -345,7 +345,9 @@ public class PatchouliProvider implements DataProvider {
                 .addSpotlightPage("tag:bloodyhell:reliquary_rune_item", link("Summoning Runes") + br() + br() +
                         "To summon an ally, you must place a specific Rune within the Reliquary. Each Rune corresponds to a unique entity and requires a different amount of capacity to maintain.")
                 .addSpotlightPage("tag:bloodyhell:reliquary_upgrade_item", link("Reliquary Lenses") + br() + br() +
-                        "By default, the Reliquary can only hold a limited number of Runes. You can expand its internal slots by installing Ocular Lenses.");
+                        "By default, the Reliquary can only hold a limited number of Runes. You can expand its internal slots by installing Ocular Lenses.")
+                .addTextPage("By default, the Reliquary's summons will take on a golden hue." + br() + br() +
+                        "However, you can customize the appearance of your army! By placing any standard " + link("Vanilla Dye") + " into the bottom-right slot of the Reliquary, your summons will absorb that color instead.");
         saveEntry(cache, reliquary);
 
         // --- ENTRY: UNKNOWN PORTAL BLOCK ---
@@ -467,7 +469,7 @@ public class PatchouliProvider implements DataProvider {
     }
 
     private void writeBookBase(CachedOutput cache) {
-        JsonObject bookJson = PatchouliBookBuilder.create("The Unknown Guide", "A record of horrors.")
+        JsonObject bookJson = PatchouliBookBuilder.create("The Unknown Guide", "Master the arts of blood and insight to survive the cosmic madness that lies beyond the veil.")
                 .setModel(new ResourceLocation("patchouli", "book_brown"))
                 .setI18n(false)
                 .build();

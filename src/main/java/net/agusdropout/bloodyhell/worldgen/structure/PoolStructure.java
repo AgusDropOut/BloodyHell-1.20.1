@@ -44,7 +44,7 @@ public class PoolStructure extends Structure {
     private static final ResourceLocation PART_7 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_7");
     private static final ResourceLocation PART_8 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_8"); // CENTRO
 
-    // Map de offsets verticales por si alguna pieza necesita subirse o bajarse (actualmente en 0)
+
     private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
             .put(PART_0, new BlockPos(0, 0, 0))
             .put(PART_1, new BlockPos(0, 0, 0))
@@ -61,11 +61,8 @@ public class PoolStructure extends Structure {
         super(settings);
     }
 
-    // Lógica para encontrar dónde generar (Biome check, altura, etc)
     @Override
     public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        // Aquí podrías chequear biomas específicos si no lo haces en el JSON
-        // Retornamos la generación en la superficie (o suelo del océano si fuera necesario)
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, (builder) -> {
             generatePieces(builder, context);
         });
@@ -74,24 +71,19 @@ public class PoolStructure extends Structure {
     private static void generatePieces(StructurePiecesBuilder builder, GenerationContext context) {
         int centerX = context.chunkPos().getMinBlockX();
         int centerZ = context.chunkPos().getMinBlockZ();
-
-        // Radio aproximado de tu estructura (47 de un ala + 3 del centro = 50 bloques)
-        // Usamos 45 para no irnos demasiado al borde, pero chequear las esquinas.
         int radius = 45;
 
-        // Buscamos la altura (OCEAN_FLOOR ignora árboles) en el centro y en las 4 esquinas
+
         int yCenter = context.chunkGenerator().getFirstFreeHeight(centerX, centerZ, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner1 = context.chunkGenerator().getFirstFreeHeight(centerX + radius, centerZ + radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner2 = context.chunkGenerator().getFirstFreeHeight(centerX - radius, centerZ - radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner3 = context.chunkGenerator().getFirstFreeHeight(centerX + radius, centerZ - radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner4 = context.chunkGenerator().getFirstFreeHeight(centerX - radius, centerZ + radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
 
-        // Calculamos la altura MÍNIMA encontrada.
-        // Esto asegura que la base de la estructura esté en el punto más bajo del terreno.
-        // El resto de la estructura quedará enterrada en las zonas altas, pero NADA flotará.
+
         int minY = Math.min(yCenter, Math.min(yCorner1, Math.min(yCorner2, Math.min(yCorner3, yCorner4))));
 
-        // Bajamos 1 bloque extra para asegurar que el suelo se conecte bien y no queden huecos de hierba flotando.
+
         int finalY = minY - 1;
 
         BlockPos blockpos = new BlockPos(centerX, finalY, centerZ);
@@ -108,19 +100,18 @@ public class PoolStructure extends Structure {
         int y = pos.getY();
         int z = pos.getZ();
 
-        // Variables para los tamaños
-        int armLength = 47; // Largo de las alas
-        int centerSize = 6; // Ancho del centro
+
+        int armLength = 47;
+        int centerSize = 6;
 
         BlockPos rotationOffset;
         BlockPos finalPos;
 
-        // 1. COLOCAR EL CENTRO (PART 8) - Es el ancla (0,0,0)
         rotationOffset = new BlockPos(0, 0, 0).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_8, finalPos, rotation));
 
-        // --- FILA SUPERIOR (NORTE / Z negativo) ---
+
 
         // Part 0 (Esquina NW): -47 X, -47 Z
         rotationOffset = new BlockPos(-armLength, 0, -armLength).rotate(rotation);
@@ -170,9 +161,8 @@ public class PoolStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        // Asegúrate de registrar esto en tu ModStructures
-        // return ModStructures.PPOL_STRUCTURE.get();
-        return null; // Placeholder para que compile, reemplázalo
+
+        return null;
     }
 
     @Override
@@ -180,11 +170,10 @@ public class PoolStructure extends Structure {
         return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
 
-    // --- CLASE PIECE INTERNA ---
+
     public static class Piece extends TemplateStructurePiece {
 
         public Piece(StructureTemplateManager manager, ResourceLocation location, BlockPos pos, Rotation rotation) {
-            // Reemplaza ModStructures.PPOL_PIECE.get() con tu registro de pieza
             super(ModStructures.POOL_PIECE.get(), 0, manager, location, location.toString(), makeSettings(rotation), makePosition(location, pos));
         }
 
@@ -214,12 +203,6 @@ public class PoolStructure extends Structure {
 
         @Override
         protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor level, RandomSource random, net.minecraft.world.level.levelgen.structure.BoundingBox box) {
-            // Aquí puedes añadir tus mobs usando bloques de estructura en modo DATA
-            /*
-            if ("boss_spawn".equals(function)) {
-                // Spawn boss logic
-            }
-            */
         }
     }
 }
