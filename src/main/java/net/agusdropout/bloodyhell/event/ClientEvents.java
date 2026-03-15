@@ -9,6 +9,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.overlay.*;
 import net.agusdropout.bloodyhell.client.ClientModLabelTooltip;
 import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
+import net.agusdropout.bloodyhell.config.ModClientConfigs;
 import net.agusdropout.bloodyhell.entity.client.*;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
@@ -103,14 +104,20 @@ public class ClientEvents {
                 }
             }
 
+
+
             float ritualFovDistortion = RitualAmbienceHandler.getFovModifier(player);
-            event.setFOV((event.getFOV() * cyclopsZoomMultiplier) + ritualFovDistortion);
+            if (ModClientConfigs.ENABLE_FOV_EFFECTS.get()) {
+                event.setFOV((event.getFOV() * cyclopsZoomMultiplier) + ritualFovDistortion);
+            }
         }
 
         @SubscribeEvent
         public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
             Player player = Minecraft.getInstance().player;
             if (player == null) return;
+
+            if (ModClientConfigs.ENABLE_CAMERA_SHAKE.get()) return;
 
             float delta = Minecraft.getInstance().getFrameTime();
             float ticksExistedDelta = player.tickCount + delta;

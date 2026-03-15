@@ -6,7 +6,6 @@ import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SimpleBlockParticleOptions;
 import net.agusdropout.bloodyhell.sound.ModSounds;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -298,8 +297,8 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     }
 
     private void spawnStarFallParticle(){
-        if (!(this.level() instanceof ClientLevel clientLevel)) return;
-        clientLevel.addParticle(ModParticles.STAR_EXPLOSION_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+        if (!this.level().isClientSide()) return;
+        this.level().addParticle(ModParticles.STAR_EXPLOSION_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
     }
 
     private void spawnDustWave() {
@@ -333,7 +332,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     }
 
     private void spawnSuckingParticles() {
-        if (!(this.level() instanceof ClientLevel)) return;
+        if (!this.level().isClientSide()) return;
         int particleCount = 5;
         double radius = 3;
         for (int i = 0; i < particleCount; i++) {

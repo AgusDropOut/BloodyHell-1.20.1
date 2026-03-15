@@ -114,21 +114,18 @@ public class SelioraEntity extends Monster implements GeoEntity{
         this.entityData.define(IS_STARTING_SECOND_PHASE, false);
         this.entityData.define(DODGE_ACTIVE, false);
 
-        // Definimos la variable sincronizada de fase 2
         this.entityData.define(IS_SECOND_PHASE_SYNCED, false);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        // Guardamos la fase en el NBT por si se cierra el servidor
         compoundTag.putBoolean("IsSecondPhase", this.isSecondPhase());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        // Cargamos la fase del NBT
         if (compoundTag.contains("IsSecondPhase")) {
             this.setSecondPhase(compoundTag.getBoolean("IsSecondPhase"));
         }
@@ -165,7 +162,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
         this.goalSelector.addGoal(6, new TeleportFarGoal(this));
     }
 
-    // --- GETTERS Y SETTERS PARA FASE 2 SINCRONIZADA ---
     public boolean isSecondPhase() {
         return this.entityData.get(IS_SECOND_PHASE_SYNCED);
     }

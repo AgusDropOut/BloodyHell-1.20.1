@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.block.client.generic.BaseGeckoBlockRenderer;
 import net.agusdropout.bloodyhell.block.client.renderer.*;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
+import net.agusdropout.bloodyhell.config.ModClientConfigs;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
@@ -68,7 +69,9 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -95,6 +98,7 @@ public class BloodyHell
 
         MinecraftForge.EVENT_BUS.addListener(this::portalTick);
         ModCreativeModeTab.register(modEventBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ModClientConfigs.SPEC);
         GeckoLib.initialize();
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);

@@ -59,7 +59,7 @@ public class ModDimensions {
                 false, // respawnAnchorWorks
                 0, // minY
                 256, // height
-                128, // logicalHeight
+                144, // logicalHeight
                 BlockTags.INFINIBURN_OVERWORLD, // infiniburn
                 DIMENSION_RENDERER, // effectsLocation
                 0.1f, // ambientLight

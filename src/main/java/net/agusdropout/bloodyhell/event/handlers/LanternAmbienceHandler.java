@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.config.ModClientConfigs;
 import net.agusdropout.bloodyhell.entity.custom.UnknownLanternEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.sound.ModSounds;
@@ -100,6 +101,10 @@ public class LanternAmbienceHandler {
         float heartbeat = (float) Math.sin(time * 0.2f) * (15.0f * currentIntensity);
         float jitter = (Minecraft.getInstance().player.getRandom().nextFloat() - 0.5f) * (2.0f * currentIntensity);
 
-        event.setFOV(fov - (heartbeat + jitter));
+
+
+        if (ModClientConfigs.ENABLE_FOV_EFFECTS.get()) {
+            event.setFOV(fov - (heartbeat + jitter));
+        }
     }
 }

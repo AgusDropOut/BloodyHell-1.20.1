@@ -59,6 +59,7 @@ public class ModEvents {
             // --- BOSSES & ELITES ---
             event.put(UNKNOWN_LANTERN.get(), UnknownLanternEntity.createAttributes().build());
             event.put(SELIORA.get(), SelioraEntity.createAttributes().build());
+            event.put(BLASPHEMOUS_ARM_ENTITY.get(), BlasphemousArmEntity.createAttributes().build());
             event.put(RITEKEEPER.get(), RitekeeperEntity.createAttributes().build());
             event.put(BLASPHEMOUS_MALFORMATION.get(), BlasphemousMalformationEntity.createAttributes().build());
 
