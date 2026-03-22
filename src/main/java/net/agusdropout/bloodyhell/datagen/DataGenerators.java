@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.datagen;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.datagen.loot.ModLootTables;
 import net.agusdropout.bloodyhell.datagen.patchouli.PatchouliProvider;
+import net.agusdropout.bloodyhell.datagen.recipe.ModRecipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

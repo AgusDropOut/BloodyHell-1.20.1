@@ -48,6 +48,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.BLOOD_GLOW_STONE);
         blockWithItem(ModBlocks.BLOODY_STONE_BRICKS);
         blockWithItem(ModBlocks.RHNULL_BLOCK);
+        blockWithItem(ModBlocks.BLASPHEMITE_BLOCK);
 
 
 

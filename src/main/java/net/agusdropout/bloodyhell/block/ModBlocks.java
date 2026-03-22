@@ -70,6 +70,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> RHNULL_BLOCK = registerBlock("rhnull_block", ()-> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(6f).requiresCorrectToolForDrops()));
 
 
+    //Blasphemite
+    public static final RegistryObject<Block> BLASPHEMITE_BLOCK = registerBlock("blasphemite_block", ()-> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(6f).requiresCorrectToolForDrops()));
+
+
     //Bloody Stone
     public static final RegistryObject<Block> BLOODY_STONE_BLOCK = registerBlock("bloody_stone_block", ()-> new Block(
             BlockBehaviour.Properties.copy(Blocks.NETHER_BRICKS).strength(3f).requiresCorrectToolForDrops()));

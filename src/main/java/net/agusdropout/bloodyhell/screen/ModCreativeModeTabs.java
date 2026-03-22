@@ -40,6 +40,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.RAW_BLASPHEMITE.get());
                         output.accept(ModItems.BLASPHEMITE_NUGGET.get());
                         output.accept(ModItems.BLASPHEMITE.get());
+                        output.accept(ModBlocks.BLASPHEMITE_BLOCK.get());
 
                         // --- Tools & Weapons ---
                         output.accept(ModItems.SANGUINITE_SWORD.get());

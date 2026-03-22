@@ -101,7 +101,8 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.SANGUINITE_PIPE.get())
                 .add(ModBlocks.RHNULL_PIPE.get())
                 .add(ModBlocks.RHNULL_TANK.get())
-                .add(ModBlocks.SANGUINITE_TANK.get());
+                .add(ModBlocks.SANGUINITE_TANK.get())
+                .add(ModBlocks.BLASPHEMITE_BLOCK.get());
 
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(ModBlocks.BLOOD_DIRT_BLOCK.get())
@@ -124,7 +125,8 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.SANGUINITE_PIPE.get())
                 .add(ModBlocks.RHNULL_PIPE.get())
                 .add(ModBlocks.SANGUINITE_TANK.get())
-                .add(ModBlocks.RHNULL_TANK.get());
+                .add(ModBlocks.RHNULL_TANK.get())
+                .add(ModBlocks.BLASPHEMITE_BLOCK.get());
 
 
         this.tag(ModTags.Blocks.NEEDS_SANGUINITE_TOOL)

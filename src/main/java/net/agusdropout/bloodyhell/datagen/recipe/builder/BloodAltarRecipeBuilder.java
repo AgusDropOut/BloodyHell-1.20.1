@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.datagen;
+package net.agusdropout.bloodyhell.datagen.recipe.builder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -22,45 +22,45 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BlasphemousBloodAltarRecipeBuilder implements RecipeBuilder {
+public class BloodAltarRecipeBuilder implements RecipeBuilder {
     private final Item result;
     private final int count;
     private final List<Ingredient> ingredients = new ArrayList<>();
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
 
-    public BlasphemousBloodAltarRecipeBuilder(ItemLike result, int count) {
+    public BloodAltarRecipeBuilder(ItemLike result, int count) {
         this.result = result.asItem();
         this.count = count;
     }
 
-    public static BlasphemousBloodAltarRecipeBuilder ritual(ItemLike result) {
-        return new BlasphemousBloodAltarRecipeBuilder(result, 1);
+    public static BloodAltarRecipeBuilder ritual(ItemLike result) {
+        return new BloodAltarRecipeBuilder(result, 1);
     }
 
-    public static BlasphemousBloodAltarRecipeBuilder ritual(ItemLike result, int count) {
-        return new BlasphemousBloodAltarRecipeBuilder(result, count);
+    public static BloodAltarRecipeBuilder ritual(ItemLike result, int count) {
+        return new BloodAltarRecipeBuilder(result, count);
     }
 
-    public BlasphemousBloodAltarRecipeBuilder requires(Ingredient ingredient) {
-        if (this.ingredients.size() >= 3) {
-            throw new IllegalStateException("Max 3 items per pedestal in Blood Altar recipes");
+    public BloodAltarRecipeBuilder requires(Ingredient ingredient) {
+        if (this.ingredients.size() >= 4) {
+            throw new IllegalStateException("Max 4 items per recipe in Blood Altar recipes");
         }
         this.ingredients.add(ingredient);
         return this;
     }
 
-    public BlasphemousBloodAltarRecipeBuilder requires(ItemLike item) {
+    public BloodAltarRecipeBuilder requires(ItemLike item) {
         return requires(Ingredient.of(item));
     }
 
     @Override
-    public BlasphemousBloodAltarRecipeBuilder unlockedBy(String criterionName, CriterionTriggerInstance criterionTrigger) {
+    public BloodAltarRecipeBuilder unlockedBy(String criterionName, CriterionTriggerInstance criterionTrigger) {
         this.advancement.addCriterion(criterionName, criterionTrigger);
         return this;
     }
 
     @Override
-    public BlasphemousBloodAltarRecipeBuilder group(@Nullable String groupName) {
+    public BloodAltarRecipeBuilder group(@Nullable String groupName) {
         return this;
     }
 
@@ -71,6 +71,10 @@ public class BlasphemousBloodAltarRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+        if (this.ingredients.size() != 4) {
+            throw new IllegalStateException("Blood Altar recipes require exactly 4 ingredients.");
+        }
+
         this.advancement.parent(new ResourceLocation("recipes/root"))
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
                 .rewards(AdvancementRewards.Builder.recipe(id))
@@ -120,7 +124,7 @@ public class BlasphemousBloodAltarRecipeBuilder implements RecipeBuilder {
 
         @Override
         public RecipeSerializer<?> getType() {
-            return ModRecipes.BLASPHEMOUS_BLOOD_ALTAR_SERIALIZER.get();
+            return ModRecipes.BLOOD_ALTAR_SERIALIZER.get();
         }
 
         @Nullable

@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.datagen;
+package net.agusdropout.bloodyhell.datagen.recipe.builder;
 
 
 

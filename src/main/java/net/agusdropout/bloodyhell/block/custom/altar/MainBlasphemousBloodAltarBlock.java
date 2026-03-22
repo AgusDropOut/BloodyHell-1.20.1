@@ -225,7 +225,6 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER || !state.getValue(ACTIVE)) return;
-
         var chosenParticle = new ChillFallingParticleOptions(new Vector3f(0.9f,0,0), 0.03f, 40, 20);
 
 
@@ -233,10 +232,7 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
 
             double x = pos.getX() + random.nextDouble();
             double z = pos.getZ() + random.nextDouble();
-
-
             double y = pos.getY()+ 1.6;
-
 
             level.addParticle(chosenParticle, x, y, z, 0.0D, 0.0D, 0.0D);
         }

@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.datagen;
+package net.agusdropout.bloodyhell.datagen.recipe.builder;
 
 import com.google.gson.JsonObject;
 import net.agusdropout.bloodyhell.recipe.ModRecipes;

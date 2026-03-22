@@ -1,7 +1,8 @@
-package net.agusdropout.bloodyhell.datagen;
+package net.agusdropout.bloodyhell.datagen.recipe;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.datagen.recipe.builder.SanguiniteInfusorRecipeBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;

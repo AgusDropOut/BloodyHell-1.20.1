@@ -255,6 +255,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE);
         evenSimplerBlockItem(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE);
         evenSimplerBlockItem(ModBlocks.BLASPHEMITE_ORE);
+        evenSimplerBlockItem(ModBlocks.BLASPHEMITE_BLOCK);
         simpleBlockItemBlockTexture(ModBlocks.SPIKY_GRASS);
         simpleBlockItemBlockTexture(ModBlocks.ROUNDED_GRASS);
         simpleBlockItemBlockTexture(ModBlocks.STING_FLOWER);
