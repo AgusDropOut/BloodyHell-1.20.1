@@ -6,22 +6,22 @@
 			"bones": {
 				"ll1": {
 					"rotation": {
-						"vector": ["Math.sin(query.anim_time * 20) * 15 +10", 0, 0]
+						"vector": ["(Math.sin((query.anim_time * 180) + 90) * 15) + (Math.cos((query.anim_time * 360) + 90) * 8) + 10", 0, 0]
 					}
 				},
 				"ll2": {
 					"rotation": {
-						"vector": [0, 0, "Math.sin(query.anim_time * 20) * 15 + 10"]
+						"vector": [0, 0, "(Math.sin(query.anim_time * 180) * 15) + (Math.cos(query.anim_time * 360) * 8) + 10"]
 					}
 				},
 				"ll3": {
 					"rotation": {
-						"vector": ["-Math.sin(query.anim_time * 20) * 15 -10", 0, 0]
+						"vector": ["-(Math.sin(query.anim_time * 180) * 15) - (Math.cos(query.anim_time * 360) * 8) - 10", 0, 0]
 					}
 				},
 				"ll4": {
 					"rotation": {
-						"vector": [0, 0, "-Math.sin(query.anim_time * 20) * 15 -10"]
+						"vector": [0, 0, "-(Math.sin((query.anim_time * 180) + 90) * 15) - (Math.cos((query.anim_time * 360) + 90) * 8) - 10"]
 					}
 				},
 				"bottom": {
@@ -257,26 +257,6 @@
 		"idle": {
 			"loop": true,
 			"bones": {
-				"ll1": {
-					"rotation": {
-						"vector": ["Math.sin(query.anim_time * 20) * 15 +10", 0, 0]
-					}
-				},
-				"ll2": {
-					"rotation": {
-						"vector": [0, 0, "Math.sin(query.anim_time * 20) * 15 + 10"]
-					}
-				},
-				"ll3": {
-					"rotation": {
-						"vector": ["-Math.sin(query.anim_time * 20) * 15 -10", 0, 0]
-					}
-				},
-				"ll4": {
-					"rotation": {
-						"vector": [0, 0, "-Math.sin(query.anim_time * 20) * 15 -10"]
-					}
-				},
 				"bottom": {
 					"rotation": {
 						"vector": [0, 0, "Math.sin(query.anim_time * 60) * 2"]

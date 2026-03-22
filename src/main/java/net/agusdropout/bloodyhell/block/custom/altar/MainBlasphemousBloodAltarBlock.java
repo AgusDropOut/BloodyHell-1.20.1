@@ -7,7 +7,9 @@ import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.TentacleEntity;
 import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.ChillFallingParticleOptions;
 import net.agusdropout.bloodyhell.recipe.BlasphemousBloodAltarRecipe;
 import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
 import net.minecraft.core.BlockPos;
@@ -39,6 +41,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -218,15 +221,24 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
         return copyB.isEmpty();
     }
 
-
-
-
-
-
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (random.nextInt(100) == 0 && state.getValue(ACTIVE)) {
-            level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.WARDEN_AMBIENT, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
+
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER || !state.getValue(ACTIVE)) return;
+
+        var chosenParticle = new ChillFallingParticleOptions(new Vector3f(0.9f,0,0), 0.03f, 40, 20);
+
+
+        if (random.nextFloat() < 0.5f) {
+
+            double x = pos.getX() + random.nextDouble();
+            double z = pos.getZ() + random.nextDouble();
+
+
+            double y = pos.getY()+ 1.6;
+
+
+            level.addParticle(chosenParticle, x, y, z, 0.0D, 0.0D, 0.0D);
         }
     }
 }
