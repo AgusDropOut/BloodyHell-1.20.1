@@ -170,6 +170,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.RAW_BLASPHEMITE.get())
                 .add(ModBlocks.BLASPHEMITE_ORE.get().asItem())
                 .add(ModItems.BLASPHEMITE_NUGGET.get())
+                .add(ModBlocks.BLASPHEMITE_BLOCK.get().asItem())
                 .add(ModItems.BLASPHEMITE_SWORD.get())
                 .add(ModItems.BLASPHEMITE_PICKAXE.get())
                 .add(ModItems.BLASPHEMITE_AXE.get())

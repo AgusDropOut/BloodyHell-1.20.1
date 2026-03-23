@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.block.client.renderer.*;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
 import net.agusdropout.bloodyhell.config.ModClientConfigs;
+import net.agusdropout.bloodyhell.config.ModCommonConfig;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.client.*;
@@ -98,6 +99,7 @@ public class BloodyHell
         MinecraftForge.EVENT_BUS.addListener(this::portalTick);
         ModCreativeModeTab.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ModClientConfigs.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ModCommonConfig.SPEC);
         GeckoLib.initialize();
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);

@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.config.ModCommonConfig;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -17,15 +18,17 @@ public class PlayerJoinEvent {
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
-        if (!player.level().isClientSide()) {
-            CompoundTag persistentData = player.getPersistentData();
-            CompoundTag playerData = persistentData.getCompound(Player.PERSISTED_NBT_TAG);
+        if (ModCommonConfig.GIVE_GUIDE_BOOK_ON_JOIN.get()) {
+            if (!player.level().isClientSide()) {
+                CompoundTag persistentData = player.getPersistentData();
+                CompoundTag playerData = persistentData.getCompound(Player.PERSISTED_NBT_TAG);
 
-            if (!playerData.getBoolean(GIVEN_BOOK_TAG)) {
-                playerData.putBoolean(GIVEN_BOOK_TAG, true);
-                persistentData.put(Player.PERSISTED_NBT_TAG, playerData);
+                if (!playerData.getBoolean(GIVEN_BOOK_TAG)) {
+                    playerData.putBoolean(GIVEN_BOOK_TAG, true);
+                    persistentData.put(Player.PERSISTED_NBT_TAG, playerData);
 
-                player.getInventory().add(new ItemStack(ModItems.UNKNOWN_GUIDE_BOOK.get()));
+                    player.getInventory().add(new ItemStack(ModItems.UNKNOWN_GUIDE_BOOK.get()));
+                }
             }
         }
     }
