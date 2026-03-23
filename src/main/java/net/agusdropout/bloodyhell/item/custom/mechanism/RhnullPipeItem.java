@@ -9,6 +9,12 @@ public class RhnullPipeItem extends BaseGeckoBlockItem {
     }
 
     @Override
+    public boolean hasGlowingLayer() {
+        return false;
+    }
+
+
+    @Override
     public String getId() {
         return "rhnull_pipe";
     }

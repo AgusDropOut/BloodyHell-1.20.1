@@ -344,9 +344,9 @@ public class ModBlocks {
 
 
     public static final RegistryObject<Block> BLASPHEMOUS_BLOOD_ALTAR = BLOCKS.register("blasphemous_blood_altar", ()-> new BlasphemousBloodAltarBlock(
-            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
+            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().noParticlesOnBreak()));
     public static final RegistryObject<Block> MAIN_BLASPHEMOUS_BLOOD_ALTAR = BLOCKS.register("main_blasphemous_blood_altar", ()-> new MainBlasphemousBloodAltarBlock(
-            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().lightLevel((state)->15).noParticlesOnBreak()));
+            BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_TILES).noOcclusion().noParticlesOnBreak()));
     public static final RegistryObject<Block> BLOOD_ALTAR = registerBlock("blood_altar",
             () -> new BloodAltarBlock(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
     public static final RegistryObject<Block> MAIN_BLOOD_ALTAR = registerBlock("main_blood_altar",

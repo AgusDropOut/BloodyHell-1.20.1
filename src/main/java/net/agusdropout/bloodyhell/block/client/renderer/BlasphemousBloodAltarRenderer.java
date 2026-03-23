@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.block.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.agusdropout.bloodyhell.block.client.layer.GenericEmissiveLayer;
 import net.agusdropout.bloodyhell.block.client.model.BlasphemousBloodAltarModel;
 import net.agusdropout.bloodyhell.block.entity.custom.altar.BlasphemousBloodAltarBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -9,11 +10,13 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class BlasphemousBloodAltarRenderer extends GeoBlockRenderer<BlasphemousBloodAltarBlockEntity> {
 
     public BlasphemousBloodAltarRenderer(BlockEntityRendererProvider.Context context) {
         super(new BlasphemousBloodAltarModel());
+        addRenderLayer(new GenericEmissiveLayer<>(this));
     }
 
     @Override

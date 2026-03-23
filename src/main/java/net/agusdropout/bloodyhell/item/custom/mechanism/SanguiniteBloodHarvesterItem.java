@@ -9,6 +9,12 @@ public class SanguiniteBloodHarvesterItem extends BaseGeckoBlockItem {
     }
 
     @Override
+    public boolean hasGlowingLayer() {
+        return false;
+    }
+
+
+    @Override
     public String getId() {
         return "sanguinite_blood_harvester";
     }

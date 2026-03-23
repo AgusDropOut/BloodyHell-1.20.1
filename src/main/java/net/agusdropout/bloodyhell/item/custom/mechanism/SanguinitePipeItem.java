@@ -12,4 +12,9 @@ public class SanguinitePipeItem extends BaseGeckoBlockItem {
     public String getId() {
         return "sanguinite_pipe";
     }
+    @Override
+    public boolean hasGlowingLayer() {
+        return false;
+    }
+
 }

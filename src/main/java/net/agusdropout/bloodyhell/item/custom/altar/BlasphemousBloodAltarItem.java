@@ -10,6 +10,11 @@ public class BlasphemousBloodAltarItem extends BaseGeckoBlockItem  {
     }
 
     @Override
+    public boolean hasGlowingLayer() {
+        return true;
+    }
+
+    @Override
     public String getId() {
         return "blasphemous_blood_altar";
     }

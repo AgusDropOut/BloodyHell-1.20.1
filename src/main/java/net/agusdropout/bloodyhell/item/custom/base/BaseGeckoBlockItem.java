@@ -32,7 +32,7 @@ public abstract class BaseGeckoBlockItem extends BlockItem implements GeoItem {
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if(this.renderer == null)
-                    this.renderer = new GenericGeckoBlockItemRenderer();
+                    this.renderer = new GenericGeckoBlockItemRenderer(hasGlowingLayer());
 
                 return this.renderer;
             }
@@ -58,6 +58,8 @@ public abstract class BaseGeckoBlockItem extends BlockItem implements GeoItem {
     public double getTick(Object itemStack) {
         return RenderUtils.getCurrentTick();
     }
+
+    public abstract boolean hasGlowingLayer();
 
 
     public abstract String getId();

@@ -12,4 +12,10 @@ public class UnknownPortalItem extends BaseGeckoBlockItem {
     public String getId() {
         return "unknown_portal_block";
     }
+
+    @Override
+    public boolean hasGlowingLayer() {
+        return true;
+    }
+
 }
