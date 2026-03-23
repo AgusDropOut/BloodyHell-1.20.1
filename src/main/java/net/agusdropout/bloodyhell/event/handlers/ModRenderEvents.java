@@ -27,6 +27,8 @@ public class ModRenderEvents {
             ShapeGlitterRenderManager.renderAllAndClear();
             BlackHoleEntityRenderManager.renderAllAndClear();
             InsightRenderManager.renderAllAndClear();
+            NoiseSphereRenderManager.renderAllAndClear();
+            MagicRingRenderManager.renderAllAndClear();
         }
     }
 }
