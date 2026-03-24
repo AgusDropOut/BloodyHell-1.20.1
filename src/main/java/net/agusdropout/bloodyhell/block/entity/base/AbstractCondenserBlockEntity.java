@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.capabilities.Capability;
@@ -30,6 +32,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -45,6 +48,9 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
     private int progress = 0;
     private int maxProgress = 80;
     private boolean isCrafting = false;
+
+    // --- NEW: Caches the registry name of the last fluid added ---
+    private String lastFluidName = "";
 
     public final FluidTank fluidTank;
     private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
@@ -65,6 +71,10 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
         this.fluidTank = new FluidTank(MAX_CAPACITY) {
             @Override
             protected void onContentsChanged() {
+                if (!this.getFluid().isEmpty()) {
+                    lastFluidName = ForgeRegistries.FLUIDS.getKey(this.getFluid().getFluid()).toString();
+                }
+
                 setChanged();
                 if (level != null && !level.isClientSide()) {
                     level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -201,6 +211,15 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
             EntityCameraShake.clientCameraShake(this.level, this.worldPosition.getCenter(), 6.0f, 0.05f, 5, 5);
 
             FluidStack currentFluid = this.fluidTank.getFluid();
+
+
+            if (currentFluid.isEmpty() && !this.lastFluidName.isEmpty()) {
+                Fluid cachedFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(this.lastFluidName));
+                if (cachedFluid != null && cachedFluid != net.minecraft.world.level.material.Fluids.EMPTY) {
+                    currentFluid = new FluidStack(cachedFluid, 1000);
+                }
+            }
+
             if (!currentFluid.isEmpty()) {
                 int fluidColorInt = IClientFluidTypeExtensions.of(currentFluid.getFluid()).getTintColor(currentFluid);
 
@@ -262,6 +281,7 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
         tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("condenser.progress", progress);
         tag.putBoolean("condenser.isCrafting", isCrafting);
+        tag.putString("condenser.lastFluidName", lastFluidName);
         super.saveAdditional(tag);
     }
 
@@ -272,6 +292,8 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
         itemHandler.deserializeNBT(tag.getCompound("inventory"));
         this.progress = tag.getInt("condenser.progress");
         this.isCrafting = tag.getBoolean("condenser.isCrafting");
+        // Load the cached fluid
+        this.lastFluidName = tag.getString("condenser.lastFluidName");
     }
 
     @Nullable
