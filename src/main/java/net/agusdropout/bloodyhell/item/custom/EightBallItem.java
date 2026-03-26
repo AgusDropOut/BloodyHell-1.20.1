@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.UnknownLanternEntity;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
+import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
@@ -54,21 +55,18 @@ public class EightBallItem extends Item {
         //triggerSummoningRitual(level, player.getX(), player.getY(), player.getZ(), 1.5f, 3.0f, 120, COLOR_CORE);
 
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-           //InsightHelper.addInsight( serverPlayer,10);
+           InsightHelper.addInsight( serverPlayer,10);
 
-            UnknownLanternEntity lantern = new UnknownLanternEntity(ModEntityTypes.UNKNOWN_LANTERN.get(), level);
-            lantern.setTargetPlayer(player.getUUID());
-            lantern.setPos(player.getX(), player.getY(), player.getZ());
-            level.addFreshEntity(lantern);
-
-
+            //UnknownLanternEntity lantern = new UnknownLanternEntity(ModEntityTypes.UNKNOWN_LANTERN.get(), level);
+            //lantern.setTargetPlayer(player.getUUID());
+            //lantern.setPos(player.getX(), player.getY(), player.getZ());
+            //level.addFreshEntity(lantern);
 
 
-//
-          //  FailedSonOfTheUnknown son = new FailedSonOfTheUnknown(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), level);
-         // son.setOwnerUUID(player.getUUID());
-         // son.setPos(player.getX(), player.getY(), player.getZ());
-         // level.addFreshEntity(son);
+            BurdenOfTheUnknownEntity son = new BurdenOfTheUnknownEntity(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), level);
+          son.setOwnerUUID(player.getUUID());
+          son.setPos(player.getX(), player.getY(), player.getZ());
+          level.addFreshEntity(son);
 //
          //  WeepingOcularEntity eye = new WeepingOcularEntity(ModEntityTypes.WEEPING_OCULAR.get(), level);
          //    eye.setOwnerUUID(player.getUUID());
@@ -107,21 +105,21 @@ public class EightBallItem extends Item {
          //   float radius = 1.5f;
          //   float height = 3.0f;
          //   double maxLifeTime = 120.0;
-       org.joml.Vector3f color = new org.joml.Vector3f(0.8f, 0.1f, 0.1f);
-       NoiseSphereParticleOptions options =
-                new NoiseSphereParticleOptions(color, 1.5f, 60);
-
-        level.addParticle(options,
-                player.getX() + 0.5, player.getY() + 1.5, player.getZ() + 0.5, 0.0, 0.0, 0.0);
-
+      // org.joml.Vector3f color = new org.joml.Vector3f(0.8f, 0.1f, 0.1f);
+      // NoiseSphereParticleOptions options =
+      //          new NoiseSphereParticleOptions(color, 1.5f, 60);
 //
-         //   level.addParticle(new MagicalRingParticleOptions(color, radius, height),
-         //           player.getX(), player.getY(), player.getZ(),
-         //           maxLifeTime, 0.0D, 0.0D);
-           // System.out.println("Spawned Ethereal Swirl Particle at " + player.getX() + ", " + player.getY() + ", " + player.getZ());
-            //ParticleHelper.spawn(level, new EtherealSwirlOptions(SpellPalette.RHNULL.getColor(1), 300, 1.0f), player.position().add(0,1.5,0), 0, 0, 0);
+      //  level.addParticle(options,
+      //          player.getX() + 0.5, player.getY() + 1.5, player.getZ() + 0.5, 0.0, 0.0, 0.0)  ;
+//
+////
+      //   //   level.addParticle(new MagicalRingParticleOptions(color, radius, height),
+      //   //           player.getX(), player.getY(), player.getZ(),
+      //   //           maxLifeTime, 0.0D, 0.0D);
+      //     // System.out.println("Spawned Ethereal Swirl Particle at " + player.getX() + ", " + player.getY() + ", " + player.getZ());
+      //      //ParticleHelper.spawn(level, new EtherealSwirlOptions(SpellPalette.RHNULL.getColor(1), 300, 1.0f), player.position().add(0,1.5,0), 0, 0, 0);
         }
-
+//
 
         return InteractionResultHolder.success(player.getItemInHand(hand));
     }

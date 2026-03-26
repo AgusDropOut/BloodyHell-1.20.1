@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.entity;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.entity.effects.*;
+import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
 import net.agusdropout.bloodyhell.entity.projectile.*;
@@ -231,6 +232,11 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<UnknownLanternRiftEntity>> UNKNOWN_LANTERN_RIFT = ENTITY_TYPES.register("unknown_lantern_rift",
             () -> EntityType.Builder.<UnknownLanternRiftEntity>of(UnknownLanternRiftEntity::new, MobCategory.MISC).sized(1.5f, 0.5f).clientTrackingRange(10).build(new ResourceLocation(BloodyHell.MODID, "unknown_lantern_rift").toString()));
 
+    public static final RegistryObject<EntityType<BurdenOfTheUnknownEntity>> BURDEN_OF_THE_UNKNOWN = ENTITY_TYPES.register("burden_of_the_unknown",
+                    () -> EntityType.Builder.of(BurdenOfTheUnknownEntity::new, MobCategory.CREATURE).sized(1.5F, 1.5F).build(new ResourceLocation(BloodyHell.MODID, "burden_of_the_unknown").toString()));
+
+    public static final RegistryObject<EntityType<ViscousProjectileEntity>> VISCOUS_PROJECTILE = ENTITY_TYPES.register("viscous_projectile",
+                    () -> EntityType.Builder.<ViscousProjectileEntity>of(ViscousProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("viscous_projectile"));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);

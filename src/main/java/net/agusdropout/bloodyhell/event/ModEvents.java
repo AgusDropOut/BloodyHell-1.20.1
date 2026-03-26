@@ -6,6 +6,7 @@ import net.agusdropout.bloodyhell.capability.insight.PlayerInsight;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.*;
+import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
 import net.agusdropout.bloodyhell.event.handlers.BloodHarvestHandler;
@@ -88,6 +89,7 @@ public class ModEvents {
             // --- MINIONS ---
             event.put(FAILED_SON_OF_THE_UNKNOWN.get(), FailedSonOfTheUnknown.createAttributes().build());
             event.put(WEEPING_OCULAR.get(), WeepingOcularEntity.createAttributes().build());
+            event.put(BURDEN_OF_THE_UNKNOWN.get(), BurdenOfTheUnknownEntity.createAttributes().build());
         }
 
         public static AttributeSupplier.Builder createGenericAttributes() {

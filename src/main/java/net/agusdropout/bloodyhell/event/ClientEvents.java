@@ -323,6 +323,7 @@ public class ClientEvents {
             event.registerLayerDefinition(RhnullImpalerModel.LAYER_LOCATION, RhnullImpalerModel::createBodyLayer);
             event.registerLayerDefinition(RhnullHeavySwordModel.LAYER_LOCATION, RhnullHeavySwordModel::createBodyLayer);
             event.registerLayerDefinition(RhnullPainThroneModel.LAYER_LOCATION, RhnullPainThroneModel::createBodyLayer);
+            event.registerLayerDefinition(ViscousProjectileModel.LAYER_LOCATION, ViscousProjectileModel::createBodyLayer);
         }
 
         @SubscribeEvent

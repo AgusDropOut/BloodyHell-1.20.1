@@ -15,8 +15,10 @@ import net.agusdropout.bloodyhell.entity.client.*;
 
 import net.agusdropout.bloodyhell.entity.minions.client.base.GenericMinionModel;
 import net.agusdropout.bloodyhell.entity.minions.client.base.GenericMinionRenderer;
+import net.agusdropout.bloodyhell.entity.minions.client.model.BurdenOfTheUnknownModel;
 import net.agusdropout.bloodyhell.entity.minions.client.renderer.FailedSonOfTheUnknownRenderer;
 import net.agusdropout.bloodyhell.entity.minions.client.renderer.WeepingOcularRenderer;
+import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.fluid.ModFluidTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModCreativeModeTab;
@@ -326,8 +328,10 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.UNKNOWN_LANTERN_RIFT.get(), BlackHoleRenderer::new);
             EntityRenderers.register(ModEntityTypes.UNKNOWN_LANTERN.get(), UnknownLanternRenderer::new);
             EntityRenderers.register(ModEntityTypes.HOSTILE_UNKNOWN_ENTITY_ARMS.get(), HostileUnknownEntityArmsRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), context -> new GenericMinionRenderer<>(context, new BurdenOfTheUnknownModel()));
             BlockEntityRenderers.register(ModBlockEntities.BLOOD_ALTAR_BE.get(), BloodAltarRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.MAIN_BLOOD_ALTAR_BE.get(), MainBloodAltarRenderer::new);
+            EntityRenderers.register(ModEntityTypes.VISCOUS_PROJECTILE.get(), ViscousProjectileRenderer::new);
 
 
 
