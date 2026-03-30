@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.UnknownLanternEntity;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
+import net.agusdropout.bloodyhell.entity.minions.custom.BastionOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
@@ -63,7 +64,7 @@ public class EightBallItem extends Item {
             //level.addFreshEntity(lantern);
 
 
-            BurdenOfTheUnknownEntity son = new BurdenOfTheUnknownEntity(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), level);
+            BastionOfTheUnknownEntity son = new BastionOfTheUnknownEntity(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), level);
           son.setOwnerUUID(player.getUUID());
           son.setPos(player.getX(), player.getY(), player.getZ());
           level.addFreshEntity(son);

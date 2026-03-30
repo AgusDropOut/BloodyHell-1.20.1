@@ -229,7 +229,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
 
     // --- GOALS PERSONALIZADOS ---
 
-    // 1. Goal de Ataque
+
     static class GraveWalkerAttackGoal extends Goal {
         private final GraveWalkerEntity mob;
         private int attackTicks;
@@ -282,7 +282,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
             this.attackTicks++;
 
             if (this.attackTicks == ATTACK_DELAY && target != null) {
-                double reach = 3.5D; // Alcance aumentado de la lanza
+                double reach = 3.5D;
                 double reachSqr = reach * reach;
                 double distSqr = this.mob.distanceToSqr(target);
 
@@ -298,7 +298,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         }
     }
 
-    // 2. Goal de Escudo
+
     static class GraveWalkerShieldGoal extends Goal {
         private final GraveWalkerEntity mob;
         private int shieldTime;

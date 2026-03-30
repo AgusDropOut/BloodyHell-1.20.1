@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.entity;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.custom.*;
 import net.agusdropout.bloodyhell.entity.effects.*;
+import net.agusdropout.bloodyhell.entity.minions.custom.BastionOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
@@ -237,6 +238,9 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<ViscousProjectileEntity>> VISCOUS_PROJECTILE = ENTITY_TYPES.register("viscous_projectile",
                     () -> EntityType.Builder.<ViscousProjectileEntity>of(ViscousProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("viscous_projectile"));
+
+    public static final RegistryObject<EntityType<BastionOfTheUnknownEntity>> BASTION_OF_THE_UNKNOWN = ENTITY_TYPES.register("bastion_of_the_unknown",
+            () -> EntityType.Builder.of(BastionOfTheUnknownEntity::new, MobCategory.MONSTER).sized(1.8f, 2.8f).build("bastion_of_the_unknown"));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
