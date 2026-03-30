@@ -4,6 +4,9 @@ import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.minions.ai.BastionShieldGoal;
 import net.agusdropout.bloodyhell.entity.minions.ai.LungeAttackGoal;
 import net.agusdropout.bloodyhell.entity.minions.base.AbstractMinionEntity;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.ShockwaveParticleOptions;
+import net.agusdropout.bloodyhell.util.visuals.ColorHelper;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,6 +28,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -97,7 +101,6 @@ public class BastionOfTheUnknownEntity extends AbstractMinionEntity {
                 }
             }
         });
-
 
 
         AnimationController<BastionOfTheUnknownEntity> actionController = new AnimationController<>(this, "action_controller", 5, state -> {
@@ -218,6 +221,20 @@ public class BastionOfTheUnknownEntity extends AbstractMinionEntity {
         super.tick();
         if (!this.level().isClientSide && this.shieldCooldown > 0) {
             this.shieldCooldown--;
+        }
+
+        if(this.level().isClientSide){
+            handleClientEffects();
+        }
+
+    }
+
+    private void handleClientEffects(){
+        if (this.random.nextFloat() < 0.7f && this.isLunging()) {
+            Vector3f color = ColorHelper.hexToVector3f( this.getStripeColor());
+            Vec3 motion = this.getDeltaMovement();
+            ShockwaveParticleOptions shockWaveParticle = new ShockwaveParticleOptions(color, 0.5f, 2.5f);
+            ParticleHelper.spawn(this.level(), shockWaveParticle, this.getX(), this.getY()+2, this.getZ(), motion.x, motion.y, motion.z);
         }
     }
 

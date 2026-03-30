@@ -68,7 +68,12 @@ public class EightBallItem extends Item {
           son.setOwnerUUID(player.getUUID());
           son.setPos(player.getX(), player.getY(), player.getZ());
           level.addFreshEntity(son);
-//
+
+           // BurdenOfTheUnknownEntity son = new BurdenOfTheUnknownEntity(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), level);
+           // son.setOwnerUUID(player.getUUID());
+           // son.setPos(player.getX(), player.getY(), player.getZ());
+           // level.addFreshEntity(son);
+////
          //  WeepingOcularEntity eye = new WeepingOcularEntity(ModEntityTypes.WEEPING_OCULAR.get(), level);
          //    eye.setOwnerUUID(player.getUUID());
          //    eye.setPos(player.getX(), player.getY(), player.getZ());
