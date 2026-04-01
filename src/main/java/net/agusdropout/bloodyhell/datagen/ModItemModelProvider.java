@@ -157,6 +157,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ModItems.BLASPHEMOUS_OCULAR_LENSE);
         normalItem(ModItems.MARK_OF_THE_RESTLESS_SLUMBER);
         normalItem(ModItems.RUNE_OF_THE_RAVENOUS_GAZE);
+        normalItem(ModItems.OMEN_OF_THE_CRUSHING_TOLL);
+        normalItem(ModItems.SEAL_OF_THE_HOLLOW_BULWARK);
 
         normalItem(ModItems.BLASPHEMOUS_EYE);
 

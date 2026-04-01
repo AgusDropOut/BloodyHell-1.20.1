@@ -164,6 +164,20 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_blasphemous_eye", has(ModItems.BLASPHEMOUS_EYE.get()))
                 .save(consumer, name("ritual_rune_of_ravenous_gaze"));
 
+        BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.SEAL_OF_THE_HOLLOW_BULWARK.get())
+                .requires(ModItems.BLASPHEMOUS_EYE.get())
+                .requires(ModItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())
+                .requires(ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .unlockedBy("has_blasphemous_eye", has(ModItems.BLASPHEMOUS_EYE.get()))
+                .save(consumer, name("ritual_rune_of_hollow_bulwark"));
+
+        BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.OMEN_OF_THE_CRUSHING_TOLL.get())
+                .requires(ModItems.GAZE_OF_THE_UNKNOWN.get())
+                .requires(ModItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())
+                .requires(ModItems.UNKNOWN_ENTITY_FINGER.get())
+                .unlockedBy("has_blasphemous_eye", has(ModItems.GAZE_OF_THE_UNKNOWN.get()))
+                .save(consumer, name("ritual_rune_of_crushing_toll"));
+
         BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.GAZE_OF_THE_UNKNOWN.get())
                 .requires(ModItems.BLASPHEMOUS_EYE.get())
                 .requires(ModItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())

@@ -115,6 +115,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BLASPHEMOUS_OCULAR_LENSE.get());
                         output.accept(ModItems.MARK_OF_THE_RESTLESS_SLUMBER.get());
                         output.accept(ModItems.RUNE_OF_THE_RAVENOUS_GAZE.get());
+                        output.accept(ModItems.OMEN_OF_THE_CRUSHING_TOLL.get());
+                        output.accept(ModItems.SEAL_OF_THE_HOLLOW_BULWARK.get());
 
                         // --- Gems & Components ---
                         output.accept(ModItems.PURE_BLOOD_GEM.get());

@@ -40,6 +40,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -108,24 +109,7 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
             ItemStack heldItem = player.getMainHandItem();
 
             if (heldItem.is(ModItems.FILLED_BLOOD_FLASK.get())) {
-                if(!level.isClientSide()) {
-                    altar.setActive(true);
-                    if (!player.isCreative()) {
-                        heldItem.shrink(1);
-                        ItemStack emptyFlask = new ItemStack(ModItems.BLOOD_FLASK.get());
-                        if (heldItem.isEmpty()) {
-                            player.setItemInHand(InteractionHand.MAIN_HAND, emptyFlask);
-                        } else if (!player.getInventory().add(emptyFlask)) {
-                            player.drop(emptyFlask, false);
-                        }
-                    }
-                    VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
-                    level.setBlock(blockPos, blockState.setValue(ACTIVE, true), 3);
-                    level.setBlock(blockPos.above(), level.getBlockState(blockPos.above()).setValue(ACTIVE, true), 3);
-                    level.playSound(null, blockPos, SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    super.handleVisualEffects(level, blockPos);
-                }
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                return getInteractionResult(blockState, level, blockPos, player, altar, heldItem);
 
             } else if (altar.isActive() && isAltarSetupReady(level, blockPos, BlasphemousBloodAltarBlock.class)) {
 
@@ -166,6 +150,27 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
             }
         }
         return InteractionResult.PASS;
+    }
+
+    private @NotNull InteractionResult getInteractionResult(BlockState blockState, Level level, BlockPos blockPos, Player player, MainBlasphemousBloodAltarBlockEntity altar, ItemStack heldItem) {
+        if(!level.isClientSide()) {
+            altar.setActive(true);
+            if (!player.isCreative()) {
+                heldItem.shrink(1);
+                ItemStack emptyFlask = new ItemStack(ModItems.BLOOD_FLASK.get());
+                if (heldItem.isEmpty()) {
+                    player.setItemInHand(InteractionHand.MAIN_HAND, emptyFlask);
+                } else if (!player.getInventory().add(emptyFlask)) {
+                    player.drop(emptyFlask, false);
+                }
+            }
+            VanillaPacketDispatcher.dispatchTEToNearbyPlayers(altar);
+            level.setBlock(blockPos, blockState.setValue(ACTIVE, true), 3);
+            level.setBlock(blockPos.above(), level.getBlockState(blockPos.above()).setValue(ACTIVE, true), 3);
+            level.playSound(null, blockPos, SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+            super.handleVisualEffects(level, blockPos);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     private InteractionResult finalizeRitualServer(Level level, BlockPos blockPos, Player player, BlockState blockState, MainBlasphemousBloodAltarBlockEntity altar, ItemStack rewardStack) {

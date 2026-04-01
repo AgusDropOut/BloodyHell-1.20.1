@@ -95,7 +95,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         this.tag(ModTags.Items.RELIQUARY_RUNE_ITEM)
                 .add(ModItems.MARK_OF_THE_RESTLESS_SLUMBER.get())
-                .add(ModItems.RUNE_OF_THE_RAVENOUS_GAZE.get());
+                .add(ModItems.RUNE_OF_THE_RAVENOUS_GAZE.get())
+                .add(ModItems.SEAL_OF_THE_HOLLOW_BULWARK.get())
+                .add(ModItems.OMEN_OF_THE_CRUSHING_TOLL.get());
 
 
         // =================================================================

@@ -224,6 +224,10 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> RUNE_OF_THE_RAVENOUS_GAZE = ITEMS.register("rune_of_the_ravenous_gaze", () -> new Item(
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> SEAL_OF_THE_HOLLOW_BULWARK = ITEMS.register("seal_of_the_hollow_bulwark", () -> new Item(
+            new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> OMEN_OF_THE_CRUSHING_TOLL = ITEMS.register("omen_of_the_crushing_toll", () -> new Item(
+            new Item.Properties().stacksTo(1)));
 
 
 
