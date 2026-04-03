@@ -63,7 +63,6 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
      this.moveControl = new FlyingMoveControl(this, 10, false);
      this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
      this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
-     //this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
 
   }
 

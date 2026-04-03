@@ -44,7 +44,7 @@ public class ReliquaryItem extends BaseGeckoItem {
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation CHARGING_ANIM = RawAnimation.begin().thenLoop("charging");
 
-    // The maximum radius around the player where a minion can spawn
+
     public static final double MAX_SUMMON_DISTANCE = 8.0;
 
     public ReliquaryItem(Properties properties) {
@@ -154,7 +154,15 @@ public class ReliquaryItem extends BaseGeckoItem {
             if (summonedAny) {
                 nbt.put("SummonedUUIDs", newUuidList);
                 level.playSound(null, player.blockPosition(), SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 0.5F, 1.5F);
-                player.getCooldowns().addCooldown(this, 200);
+                int capacityMultiplier =  activeRunes.stream().mapToInt(RuneType::getCaoapacityCost).sum() * 2;
+
+                /* COOLDOWN LOGIC:
+                * - Base cooldown is 200 ticks (10 seconds)
+                * - Each summoned minion adds to the cooldown based on its rune's capacity cost
+                * - This encourages strategic choices in which runes to slot, as summoning more or stronger minions will result in a longer cooldown before the next use.
+                *
+                */
+                player.getCooldowns().addCooldown(this, 200 + capacityMultiplier);
             }
         }
     }

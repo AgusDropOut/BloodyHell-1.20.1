@@ -38,12 +38,11 @@ import java.util.EnumSet;
 public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
-    // Config: How long before it gets aggressive? (e.g. 5 seconds of confusion, then attack)
+
     private int aggressionDelay = 100;
 
     public CorruptedBloodySoulEntity(EntityType<? extends FlyingMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        // Better flying control
         this.moveControl = new FlyingMoveControl(this, 20, true);
     }
 
@@ -68,12 +67,10 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        // Custom Attack Goal: Fly to target -> Explode
         this.goalSelector.addGoal(2, new KamikazeFlyGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
-        // Target Players
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
@@ -82,10 +79,10 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
         super.tick();
         if (aggressionDelay > 0) aggressionDelay--;
 
-        // Visuals: Magic Particles under the soul
+
         if (this.level().isClientSide) {
             Vector3f darkRed = new Vector3f(0.6f, 0.0f, 0.0f);
-            // Spawn slightly below the center
+
             ParticleHelper.spawn(level(), new MagicParticleOptions(darkRed, 0.4F, false, 20),
                     this.getX() + (random.nextDouble() - 0.5) * 0.5,
                     this.getY() + 0.8, // Just under the body
@@ -94,7 +91,7 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
         }
     }
 
-    // --- CUSTOM GOAL: Explode on Contact ---
+
     static class KamikazeFlyGoal extends Goal {
         private final CorruptedBloodySoulEntity mob;
         private LivingEntity target;
@@ -106,7 +103,6 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
 
         @Override
         public boolean canUse() {
-            // Only attack after delay is over
             if (mob.aggressionDelay > 0) return false;
 
             this.target = mob.getTarget();
@@ -117,13 +113,13 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
         public void tick() {
             if (target == null) return;
 
-            // Fly towards target
+
             mob.getNavigation().moveTo(target, 1.5D);
 
-            // If close enough -> BOOM
+
             if (mob.distanceToSqr(target) < 3.0D) {
                 mob.level().explode(mob, mob.getX(), mob.getY(), mob.getZ(), 2.0F, Level.ExplosionInteraction.NONE); // NONE = No block damage
-                mob.discard(); // Die after exploding
+                mob.discard();
             }
         }
     }
@@ -144,11 +140,9 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
     private PlayState predicate(AnimationState<CorruptedBloodySoulEntity> state) {
 
         if(state.isMoving()) {
-            // If moving, play flying animation
             return state.setAndContinue(RawAnimation.begin().thenLoop("moving"));
         }
 
-        // Simple fly animation logic
         return state.setAndContinue(RawAnimation.begin().thenLoop("idle"));
     }
 

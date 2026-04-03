@@ -15,28 +15,28 @@ public enum RuneType {
 
     RESTLESS_SLUMBER(
             ModItems.MARK_OF_THE_RESTLESS_SLUMBER,
-            10,
+            5,
             (level, player, pos) -> {
                 return ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
     ),
     RAVENOUS_GAZE(
             ModItems.RUNE_OF_THE_RAVENOUS_GAZE,
-            25,
+            10,
             (level, player, pos) -> {
                 return ModEntityTypes.WEEPING_OCULAR.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
     ),
     HOLLOW_BULWARK(
             ModItems.SEAL_OF_THE_HOLLOW_BULWARK,
-            35,
+            15,
                     (level, player, pos) -> {
             return ModEntityTypes.BASTION_OF_THE_UNKNOWN.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
     ),
     CRUSHING_TOLL(
             ModItems.OMEN_OF_THE_CRUSHING_TOLL,
-            40,
+            20,
                     (level, player, pos) -> {
             return ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
@@ -73,6 +73,10 @@ public enum RuneType {
             }
         }
         return null;
+    }
+
+    public int getCaoapacityCost() {
+        return this.capacityCost;
     }
 
     /* Functional interface to handle specific entity spawning logic per rune. */

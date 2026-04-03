@@ -67,7 +67,7 @@ public class BastionOfTheUnknownEntity extends AbstractMinionEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 150.0D)
+                .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.2D)
                 .add(Attributes.ARMOR, 20.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 8.0D)
