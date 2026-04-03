@@ -36,7 +36,7 @@ void main() {
     vec2 speed = vec2(0.8, 0.1);
     vec2 p = vec2(polar.x * 3.0, polar.y * 6.0);
 
-    float q = fbm(p - AnimTime * 2.0);
+    float q = fbm(p - AnimTime * 0.5);
     vec2 r = vec2(fbm(p + q + AnimTime * speed.x - p.x - p.y), fbm(p + q - AnimTime * speed.y));
 
     float baseNoise = fbm(p + r);

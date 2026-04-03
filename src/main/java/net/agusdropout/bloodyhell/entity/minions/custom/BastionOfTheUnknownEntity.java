@@ -248,6 +248,8 @@ public class BastionOfTheUnknownEntity extends AbstractMinionEntity {
     }
 
     private void handleLungeEffects() {
+        if (this.getDeltaMovement().lengthSqr() < 0.01) return;
+
         BlockPos posBelow = this.blockPosition().below();
         BlockState stateBelow = this.level().getBlockState(posBelow);
 
@@ -316,7 +318,7 @@ public class BastionOfTheUnknownEntity extends AbstractMinionEntity {
     }
 
     private void handleClientEffects() {
-        if (this.random.nextFloat() < 0.7F && this.isLunging()) {
+        if (this.random.nextFloat() < 0.7F && this.isLunging() && this.getDeltaMovement().lengthSqr() > 0.01) {
             Vector3f color = ColorHelper.hexToVector3f(this.getStripeColor());
             Vec3 motion = this.getDeltaMovement();
             ShockwaveParticleOptions shockWaveParticle = new ShockwaveParticleOptions(color, 0.5F, 2.5F);
