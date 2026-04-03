@@ -27,12 +27,14 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -112,15 +114,7 @@ public class ReliquaryItem extends BaseGeckoItem {
             CompoundTag nbt = stack.getOrCreateTag();
 
             // 1. EXTRACT COLOR TINT FROM SLOT 13
-            AtomicInteger tintColor = new AtomicInteger(0xFFBF00); // Default gold/yellow
-            stack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-                ItemStack tintStack = handler.getStackInSlot(13);
-                if (!tintStack.isEmpty() && tintStack.getItem() instanceof DyeItem dye) {
-                    // getFireworkColor() usually provides the brightest, most vibrant version of the dye color!
-                    System.out.println("Extracted tint color: " + Integer.toHexString(dye.getDyeColor().getFireworkColor()));
-                    tintColor.set(dye.getDyeColor().getFireworkColor());
-                }
-            });
+            AtomicInteger tintColor = getAtomicInteger(stack);
             int finalColor = tintColor.get();
 
             // 2. CLEAR OLD SUMMONS
@@ -163,6 +157,30 @@ public class ReliquaryItem extends BaseGeckoItem {
                 player.getCooldowns().addCooldown(this, 200);
             }
         }
+    }
+
+    private static @NotNull AtomicInteger getAtomicInteger(ItemStack stack) {
+        AtomicInteger tintColor = new AtomicInteger(0xFFBF00);
+
+        stack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            ItemStack tintStack = handler.getStackInSlot(13);
+            if (!tintStack.isEmpty() && tintStack.getItem() instanceof DyeItem dye) {
+
+                int baseColor = dye.getDyeColor().getFireworkColor();
+
+                int r = (baseColor >> 16) & 0xFF;
+                int g = (baseColor >> 8) & 0xFF;
+                int b = baseColor & 0xFF;
+
+                float[] hsb = Color.RGBtoHSB(r, g, b, null);
+
+                int maxColor = Color.HSBtoRGB(hsb[0], 1.0F, 1.0F) & 0xFFFFFF;
+
+                tintColor.set(maxColor);
+            }
+        });
+
+        return tintColor;
     }
 
     private BlockPos getValidSpawnPos(Player player, ServerLevel level) {

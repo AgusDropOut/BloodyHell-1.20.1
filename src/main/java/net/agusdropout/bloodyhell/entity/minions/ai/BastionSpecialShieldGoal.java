@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.entity.minions.ai;
 import net.agusdropout.bloodyhell.entity.minions.custom.BastionOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SphericalShieldParticleOptions;
 import net.agusdropout.bloodyhell.sound.ModSounds;
+import net.agusdropout.bloodyhell.util.visuals.ColorHelper;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -54,8 +56,11 @@ public class BastionSpecialShieldGoal extends Goal {
 
         Vec3 center = this.bastion.position().add(0, this.bastion.getBbHeight() / 2.0, 0);
         bastion.setSpecialShielding(true);
+
+        Vector3f color = ColorHelper.hexToVector3f( bastion.getStripeColor());
+
         ParticleHelper.spawn(this.bastion.level(),
-                new SphericalShieldParticleOptions(1.0F, 0.5F, 0.0F, this.radius, this.activeDuration*2),
+                new SphericalShieldParticleOptions(color.x, color.y, color.z, this.radius, this.activeDuration*2),
                 center.x, center.y, center.z,
                 0.0, 0.0, 0.0
         );

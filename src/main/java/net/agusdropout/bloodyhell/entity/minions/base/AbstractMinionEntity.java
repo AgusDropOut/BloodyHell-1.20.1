@@ -6,6 +6,7 @@ import net.agusdropout.bloodyhell.entity.base.InsightEntity;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicalRingParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
+import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -237,7 +238,7 @@ public abstract class AbstractMinionEntity extends Monster implements GeoEntity,
         }
     }
 
-    public static void triggerSummoningRitual(Level level, double x, double y, double z, float radius, float height, int duration, Vector3f color) {
+    public void triggerSummoningRitual(Level level, double x, double y, double z, float radius, float height, int duration, Vector3f color) {
         if (!level.isClientSide) {
             BlackHoleEntity blackHole = new BlackHoleEntity(ModEntityTypes.BLACK_HOLE.get(), level);
             blackHole.setPos(x, y, z);
@@ -251,9 +252,11 @@ public abstract class AbstractMinionEntity extends Monster implements GeoEntity,
             blackHole.setColor(intColor);
 
             level.addFreshEntity(blackHole);
-        } else {
-            level.addParticle(new MagicalRingParticleOptions(color, radius, height), x, y, z, duration, 0.0D, 0.0D);
         }
+
+
+        ParticleHelper.spawn(this.level(),new MagicalRingParticleOptions(color, radius, height), x, y, z, duration, 0.0D, 0.0D);
+
     }
 
     protected void handleSummoningClientVisuals() {

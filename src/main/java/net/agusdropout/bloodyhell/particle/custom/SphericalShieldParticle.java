@@ -81,17 +81,17 @@ public class SphericalShieldParticle extends Particle {
             if (ModShaders.SHAPE_GLITTER_SHADER != null) {
                 Uniform timeUniform = ModShaders.SHAPE_GLITTER_SHADER.getUniform("GlitterTime");
                 if (timeUniform != null) {
-                    timeUniform.set((System.currentTimeMillis() % 100000L) / 1000.0F);
+                    timeUniform.set(this.age + partialTicks);
                 }
             }
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-            RenderHelper.renderColorSphere(builder, capturedPose, this.shieldRadius * 0.99f, 32, 32, this.rCol * 0.1f, this.gCol * 0.1f, this.bCol * 0.1f, 0.2f);
+            RenderHelper.renderColorSphere(builder, capturedPose, this.shieldRadius * 0.99f, 32, 32, this.rCol , this.gCol , this.bCol , 0.2f);
             tesselator.end();
 
             // 3. Rim Sphere
             RenderSystem.setShader(() -> ModShaders.SHAPE_SPHERICAL_RIM_SHADER);
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-            RenderHelper.renderColorSphere(builder, capturedPose, this.shieldRadius * 1.01f, 32, 32, this.rCol * 0.05f, this.rCol * 0.05f, this.rCol * 0.05f, 1f);
+            RenderHelper.renderColorSphere(builder, capturedPose, this.shieldRadius * 1.01f, 32, 32, this.rCol * 0.05f, this.gCol * 0.05f, this.bCol * 0.05f, 1f);
             tesselator.end();
         });
     }
