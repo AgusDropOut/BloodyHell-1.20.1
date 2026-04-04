@@ -95,7 +95,7 @@ public class EightBallItem extends Item {
             Vec3 pos = player.getEyePosition().add(look.scale(2.0D));
 
             level.addParticle(
-                    new FrenziedFlameParticleOptions(0.0F, 0.9F, 9.0F, 500),
+                    new FrenziedFlameParticleOptions(1.0F, 0.7F, 0.0F, 500),
                     pos.x, pos.y, pos.z,
                     0.0D, 0.0D, 0.0D
             );

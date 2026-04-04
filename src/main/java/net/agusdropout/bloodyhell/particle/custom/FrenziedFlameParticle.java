@@ -42,11 +42,28 @@ public class FrenziedFlameParticle extends Particle {
         PoseStack poseStack = new PoseStack();
         poseStack.translate(renderX, renderY, renderZ);
 
-        poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees( -camera.getYRot()));
+        /* Full spherical billboarding matches the camera's exact rotation */
+        poseStack.mulPose(camera.rotation());
+
+        /* Rotates 180 degrees so the front face points towards the camera */
+        //poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees());
 
         float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
 
+        /* Back Layer - Pushed into the screen (positive Z after rotation) */
+        poseStack.pushPose();
+        poseStack.translate(0.0D, 0.0D, 0.3D);
+        FrenziedFlameRenderManager.addFlame(poseStack.last().pose(), this.scale * 1.15F, this.rCol, this.gCol, this.bCol, this.alpha * 0.6F, time + 25.0F);
+        poseStack.popPose();
+
+        /* Core Layer - Center */
         FrenziedFlameRenderManager.addFlame(poseStack.last().pose(), this.scale, this.rCol, this.gCol, this.bCol, this.alpha, time);
+
+        /* Front Layer - Pulled toward the camera (negative Z after rotation) */
+        poseStack.pushPose();
+        poseStack.translate(0.0D, 0.0D, -0.3D);
+        FrenziedFlameRenderManager.addFlame(poseStack.last().pose(), this.scale * 0.85F, this.rCol, this.gCol, this.bCol, this.alpha * 0.8F, time - 15.0F);
+        poseStack.popPose();
     }
 
     @Override

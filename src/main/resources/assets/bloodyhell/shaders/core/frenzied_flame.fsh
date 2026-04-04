@@ -93,7 +93,10 @@ void main() {
 
     float surge = fbm2D(vec2(a * 1.5, AnimTime * 0.4)) * 1.5;
 
-    vec3 cyl = vec3(cos(a) * 2.0, sin(a) * 2.0, r * 4.0 - AnimTime * 1.8 + surge);
+    float fakeZ = sqrt(max(0.0, 1.0 - r0 * r0));
+
+
+    vec3 cyl = vec3(cos(a) * 2.0, sin(a) * 2.0, r * 4.0 - AnimTime * 1.8 + surge - fakeZ * 2.5);
 
     float filamentNoise = fbm3D(cyl);
     float serpents = 1.0 - abs(filamentNoise - 0.5) * 2.0;
@@ -137,13 +140,12 @@ void main() {
     baseColor += colYellow * spikeGlow * 1.5;
 
     float coreFactor = pow(serpents, 1.2);
+    float activeCoreHeat = coreFactor * max(0.0, 1.0 - r0 * 1.5);
     vec3 hotWhite = vec3(1.0, 1.0, 0.8);
-    baseColor = mix(baseColor, hotWhite, coreFactor * max(0.0, 1.0 - r0 * 1.5));
+    baseColor = mix(baseColor, hotWhite, activeCoreHeat);
 
-    // --- NEW: EVENT HORIZON WHITE GLOW ---
-    // Creates an intense white rim light right on the threshold of the black void
     float voidEdgeHeat = smoothstep(voidRadius + 0.15, voidRadius, r0) * voidCoreMask;
-    float heatAlpha = pow(voidEdgeHeat, 2.0); // Store this to use for alpha as well
+    float heatAlpha = pow(voidEdgeHeat, 2.0);
 
     baseColor += hotWhite * heatAlpha * 2.5;
 
@@ -152,10 +154,8 @@ void main() {
     float filamentAlpha = serpents * voidCoreMask * edgeMask;
     filamentAlpha += spikeGlow * voidCoreMask * 0.8 * edgeMask;
 
-    // THE FIX: Add the heat ring to the alpha mask so it isn't multiplied by zero!
     filamentAlpha += heatAlpha;
 
-    // Boost base color intensity
     vec3 filamentEmission = baseColor * 2.5 * filamentAlpha;
 
     vec3 backgroundBloom = calculateBloom(uv, r0, AnimTime, voidRadius);
@@ -164,11 +164,11 @@ void main() {
 
     float voidBlocking = smoothstep(voidRadius + 0.02, voidRadius - 0.05, r0);
 
-    vec3 preMultipliedRGB = finalEmission * vertexColor.a;
 
+    float whiteHotFactor = clamp(heatAlpha + activeCoreHeat, 0.0, 1.0);
+    vec3 activeTint = mix(vertexColor.xyz, vec3(1.0), whiteHotFactor);
 
-    //The problem was the vertex color we should do something to apply iot again
-
+    vec3 preMultipliedRGB = finalEmission * activeTint * vertexColor.a;
     float preMultipliedAlpha = voidBlocking * vertexColor.a;
 
     if (length(preMultipliedRGB) <= 0.01 && preMultipliedAlpha <= 0.01) {
