@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
+import net.agusdropout.bloodyhell.entity.effects.FrenziedFireEntity;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -65,7 +66,14 @@ public class EightBallItem extends Item {
          //    eye.setPos(player.getX(), player.getY(), player.getZ());
          //  level.addFreshEntity(eye);
 //
+            Vec3 impactPos = player.getOnPos().getCenter().add(0,1,0);
 
+            /* Instantiates and configures the hazard entity */
+            FrenziedFireEntity fireHazard = new FrenziedFireEntity(ModEntityTypes.FRENZIED_FIRE.get(), level);
+            fireHazard.setPos(impactPos.x(), impactPos.y(), impactPos.z());
+
+            /* Adds the hazard to the world */
+            level.addFreshEntity(fireHazard);
 
 
      //int quantity = 5;
@@ -115,8 +123,8 @@ public class EightBallItem extends Item {
 
            // executeFrenzyBurst(level, player.position().add(0, 1.0D, 0));
 
-            executeOrbitalBurst(level, player.position().add(0, 1.0D, 0));
-            executeFrenziedExplosion(level, player.position().add(0, 1.0D, 0), 4.5f);
+           // executeOrbitalBurst(level, player.position().add(0, 1.0D, 0));
+            //executeFrenziedExplosion(level, player.position().add(0, 1.0D, 0), 4.5f);
         }
 //
 

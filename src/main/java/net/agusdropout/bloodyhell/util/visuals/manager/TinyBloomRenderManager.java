@@ -26,7 +26,6 @@ public class TinyBloomRenderManager {
     public static void renderAllAndClear() {
         if (ACTIVE_BLOOMS.isEmpty()) return;
 
-        RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(
@@ -80,7 +79,6 @@ public class TinyBloomRenderManager {
         RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
 
         RenderSystem.depthMask(true);
-        RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
 

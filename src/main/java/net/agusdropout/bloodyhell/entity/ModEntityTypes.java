@@ -10,6 +10,7 @@ import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
 import net.agusdropout.bloodyhell.entity.projectile.*;
 import net.agusdropout.bloodyhell.entity.projectile.spell.*;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
+import net.agusdropout.bloodyhell.entity.unknown.custom.CrawlingDelusionEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -242,6 +243,11 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<BastionOfTheUnknownEntity>> BASTION_OF_THE_UNKNOWN = ENTITY_TYPES.register("bastion_of_the_unknown",
             () -> EntityType.Builder.of(BastionOfTheUnknownEntity::new, MobCategory.MONSTER).sized(1.8f, 2.8f).build("bastion_of_the_unknown"));
 
+    public static final RegistryObject<EntityType<FrenziedFireEntity>> FRENZIED_FIRE = ENTITY_TYPES.register("frenzied_fire",
+            () -> EntityType.Builder.<FrenziedFireEntity>of(FrenziedFireEntity::new, MobCategory.MISC).sized(1.5F, 1.5F).fireImmune().clientTrackingRange(10).build("frenzied_fire"));
+
+    public static final RegistryObject<EntityType<CrawlingDelusionEntity>> CRAWLING_DELUSION = ENTITY_TYPES.register("crawling_delusion",
+            () -> EntityType.Builder.<CrawlingDelusionEntity>of(CrawlingDelusionEntity::new, MobCategory.MONSTER).sized(1.4F, 0.8F).clientTrackingRange(8).build("crawling_delusion"));
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
     }

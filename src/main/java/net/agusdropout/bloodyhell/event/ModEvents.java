@@ -10,6 +10,7 @@ import net.agusdropout.bloodyhell.entity.minions.custom.BastionOfTheUnknownEntit
 import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.minions.custom.FailedSonOfTheUnknown;
 import net.agusdropout.bloodyhell.entity.minions.custom.WeepingOcularEntity;
+import net.agusdropout.bloodyhell.entity.unknown.custom.CrawlingDelusionEntity;
 import net.agusdropout.bloodyhell.event.handlers.BloodHarvestHandler;
 import net.agusdropout.bloodyhell.event.handlers.PlayerCapabilityHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
@@ -76,6 +77,7 @@ public class ModEvents {
             event.put(VESPER.get(), VesperEntity.createAttributes().build());
             event.put(CINDER_ACOLYTE.get(), CinderAcolyteEntity.createAttributes().build());
             event.put(FAILED_REMNANT.get(), FailedRemnantEntity.createAttributes().build());
+            event.put(CRAWLING_DELUSION.get(), CrawlingDelusionEntity.createAttributes().build());
 
             // --- PASSIVE & NEUTRAL CREATURES ---
             event.put(BLOOD_SEEKER.get(), BloodSeekerEntity.createAttributes().build());

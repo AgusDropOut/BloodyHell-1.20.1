@@ -21,8 +21,8 @@ public class TinyBloomParticle extends Particle {
         this.yd = ySpeed;
         this.zd = zSpeed;
 
-        this.gravity = 0.65F;
-        this.hasPhysics = true;
+        this.gravity = 0F;
+        this.hasPhysics = false;
 
         this.baseScale = options.getSize() * (0.85F + this.random.nextFloat() * 0.3F);
         this.lifetime = 20 + this.random.nextInt(15);

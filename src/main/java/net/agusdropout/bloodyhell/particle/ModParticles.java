@@ -196,8 +196,6 @@ public class ModParticles {
                 }
             });
 
-    public static final RegistryObject<SimpleParticleType> LINEAR_FRENZIED_FLAME =
-            PARTICLE_TYPES.register("linear_frenzied_flame", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<SimpleParticleType> FRENZIED_TRAIL_PARTICLE =
             PARTICLE_TYPES.register("franzied_trail_particle", () -> new SimpleParticleType(true));
@@ -222,6 +220,15 @@ public class ModParticles {
                         @Override
                         public Codec<FrenziedExplosionParticleOptions> codec() {
                             return FrenziedExplosionParticleOptions.CODEC;
+                        }
+                    });
+
+    public static final RegistryObject<ParticleType<LinearFrenziedFlameParticleOptions>> LINEAR_FRENZIED_FLAME =
+            PARTICLE_TYPES.register("linear_frenzied_flame_particle", () ->
+                    new ParticleType<LinearFrenziedFlameParticleOptions>(false, LinearFrenziedFlameParticleOptions.DESERIALIZER) {
+                        @Override
+                        public Codec<LinearFrenziedFlameParticleOptions> codec() {
+                            return LinearFrenziedFlameParticleOptions.CODEC;
                         }
                     });
 
