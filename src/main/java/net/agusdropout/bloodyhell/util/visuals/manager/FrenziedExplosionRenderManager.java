@@ -26,7 +26,7 @@ public class FrenziedExplosionRenderManager {
     public static void renderAllAndClear() {
         if (ACTIVE_EXPLOSIONS.isEmpty()) return;
 
-        RenderSystem.disableDepthTest();
+        //RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(
@@ -84,7 +84,7 @@ public class FrenziedExplosionRenderManager {
         RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
 
         RenderSystem.depthMask(true);
-        RenderSystem.enableDepthTest();
+       // RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
 

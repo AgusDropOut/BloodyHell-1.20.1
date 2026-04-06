@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
 import net.agusdropout.bloodyhell.entity.effects.FrenziedFireEntity;
+import net.agusdropout.bloodyhell.entity.projectile.OrbitalFrenziedProjectile;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -14,6 +15,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,100 +39,136 @@ public class EightBallItem extends Item {
     private static final Vector3f COLOR_CORE = new Vector3f(1.0f, 0.6f, 0.0f);
     private static final Vector3f COLOR_FADE = new Vector3f(0.5f, 0.0f, 0.0f);
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+//   @Override
+//   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
 
-        //triggerSummoningRitual(level, player.getX(), player.getY(), player.getZ(), 1.5f, 3.0f, 120, COLOR_CORE);
+//       //triggerSummoningRitual(level, player.getX(), player.getY(), player.getZ(), 1.5f, 3.0f, 120, COLOR_CORE);
 
-        if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-           InsightHelper.addInsight( serverPlayer,10);
+//       if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+//          InsightHelper.addInsight( serverPlayer,10);
 
-            //UnknownLanternEntity lantern = new UnknownLanternEntity(ModEntityTypes.UNKNOWN_LANTERN.get(), level);
-            //lantern.setTargetPlayer(player.getUUID());
-            //lantern.setPos(player.getX(), player.getY(), player.getZ());
-            //level.addFreshEntity(lantern);
-
-
-      //    BastionOfTheUnknownEntity son = new BastionOfTheUnknownEntity(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), level);
-      //  son.setOwnerUUID(player.getUUID());
-      //  son.setPos(player.getX(), player.getY(), player.getZ());
-      //  level.addFreshEntity(son);
-
-      //    BurdenOfTheUnknownEntity son2 = new BurdenOfTheUnknownEntity(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), level);
-      //     son2.setOwnerUUID(player.getUUID());
-      //     son2.setPos(player.getX(), player.getY(), player.getZ());
-      //    level.addFreshEntity(son2);
-////
-         //  WeepingOcularEntity eye = new WeepingOcularEntity(ModEntityTypes.WEEPING_OCULAR.get(), level);
-         //    eye.setOwnerUUID(player.getUUID());
-         //    eye.setPos(player.getX(), player.getY(), player.getZ());
-         //  level.addFreshEntity(eye);
-//
-            Vec3 impactPos = player.getOnPos().getCenter().add(0,1,0);
-
-            /* Instantiates and configures the hazard entity */
-            FrenziedFireEntity fireHazard = new FrenziedFireEntity(ModEntityTypes.FRENZIED_FIRE.get(), level);
-            fireHazard.setPos(impactPos.x(), impactPos.y(), impactPos.z());
-
-            /* Adds the hazard to the world */
-            level.addFreshEntity(fireHazard);
+//           //UnknownLanternEntity lantern = new UnknownLanternEntity(ModEntityTypes.UNKNOWN_LANTERN.get(), level);
+//           //lantern.setTargetPlayer(player.getUUID());
+//           //lantern.setPos(player.getX(), player.getY(), player.getZ());
+//           //level.addFreshEntity(lantern);
 
 
-     //int quantity = 5;
-//
-      //  for (int i = 0; i < quantity; i++) {
-     //     RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
-     //     level.addFreshEntity(impaler);
-     // }
-//
-//
-        //  RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 10);
-//
-        // // // Offset the spawn position higher up if you want it to "fall" more dramatically
-       //   Vec3 spawnPos = player.position().add(0, 3, 0).add(player.getLookAngle().scale(5));
-       //   sword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-//
-        // //// // Add the entity to the world
-       //  level.addFreshEntity(sword);
+//     //    BastionOfTheUnknownEntity son = new BastionOfTheUnknownEntity(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), level);
+//     //  son.setOwnerUUID(player.getUUID());
+//     //  son.setPos(player.getX(), player.getY(), player.getZ());
+//     //  level.addFreshEntity(son);
 
-        // RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
-        // level.addFreshEntity(throne);
+//     //    BurdenOfTheUnknownEntity son2 = new BurdenOfTheUnknownEntity(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), level);
+//     //     son2.setOwnerUUID(player.getUUID());
+//     //     son2.setPos(player.getX(), player.getY(), player.getZ());
+//     //    level.addFreshEntity(son2);
+/////
+//        //  WeepingOcularEntity eye = new WeepingOcularEntity(ModEntityTypes.WEEPING_OCULAR.get(), level);
+//        //    eye.setOwnerUUID(player.getUUID());
+//        //    eye.setPos(player.getX(), player.getY(), player.getZ());
+//        //  level.addFreshEntity(eye);
+///
+ //           Vec3 impactPos = player.getOnPos().getCenter().add(0,1,0);
 
-            //RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
-            //level.addFreshEntity(orb);
-        } else {
+//           /* Instantiates and configures the hazard entity */
+//           FrenziedFireEntity fireHazard = new FrenziedFireEntity(ModEntityTypes.FRENZIED_FIRE.get(), level);
+//           fireHazard.setPos(impactPos.x(), impactPos.y(), impactPos.z());
 
-            //Vec3 look = player.getLookAngle();
-            //Vec3 pos = player.getEyePosition().add(look.scale(2.0D));//
-            //level.addParticle(
-            //        new FrenziedFlameParticleOptions(1.0F, 0.7F, 0.0F, 500),
-            //        pos.x, pos.y, pos.z,
-            //        0.0D, 0.0D, 0.0D
-            //);
+//           /* Adds the hazard to the world */
+//           level.addFreshEntity(fireHazard);
 
-           // for (int i = 0; i < 8; i++) {
-           //     double offsetX = (level.random.nextDouble() - 0.5D) * 1.2D;
-           //     double offsetZ = (level.random.nextDouble() - 0.5D) * 1.2D;
-//
-           //     level.addParticle(ModParticles.LINEAR_FRENZIED_FLAME.get(),
-           //             player.getX() + offsetX,
-           //             player.getY() + 0.5D,
-           //             player.getZ() + offsetZ,
-           //             0.0D,
-           //             0.08D + (level.random.nextDouble() * 0.05D),
-           //             0.0D);
-           // }
 
-           // executeFrenzyBurst(level, player.position().add(0, 1.0D, 0));
+//    //int quantity = 5;
+///
+//     //  for (int i = 0; i < quantity; i++) {
+//    //     RhnullImpalerEntity impaler = new RhnullImpalerEntity(level,player, i, quantity);
+//    //     level.addFreshEntity(impaler);
+//    // }
+ //
+  ///
+//       //  RhnullHeavySwordEntity sword = new RhnullHeavySwordEntity(level, player, 10)  ;
+///
+//       // // // Offset the spawn position higher up if you want it to "fall" more dramatically
+//      //   Vec3 spawnPos = player.position().add(0, 3, 0).add(player.getLookAngle().scale(5));
+//      //   sword.setPos(spawnPos.x, spawnPos.y, spawnPos. z);
+///
+//       // //// // Add the entity to the world
+//      //  level.addFreshEntity(sword);
 
-           // executeOrbitalBurst(level, player.position().add(0, 1.0D, 0));
-            //executeFrenziedExplosion(level, player.position().add(0, 1.0D, 0), 4.5f);
+//       // RhnullPainThroneEntity throne = new RhnullPainThroneEntity(ModEntityTypes.RHNULL_PAIN_THRONE.get(),level, player, player.getX(), player.getY(), player.getZ(),null);
+//       // level.addFreshEntity(throne);
+
+//           //RhnullOrbEmitter orb = new RhnullOrbEmitter(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), level, player, player.getX(), player.getY() + 1.5, player.getZ(), List.of());
+//           //level.addFreshEntity(orb);
+//       } else {
+
+//           //Vec3 look = player.getLookAngle();
+//           //Vec3 pos = player.getEyePosition().add(look.scale(2.0D));//
+//           //level.addParticle(
+//           //        new FrenziedFlameParticleOptions(1.0F, 0.7F, 0.0F, 500),
+//           //        pos.x, pos.y, pos.z,
+//           //        0.0D, 0.0D, 0.0D
+//           //);
+
+//          // for (int i = 0; i < 8; i++) {
+//          //     double offsetX = (level.random.nextDouble() - 0.5D) * 1.2D;
+//          //     double offsetZ = (level.random.nextDouble() - 0.5D) * 1  .2D;
+///
+//          //     level.addParticle(ModParticles.LINEAR_FRENZIED_FLAME.get(),
+//          //             player.getX() + offsetX,
+//          //             player.getY() + 0.5D,
+//          //             player.getZ() + offsetZ,
+//          //             0.0D,
+//          //             0.08D + (level.random.nextDouble() * 0.05D),
+//          //             0.0D);
+//          // }
+
+//          // executeFrenzyBurst(level, player.position().add(0, 1.0D, 0));
+
+//          // executeOrbitalBurst(level, player.position().add(0, 1.0D, 0));
+//           //executeFrenziedExplosion(level, player.position().add(0, 1.0D, 0), 4.5f);
+//        }
+///
+
+//       return InteractionResultHolder.success(player.getItemInHand(hand));
+//   }
+
+
+@Override
+public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    ItemStack itemStack = player.getItemInHand(hand);
+
+    level.playSound(null, player.getX(), player.getY(), player.getZ(),
+            SoundEvents.BLAZE_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+
+    if (!level.isClientSide) {
+        int projectileCount = 3;
+
+        for (int i = 0; i < projectileCount; i++) {
+            OrbitalFrenziedProjectile projectile = new OrbitalFrenziedProjectile(ModEntityTypes.ORBITAL_FRENZIED_PROJECTILE.get(), level);
+
+            projectile.setOwner(player);
+            projectile.setPos(player.getX(), player.getEyeY() - 0.1D, player.getZ());
+
+            projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 15.0F);
+
+            level.addFreshEntity(projectile);
         }
-//
-
-        return InteractionResultHolder.success(player.getItemInHand(hand));
     }
+
+          Vec3 look = player.getLookAngle();
+        Vec3 pos = player.getEyePosition().add(look.scale(2.0D));//
+        level.addParticle(
+                new FrenziedFlameParticleOptions(1.0F, 0.7F, 0.0F, 500),
+                pos.x, pos.y, pos.z,
+                0.0D, 0.0D, 0.0D
+        );
+
+    player.getCooldowns().addCooldown(this, 40);
+
+    return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
+}
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity owner) {

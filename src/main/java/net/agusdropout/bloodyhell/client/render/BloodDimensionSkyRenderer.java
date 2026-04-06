@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -25,13 +26,12 @@ public class BloodDimensionSkyRenderer {
     public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack poseStack,
                                     Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
 
-        // FIX 1: Run the vanilla fog setup FIRST, then override it to MAX_VALUE for the sky.
+
         setupFog.run();
         RenderSystem.setShaderFogStart(Float.MAX_VALUE);
         RenderSystem.setShaderFogEnd(Float.MAX_VALUE);
 
-        // FIX 2: Disable depth test and mask so the sky renders in the deep background
-        // without writing to the depth buffer (which breaks particle rendering).
+
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
 
@@ -86,10 +86,13 @@ public class BloodDimensionSkyRenderer {
         BufferUploader.drawWithShader(buffer.end());
 
         renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_2, 0.8f, -0.3f);
-        renderBloodMoon(poseStack, projectionMatrix, partialTicks);
+
+        boolean shouldExist = ClientInsightData.getPlayerInsight() > 50.0F;
+        if(!shouldExist) {
+            renderBloodMoon(poseStack, projectionMatrix, partialTicks);
+        }
         renderFogOverlay(poseStack, projectionMatrix, partialTicks, FOG_OVERLAY_2, 0.8f, 0.5f);
 
-        // FIX 3: Always restore depth state at the end of a custom sky renderer!
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
 

@@ -248,6 +248,10 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<CrawlingDelusionEntity>> CRAWLING_DELUSION = ENTITY_TYPES.register("crawling_delusion",
             () -> EntityType.Builder.<CrawlingDelusionEntity>of(CrawlingDelusionEntity::new, MobCategory.MONSTER).sized(1.4F, 0.8F).clientTrackingRange(8).build("crawling_delusion"));
+
+    public static final RegistryObject<EntityType<OrbitalFrenziedProjectile>> ORBITAL_FRENZIED_PROJECTILE = ENTITY_TYPES.register("orbital_frenzied_projectile",
+            () -> EntityType.Builder.<OrbitalFrenziedProjectile>of(OrbitalFrenziedProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("orbital_frenzied_projectile"));
+
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
     }

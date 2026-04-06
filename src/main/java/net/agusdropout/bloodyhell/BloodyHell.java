@@ -340,10 +340,12 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.VISCOUS_PROJECTILE.get(), ViscousProjectileRenderer::new);
             EntityRenderers.register(ModEntityTypes.FRENZIED_FIRE.get(), FrenziedFireRenderer::new);
             EntityRenderers.register(ModEntityTypes.CRAWLING_DELUSION.get(), CrawlingDelusionRenderer::new);
-
-
-
+            EntityRenderers.register(ModEntityTypes.ORBITAL_FRENZIED_PROJECTILE.get(), OrbitalFrenziedProjectileRenderer::new);
         }
+
+
+
+
 
     }
     public void portalTick(LivingEvent.LivingTickEvent event) {
