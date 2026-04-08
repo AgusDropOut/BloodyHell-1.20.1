@@ -70,15 +70,9 @@ public class FrenziedSunSkyParticle extends Particle {
 
         poseStack.pushPose();
         poseStack.translate(0.0D, 0.0D, 5.0D);
-        FrenziedFlameRenderManager.addFlame(poseStack.last().pose(), this.baseScale * 1.15F, rCol, gCol, bCol, this.alpha * 0.6F, time + 25.0F);
+        FrenziedFlameRenderManager.addFlame(poseStack.last().pose(), this.baseScale * 1.15F, rCol, gCol, bCol, this.alpha * 0.09F, time + 25.0F);
         poseStack.popPose();
 
-        FrenziedFlameRenderManager.addFlame(poseStack.last().pose(), this.baseScale, rCol, gCol, bCol, this.alpha, time);
-
-        poseStack.pushPose();
-        poseStack.translate(0.0D, 0.0D, -5.0D);
-        FrenziedFlameRenderManager.addFlame(poseStack.last().pose(), this.baseScale * 0.85F, rCol, gCol, bCol, this.alpha * 0.8F, time - 15.0F);
-        poseStack.popPose();
     }
 
     @Override
