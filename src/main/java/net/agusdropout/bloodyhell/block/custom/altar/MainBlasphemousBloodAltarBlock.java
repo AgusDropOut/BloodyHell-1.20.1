@@ -3,15 +3,14 @@ package net.agusdropout.bloodyhell.block.custom.altar;
 
 import net.agusdropout.bloodyhell.block.base.AbstractMainAltarBlock;
 import net.agusdropout.bloodyhell.block.entity.custom.altar.MainBlasphemousBloodAltarBlockEntity;
-import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.TentacleEntity;
 import net.agusdropout.bloodyhell.item.ModItems;
-import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ChillFallingParticleOptions;
 import net.agusdropout.bloodyhell.recipe.BlasphemousBloodAltarRecipe;
 import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
+import net.agusdropout.bloodyhell.util.recipe.RecipeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -22,8 +21,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +33,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -44,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +49,7 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
 
     private static final VoxelShape LOWER_SHAPE = Block.box(0, 0, 0, 16, 32, 16);
     private static final VoxelShape UPPER_SHAPE = Block.box(0, -16, 0, 16, 16, 16);
+    private final RecipeUtils recipeUtils = new RecipeUtils();
 
     public MainBlasphemousBloodAltarBlock(Properties properties) {
         super(properties);
@@ -94,12 +90,9 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        // Redirect upper half clicks to the lower half
-        if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER) {
-            BlockPos below = blockPos.below();
-            BlockState belowState = level.getBlockState(below);
-            return belowState.use(level, player, interactionHand, blockHitResult.withPosition(below));
-        }
+       
+        InteractionResult belowState = delegateToControllerInteraction(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        if (belowState != null) return belowState;
 
         if (!(level.getBlockEntity(blockPos) instanceof MainBlasphemousBloodAltarBlockEntity altar)) {
             return InteractionResult.PASS;
@@ -107,49 +100,63 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
 
         if (interactionHand == InteractionHand.MAIN_HAND) {
             ItemStack heldItem = player.getMainHandItem();
-
             if (heldItem.is(ModItems.FILLED_BLOOD_FLASK.get())) {
                 return getInteractionResult(blockState, level, blockPos, player, altar, heldItem);
-
             } else if (altar.isActive() && isAltarSetupReady(level, blockPos, BlasphemousBloodAltarBlock.class)) {
-
-                if (level.isClientSide()) return InteractionResult.SUCCESS;
-
-                List<List<Item>> itemsFromAltars = getItemsFromAltars(level, blockPos);
-                if (itemsFromAltars.size() != 4) return InteractionResult.FAIL;
-
-                List<Item> referenceSet = itemsFromAltars.get(0);
-                if (!isSetEqual(referenceSet, itemsFromAltars.get(1)) ||
-                        !isSetEqual(referenceSet, itemsFromAltars.get(2)) ||
-                        !isSetEqual(referenceSet, itemsFromAltars.get(3))) {
-                    player.sendSystemMessage(Component.literal("§cFailed ritual: All altars must contain the same set of items."));
-                    return InteractionResult.FAIL;
-                }
-
-                SimpleContainer inventory = new SimpleContainer(3);
-                for (int i = 0; i < referenceSet.size(); i++) {
-                    inventory.setItem(i, new ItemStack(referenceSet.get(i)));
-                }
-
-                Optional<BlasphemousBloodAltarRecipe> recipe = level.getRecipeManager()
-                        .getRecipeFor(BlasphemousBloodAltarRecipe.Type.INSTANCE, inventory, level);
-
-                if (recipe.isPresent()) {
-                    ItemStack result = recipe.get().getResultItem(level.registryAccess());
-                    Item resultItem = result.getItem();
-                    consumeItemsFromAltars(level, blockPos);
-                    super.dischargeAltars(level, blockPos);
-
-
-                    return finalizeRitualServer(level, blockPos, player, blockState, altar, result);
-                } else {
-                    level.playSound(null, blockPos, SoundEvents.BASALT_BREAK, SoundSource.BLOCKS, 0.5F, 0.5F);
-                    ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.05);
-                    return InteractionResult.FAIL;
-                }
+                return getRitualInteractionResult(blockState, level, blockPos, player, altar);
             }
         }
         return InteractionResult.PASS;
+    }
+
+    // TODO: Refactor this method to reduce complexity and improve readability.
+    //  Maybe some dependency injection for the recipe checking logic and location checking logic?
+
+
+    private InteractionResult getRitualInteractionResult(BlockState blockState, Level level, BlockPos blockPos, Player player, MainBlasphemousBloodAltarBlockEntity altar) {
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
+
+        List<List<Item>> itemsFromAltars = getItemsFromAltars(level, blockPos);
+        if (itemsFromAltars.size() != 4) return InteractionResult.FAIL;
+
+        List<Item> referenceSet = itemsFromAltars.get(0);
+        if (!recipeUtils.isSetEqual(referenceSet, itemsFromAltars.get(1)) ||
+                !recipeUtils.isSetEqual(referenceSet, itemsFromAltars.get(2)) ||
+                !recipeUtils.isSetEqual(referenceSet, itemsFromAltars.get(3))) {
+            player.sendSystemMessage(Component.literal("§cFailed ritual: All altars must contain the same set of items."));
+            return InteractionResult.FAIL;
+        }
+
+        SimpleContainer inventory = new SimpleContainer(3);
+        for (int i = 0; i < referenceSet.size(); i++) {
+            inventory.setItem(i, new ItemStack(referenceSet.get(i)));
+        }
+
+        Optional<BlasphemousBloodAltarRecipe> recipe = level.getRecipeManager()
+                .getRecipeFor(BlasphemousBloodAltarRecipe.Type.INSTANCE, inventory, level);
+
+        if (recipe.isPresent()) {
+            ItemStack result = recipe.get().getResultItem(level.registryAccess());
+            Item resultItem = result.getItem();
+            consumeItemsFromAltars(level, blockPos);
+            super.dischargeAltars(level, blockPos);
+
+
+            return finalizeRitualServer(level, blockPos, player, blockState, altar, result);
+        } else {
+            level.playSound(null, blockPos, SoundEvents.BASALT_BREAK, SoundSource.BLOCKS, 0.5F, 0.5F);
+            ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.05);
+            return InteractionResult.FAIL;
+        }
+    }
+
+    private static @Nullable InteractionResult delegateToControllerInteraction(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            BlockPos below = blockPos.below();
+            BlockState belowState = level.getBlockState(below);
+            return belowState.use(level, player, interactionHand, blockHitResult.withPosition(below));
+        }
+        return null;
     }
 
     private @NotNull InteractionResult getInteractionResult(BlockState blockState, Level level, BlockPos blockPos, Player player, MainBlasphemousBloodAltarBlockEntity altar, ItemStack heldItem) {
@@ -217,14 +224,7 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
         return InteractionResult.CONSUME;
     }
 
-    private boolean isSetEqual(List<Item> setA, List<Item> setB) {
-        if (setA.size() != setB.size()) return false;
-        List<Item> copyB = new ArrayList<>(setB);
-        for (Item item : setA) {
-            if (!copyB.remove(item)) return false;
-        }
-        return copyB.isEmpty();
-    }
+   
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
