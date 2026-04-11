@@ -1,6 +1,8 @@
 package net.agusdropout.bloodyhell.entity.unknown.custom;
 
+import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.base.AbstractInsightMonster;
+import net.agusdropout.bloodyhell.entity.projectile.OrbitalFrenziedProjectile;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -43,10 +45,10 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
     private static final RawAnimation ANIM_IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation ANIM_WALKING = RawAnimation.begin().thenLoop("walking");
     private static final RawAnimation ANIM_UNBURROWING = RawAnimation.begin().thenPlay("unburrowing");
-    private static final RawAnimation ANIM_EXPLODE = RawAnimation.begin().thenPlay("explode");
+    private static final RawAnimation ANIM_EXPLODE = RawAnimation.begin().thenPlayAndHold("explode");
 
     private int stateTicks = 0;
-    private int deathCooldown = 20;
+    private int deathCooldown = 50;
 
     public CrawlingDelusionEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -112,7 +114,6 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
 
             if (this.level().isClientSide()) {
                 if (!stateBelow.isAir()) {
-                    /* Constant dirt disturbance during the unburrowing sequence */
                     ParticleHelper.spawnRisingBurst(
                             this.level(),
                             new BlockParticleOption(ParticleTypes.BLOCK, stateBelow),
@@ -144,6 +145,28 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
 
         this.hurtTime = 0;
         this.deathCooldown--;
+
+        if (this.deathCooldown == 30) {
+            if (!this.level().isClientSide()) {
+                this.level().playSound(null, this.blockPosition(), net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE, net.minecraft.sounds.SoundSource.HOSTILE, 1.0F, 1.5F);
+                this.level().playSound(null, this.blockPosition(), net.minecraft.sounds.SoundEvents.SLIME_DEATH, net.minecraft.sounds.SoundSource.HOSTILE, 1.0F, 0.5F);
+
+                int projectileCount = 4 + this.random.nextInt(3);
+                for (int i = 0; i < projectileCount; i++) {
+                    OrbitalFrenziedProjectile projectile = new OrbitalFrenziedProjectile(ModEntityTypes.ORBITAL_FRENZIED_PROJECTILE.get(), this.level());
+                    projectile.setPos(this.getX(), this.getY() + 0.5D, this.getZ());
+
+                    double xVec = this.random.nextDouble() - 0.5D;
+                    double yVec = 0.1D + this.random.nextDouble() * 0.15D;
+                    double zVec = this.random.nextDouble() - 0.5D;
+
+                    float speed = 0.35F + this.random.nextFloat() * 0.15F;
+                    projectile.shoot(xVec, yVec, zVec, speed, 1.0F);
+
+                    this.level().addFreshEntity(projectile);
+                }
+            }
+        }
 
         if (this.deathCooldown <= 0) {
             if (!this.level().isClientSide()) {
@@ -188,7 +211,6 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
                         soundType.getHitSound(), this.getSoundSource(),
                         soundType.getVolume() * 0.8F, soundType.getPitch(), false);
 
-                /* Heavy impact combining outward ring debris and an upward blast */
                 ParticleHelper.spawnCrownSplash(
                         this.level(),
                         new BlockParticleOption(ParticleTypes.BLOCK, stateBelow),
