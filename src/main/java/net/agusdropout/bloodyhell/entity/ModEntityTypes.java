@@ -11,6 +11,7 @@ import net.agusdropout.bloodyhell.entity.projectile.*;
 import net.agusdropout.bloodyhell.entity.projectile.spell.*;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
 import net.agusdropout.bloodyhell.entity.unknown.custom.CrawlingDelusionEntity;
+import net.agusdropout.bloodyhell.entity.unknown.custom.EchoOfTheNamelessEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -251,6 +252,12 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<OrbitalFrenziedProjectile>> ORBITAL_FRENZIED_PROJECTILE = ENTITY_TYPES.register("orbital_frenzied_projectile",
             () -> EntityType.Builder.<OrbitalFrenziedProjectile>of(OrbitalFrenziedProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("orbital_frenzied_projectile"));
+
+    public static final RegistryObject<EntityType<EchoOfTheNamelessEntity>> ECHO_OF_THE_NAMELESS = ENTITY_TYPES.register("echo_of_the_nameless",
+                    () -> EntityType.Builder.of(EchoOfTheNamelessEntity::new, MobCategory.MISC).sized(0.8F, 2.0F).clientTrackingRange(10).build("echo_of_the_nameless"));
+
+    public static final RegistryObject<EntityType<NamelessTrialRiftEntity>> NAMELESS_TRIAL_RIFT = ENTITY_TYPES.register("nameless_trial_rift",
+                    () -> EntityType.Builder.<NamelessTrialRiftEntity>of(NamelessTrialRiftEntity::new, MobCategory.MISC).sized(1.0F, 2.0F).clientTrackingRange(10).build("nameless_trial_rift"));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);

@@ -24,6 +24,7 @@ import net.agusdropout.bloodyhell.entity.minions.client.renderer.WeepingOcularRe
 import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
 import net.agusdropout.bloodyhell.entity.unknown.client.model.CrawlingDelusionModel;
 import net.agusdropout.bloodyhell.entity.unknown.client.renderer.CrawlingDelusionRenderer;
+import net.agusdropout.bloodyhell.entity.unknown.client.renderer.EchoOfTheNamelessRenderer;
 import net.agusdropout.bloodyhell.fluid.ModFluidTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModCreativeModeTab;
@@ -331,6 +332,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.WEEPING_TEAR_PROJECTILE.get(), SimpleColoredLineProjectileRenderer::new);
             EntityRenderers.register(ModEntityTypes.BLACK_HOLE.get(), BlackHoleRenderer::new);
             EntityRenderers.register(ModEntityTypes.UNKNOWN_LANTERN_RIFT.get(), BlackHoleRenderer::new);
+            EntityRenderers.register(ModEntityTypes.NAMELESS_TRIAL_RIFT.get(), BlackHoleRenderer::new);
             EntityRenderers.register(ModEntityTypes.UNKNOWN_LANTERN.get(), UnknownLanternRenderer::new);
             EntityRenderers.register(ModEntityTypes.HOSTILE_UNKNOWN_ENTITY_ARMS.get(), HostileUnknownEntityArmsRenderer::new);
             EntityRenderers.register(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), context -> new BurdenOfTheUnknownRenderer(context, new BurdenOfTheUnknownModel()));
@@ -340,6 +342,7 @@ public class BloodyHell
             EntityRenderers.register(ModEntityTypes.VISCOUS_PROJECTILE.get(), ViscousProjectileRenderer::new);
             EntityRenderers.register(ModEntityTypes.FRENZIED_FIRE.get(), FrenziedFireRenderer::new);
             EntityRenderers.register(ModEntityTypes.CRAWLING_DELUSION.get(), CrawlingDelusionRenderer::new);
+            EntityRenderers.register(ModEntityTypes.ECHO_OF_THE_NAMELESS.get(), EchoOfTheNamelessRenderer::new);
             EntityRenderers.register(ModEntityTypes.ORBITAL_FRENZIED_PROJECTILE.get(), OrbitalFrenziedProjectileRenderer::new);
         }
 

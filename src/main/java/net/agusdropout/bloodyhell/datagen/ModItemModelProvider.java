@@ -134,6 +134,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ModItems.UNKNOWN_ENTITY_FINGER);
 
         normalItem(ModItems.GAZE_OF_THE_UNKNOWN);
+        normalItem(ModItems.NAMELESS_WHISPER);
         normalItem(ModItems.BLOOD_ECHO_SHARD);
 
         //Crimson Veil Items

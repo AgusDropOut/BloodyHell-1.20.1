@@ -357,8 +357,12 @@ public class ModLootTables extends LootTableProvider {
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
             this.add(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
+
+
+            // --- OTHER ENTITIES ---
             this.add(ModEntityTypes.CRAWLING_DELUSION.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
+
         }
 
 

@@ -174,6 +174,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.UNKNOWN_ENTITY_FINGER.get());
                         output.accept(ModItems.BLASPHEMOUS_EYE.get());
                         output.accept(ModItems.GAZE_OF_THE_UNKNOWN.get());
+                        output.accept(ModItems.NAMELESS_WHISPER.get());
                         output.accept(ModItems.SELIORA_ESSENCE.get());
                         output.accept(ModItems.RITEKEEPER_HEART.get());
                         output.accept(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get());

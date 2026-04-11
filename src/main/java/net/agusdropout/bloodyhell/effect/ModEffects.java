@@ -23,7 +23,7 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> BLOOD_FIRE_EFFECT = MOB_EFFECTS.register("blood_fire",
             () -> new BloodFireEffect(MobEffectCategory.HARMFUL, 0x990000));
     public static final RegistryObject<MobEffect> FRENZY = MOB_EFFECTS.register("frenzy",
-            () -> new BloodFireEffect(MobEffectCategory.HARMFUL, 0x990000));
+            FrenzyEffect::new);
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,6 +33,8 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.UUID;
+
 public class CrawlingDelusionEntity extends AbstractInsightMonster implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -50,6 +53,8 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
     private int stateTicks = 0;
     private int deathCooldown = 50;
 
+    private UUID lockedTargetUuid = null;
+
     public CrawlingDelusionEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
@@ -67,15 +72,35 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
         this.entityData.define(STATE, STATE_UNBURROWING);
     }
 
+    public void setLockedTarget(UUID uuid) {
+        this.lockedTargetUuid = uuid;
+    }
+
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, false));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.goalSelector.addGoal(2, new net.minecraft.world.entity.ai.goal.AvoidEntityGoal<>(
+                this,
+                EchoOfTheNamelessEntity.class,
+                10.0F,
+                1.3D,
+                1.6D,
+                (entity) -> {
+                    if (entity instanceof EchoOfTheNamelessEntity lamp) {
+                        return lamp.holdsSufficientChargeForRepulsion();
+                    }
+                    return false;
+                }
+        ));
+
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
+                livingEntity -> this.lockedTargetUuid == null || livingEntity.getUUID().equals(this.lockedTargetUuid)));
     }
 
     private int getEntityState() {
@@ -231,5 +256,21 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (this.lockedTargetUuid != null) {
+            tag.putUUID("LockedTarget", this.lockedTargetUuid);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.hasUUID("LockedTarget")) {
+            this.lockedTargetUuid = tag.getUUID("LockedTarget");
+        }
     }
 }

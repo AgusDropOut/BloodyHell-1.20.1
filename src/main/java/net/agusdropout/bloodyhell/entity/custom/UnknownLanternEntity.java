@@ -71,7 +71,7 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
 
     private int summonTicks = 0;
-    private Vec3 playerOriginPosition = null; // Stores where the player was when summoned
+    private Vec3 playerOriginPosition = null;
 
     public UnknownLanternEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
