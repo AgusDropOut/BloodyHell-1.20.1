@@ -342,9 +342,26 @@ public class PatchouliProvider implements DataProvider {
                 .addEntityPage("bloodyhell:unknown_lantern", "Unknown Lantern", "A manifestation of cosmic dread.", 0.6f, 0.0f)
                 .addTextPage("To survive, you must locate the " + madness("Rift") + " (shown on next page) and close it." + br() + br() +
                         "Failure: " + insight("-5") + br() +
-                        "Success: " + insight("+10"))
+                        "Success: " + insight("Up to +10") + br() + br() +
+                        "Note: This lesser trial can only expand your mind so far. It cannot grant you more than " + link("50 Insight") + ". To progress further, you must face greater horrors.")
                 .addImagePage("The Rift", imagePath("rift_preview"), true);
         saveEntry(cache, lantern);
+
+        PatchouliEntryBuilder namelessTrial = PatchouliEntryBuilder.create("nameless_trial", category.getId(), "The Nameless Trial", "bloodyhell:nameless_whisper")
+                .addSpotlightPage("bloodyhell:nameless_whisper", "A forbidden whisper that beckons the cosmic horrors.")
+                .addTextPage("By consuming the " + link("Nameless Whisper") + ", you force your mind into a harrowing trial. " + br() + br() +
+                        "The world will go dark, and the crushing weight of the " + madness("Frenzy") + " will begin to slow your movements and distort your vision.")
+                .addTextPage("To survive, you must follow the trail of golden " + entryLink("the_unknown", "unknown_lantern", "Lamps") + " that burst from the ground." + br() + br() +
+                        "Standing near an active Lamp will temporarily cleanse your Frenzy and violently purge any " + entryLink("the_unknown", "crawling_delusion", "Crawling Delusions") + " that have latched onto you.")
+                .addTextPage("You must rush from safe zone to safe zone until you reach the end of the path. " + br() + br() +
+                        "At the end, you will find the " + madness("Rift") + ". Close it, and you shall be rewarded with a massive surge of " + insight("Insight") + ", proving your mind is ready to command greater horrors.");
+        saveEntry(cache, namelessTrial);
+
+        PatchouliEntryBuilder namelessEchoShard = PatchouliEntryBuilder.create("nameless_echo_shard", category.getId(), "Nameless Echo Shard", "bloodyhell:nameless_echo_shard")
+                .addSpotlightPage("bloodyhell:nameless_echo_shard", "A crystallized echo, whispering of the path ahead.")
+                .addTextPage("If you lose your way during the " + entryLink("the_unknown", "nameless_trial", "Nameless Trial") + ", using this shard will guide you." + br() + br() +
+                        "It emits a burst of souls pointing directly towards the nearest safe Lamp, or if none are active, towards the final Rift itself.");
+        saveEntry(cache, namelessEchoShard);
 
         PatchouliEntryBuilder echoShard = PatchouliEntryBuilder.create("blood_echo_shard", category.getId(), "Blood Echo Shard", "bloodyhell:blood_echo_shard")
                 .addSpotlightPage("bloodyhell:blood_echo_shard", "A crystalline resonance.")
@@ -357,7 +374,8 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("The Reliquary allows you to summon entities from the Unknown to fight by your side. " + br() + br() +
                         "However, your ability to maintain these summons is strictly limited by your total " + entryLink("the_unknown", "insight", "Insight") + " capacity.")
                 .addSpotlightPage("tag:bloodyhell:reliquary_rune_item", link("Summoning Runes") + br() + br() +
-                        "To summon an ally, you must place a specific Rune within the Reliquary. Each Rune corresponds to a unique entity and requires a different amount of capacity to maintain.")
+                        "To summon an ally, you must place a specific Rune within the Reliquary. Each Rune requires a different amount of capacity." + br() + br() +
+                        "Beware: Advanced Runes demand a highly expanded mind, requiring you to possess at least " + link("50 Insight") + " before they can even be socketed.")
                 .addSpotlightPage("tag:bloodyhell:reliquary_upgrade_item", link("Reliquary Lenses") + br() + br() +
                         "By default, the Reliquary can only hold a limited number of Runes. You can expand its internal slots by installing Ocular Lenses.")
                 .addTextPage("By default, the Reliquary's summons will take on a golden hue." + br() + br() +

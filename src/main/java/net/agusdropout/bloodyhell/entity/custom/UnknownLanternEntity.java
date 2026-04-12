@@ -318,8 +318,13 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
     public void success(Player player) {
         if (!this.level().isClientSide() && this.level() instanceof ServerLevel serverLevel) {
             if (player instanceof ServerPlayer serverPlayer) {
-                InsightHelper.addInsight(serverPlayer, 10);
+                float currentInsight = InsightHelper.getInsight(serverPlayer);
+                if (currentInsight < 50.0F) {
+                    float amountToAdd = Math.min(10.0F, 50.0F - currentInsight);
+                    InsightHelper.addInsight(serverPlayer, (int) amountToAdd);
+                }
             }
+
             this.level().playSound(null, this.blockPosition(), SoundEvents.AMETHYST_CLUSTER_BREAK, this.getSoundSource(), 2.0F, 1.0F);
             this.level().playSound(null, this.blockPosition(), SoundEvents.EVOKER_CAST_SPELL, this.getSoundSource(), 1.5F, 1.2F);
             player.removeEffect(MobEffects.BLINDNESS);
@@ -327,7 +332,6 @@ public class UnknownLanternEntity extends Monster implements GeoEntity, InsightE
             serverLevel.sendParticles(ParticleTypes.END_ROD,
                     this.getX(), this.getY() + 0.5, this.getZ(),
                     40, 0.5, 0.5, 0.5, 0.1);
-
 
             if (this.playerOriginPosition != null) {
                 player.teleportTo(this.playerOriginPosition.x, this.playerOriginPosition.y, this.playerOriginPosition.z);

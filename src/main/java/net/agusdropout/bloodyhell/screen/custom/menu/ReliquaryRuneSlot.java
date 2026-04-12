@@ -1,7 +1,5 @@
 package net.agusdropout.bloodyhell.screen.custom.menu;
 
-
-import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.custom.reliquary.RuneType;
 import net.minecraft.world.item.Item;
@@ -43,12 +41,15 @@ public class ReliquaryRuneSlot extends SlotItemHandler {
     @Override
     public boolean mayPlace(@NotNull ItemStack stack) {
         int incomingCost = 0;
+        int requiredInsight = 0;
         RuneType type = RuneType.getByItem(stack.getItem());
 
         if (type != null) {
             incomingCost = type.getCapacityCost();
+            requiredInsight = type.getRequiredInsight();
         }
 
-        return (this.menu.getUsedCapacity() + incomingCost) <= this.menu.getMaxCapacity();
+
+        return (this.menu.getUsedCapacity() + incomingCost) <= this.menu.getMaxCapacity() && this.menu.getMaxCapacity() >= requiredInsight;
     }
 }

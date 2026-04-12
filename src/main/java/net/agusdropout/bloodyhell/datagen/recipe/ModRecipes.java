@@ -58,6 +58,30 @@ public class ModRecipes extends ModRecipesProvider {
                 .save(consumer, name("unknown_guide_book_alt"));
 
         // =================================================================
+        // BLASPHEMOUS RITUALS
+        // =================================================================
+
+        BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.NAMELESS_WHISPER.get())
+                .requires(ModItems.GAZE_OF_THE_UNKNOWN.get())
+                .requires(ModItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())
+                .requires(ModBlocks.BLASPHEMITE_BLOCK.get())
+                .unlockedBy("has_gaze_of_the_unknown", has(ModItems.GAZE_OF_THE_UNKNOWN.get()))
+                .save(consumer, name("ritual_nameless_whisper"));
+
+
+        // =================================================================
+        // STANDARD BLOOD ALTAR RITUALS (SPELLBOOKS & ITEMS)
+        // =================================================================
+
+        BloodAltarRecipeBuilder.ritual(ModItems.NAMELESS_ECHO_SHARD.get())
+                .requires(Items.AMETHYST_SHARD)
+                .requires(ModBlocks.SANGUINITE_BLOCK.get())
+                .requires(ModItems.FILLED_BLOOD_FLASK.get())
+                .requires(ModBlocks.GLOWING_CRYSTAL.get())
+                .unlockedBy("has_glowing_crystal", has(ModBlocks.GLOWING_CRYSTAL.get()))
+                .save(consumer, name("ritual_nameless_echo_shard"));
+
+        // =================================================================
         // ALTARS CRAFTING
         // =================================================================
 
