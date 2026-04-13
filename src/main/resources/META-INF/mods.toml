@@ -82,3 +82,11 @@ mandatory = true
 versionRange = "[1.0,)"
 ordering = "NONE"
 side = "BOTH"
+
+# 6. Curios Dependency (OPTIONAL)
+[[dependencies."${mod_id}"]]
+modId = "curios"
+mandatory = false
+versionRange = "[1.0,)"
+ordering = "NONE"
+side = "BOTH"
