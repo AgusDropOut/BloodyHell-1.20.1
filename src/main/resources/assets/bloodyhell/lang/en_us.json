@@ -393,6 +393,10 @@
   "entity.bloodyhell.rhnull_orb_emitter_entity": "Rhnull Orb Emitter",
   "entity.bloodyhell.weeping_tear_projectile": "Weeping Tear",
 
+  "_comment": "=== Biomes ===",
+  "biome.bloodyhell.blood_biome": "Blood Biome",
+  "biome.bloodyhell.blasphemous_biome": "Blasphemous Biome",
+
   "_comment": "=== EFFECTS & SOUNDS ===",
   "effect.bloodyhell.bleeding": "Bleeding",
   "effect.bloodyhell.illuminated": "Illuminated",
