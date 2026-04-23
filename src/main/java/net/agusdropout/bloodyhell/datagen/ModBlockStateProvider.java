@@ -50,6 +50,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.RHNULL_BLOCK);
         blockWithItem(ModBlocks.BLASPHEMITE_BLOCK);
 
+        fanBlock(ModBlocks.BLOOD_PETALS);
+
 
 
         blockTranslucent(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
@@ -380,6 +382,28 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .condition(PipeBlock.UP, false)
                     .condition(PipeBlock.DOWN, false);
         }
+    }
+
+    /**
+     * Generates a floor fan block state and model using the block's default registry name for the texture.
+     */
+    public void fanBlock(Supplier<? extends Block> block) {
+        ModelFile fanModel = models().withExistingParent(name(block), mcLoc("block/coral_fan"))
+                .texture("fan", blockTexture(block.get()))
+                .renderType("cutout"); // Crucial for transparency!
+
+        simpleBlock(block.get(), fanModel);
+    }
+
+    /**
+     * Generates a floor fan block state and model with a specifically named texture.
+     */
+    public void fanBlock(Supplier<? extends Block> block, String textureName) {
+        ModelFile fanModel = models().withExistingParent(name(block), mcLoc("block/coral_fan"))
+                .texture("fan", modLoc("block/" + textureName))
+                .renderType("cutout");
+
+        simpleBlock(block.get(), fanModel);
     }
 
 }

@@ -290,6 +290,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(ModBlocks.GLOWING_CRYSTAL);
         simpleBlockItemBlockTexture(ModBlocks.DROOPVINE);
         simpleBlockItemBlockTexture(ModBlocks.DROOPVINE_PLANT);
+        fanItem(ModBlocks.BLOOD_PETALS);
 
 
     }
@@ -416,6 +417,17 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 
         this.withExistingParent(Itemid.getPath(), modLoc("block/" + Blockid.getPath()));
+    }
+
+    public void fanItem(RegistryObject<Block> block) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/coral_fan"))
+                .texture("fan", modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block.get()).getPath()));
+    }
+
+
+    public void fanItem(RegistryObject<Block> block, String textureName) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/coral_fan"))
+                .texture("fan", modLoc("block/" + textureName));
     }
 
 }
