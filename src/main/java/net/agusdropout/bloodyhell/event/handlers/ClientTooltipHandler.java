@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.event.handlers;
 
 import com.mojang.datafixers.util.Either;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.config.ModClientConfigs;
 import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
 import net.agusdropout.bloodyhell.screen.ModLabelTooltipData;
@@ -22,6 +23,9 @@ public class ClientTooltipHandler {
     // --- 1. HANDLE FRAME & BACKGROUND COLORS ---
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
+
+        if (ModClientConfigs.DISABLE_MOD_TOOLTIPS.get()) return;
+
         ItemStack stack = event.getItemStack();
 
         // Check 1: Sanguinite OR Rhnull (Reddish-Gold Frame, Red Background)
@@ -57,6 +61,9 @@ public class ClientTooltipHandler {
     // --- 2. HANDLE TEXT COLORS ---
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
+
+        if (ModClientConfigs.DISABLE_MOD_TOOLTIPS.get()) return;
+
         ItemStack stack = event.getItemStack();
         if (event.getToolTip().isEmpty()) return;
 
@@ -87,6 +94,9 @@ public class ClientTooltipHandler {
 
     @SubscribeEvent
     public static void onGatherComponents(RenderTooltipEvent.GatherComponents event) {
+
+        if (ModClientConfigs.DISABLE_MOD_TOOLTIPS.get()) return;
+
         // Ensure stack is valid before checking creator mod ID
         if (!event.getItemStack().isEmpty() &&
                 event.getItemStack().getItem().getCreatorModId(event.getItemStack()) != null &&

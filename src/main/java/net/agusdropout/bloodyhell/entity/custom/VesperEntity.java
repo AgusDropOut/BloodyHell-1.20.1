@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.config.ModCommonConfig;
 import net.agusdropout.bloodyhell.entity.ai.goals.VesperAttackGoal;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.screen.custom.menu.VesperMenu;
@@ -8,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -29,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -86,6 +89,14 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
 
     }
 
+    private Item getItemFromConfig(String registryName) {
+        ResourceLocation loc = new ResourceLocation(registryName);
+        if (ForgeRegistries.ITEMS.containsKey(loc)) {
+            return ForgeRegistries.ITEMS.getValue(loc);
+        }
+        return Items.AIR;
+    }
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
@@ -100,16 +111,22 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
     @Override
     public void aiStep() {
         super.aiStep();
-        if (isItemQuantityValid(Items.BONE,10,0) && isItemQuantityValid(Items.ENDER_PEARL,1,1)) {
+        Item reqItem1 = getItemFromConfig(ModCommonConfig.VESPER_QUEST_ITEM_1_ID.get());
+        int reqCount1 = ModCommonConfig.VESPER_QUEST_ITEM_1_COUNT.get();
+
+        Item reqItem2 = getItemFromConfig(ModCommonConfig.VESPER_QUEST_ITEM_2_ID.get());
+        int reqCount2 = ModCommonConfig.VESPER_QUEST_ITEM_2_COUNT.get();
+
+
+        if (isItemQuantityValid(reqItem1, reqCount1, 0) && isItemQuantityValid(reqItem2, reqCount2, 1)) {
             double range = 5.0D;
             AABB effectArea = (new AABB(this.getOnPos())).inflate(range);
             List<Player> players = this.level().getEntitiesOfClass(Player.class, effectArea);
-            for (Player player : players) { // Iterate over the players
-                lazyItemHandler.getStackInSlot(0).shrink(10);
-                lazyItemHandler.getStackInSlot(1).shrink(1);
+            for (Player player : players) {
+                lazyItemHandler.getStackInSlot(0).shrink(reqCount1);
+                lazyItemHandler.getStackInSlot(1).shrink(reqCount2);
                 player.getInventory().add(ModItems.CHALICE_OF_THE_DAMMED.get().getDefaultInstance());
             }
-
         }
     }
 
@@ -117,10 +134,17 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
         if (i == 0) {
             return "Ah...you’ve arrived. Welcome, traveler, to the realm of blood. Once forever lost, now found";
         } else if (i == 1) {
-            return "To enter the Blood Dimension, you must bring me a tribute: 10 bones and 1 ender pearl";
+
+            int count1 = ModCommonConfig.VESPER_QUEST_ITEM_1_COUNT.get();
+            String name1 = getItemFromConfig(ModCommonConfig.VESPER_QUEST_ITEM_1_ID.get()).getDescription().getString();
+
+            int count2 = ModCommonConfig.VESPER_QUEST_ITEM_2_COUNT.get();
+            String name2 = getItemFromConfig(ModCommonConfig.VESPER_QUEST_ITEM_2_ID.get()).getDescription().getString();
+
+            return "To enter the Blood Dimension, you must bring me a tribute: " + count1 + " " + name1 + " and " + count2 + " " + name2 + ".";
         } else if (i == 2) {
             return "Only then will you unlock its secrets, and discover the power that lies within";
-        } else if (i==3) {
+        } else if (i == 3) {
             return "Now go, and return quickly... the unknown is always watching";
         } else {
             return "";

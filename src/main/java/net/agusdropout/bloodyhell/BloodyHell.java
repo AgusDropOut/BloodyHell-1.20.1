@@ -91,7 +91,8 @@ import java.util.Locale;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(BloodyHell.MODID)
-public class BloodyHell
+public class
+BloodyHell
 {
     public static final String MODID = "bloodyhell";
 

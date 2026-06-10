@@ -13,6 +13,14 @@ public class ModCommonConfig {
 
     public static final ForgeConfigSpec.BooleanValue GIVE_GUIDE_BOOK_ON_JOIN;
 
+
+
+    public static final ForgeConfigSpec.ConfigValue<String> VESPER_QUEST_ITEM_1_ID;
+    public static final ForgeConfigSpec.IntValue VESPER_QUEST_ITEM_1_COUNT;
+
+    public static final ForgeConfigSpec.ConfigValue<String> VESPER_QUEST_ITEM_2_ID;
+    public static final ForgeConfigSpec.IntValue VESPER_QUEST_ITEM_2_COUNT;
+
     public static final ForgeConfigSpec.DoubleValue GLOBAL_SPELL_DAMAGE;
     public static final Map<String, ForgeConfigSpec.DoubleValue> INDIVIDUAL_SPELL_DAMAGE = new HashMap<>();
 
@@ -41,6 +49,28 @@ public class ModCommonConfig {
                 .define("giveGuideBookOnJoin", true);
 
         BUILDER.pop();
+
+        BUILDER.push("Vesper Settings");
+
+        VESPER_QUEST_ITEM_1_ID = BUILDER
+                .comment("Registry name of the first item Vesper requires (e.g., 'minecraft:bone' or 'bloodyhell:rhnull')")
+                .define("vesperQuestItem1_ID", "minecraft:bone");
+
+        VESPER_QUEST_ITEM_1_COUNT = BUILDER
+                .comment("Amount of the first item Vesper requires.")
+                .defineInRange("vesperQuestItem1_Count", 10, 1, 64);
+
+        VESPER_QUEST_ITEM_2_ID = BUILDER
+                .comment("Registry name of the second item Vesper requires.")
+                .define("vesperQuestItem2_ID", "minecraft:ender_pearl");
+
+        VESPER_QUEST_ITEM_2_COUNT = BUILDER
+                .comment("Amount of the second item Vesper requires.")
+                .defineInRange("vesperQuestItem2_Count", 1, 1, 64);
+
+        BUILDER.pop();
+
+
         SPEC = BUILDER.build();
     }
 
