@@ -15,27 +15,20 @@ public class BloodPulseParticle extends TextureSheetParticle {
 
         this.sprites = spriteSet;
 
-        // --- FÍSICA PERSONALIZADA ---
-
-        // 1. FRICCIÓN (Resistencia al aire)
-        // 0.98 = Casi nada de fricción (vuela lejos)
-        // 0.91 = Aire denso (se frena rápido) <- LO QUE QUIERES
         this.friction = 0.91F;
 
-        // 2. GRAVEDAD
-        // 1.0 = Cae como bloque
-        // 0.04 = Cae suavemente (efecto pluma/ceniza) <- LO QUE QUIERES
+
         this.gravity = 0.04F;
 
-        // Velocidad inicial
+
         this.xd = xSpeed;
         this.yd = ySpeed;
         this.zd = zSpeed;
 
-        // Tamaño un poco más grande
+
         this.quadSize *= 1.2F;
 
-        // Duración: 20 ticks (1 segundo) para que de tiempo a ver la animación
+
         this.lifetime = 20;
 
         this.setSpriteFromAge(spriteSet);
@@ -46,7 +39,7 @@ public class BloodPulseParticle extends TextureSheetParticle {
         super.tick();
         this.setSpriteFromAge(this.sprites);
 
-        // Opcional: Hacer que se achiquen al morir
+
         if (this.age > this.lifetime - 5) {
             this.quadSize *= 0.9f;
         }

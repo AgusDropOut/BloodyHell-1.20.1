@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class BloodGemSproutRenderer implements BlockEntityRenderer<BaseGemSproutBlockEntity> {
 
-    // --- MANUAL OFFSETS ---
+
     private static final float OFF_X = 0.0f;
     private static final float OFF_Z = 0.5f;
     private static final float OFF_Y = 0.9f;
@@ -43,7 +43,7 @@ public class BloodGemSproutRenderer implements BlockEntityRenderer<BaseGemSprout
         ItemStack itemStack = be.getTempStoredItem();
 
         if(state.getValue(BloodGemSproutBlock.ITEM_INSIDE) &&  !itemStack.isEmpty()) {
-            System.out.println("Rendering Item Inside");
+
 
             poseStack.pushPose();
             poseStack.translate(0.5f, 1.25f, 0.5f);

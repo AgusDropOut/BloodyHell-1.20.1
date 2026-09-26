@@ -21,7 +21,7 @@ public class BlasphemousBiomeParticle extends TextureSheetParticle {
 
         this.alpha = 1.0f - ((float) this.age / this.lifetime);
 
-        // Aplicar viento global
+
         this.x += WindController.windX;
         this.z += WindController.windZ;
     }

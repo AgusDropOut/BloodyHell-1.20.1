@@ -3,9 +3,9 @@ package net.agusdropout.bloodyhell.item.custom.mechanism;
 import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoBlockItem;
 import net.minecraft.world.level.block.Block;
 
-public class RhnullBloodEngineItem extends BaseGeckoBlockItem {
+public class RhnullBloodEnginePillarItem extends BaseGeckoBlockItem {
 
-    public RhnullBloodEngineItem(Block block, Properties properties) {
+    public RhnullBloodEnginePillarItem(Block block, Properties properties) {
         super(block, properties);
     }
 
@@ -16,6 +16,6 @@ public class RhnullBloodEngineItem extends BaseGeckoBlockItem {
 
     @Override
     public String getId() {
-        return "rhnull_blood_engine_block";
+        return "rhnull_blood_engine_pillar_block";
     }
 }

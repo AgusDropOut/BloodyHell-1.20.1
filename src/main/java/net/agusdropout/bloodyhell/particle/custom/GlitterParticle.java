@@ -21,7 +21,7 @@ public class GlitterParticle extends TextureSheetParticle {
     private final boolean jitter;
     private final boolean hasWhiteCore;
 
-    // HSB Colors
+
     private final float baseHue;
     private final float baseSat;
     private final float baseBri;
@@ -35,7 +35,7 @@ public class GlitterParticle extends TextureSheetParticle {
         this.jitter = options.shouldJitter();
         this.lifetime = options.getLifetime();
         this.hasWhiteCore = options.hasWhiteCore();
-        // Convert RGB to HSB
+
         float[] hsb = Color.RGBtoHSB(
                 (int)(options.getColor().x() * 255),
                 (int)(options.getColor().y() * 255),
@@ -50,7 +50,7 @@ public class GlitterParticle extends TextureSheetParticle {
         this.gCol = options.getColor().y();
         this.bCol = options.getColor().z();
 
-        // Tiny Start Size (Sharper look for magic)
+
         this.quadSize = options.getSize() * 0.5F;
         this.initialQuadSize = this.quadSize;
 
@@ -130,7 +130,7 @@ public class GlitterParticle extends TextureSheetParticle {
         this.quadSize = originalSize;
     }
 
-    // Force full brightness (Emissive)
+
     @Override
     protected int getLightColor(float partialTick) {
         return 240;

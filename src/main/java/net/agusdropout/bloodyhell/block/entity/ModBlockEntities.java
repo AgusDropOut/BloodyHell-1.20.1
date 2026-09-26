@@ -119,6 +119,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("rhnull_blood_engine_be",
                     () -> BlockEntityType.Builder.of(RhnullBloodEngineBlockEntity::new,
                             ModBlocks.RHNULL_BLOOD_ENGINE_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<RhnullBloodEnginePillarBlockEntity>> RHNULL_BLOOD_ENGINE_PILLAR =
+            BLOCK_ENTITIES.register("rhnull_blood_engine_pillar_be",
+                    () -> BlockEntityType.Builder.of(RhnullBloodEnginePillarBlockEntity::new,
+                            ModBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {

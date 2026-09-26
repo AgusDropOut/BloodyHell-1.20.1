@@ -11,13 +11,16 @@
     { "name": "Sampler0" }
   ],
   "uniforms": [
-    { "name": "ModelViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
-    { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
-    { "name": "viewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
-    { "name": "cameraPos", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
-    { "name": "blobCenter", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_VanillaModelViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "u_CleanInvViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "u_ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "u_InvProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "relativeBlobCenter", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_BobbingOffset", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
     { "name": "u_Time", "type": "float", "count": 1, "values": [ 0.0 ] },
-    { "name": "cleanViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] }
-
+    { "name": "bloodBaseColor", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "bloodGlowColor", "type": "float", "count": 3, "values": [ 1.0, 0.1, 0.1 ] },
+    { "name": "chargeLevel", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "stabilization", "type": "float", "count": 1, "values": [ 0.0 ] }
   ]
 }

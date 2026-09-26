@@ -1,26 +1,21 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.client.data.ClientInsightData;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.manager.*;
-import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.joml.Matrix4f;
 
 @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModRenderEvents {
 
     @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
+
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
+            BloodBlobRenderManager.renderAll(event);
+        }
 
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             SwirlRenderManager.renderAllAndClear();
@@ -33,16 +28,13 @@ public class ModRenderEvents {
             NoiseSphereRenderManager.renderAllAndClear();
             MagicRingRenderManager.renderAllAndClear();
             SphericalShieldRenderManager.renderAllAndClear();
-
             FrenziedFlameRenderManager.renderAllAndClear();
-
             LinearFrenziedFlameRenderManager.renderAllAndClear();
             FrenziedTrailRenderManager.renderAllAndClear();
+            BloodDropRenderManager.renderAllAndClear();
             TinyBloomRenderManager.renderAllAndClear();
             RadiantEnergyRenderManager.renderAllAndClear();
             FrenziedExplosionRenderManager.renderAllAndClear();
         }
     }
-
-
 }

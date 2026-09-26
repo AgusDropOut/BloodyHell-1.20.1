@@ -451,6 +451,10 @@ public class ModBlocks {
             () -> new RhnullBloodEngineBlock(BlockBehaviour.Properties.copy(Blocks.REDSTONE_BLOCK)
                     .noOcclusion()));
 
+    public static final RegistryObject<Block> RHNULL_BLOOD_ENGINE_PILLAR_BLOCK = BLOCKS.register("rhnull_blood_engine_pillar_block",
+            () -> new RhnullBloodEnginePillarBlock(BlockBehaviour.Properties.copy(Blocks.REDSTONE_BLOCK)
+                    .noOcclusion()));
+
     public static final RegistryObject<Block> BLASPHEMITE_ORE = registerBlock("blasphemite_ore",
             () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
                     .strength(5f)

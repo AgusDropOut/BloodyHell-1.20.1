@@ -1,59 +1,48 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.util.visuals.ModShaders;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import java.util.ArrayList;
-import java.util.List;
+public class TinyBloomRenderManager extends BaseShaderRenderManager<TinyBloomRenderManager.BloomData> {
 
-public class TinyBloomRenderManager {
-    private static final List<BloomData> ACTIVE_BLOOMS = new ArrayList<>();
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+    public static final TinyBloomRenderManager INSTANCE = new TinyBloomRenderManager();
 
     public static void addBloom(Matrix4f pose, float size, float r, float g, float b, float alpha) {
-        if (ACTIVE_BLOOMS.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
-        }
-        ACTIVE_BLOOMS.add(new BloomData(pose, size, r, g, b, alpha));
+        INSTANCE.addParticle(new BloomData(pose, size, r, g, b, alpha));
     }
 
     public static void renderAllAndClear() {
-        if (ACTIVE_BLOOMS.isEmpty()) return;
+        INSTANCE.executeRenderAndClear();
+    }
 
-        RenderSystem.depthMask(false);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(
-                com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE,
-                com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
-        );
+    public static class BloomData extends BaseShaderRenderManager.ParticleData {
+        public BloomData(Matrix4f pose, float size, float r, float g, float b, float alpha) {
+            super(pose, size, r, g, b, alpha);
+        }
+    }
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
-
+    @Override
+    protected void bindShader() {
         RenderSystem.setShader(() -> ModShaders.TINY_BLOOM_SHADER);
+    }
 
+    @Override
+    protected void renderGeometry() {
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-        float[][] localCoords = {
-                {-1.0f, -1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, -1.0f}
-        };
+        float[][] localCoords = {{-1.0f, -1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, -1.0f}};
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        for (BloomData data : ACTIVE_BLOOMS) {
+        for (BloomData data : ACTIVE_PARTICLES) {
             Vector3f[] corners = {
                     new Vector3f(-data.size, -data.size, 0),
                     new Vector3f(-data.size, data.size, 0),
@@ -73,29 +62,5 @@ public class TinyBloomRenderManager {
         }
 
         tess.end();
-
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
-
-        RenderSystem.depthMask(true);
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-
-        ACTIVE_BLOOMS.clear();
-    }
-
-    private static class BloomData {
-        Matrix4f pose;
-        float size, r, g, b, alpha;
-
-        BloomData(Matrix4f pose, float size, float r, float g, float b, float alpha) {
-            this.pose = pose;
-            this.size = size;
-            this.r = r;
-            this.g = g;
-            this.b = b;
-            this.alpha = alpha;
-        }
     }
 }

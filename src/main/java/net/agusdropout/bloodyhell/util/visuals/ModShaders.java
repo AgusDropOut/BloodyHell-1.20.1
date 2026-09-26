@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.util.visuals; // Or wherever you keep client code
+package net.agusdropout.bloodyhell.util.visuals;
 
 import net.minecraft.client.renderer.ShaderInstance;
 
@@ -19,5 +19,6 @@ public class ModShaders {
     public static ShaderInstance RADIANT_ENERGY_SHADER;
     public static ShaderInstance FRENZIED_EXPLOSION_SHADER;
     public static ShaderInstance BLOOD_BLOB_SHADER;
+    public static ShaderInstance BLOOD_DROP_SHADER;
 
 }

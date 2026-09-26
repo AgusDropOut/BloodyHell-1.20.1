@@ -129,6 +129,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         block(ModBlocks.RHNULL_PIPE);
         block(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR);
         block(ModBlocks.BLASPHEMOUS_BLOOD_ALTAR);
+        block(ModBlocks.RHNULL_BLOOD_ENGINE_BLOCK);
+        block(ModBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK);
         block(ModBlocks.UNKNOWN_PORTAL_BLOCK);
         block(ModBlocks.SANGUINITE_BLOOD_HARVESTER);
 

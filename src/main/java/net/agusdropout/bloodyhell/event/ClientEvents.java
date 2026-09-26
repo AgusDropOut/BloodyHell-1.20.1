@@ -90,64 +90,6 @@ public class ClientEvents {
             }
         }
 
-        @SubscribeEvent
-        public static void onRenderLevelStage(RenderLevelStageEvent event) {
-            if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
-            if (RhnullBloodEngineBlockEntity.ACTIVE_BLOBS.isEmpty()) return;
-
-            Minecraft mc = Minecraft.getInstance();
-            Camera camera = event.getCamera();
-            ShaderInstance shader = ModShaders.BLOOD_BLOB_SHADER;
-            if (shader == null) return;
-
-            RenderSystem.disableCull();
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.disableDepthTest();
-
-            RenderSystem.setShaderTexture(0, mc.getMainRenderTarget().getDepthTextureId());
-            RenderSystem.setShader(() -> shader);
-
-            Matrix4f viewMat = new Matrix4f(event.getPoseStack().last().pose());
-            Matrix4f projMat = new Matrix4f(event.getProjectionMatrix());
-
-
-            if(shader.safeGetUniform("ModelViewMat") != null) shader.safeGetUniform("ModelViewMat").set(viewMat);
-            if(shader.safeGetUniform("ProjMat") != null) shader.safeGetUniform("ProjMat").set(projMat);
-            if(shader.safeGetUniform("cameraPos") != null) shader.safeGetUniform("cameraPos").set((float)camera.getPosition().x, (float)camera.getPosition().y, (float)camera.getPosition().z);
-            if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(Util.getMillis() % 100000L) / 1000.0f);
-            PoseStack cleanStack = new PoseStack();
-            cleanStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(camera.getXRot()));
-            cleanStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
-            Matrix4f cleanViewMat = new Matrix4f(cleanStack.last().pose());
-
-
-            if(shader.safeGetUniform("cleanViewMat") != null) {
-                shader.safeGetUniform("cleanViewMat").set(cleanViewMat);
-            }
-            Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder buffer = tesselator.getBuilder();
-
-            // Dibujamos un Quad de pantalla completa por cada blob (el pixel shader decidirá si dibuja el blob o descarta el pixel)
-            for (net.minecraft.core.BlockPos pos : RhnullBloodEngineBlockEntity.ACTIVE_BLOBS) {
-
-                if(shader.safeGetUniform("blobCenter") != null) {
-                    shader.safeGetUniform("blobCenter").set(pos.getX() + 0.5f, pos.getY() + 1.5f, pos.getZ() + 0.5f);
-                }
-
-                buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-                buffer.vertex(-1, -1, 0).endVertex();
-                buffer.vertex( 1, -1, 0).endVertex();
-                buffer.vertex( 1,  1, 0).endVertex();
-                buffer.vertex(-1,  1, 0).endVertex();
-                tesselator.end();
-            }
-
-
-            RenderSystem.enableDepthTest();
-            RenderSystem.disableBlend();
-            RenderSystem.enableCull();
-        }
 
         @SubscribeEvent
         public static void onComputeFov(ViewportEvent.ComputeFov event) {
@@ -266,7 +208,7 @@ public class ClientEvents {
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
 
-        // --- MOVED from ModEvents: Player Animation Setup ---
+
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(
@@ -329,13 +271,17 @@ public class ClientEvents {
                 ModShaders.BLOOD_BLOB_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "blood_drop"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
+                ModShaders.BLOOD_DROP_SHADER = shaderInstance;
+            });
+
 
         }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
             return new ModifierLayer<>();
         }
-        // ----------------------------------------------------
+
 
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
@@ -384,7 +330,7 @@ public class ClientEvents {
             event.registerSpriteSet(ModParticles.BLOOD_SIGIL_PARTICLE.get(), BloodSigilParticle.Provider::new);
             event.registerSpriteSet(ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(), SmallBloodFlameParticle.Provider::new);
             event.registerSpriteSet(ModParticles.CHILL_FALLING_PARTICLE.get(), ChillFallingParticle.Provider::new);
-            event.registerSpriteSet(ModParticles.BLOOD_DROP_PARTICLE.get(), BloodDropParticle.Provider::new);
+            event.registerSpecial(ModParticles.BLOOD_DROP_PARTICLE.get(), new BloodDropParticle.Provider());
             event.registerSpriteSet(ModParticles.BLOOD_STAIN_PARTICLE.get(), BloodStainParticle.Provider::new);
             event.registerSpriteSet(ModParticles.TETHER_PARTICLE.get(), TetherParticle.Provider::new);
             event.registerSpriteSet(ModParticles.GLITTER_PARTICLE.get(), GlitterParticle.Provider::new);

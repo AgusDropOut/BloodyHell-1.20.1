@@ -39,8 +39,6 @@ public class ShaderUtils {
      */
     public static RenderType getRenderType(ResourceLocation texture, RenderType original) {
         if (areShadersActive()) {
-            // "entity_translucent_emissive" is the Gold Standard for shaders.
-            // Shaders recognize it as: "This object has texture + transparency + ignores light map".
             return RenderType.entityTranslucentEmissive(texture);
         }
         return original;
@@ -51,7 +49,7 @@ public class ShaderUtils {
      */
     public static RenderType getShapeRenderType(RenderType original) {
         if (areShadersActive()) {
-            // "lightning" is the safest bet for untextured glowing shapes in shaders.
+
             return RenderType.lightning();
         }
         return original;

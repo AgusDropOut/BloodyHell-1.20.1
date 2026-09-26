@@ -47,7 +47,7 @@ public class MagicalRingParticle extends Particle {
         } else {
             float lifeRatio = (float) this.age / (float) this.lifetime;
             if (lifeRatio > 0.7f) {
-                // Fade out smoothly at the end of its life
+
                 this.alpha = 0.8f * (1.0f - ((lifeRatio - 0.7f) / 0.3f));
             }
         }

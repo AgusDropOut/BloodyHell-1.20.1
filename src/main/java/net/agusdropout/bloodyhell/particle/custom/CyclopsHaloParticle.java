@@ -13,10 +13,7 @@ public class CyclopsHaloParticle extends TextureSheetParticle {
                                   SpriteSet spriteSet, double vx, double vy, double vz) {
         super(level, x, y, z, vx, vy, vz);
 
-        // --- AJUSTES DE MOVIMIENTO ---
-        // Forzamos la velocidad a cero para que no se mueva.
-        // El constructor 'super' asigna vx, vy, vz a las variables de movimiento (xd, yd, zd),
-        // así que las sobreescribimos aquí para detener cualquier movimiento no deseado.
+
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
@@ -25,10 +22,7 @@ public class CyclopsHaloParticle extends TextureSheetParticle {
         this.lifetime = 2000;
         this.gravity = 0.0F;
 
-        // --- AJUSTE DE TAMAÑO ---
-        // Establecemos un tamaño fijo para la partícula. El valor es en bloques.
-        // Un valor de 1.0F sería aproximadamente del tamaño de un bloque.
-        // Tendrás que experimentar con este valor para que se ajuste al ojo de tu entidad.
+
         this.quadSize = 0.6F;
 
 
@@ -44,13 +38,10 @@ public class CyclopsHaloParticle extends TextureSheetParticle {
         this.setSpriteFromAge(this.spriteSet);
         this.oRoll = this.roll;
         this.roll += this.rotSpeed / 10.0F;
-        // --- LÓGICA DE FADING ---
-        // Calculamos qué tan "avanzada" está la vida de la partícula (de 0.0 a 1.0)
+
         float lifeRatio = (float)this.age / (float)this.lifetime;
 
-        // Usamos una función de seno para que el fade in y fade out sean suaves.
-        // Mth.sin(x * PI) crea una curva suave que empieza en 0, sube a 1 en el medio, y vuelve a 0 al final.
-        // Esto es perfecto para un efecto que aparece y desaparece.
+
         this.alpha = 1F;
     }
 

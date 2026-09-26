@@ -15,13 +15,12 @@ import java.util.List;
 public class SwirlRenderManager {
     private static final List<SwirlData> ACTIVE_SWIRLS = new ArrayList<>();
 
-    // We store the 3D camera state here
+
     private static final Matrix4f savedProjection = new Matrix4f();
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void addSwirl(Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
         if (ACTIVE_SWIRLS.isEmpty()) {
-            // Capture the exact 3D perspective and view-bobbing matrices!
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());
         }

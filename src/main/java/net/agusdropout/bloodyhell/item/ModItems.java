@@ -260,6 +260,10 @@ public class ModItems {
             ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get(),new Item.Properties()));
     public static final RegistryObject<Item> MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM = ITEMS.register("main_blasphemous_blood_altar_item", () -> new MainBlasphemousBloodAltarItem(
             ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(),new Item.Properties()));
+    public static final RegistryObject<Item> RHNULL_BLOOD_ENGINE_ITEM = ITEMS.register("rhnull_blood_engine_item",
+            () -> new RhnullBloodEngineItem(ModBlocks.RHNULL_BLOOD_ENGINE_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> RHNULL_BLOOD_ENGINE_PILLAR_ITEM = ITEMS.register("rhnull_blood_engine_pillar_item",
+            () -> new RhnullBloodEnginePillarItem(ModBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK.get(), new Item.Properties()));
 
 
     public static final RegistryObject<Item> SANGUINITE_PIPE_ITEM = ITEMS.register("sanguinite_pipe_item",

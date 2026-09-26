@@ -338,6 +338,33 @@
         "stream": false
       }
     ]
+  },
+  "rhnull_blood_engine_activation": {
+    "subtitle": "subtitles.bloodyhell.rhnull_blood_engine_activation",
+    "sounds": [
+      {
+        "name": "bloodyhell:rhnull_blood_engine_activation",
+        "stream": false
+      }
+    ]
+  },
+  "rhnull_blood_engine_charging": {
+    "subtitle": "subtitles.bloodyhell.rhnull_blood_engine_charging",
+    "sounds": [
+      {
+        "name": "bloodyhell:rhnull_blood_engine_charging",
+        "stream": false
+      }
+    ]
+  },
+  "rhnull_blood_engine_fully_charged": {
+    "subtitle": "subtitles.bloodyhell.rhnull_blood_engine_fully_charged",
+    "sounds": [
+      {
+        "name": "bloodyhell:rhnull_blood_engine_fully_charged",
+        "stream": false
+      }
+    ]
   }
 
 }

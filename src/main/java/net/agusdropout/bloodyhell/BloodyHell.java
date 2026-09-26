@@ -299,6 +299,8 @@ BloodyHell
             BlockEntityRenderers.register(ModBlockEntities.SELIORA_RESTING.get(), SelioraRestingBlockRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.BLASPHEMOUS_BLOOD_ALTAR.get(), BlasphemousBloodAltarRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), MainBlasphemousBloodAltarRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.RHNULL_BLOOD_ENGINE.get(), RhnullBloodEngineRenderer::new);
+            BlockEntityRenderers.register(ModBlockEntities.RHNULL_BLOOD_ENGINE_PILLAR.get(), RhnullBloodEnginePillarRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.BLOOD_GEM_SPROUT_BE.get(), BloodGemSproutRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_CON.get(), RenderType.cutout());
@@ -342,7 +344,7 @@ BloodyHell
             EntityRenderers.register(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), context -> new BastionOfTheUnknownRenderer(context, new BastionOfTheUnknownModel()));
             BlockEntityRenderers.register(ModBlockEntities.BLOOD_ALTAR_BE.get(), BloodAltarRenderer::new);
             BlockEntityRenderers.register(ModBlockEntities.MAIN_BLOOD_ALTAR_BE.get(), MainBloodAltarRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.RHNULL_BLOOD_ENGINE.get(), DummyBlobRenderer::new);
+
             EntityRenderers.register(ModEntityTypes.VISCOUS_PROJECTILE.get(), ViscousProjectileRenderer::new);
             EntityRenderers.register(ModEntityTypes.FRENZIED_FIRE.get(), FrenziedFireRenderer::new);
             EntityRenderers.register(ModEntityTypes.CRAWLING_DELUSION.get(), CrawlingDelusionRenderer::new);

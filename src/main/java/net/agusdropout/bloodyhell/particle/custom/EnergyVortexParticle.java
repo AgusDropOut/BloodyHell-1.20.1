@@ -56,7 +56,7 @@ public class EnergyVortexParticle extends Particle {
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        // We create a temporary Matrix stack just for positioning the helper
+
         PoseStack stack = new PoseStack();
         stack.translate(px, py, pz);
 

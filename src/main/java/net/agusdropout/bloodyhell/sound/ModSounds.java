@@ -63,6 +63,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> UNKNOWN_SHIELD_BOUNCE = registerSoundEvents("unknown_shield_bounce");
     public static final RegistryObject<SoundEvent> CRAWLING_DELUSION_AMBIENCE = registerSoundEvents("crawling_delusion_ambience");
     public static final RegistryObject<SoundEvent> CRAWLING_DELUSION_SCARED = registerSoundEvents("crawling_delusion_scared");
+    public static final RegistryObject<SoundEvent> RHNULL_BLOOD_ENGINE_ACTIVATION = registerSoundEvents("rhnull_blood_engine_activation");
+    public static final RegistryObject<SoundEvent> RHNULL_BLOOD_ENGINE_CHARGING = registerSoundEvents("rhnull_blood_engine_charging");
+    public static final RegistryObject<SoundEvent> RHNULL_BLOOD_ENGINE_FULLY_CHARGED = registerSoundEvents("rhnull_blood_engine_fully_charged");
 
 
 
