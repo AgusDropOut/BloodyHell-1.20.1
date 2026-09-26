@@ -7,6 +7,8 @@ import net.agusdropout.bloodyhell.block.entity.custom.altar.BlasphemousBloodAlta
 import net.agusdropout.bloodyhell.block.entity.custom.altar.BloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.altar.MainBlasphemousBloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.altar.MainBloodAltarBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEngineBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEnginePillarBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.*;
 import net.agusdropout.bloodyhell.block.entity.custom.mushroom.CrimsonLureMushroomBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.mushroom.VoraciousMushroomBlockEntity;

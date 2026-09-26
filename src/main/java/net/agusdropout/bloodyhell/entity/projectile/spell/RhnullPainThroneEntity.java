@@ -10,10 +10,7 @@ import net.agusdropout.bloodyhell.item.custom.base.SpellType;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.S2CPainThronePacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.TetherParticleOptions;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.*;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.util.bones.BoneManipulation;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -225,10 +222,11 @@ public class RhnullPainThroneEntity extends Projectile implements IGemSpell {
                 ParticleHelper.spawnRing(this.level(), new MagicParticleOptions(SpellPalette.RHNULL.getColor(0), 0.6f, false, 15, true), this.position().add(0, HEIGHT_OFFSET + 1.0, 0), 1.5, 15, 0.08);
             }
             if (this.random.nextBoolean()) {
-                this.level().addParticle(ModParticles.BLOOD_DROP_PARTICLE.get(),
+                this.level().addParticle(new BloodDropParticleOption(BloodDropParticleOption.DEFAULT_COLOR),
                         this.getX() + (this.random.nextDouble() - 0.5),
                         this.getY() + 1.0 + this.random.nextDouble(),
-                        this.getZ() + (this.random.nextDouble() - 0.5), 0, 0, 0);
+                        this.getZ() + (this.random.nextDouble() - 0.5),
+                        0, 0, 0);
             }
         }
     }

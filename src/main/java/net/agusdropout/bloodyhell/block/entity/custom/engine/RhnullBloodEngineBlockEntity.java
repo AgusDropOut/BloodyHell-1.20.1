@@ -1,9 +1,10 @@
-package net.agusdropout.bloodyhell.block.entity.custom.mechanism;
+package net.agusdropout.bloodyhell.block.entity.custom.engine;
 
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGeckoBlockEntity;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.BloodDropParticleOption;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.util.visuals.types.IBloodBlobEmitter;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,10 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -22,6 +27,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -37,9 +44,15 @@ import java.util.Set;
 public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implements IBloodBlobEmitter {
 
     public static final Set<IBloodBlobEmitter> ACTIVE_ENGINES = new HashSet<>();
+
+    public static final BlockPos[] PILLAR_OFFSETS = {
+            new BlockPos(1, 0, 1),
+            new BlockPos(1, 0, -1),
+            new BlockPos(-1, 0, 1),
+            new BlockPos(-1, 0, -1)
+    };
+
     private static final int TANK_CAPACITY = 10000;
-
-
     private final double orbYOffset = 2.5D;
 
     private final FluidTank bloodTank = createTank();
@@ -47,6 +60,16 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private final FluidTank viscousTank = createTank();
     private final FluidTank visceralTank = createTank();
 
+    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            if (level != null && !level.isClientSide) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+    };
+    private final LazyOptional<IItemHandler> optionalItemHandler = LazyOptional.of(() -> itemHandler);
     private final LazyOptional<IFluidHandler> lateralFluidHandler = LazyOptional.of(this::createLateralHandler);
 
     private float heatProgress = 0.0f;
@@ -54,6 +77,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private boolean isActive = false;
     private boolean isHeating = false;
     private boolean isStabilized = false;
+    private boolean isCraftingFinished = false;
 
     private int soundTimer = 0;
     private int activationSequenceTimer = -1;
@@ -64,9 +88,59 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private Vector3f currentBaseColor = new Vector3f(0.5f, 0.0f, 0.05f);
     private Vector3f currentGlowColor = new Vector3f(1.0f, 0.1f, 0.1f);
 
+    private IEngineMode currentMode = new ResurrectionEngineMode();
+
     public RhnullBloodEngineBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.RHNULL_BLOOD_ENGINE.get(), pos, state);
     }
+
+    public void setCraftingFinished(boolean finished) {
+        this.isCraftingFinished = finished;
+        if (this.level != null && !this.level.isClientSide) {
+            this.setChanged();
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+    }
+
+    public boolean isCraftingFinished() {
+        return this.isCraftingFinished;
+    }
+
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        ItemStack heldItem = player.getItemInHand(hand);
+        ItemStack stackInSlot = itemHandler.getStackInSlot(0);
+
+        if (heldItem.isEmpty()) {
+            if (!stackInSlot.isEmpty()) {
+                player.setItemInHand(hand, itemHandler.extractItem(0, 64, false));
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+        } else {
+            if (stackInSlot.isEmpty()) {
+                ItemStack remainder = itemHandler.insertItem(0, heldItem.copy(), false);
+                player.setItemInHand(hand, remainder);
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    public ItemStack getRenderStack() {
+        return itemHandler.getStackInSlot(0);
+    }
+
+    public void clearInventory() {
+        itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+        setChanged();
+        if (this.level != null && !this.level.isClientSide) {
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+    }
+
+    public FluidTank getBloodTank() { return bloodTank; }
+    public FluidTank getCorruptedTank() { return corruptedTank; }
+    public FluidTank getViscousTank() { return viscousTank; }
+    public FluidTank getVisceralTank() { return visceralTank; }
 
     public void setActive(boolean active) {
         if (this.isActive != active) {
@@ -75,6 +149,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             if (!active) {
                 this.isHeating = false;
                 this.isStabilized = false;
+                this.isCraftingFinished = false;
                 this.heatProgress = 0.0f;
                 this.stabilizationLevel = 0.0f;
                 this.soundTimer = 0;
@@ -82,6 +157,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                 this.hasPlayedFullyCharged = false;
                 this.heartbeatTimer = 0;
                 this.ambientSoundTimer = 0;
+                if (currentMode != null) currentMode.resetProcess();
             } else {
                 this.activationSequenceTimer = 0;
                 this.hasPlayedFullyCharged = false;
@@ -99,13 +175,9 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private void updatePillars(boolean active) {
         if (this.level == null || this.level.isClientSide) return;
 
-        BlockPos[] offsets = {
-                worldPosition.offset(1, 0, 1), worldPosition.offset(1, 0, -1),
-                worldPosition.offset(-1, 0, 1), worldPosition.offset(-1, 0, -1)
-        };
-
-        for (BlockPos offsetPos : offsets) {
-            if (this.level.getBlockEntity(offsetPos) instanceof RhnullBloodEnginePillarBlockEntity pillar) {
+        for (BlockPos offset : PILLAR_OFFSETS) {
+            BlockPos targetPos = this.worldPosition.offset(offset);
+            if (this.level.getBlockEntity(targetPos) instanceof RhnullBloodEnginePillarBlockEntity pillar) {
                 pillar.setEngineActive(active);
             }
         }
@@ -117,59 +189,54 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
-        if (level.isClientSide) return;
-
-        if (this.isActive && this.activationSequenceTimer >= 0) {
-            this.activationSequenceTimer++;
-
-            if (this.activationSequenceTimer == 20) {
-                level.playSound(null, pos, ModSounds.HARVESTER_PUMP.get(), SoundSource.BLOCKS, 1.2f, 0.8f);
-            } else if (this.activationSequenceTimer == 35) {
-                level.playSound(null, pos, ModSounds.HARVESTER_PUMP.get(), SoundSource.BLOCKS, 1.2f, 0.85f);
-            } else if (this.activationSequenceTimer == 55) {
-                level.playSound(null, pos, ModSounds.HARVESTER_PUMP.get(), SoundSource.BLOCKS, 1.2f, 0.9f);
-            } else if (this.activationSequenceTimer == 65) {
-                level.playSound(null, pos, ModSounds.HARVESTER_PUMP.get(), SoundSource.BLOCKS, 1.2f, 0.95f);
-                this.activationSequenceTimer = -1;
-            }
-        }
-
         int totalFluid = bloodTank.getFluidAmount() + corruptedTank.getFluidAmount() + viscousTank.getFluidAmount() + visceralTank.getFluidAmount();
         boolean hasFluid = totalFluid > 0;
 
+        if (hasFluid) {
+            updateColors(totalFluid);
+        }
+
+        if (level.isClientSide) return;
+
         if (this.isActive) {
-            boolean startedStabilizing = false;
 
-            if (hasFluid && !isStabilized) {
-                isHeating = true;
-                heatProgress += 0.002f;
 
-                if (heatProgress >= 1.0f) {
-                    heatProgress = 1.0f;
+            if (this.isCraftingFinished) {
+                this.setActive(false);
+                return;
+            }
 
-                    if (stabilizationLevel == 0.0f) {
-                        startedStabilizing = true;
-                    }
+            if (this.activationSequenceTimer >= 0) {
+                this.activationSequenceTimer++;
 
-                    stabilizationLevel += 0.01f;
-                    if (stabilizationLevel >= 1.0f) {
-                        stabilizationLevel = 1.0f;
-                        isStabilized = true;
-                    }
+                if (this.activationSequenceTimer == 20 || this.activationSequenceTimer == 35 || this.activationSequenceTimer == 55) {
+                    level.playSound(null, pos, ModSounds.HARVESTER_PUMP.get(), SoundSource.BLOCKS, 1.2f, 0.8f);
+                } else if (this.activationSequenceTimer >= 65) {
+                    this.activationSequenceTimer = -1;
+                    this.isHeating = true;
                 }
-            } else if (!hasFluid) {
-                isHeating = false;
-                isStabilized = false;
-                heatProgress = Math.max(0.0f, heatProgress - 0.005f);
-                stabilizationLevel = Math.max(0.0f, stabilizationLevel - 0.01f);
-                this.hasPlayedFullyCharged = false;
+
+                setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+                return;
             }
 
-            if (hasFluid) {
-                updateColors(totalFluid);
-            }
+            if (this.isHeating && !this.isStabilized) {
+                if (hasFluid) {
+                    heatProgress += 0.002f;
+                    if (heatProgress >= 1.0f) {
+                        heatProgress = 1.0f;
+                        stabilizationLevel += 0.01f;
+                        if (stabilizationLevel >= 1.0f) {
+                            stabilizationLevel = 1.0f;
+                            this.isStabilized = true;
+                        }
+                    }
+                } else {
+                    heatProgress = Math.max(0.0f, heatProgress - 0.005f);
+                    stabilizationLevel = Math.max(0.0f, stabilizationLevel - 0.01f);
+                }
 
-            if (this.isHeating && this.heatProgress < 1.0f) {
                 if (this.soundTimer <= 0) {
                     level.playSound(null, pos, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 0.15f, 1.2f + (this.heatProgress * 0.8f));
                     this.soundTimer = 20;
@@ -182,34 +249,25 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                     serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions(this.currentBaseColor, 0.4f),
                             center.x, center.y, center.z, 1, 0.3D, 0.3D, 0.3D, 0.01D);
                 }
-            } else {
-                this.soundTimer = 0;
-            }
-
-            if (startedStabilizing && !this.hasPlayedFullyCharged) {
-                level.playSound(null, pos, ModSounds.RHNULL_BLOOD_ENGINE_FULLY_CHARGED.get(), SoundSource.BLOCKS, 1.0f, 0.9f);
-                this.hasPlayedFullyCharged = true;
-
-                if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                    net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
-
-                    net.agusdropout.bloodyhell.entity.effects.EntityCameraShake.cameraShake(serverLevel, center, 8.0f, 0.6f, 15, 10);
-
-                    serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions(this.currentGlowColor, 1.2f, false, 40, true),
-                            center.x, center.y, center.z, 30, 0.4D, 0.4D, 0.4D, 0.1D);
-
-                    serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions(this.currentBaseColor, 1.0f, false, 60, true),
-                            center.x, center.y, center.z, 20, 0.5D, 0.5D, 0.5D, 0.05D);
-
-                    serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions(this.currentGlowColor, 0.8f),
-                            center.x, center.y, center.z, 10, 0.2D, 0.2D, 0.2D, 0.02D);
-
-                    serverLevel.sendParticles(ModParticles.BLOOD_DROP_PARTICLE.get(),
-                            center.x, center.y - 0.5D, center.z, 25, 0.2D, 0.1D, 0.2D, 0.3D);
-                }
             }
 
             if (this.isStabilized) {
+                if (!this.hasPlayedFullyCharged) {
+                    level.playSound(null, pos, ModSounds.RHNULL_BLOOD_ENGINE_FULLY_CHARGED.get(), SoundSource.BLOCKS, 1.0f, 0.9f);
+                    this.hasPlayedFullyCharged = true;
+
+                    if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                        net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
+                        net.agusdropout.bloodyhell.entity.effects.EntityCameraShake.cameraShake(serverLevel, center, 8.0f, 0.6f, 15, 10);
+                        serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions(this.currentGlowColor, 1.2f, false, 40, true),
+                                center.x, center.y, center.z, 30, 0.4D, 0.4D, 0.4D, 0.1D);
+                        serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions(this.currentBaseColor, 1.0f, false, 60, true),
+                                center.x, center.y, center.z, 20, 0.5D, 0.5D, 0.5D, 0.05D);
+                        serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions(this.currentGlowColor, 0.8f),
+                                center.x, center.y, center.z, 10, 0.2D, 0.2D, 0.2D, 0.02D);
+                    }
+                }
+
                 if (this.ambientSoundTimer <= 0) {
                     level.playSound(null, pos, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 0.4f, 0.7f);
                     this.ambientSoundTimer = 80;
@@ -223,10 +281,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                     if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                         net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
 
-                        serverLevel.sendParticles(ModParticles.BLOOD_DROP_PARTICLE.get(),
-                                center.x, center.y - 0.6D, center.z,
-                                4, 0.3D, 0.0D, 0.3D, 0.05D);
-
                         serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions(this.currentGlowColor, 0.8f, false, 20, false),
                                 center.x, center.y, center.z, 4, 0.6D, 0.6D, 0.6D, 0.02D);
                     }
@@ -234,7 +288,49 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                 } else {
                     this.heartbeatTimer--;
                 }
+
+                if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                    if (level.random.nextFloat() < 0.25f) {
+                        net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
+
+                        int amount = level.random.nextInt(3) + 1;
+
+                        double offsetX = (level.random.nextDouble() - 0.5) * 0.2;
+                        double offsetZ = (level.random.nextDouble() - 0.5) * 0.2;
+
+                        double speedX = (level.random.nextDouble() - 0.5) * 0.2;
+                        double speedY = level.random.nextDouble() * 0.15 + 0.05;
+                        double speedZ = (level.random.nextDouble() - 0.5) * 0.2;
+
+                        serverLevel.sendParticles(new BloodDropParticleOption(this.currentBaseColor),
+                                center.x + offsetX, center.y - 0.5D, center.z + offsetZ,
+                                amount, speedX, speedY, speedZ, 0.15D);
+                    }
+                }
+
+
+                if (currentMode != null) {
+                    if (currentMode.canProcess(this)) {
+                        currentMode.tickProcess(level, pos, state, this);
+
+                        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel && level.getGameTime() % 3 == 0) {
+                            net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
+                            serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions(this.currentGlowColor, 1.2f, false, 40, true),
+                                    center.x, center.y, center.z, 5, 0.4D, 0.4D, 0.4D, 0.1D);
+                        }
+                    } else {
+                        currentMode.resetProcess();
+                    }
+                }
             }
+        } else {
+            this.isHeating = false;
+            this.isStabilized = false;
+            this.isCraftingFinished = false;
+            this.heatProgress = Math.max(0.0f, heatProgress - 0.05f);
+            this.stabilizationLevel = Math.max(0.0f, stabilizationLevel - 0.1f);
+            this.hasPlayedFullyCharged = false;
+            if (currentMode != null) currentMode.resetProcess();
         }
 
         setChanged();
@@ -280,15 +376,15 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             state.getController().setAnimation(RawAnimation.begin().thenLoop("idle"));
             state.getController().setAnimationSpeed(1.0);
         } else {
-            if (isStabilized) {
+            if (this.activationSequenceTimer >= 0) {
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("activation"));
+                state.getController().setAnimationSpeed(1.0);
+            } else if (this.isStabilized) {
                 state.getController().setAnimation(RawAnimation.begin().thenLoop("active"));
                 state.getController().setAnimationSpeed(1.0);
-            } else if (isHeating) {
+            } else {
                 state.getController().setAnimation(RawAnimation.begin().thenLoop("charging"));
                 state.getController().setAnimationSpeed(Math.max(0.1, heatProgress));
-            } else {
-                state.getController().setAnimation(RawAnimation.begin().thenPlayAndHold("activation"));
-                state.getController().setAnimationSpeed(1.0);
             }
         }
         return PlayState.CONTINUE;
@@ -322,25 +418,30 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
 
             @Override
             public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-                if (tank == 0 && stack.getFluid() == ModFluids.BLOOD_SOURCE.get()) return true;
-                if (tank == 1 && stack.getFluid() == ModFluids.CORRUPTED_BLOOD_SOURCE.get()) return true;
-                if (tank == 2 && stack.getFluid() == ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()) return true;
-                if (tank == 3 && stack.getFluid() == ModFluids.VISCERAL_BLOOD_SOURCE.get()) return true;
-                return false;
+                return true;
             }
 
             @Override
             public int fill(FluidStack resource, FluidAction action) {
-                if (resource.getFluid() == ModFluids.BLOOD_SOURCE.get()) return bloodTank.fill(resource, action);
-                if (resource.getFluid() == ModFluids.CORRUPTED_BLOOD_SOURCE.get()) return corruptedTank.fill(resource, action);
-                if (resource.getFluid() == ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()) return viscousTank.fill(resource, action);
-                if (resource.getFluid() == ModFluids.VISCERAL_BLOOD_SOURCE.get()) return visceralTank.fill(resource, action);
-                return 0;
+                if (resource.isEmpty()) return 0;
+
+                int filled = 0;
+                if (resource.getFluid() == ModFluids.BLOOD_SOURCE.get()) filled = bloodTank.fill(resource, action);
+                else if (resource.getFluid() == ModFluids.CORRUPTED_BLOOD_SOURCE.get()) filled = corruptedTank.fill(resource, action);
+                else if (resource.getFluid() == ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()) filled = viscousTank.fill(resource, action);
+                else if (resource.getFluid() == ModFluids.VISCERAL_BLOOD_SOURCE.get()) filled = visceralTank.fill(resource, action);
+
+                if (filled > 0 && action.execute()) {
+                    setChanged();
+                    if (level != null && !level.isClientSide) {
+                        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    }
+                }
+                return filled;
             }
 
             @Override
             public @NotNull FluidStack drain(FluidStack resource, FluidAction action) { return FluidStack.EMPTY; }
-
             @Override
             public @NotNull FluidStack drain(int maxDrain, FluidAction action) { return FluidStack.EMPTY; }
         };
@@ -348,6 +449,9 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            return optionalItemHandler.cast();
+        }
         if (cap == ForgeCapabilities.FLUID_HANDLER && side != null && side.getAxis().isHorizontal()) {
             return lateralFluidHandler.cast();
         }
@@ -357,63 +461,61 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
+        optionalItemHandler.invalidate();
         lateralFluidHandler.invalidate();
     }
 
     @Override
     public Vector3f getBlobCenter() {
-        return new Vector3f(worldPosition.getX() + 0.5f, (float)(worldPosition.getY() + orbYOffset), worldPosition.getZ() + 0.5f);
+        return new Vector3f(
+                this.worldPosition.getX() + 0.5f,
+                (float)(this.worldPosition.getY() + orbYOffset),
+                this.worldPosition.getZ() + 0.5f
+        );
     }
-
     @Override
     public Vector3f getBloodBaseColor() { return currentBaseColor; }
-
     @Override
     public Vector3f getBloodGlowColor() { return currentGlowColor; }
-
     @Override
     public float getChargeLevel() { return heatProgress; }
-
     @Override
     public float getStabilizationLevel() { return stabilizationLevel; }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
+        tag.put("Inventory", itemHandler.serializeNBT());
+        tag.putBoolean("IsActive", isActive);
+        tag.putBoolean("IsStabilized", isStabilized);
+        tag.putBoolean("IsCraftingFinished", isCraftingFinished);
+        tag.putFloat("HeatProgress", heatProgress);
+        tag.putFloat("StabilizationLevel", stabilizationLevel);
+        tag.putInt("SoundTimer", soundTimer);
+        tag.putInt("ActivationSequenceTimer", activationSequenceTimer);
+        tag.putBoolean("HasPlayedFullyCharged", hasPlayedFullyCharged);
         tag.put("BloodTank", bloodTank.writeToNBT(new CompoundTag()));
         tag.put("CorruptedTank", corruptedTank.writeToNBT(new CompoundTag()));
         tag.put("ViscousTank", viscousTank.writeToNBT(new CompoundTag()));
         tag.put("VisceralTank", visceralTank.writeToNBT(new CompoundTag()));
-        tag.putFloat("HeatProgress", heatProgress);
-        tag.putFloat("StabilizationLevel", stabilizationLevel);
-        tag.putBoolean("IsActive", isActive);
-        tag.putBoolean("IsHeating", isHeating);
-        tag.putBoolean("IsStabilized", isStabilized);
-        tag.putInt("SoundTimer", soundTimer);
-        tag.putInt("ActivationSequenceTimer", activationSequenceTimer);
-        tag.putBoolean("HasPlayedFullyCharged", hasPlayedFullyCharged);
-        tag.putInt("HeartbeatTimer", heartbeatTimer);
-        tag.putInt("AmbientSoundTimer", ambientSoundTimer);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
+        itemHandler.deserializeNBT(tag.getCompound("Inventory"));
+        isActive = tag.getBoolean("IsActive");
+        isStabilized = tag.getBoolean("IsStabilized");
+        isCraftingFinished = tag.getBoolean("IsCraftingFinished");
+        heatProgress = tag.getFloat("HeatProgress");
+        stabilizationLevel = tag.getFloat("StabilizationLevel");
+        soundTimer = tag.getInt("SoundTimer");
+        activationSequenceTimer = tag.getInt("ActivationSequenceTimer");
+        hasPlayedFullyCharged = tag.getBoolean("HasPlayedFullyCharged");
         bloodTank.readFromNBT(tag.getCompound("BloodTank"));
         corruptedTank.readFromNBT(tag.getCompound("CorruptedTank"));
         viscousTank.readFromNBT(tag.getCompound("ViscousTank"));
         visceralTank.readFromNBT(tag.getCompound("VisceralTank"));
-        heatProgress = tag.getFloat("HeatProgress");
-        stabilizationLevel = tag.getFloat("StabilizationLevel");
-        isActive = tag.getBoolean("IsActive");
-        isHeating = tag.getBoolean("IsHeating");
-        isStabilized = tag.getBoolean("IsStabilized");
-        soundTimer = tag.getInt("SoundTimer");
-        activationSequenceTimer = tag.getInt("ActivationSequenceTimer");
-        hasPlayedFullyCharged = tag.getBoolean("HasPlayedFullyCharged");
-        heartbeatTimer = tag.getInt("HeartbeatTimer");
-        ambientSoundTimer = tag.getInt("AmbientSoundTimer");
-        updateColors(bloodTank.getFluidAmount() + corruptedTank.getFluidAmount() + viscousTank.getFluidAmount() + visceralTank.getFluidAmount());
     }
 
     @Nullable

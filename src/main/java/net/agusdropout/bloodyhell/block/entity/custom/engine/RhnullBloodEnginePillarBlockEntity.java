@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.block.entity.custom.mechanism;
+package net.agusdropout.bloodyhell.block.entity.custom.engine;
 
 import net.agusdropout.bloodyhell.block.custom.mechanism.RhnullBloodEnginePillarBlock;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
@@ -49,7 +49,6 @@ public class RhnullBloodEnginePillarBlockEntity extends BaseGeckoBlockEntity {
 
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide || !this.isEngineActive) return;
-
 
         if (level.getGameTime() % 3 == 0 && state.hasProperty(RhnullBloodEnginePillarBlock.CORNER)) {
             RhnullBloodEnginePillarBlock.Corner corner = state.getValue(RhnullBloodEnginePillarBlock.CORNER);
@@ -103,12 +102,9 @@ public class RhnullBloodEnginePillarBlockEntity extends BaseGeckoBlockEntity {
     }
 
     private void checkEngineState() {
-        BlockPos[] offsets = {
-                worldPosition.offset(1, 0, 1), worldPosition.offset(1, 0, -1),
-                worldPosition.offset(-1, 0, 1), worldPosition.offset(-1, 0, -1)
-        };
-        for (BlockPos offsetPos : offsets) {
-            if (level.getBlockEntity(offsetPos) instanceof RhnullBloodEngineBlockEntity engine) {
+        for (BlockPos offset : RhnullBloodEngineBlockEntity.PILLAR_OFFSETS) {
+            BlockPos targetPos = this.worldPosition.offset(offset);
+            if (level.getBlockEntity(targetPos) instanceof RhnullBloodEngineBlockEntity engine) {
                 this.isEngineActive = engine.isActive();
                 level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
                 break;
@@ -137,6 +133,14 @@ public class RhnullBloodEnginePillarBlockEntity extends BaseGeckoBlockEntity {
 
     public ItemStack getRenderStack() {
         return itemHandler.getStackInSlot(0);
+    }
+
+    public void clearInventory() {
+        this.itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+        this.setChanged();
+        if (this.level != null && !this.level.isClientSide) {
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
     }
 
     @Override

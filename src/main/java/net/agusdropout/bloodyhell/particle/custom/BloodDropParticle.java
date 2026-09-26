@@ -3,24 +3,25 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.BloodDropParticleOption;
 import net.agusdropout.bloodyhell.util.visuals.manager.BloodDropRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
 @OnlyIn(Dist.CLIENT)
 public class BloodDropParticle extends Particle {
 
     private final float baseScale;
 
-    protected BloodDropParticle(ClientLevel level, double x, double y, double z) {
+    protected BloodDropParticle(ClientLevel level, double x, double y, double z, Vector3f color) {
         super(level, x, y, z);
         this.gravity = 1.0F;
         this.friction = 0.98F;
@@ -31,10 +32,9 @@ public class BloodDropParticle extends Particle {
         this.lifetime = 100;
         this.hasPhysics = true;
 
-
-        this.rCol = 0.8f;
-        this.gCol = 0.05f;
-        this.bCol = 0.05f;
+        this.rCol = color.x();
+        this.gCol = color.y();
+        this.bCol = color.z();
         this.alpha = 1.0f;
     }
 
@@ -45,14 +45,6 @@ public class BloodDropParticle extends Particle {
         if (this.onGround) {
             this.remove();
             this.level.addParticle(ModParticles.BLOOD_STAIN_PARTICLE.get(), this.x, this.y + 0.01, this.z, 0, 0, 0);
-            for (int i = 0; i < 4; i++) {
-                this.level.addParticle(ModParticles.BLOOD_PARTICLES.get(),
-                        this.x, this.y, this.z,
-                        (random.nextDouble() - 0.5) * 0.2,
-                        random.nextDouble() * 0.2,
-                        (random.nextDouble() - 0.5) * 0.2
-                );
-            }
         }
     }
 
@@ -66,7 +58,6 @@ public class BloodDropParticle extends Particle {
         PoseStack poseStack = new PoseStack();
         poseStack.translate(renderX, renderY, renderZ);
         poseStack.mulPose(camera.rotation());
-
 
         float stretch = (float) Math.max(1.0, Math.abs(this.yd) * 5.0);
         poseStack.scale(1.0f, stretch, 1.0f);
@@ -87,12 +78,12 @@ public class BloodDropParticle extends Particle {
         return ParticleRenderType.CUSTOM;
     }
 
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<BloodDropParticleOption> {
         public Provider() {}
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-            return new BloodDropParticle(level, x, y, z);
+        public Particle createParticle(BloodDropParticleOption option, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
+            return new BloodDropParticle(level, x, y, z, option.getColor());
         }
     }
 }

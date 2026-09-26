@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.block.custom.mechanism;
 
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
-import net.agusdropout.bloodyhell.block.entity.custom.mechanism.RhnullBloodEngineBlockEntity;
-import net.agusdropout.bloodyhell.block.entity.custom.mechanism.RhnullBloodEnginePillarBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEngineBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEnginePillarBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
