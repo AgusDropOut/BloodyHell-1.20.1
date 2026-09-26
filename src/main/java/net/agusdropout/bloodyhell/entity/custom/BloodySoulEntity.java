@@ -1,17 +1,13 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
 import net.agusdropout.bloodyhell.item.ModItems;
-import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,21 +15,14 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -42,13 +31,14 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.PlayState;
 
-
 public class BloodySoulEntity extends Animal implements GeoEntity {
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    private int lifeTicks = 100;
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private int lifeTicks = 600;
+
     public BloodySoulEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
+
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 50)
@@ -62,8 +52,6 @@ public class BloodySoulEntity extends Animal implements GeoEntity {
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.WHEAT), false));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
-
-
     }
 
     private PlayState predicate(AnimationState animationState) {
@@ -76,49 +64,22 @@ public class BloodySoulEntity extends Animal implements GeoEntity {
         return PlayState.CONTINUE;
     }
 
-
-
-
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller",
-                0, this::predicate));
-
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
-
-
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-    }
 
-    @Override
-    protected float tickHeadTurn(float v, float v1) {
-        return super.tickHeadTurn(v, v1);
-    }
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {}
 
-
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.ALLAY_AMBIENT_WITH_ITEM;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ALLAY_HURT;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ALLAY_DEATH;
-    }
-
-    protected float getSoundVolume() {
-        return 0.2F;
-    }
-
-
+    protected SoundEvent getAmbientSound() { return SoundEvents.ALLAY_AMBIENT_WITH_ITEM; }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return SoundEvents.ALLAY_HURT; }
+    protected SoundEvent getDeathSound() { return SoundEvents.ALLAY_DEATH; }
+    protected float getSoundVolume() { return 0.2F; }
 
     @Override
     public void tick() {
@@ -136,18 +97,59 @@ public class BloodySoulEntity extends Animal implements GeoEntity {
                     20, 0.3, 0.3, 0.3, 0.1);
         }
     }
+
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if(player.getMainHandItem().getItem() == ModItems.BLOOD_FLASK.get()) {
-            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.FILLED_BLOOD_FLASK.get()));
-            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-            this.discard();
+        ItemStack itemInHand = player.getItemInHand(hand);
+
+        if(itemInHand.getItem() == ModItems.BLOOD_FLASK.get()) {
+            if (!this.level().isClientSide) {
+
+                if (this.getPersistentData().contains("FallenAllyType")) {
+                    ItemStack soulFlask = new ItemStack(ModItems.BOUND_BLOOD_FLASK.get());
+                    CompoundTag nbt = soulFlask.getOrCreateTag();
+
+
+                    nbt.putString("FallenAllyType", this.getPersistentData().getString("FallenAllyType"));
+                    nbt.put("FallenAllyData", this.getPersistentData().getCompound("FallenAllyData"));
+
+                    if (this.getPersistentData().contains("FallenAllyName")) {
+                        nbt.putString("FallenAllyName", this.getPersistentData().getString("FallenAllyName"));
+                    }
+
+                    itemInHand.shrink(1);
+                    if (!player.getInventory().add(soulFlask)) {
+                        player.drop(soulFlask, false);
+                    }
+                } else {
+                    // Si era un alma genérica sin datos de aliado, te da sangre normal
+                    itemInHand.shrink(1);
+                    ItemStack genericFlask = new ItemStack(ModItems.FILLED_BLOOD_FLASK.get());
+                    if (!player.getInventory().add(genericFlask)) {
+                        player.drop(genericFlask, false);
+                    }
+                }
+
+                this.level().playSound(null, this.blockPosition(), SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                this.discard();
+            }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
-        } else {
-            return InteractionResult.PASS;
         }
+        return InteractionResult.PASS;
+    }
 
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("LifeTicks", this.lifeTicks);
+    }
 
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("LifeTicks")) {
+            this.lifeTicks = tag.getInt("LifeTicks");
+        }
     }
 
     @Nullable

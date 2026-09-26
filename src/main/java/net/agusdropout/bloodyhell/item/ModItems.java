@@ -294,6 +294,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> FILLED_VISCOUS_BLASPHEMY_FLASK = ITEMS.register("filled_viscous_blasphemy_flask", () -> new BloodPotionItem(
             new Item.Properties().stacksTo(64), 0)); // Grants more power
+    public static final RegistryObject<Item> BOUND_BLOOD_FLASK = ITEMS.register("bound_blood_flask",
+            () -> new BoundBloodFlaskItem(new Item.Properties().stacksTo(1)));
 
 
     public static final RegistryObject<Item> UNKNOWN_GUIDE_BOOK = ITEMS.register("unknown_guide_book",
