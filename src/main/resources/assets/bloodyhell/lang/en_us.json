@@ -324,6 +324,8 @@
   "block.bloodyhell.sanguinite_condenser": "Sanguinite Condenser",
   "block.bloodyhell.rhnull_condenser": "Rhnull Condenser",
   "block.bloodyhell.sanguine_lapidary": "Sanguine Lapidary",
+  "block.bloodyhell.rhnull_blood_engine_block": "Rhnull Blood Engine",
+  "block.bloodyhell.rhnull_blood_engine_pillar_block": "Rhnull Blood Engine Pillar",
 
   "_comment": "=== ENTITIES ===",
   "entity.bloodyhell.bloodthirstybeast": "Blood Thirsty Beast",
