@@ -18,11 +18,13 @@ public abstract class BaseShaderRenderManager<T extends BaseShaderRenderManager.
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());
         }
+
         ACTIVE_PARTICLES.add(data);
     }
 
     public void executeRenderAndClear() {
         if (ACTIVE_PARTICLES.isEmpty()) return;
+
 
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();

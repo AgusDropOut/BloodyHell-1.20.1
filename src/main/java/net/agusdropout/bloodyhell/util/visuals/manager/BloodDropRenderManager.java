@@ -3,9 +3,13 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -32,6 +36,42 @@ public class BloodDropRenderManager extends BaseShaderRenderManager<BloodDropRen
     }
 
     @Override
+    public void executeRenderAndClear() {
+        if (ACTIVE_PARTICLES.isEmpty()) return;
+
+        RenderSystem.depthMask(false);
+        RenderSystem.enableBlend();
+        setupBlendFunc();
+
+        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+        PoseStack rsStack = RenderSystem.getModelViewStack();
+        rsStack.pushPose();
+
+        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
+
+
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        rsStack.setIdentity();
+        rsStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(camera.getXRot()));
+        rsStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
+
+        RenderSystem.applyModelViewMatrix();
+
+        bindShader();
+        renderGeometry();
+
+        rsStack.popPose();
+        RenderSystem.applyModelViewMatrix();
+        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+
+        RenderSystem.depthMask(true);
+        RenderSystem.disableBlend();
+        RenderSystem.defaultBlendFunc();
+
+        ACTIVE_PARTICLES.clear();
+    }
+
+    @Override
     protected void setupBlendFunc() {
         RenderSystem.blendFunc(
                 com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA,
@@ -49,7 +89,13 @@ public class BloodDropRenderManager extends BaseShaderRenderManager<BloodDropRen
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-        float[][] localCoords = {{-1.0f, -1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, -1.0f}};
+
+        float[][] localCoords = {
+                {-0.5f, -0.5f},
+                {-0.5f,  0.5f},
+                { 0.5f,  0.5f},
+                { 0.5f, -0.5f}
+        };
 
         float globalTime = (float)(net.minecraft.Util.getMillis() % 100000L) / 1000.0f;
         if (ModShaders.BLOOD_DROP_SHADER.getUniform("AnimTime") != null) {

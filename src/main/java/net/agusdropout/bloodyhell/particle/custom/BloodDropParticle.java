@@ -28,7 +28,7 @@ public class BloodDropParticle extends Particle {
         this.xd *= 0.1;
         this.yd *= 0.1;
         this.zd *= 0.1;
-        this.baseScale = 0.25F;
+        this.baseScale = 0.08F;
         this.lifetime = 100;
         this.hasPhysics = true;
 

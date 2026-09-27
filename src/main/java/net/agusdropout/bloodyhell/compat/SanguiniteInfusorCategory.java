@@ -52,22 +52,22 @@ public class SanguiniteInfusorCategory implements IRecipeCategory<SanguiniteInfu
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SanguiniteInfusorRecipe recipe, IFocusGroup focuses) {
-        // 1. INPUT ITEM (Center Left)
+
         builder.addSlot(RecipeIngredientRole.INPUT, 50, 22)
                 .addIngredients(recipe.getInputItem());
 
-        // 2. OUTPUT ITEM (Center Right)
+
         builder.addSlot(RecipeIngredientRole.OUTPUT, 90, 22)
                 .addItemStack(recipe.getResultItem(null));
 
-        // 3. FLUID SLOT 1 (Far Left)
+
         if (!recipe.getFluid1().isEmpty()) {
             builder.addSlot(RecipeIngredientRole.INPUT, 10, 5)
                     .addIngredient(ForgeTypes.FLUID_STACK, recipe.getFluid1())
                     .setFluidRenderer(4000, false, 16, 50);
         }
 
-        // 4. FLUID SLOT 2 (Far Right)
+
         if (!recipe.getFluid2().isEmpty()) {
             builder.addSlot(RecipeIngredientRole.INPUT, 130, 5)
                     .addIngredient(ForgeTypes.FLUID_STACK, recipe.getFluid2())
@@ -77,12 +77,12 @@ public class SanguiniteInfusorCategory implements IRecipeCategory<SanguiniteInfu
 
     @Override
     public void draw(SanguiniteInfusorRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        // Draw crafting arrow indicator
+
         int arrowX = 72;
         int arrowY = 26;
         guiGraphics.drawString(Minecraft.getInstance().font, "->", arrowX, arrowY, 0x555555, false);
 
-        // Render quantity values below the fluid display levels
+
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(0.7f, 0.7f, 1.0f);
 

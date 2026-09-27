@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.block.entity.custom.engine;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGeckoBlockEntity;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
-import net.agusdropout.bloodyhell.particle.ModParticles;
+import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BloodDropParticleOption;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.util.visuals.types.IBloodBlobEmitter;
@@ -63,6 +63,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
+            updateMode();
             setChanged();
             if (level != null && !level.isClientSide) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -88,22 +89,43 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private Vector3f currentBaseColor = new Vector3f(0.5f, 0.0f, 0.05f);
     private Vector3f currentGlowColor = new Vector3f(1.0f, 0.1f, 0.1f);
 
-    private IEngineMode currentMode = new ResurrectionEngineMode();
+    private IEngineMode currentMode = null;
 
     public RhnullBloodEngineBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.RHNULL_BLOOD_ENGINE.get(), pos, state);
     }
 
+
+    private void updateMode() {
+        ItemStack stack = this.itemHandler.getStackInSlot(0);
+
+        if (this.currentMode != null) {
+            this.currentMode.resetProcess();
+        }
+
+        this.currentMode = null;
+
+        if (stack.isEmpty()) {
+            return;
+        }
+
+        if (stack.getItem() == ModItems.BOUND_BLOOD_FLASK.get()) {
+            CompoundTag nbt = stack.getTag();
+            if (nbt != null) {
+                if (nbt.contains("FallenAllyData")) {
+                    this.currentMode = new ResurrectionEngineMode();
+                } else if (nbt.contains("BloodOwnerName")) {
+                    this.currentMode = new SoulTetherEngineMode();
+                }
+            }
+        }
+    }
     public void setCraftingFinished(boolean finished) {
         this.isCraftingFinished = finished;
         if (this.level != null && !this.level.isClientSide) {
             this.setChanged();
             this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
         }
-    }
-
-    public boolean isCraftingFinished() {
-        return this.isCraftingFinished;
     }
 
     public InteractionResult interact(Player player, InteractionHand hand) {
@@ -192,14 +214,13 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
         int totalFluid = bloodTank.getFluidAmount() + corruptedTank.getFluidAmount() + viscousTank.getFluidAmount() + visceralTank.getFluidAmount();
         boolean hasFluid = totalFluid > 0;
 
-        if (hasFluid) {
+        if (hasFluid || currentMode != null) {
             updateColors(totalFluid);
         }
 
         if (level.isClientSide) return;
 
         if (this.isActive) {
-
 
             if (this.isCraftingFinished) {
                 this.setActive(false);
@@ -292,22 +313,21 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                 if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                     if (level.random.nextFloat() < 0.25f) {
                         net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
-
                         int amount = level.random.nextInt(3) + 1;
 
-                        double offsetX = (level.random.nextDouble() - 0.5) * 0.2;
-                        double offsetZ = (level.random.nextDouble() - 0.5) * 0.2;
+                        for (int i = 0; i < amount; i++) {
+                            double offsetX = (level.random.nextDouble() - 0.5) * 0.2;
+                            double offsetZ = (level.random.nextDouble() - 0.5) * 0.2;
+                            double speedX = (level.random.nextDouble() - 0.5) * 0.2;
+                            double speedY = level.random.nextDouble() * 0.15 + 0.05;
+                            double speedZ = (level.random.nextDouble() - 0.5) * 0.2;
 
-                        double speedX = (level.random.nextDouble() - 0.5) * 0.2;
-                        double speedY = level.random.nextDouble() * 0.15 + 0.05;
-                        double speedZ = (level.random.nextDouble() - 0.5) * 0.2;
-
-                        serverLevel.sendParticles(new BloodDropParticleOption(this.currentBaseColor),
-                                center.x + offsetX, center.y - 0.5D, center.z + offsetZ,
-                                amount, speedX, speedY, speedZ, 0.15D);
+                            serverLevel.sendParticles(new BloodDropParticleOption(this.currentBaseColor),
+                                    center.x + offsetX, center.y - 0.5D, center.z + offsetZ,
+                                    0, speedX, speedY, speedZ, 1.0D);
+                        }
                     }
                 }
-
 
                 if (currentMode != null) {
                     if (currentMode.canProcess(this)) {
@@ -338,6 +358,21 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     }
 
     private void updateColors(int totalFluid) {
+
+        if (this.currentMode != null) {
+            Vector3f customBase = this.currentMode.getCustomBaseColor();
+            Vector3f customGlow = this.currentMode.getCustomGlowColor();
+
+            if (customBase != null && customGlow != null) {
+                this.currentBaseColor = customBase;
+                this.currentGlowColor = customGlow;
+                return;
+            }
+        }
+
+
+        if (totalFluid <= 0) return;
+
         Vector3f cBlood = new Vector3f(0.5f, 0.0f, 0.05f);
         Vector3f cCorrupted = new Vector3f(0.2f, 0.0f, 0.3f);
         Vector3f cViscous = new Vector3f(0.1f, 0.1f, 0.1f);
@@ -417,9 +452,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             public int getTankCapacity(int tank) { return TANK_CAPACITY; }
 
             @Override
-            public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-                return true;
-            }
+            public boolean isFluidValid(int tank, @NotNull FluidStack stack) { return true; }
 
             @Override
             public int fill(FluidStack resource, FluidAction action) {
@@ -449,12 +482,8 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return optionalItemHandler.cast();
-        }
-        if (cap == ForgeCapabilities.FLUID_HANDLER && side != null && side.getAxis().isHorizontal()) {
-            return lateralFluidHandler.cast();
-        }
+        if (cap == ForgeCapabilities.ITEM_HANDLER) return optionalItemHandler.cast();
+        if (cap == ForgeCapabilities.FLUID_HANDLER && side != null && side.getAxis().isHorizontal()) return lateralFluidHandler.cast();
         return super.getCapability(cap, side);
     }
 
@@ -516,6 +545,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
         corruptedTank.readFromNBT(tag.getCompound("CorruptedTank"));
         viscousTank.readFromNBT(tag.getCompound("ViscousTank"));
         visceralTank.readFromNBT(tag.getCompound("VisceralTank"));
+        updateMode();
     }
 
     @Nullable
