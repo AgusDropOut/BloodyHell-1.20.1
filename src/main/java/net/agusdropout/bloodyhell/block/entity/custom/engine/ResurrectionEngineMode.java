@@ -82,7 +82,6 @@ public class ResurrectionEngineMode implements IEngineMode {
             level.playSound(null, pos, SoundEvents.WITHER_SPAWN, SoundSource.BLOCKS, 1.0F, 0.5F);
 
             if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-
                 serverLevel.sendParticles(
                         new net.agusdropout.bloodyhell.particle.ParticleOptions.BloodDropParticleOption(engine.getBloodBaseColor()),
                         pos.getX() + 0.5D, pos.getY() + 2.5D, pos.getZ() + 0.5D,
@@ -106,10 +105,25 @@ public class ResurrectionEngineMode implements IEngineMode {
         for (ItemStack item : modifiers) {
             if (item.isEmpty()) continue;
 
-            if (item.is(Items.MAGMA_BLOCK)) {
+
+            if (item.is(Items.MAGMA_BLOCK) || item.is(ModItems.BLASPHEMOUS_EYE.get())) {
                 forgeData.putBoolean("BlasphemousFireResist", true);
-            } else if (item.is(Items.RABBIT_FOOT)) {
+            }
+
+            else if (item.is(Items.RABBIT_FOOT) || item.is(ModItems.SCARLET_FEATHER.get())) {
                 forgeData.putBoolean("BlasphemousSpeed", true);
+            }
+
+            else if (item.is(ModItems.VEINREAVER_HORN.get())) {
+                forgeData.putBoolean("BlasphemousStrength", true);
+            }
+
+            else if (item.is(ModItems.PURE_BLOOD_GEM.get())) {
+                forgeData.putBoolean("BlasphemousRegen", true);
+            }
+
+            else if (item.is(ModItems.CRIMSON_SHELL.get())) {
+                forgeData.putBoolean("BlasphemousResistance", true);
             }
         }
         entityData.put("ForgeData", forgeData);
