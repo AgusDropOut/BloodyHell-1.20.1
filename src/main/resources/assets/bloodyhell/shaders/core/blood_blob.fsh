@@ -52,15 +52,12 @@ vec3 calcNormal(vec3 localP) {
 void main() {
     vec2 ndc = v_TexCoords * 2.0 - 1.0;
 
-
     vec4 clipPos = vec4(ndc, 1.0, 1.0);
     vec4 viewPos = u_InvProjMat * clipPos;
     viewPos /= viewPos.w;
     vec3 rdView = normalize(viewPos.xyz);
 
-
     vec3 rayDir = normalize((u_CleanInvViewMat * vec4(rdView, 0.0)).xyz);
-
 
     vec3 ro = vec3(0.0);
 
@@ -78,28 +75,25 @@ void main() {
 
     float sceneDepth = texture(Sampler0, v_TexCoords).r;
 
+    float ndcDepth = sceneDepth * 2.0 - 1.0;
+    vec4 sceneClip = vec4(ndc, ndcDepth, 1.0);
+    vec4 sceneView = u_InvProjMat * sceneClip;
+    sceneView /= sceneView.w;
+
+    float maxT = length(sceneView.xyz);
+
     bool hit = false;
     vec3 p;
 
     for(int i = 0; i < 32; i++) {
-
         p = ro + rayDir * t;
 
         if(length(p - relativeBlobCenter) > 1.55) break;
 
 
-        vec4 viewSpaceHit = u_VanillaModelViewMat * vec4(p + u_BobbingOffset, 1.0);
-        vec4 projP = u_ProjMat * viewSpaceHit;
-
-        if (projP.w > 0.0) {
-            float currentDepth = (projP.z / projP.w) * 0.5 + 0.5;
-
-            if (sceneDepth < currentDepth) {
-                break;
-            }
+        if (t > maxT - 0.05) {
+            break;
         }
-
-
 
         float d = map(p - relativeBlobCenter);
 

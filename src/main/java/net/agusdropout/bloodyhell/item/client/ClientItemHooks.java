@@ -16,12 +16,12 @@ import software.bernie.geckolib.animatable.GeoItem;
 
 public class ClientItemHooks {
 
-    // Safe way to check camera without importing Minecraft in Item classes
+
     public static boolean isFirstPerson() {
         return Minecraft.getInstance().options.getCameraType().isFirstPerson();
     }
 
-    // Safe way to trigger GeckoLib animations
+
     public static void triggerGeckoAnim(Player player, ItemStack stack, String controller, String animName) {
         if (stack.getItem() instanceof GeoItem geoItem) {
             geoItem.triggerAnim(player, GeoItem.getId(stack), controller, animName);
@@ -40,7 +40,7 @@ public class ClientItemHooks {
         return Minecraft.getInstance().player;
     }
 
-    // Safe way to play PlayerAnimator animations
+
     public static void playPlayerAnimatorAnim(Player player, String animName) {
         if (!(player instanceof AbstractClientPlayer clientPlayer)) return;
 
@@ -51,7 +51,7 @@ public class ClientItemHooks {
         if (animationLayer != null) {
             var anim = PlayerAnimationRegistry.getAnimation(new ResourceLocation(BloodyHell.MODID, animName));
             if (anim != null) {
-                // Prevent restarting the animation if it is already playing
+
                 if (animationLayer.getAnimation() instanceof KeyframeAnimationPlayer current && current.getData().equals(anim)) {
                     return;
                 }

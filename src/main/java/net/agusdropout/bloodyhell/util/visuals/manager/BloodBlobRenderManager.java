@@ -18,6 +18,7 @@ import org.joml.Vector4f;
 public class BloodBlobRenderManager {
 
     public static void renderAll(RenderLevelStageEvent event) {
+        if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
         if (RhnullBloodEngineBlockEntity.ACTIVE_ENGINES.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
@@ -29,6 +30,7 @@ public class BloodBlobRenderManager {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
 
         int currentTex = RenderSystem.getShaderTexture(0);
         RenderSystem.setShaderTexture(0, mc.getMainRenderTarget().getDepthTextureId());
@@ -68,7 +70,6 @@ public class BloodBlobRenderManager {
         double compCamY = rawCamPos.y + bobOffsetVec.y();
         double compCamZ = rawCamPos.z + bobOffsetVec.z();
 
-        // Mandamos Uniforms
         if(shader.safeGetUniform("u_CleanInvViewMat") != null) shader.safeGetUniform("u_CleanInvViewMat").set(cleanInvViewMat);
         if(shader.safeGetUniform("u_VanillaModelViewMat") != null) shader.safeGetUniform("u_VanillaModelViewMat").set(vanillaViewMat);
         if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(projMat);

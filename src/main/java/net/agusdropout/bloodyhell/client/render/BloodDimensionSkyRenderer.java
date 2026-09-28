@@ -26,16 +26,21 @@ public class BloodDimensionSkyRenderer {
     public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack poseStack,
                                     Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
 
-
         setupFog.run();
         RenderSystem.setShaderFogStart(Float.MAX_VALUE);
         RenderSystem.setShaderFogEnd(Float.MAX_VALUE);
 
-
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
 
+
+        RenderSystem.setProjectionMatrix(projectionMatrix, VertexSorting.DISTANCE_TO_ORIGIN);
+
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
         RenderSystem.setShaderTexture(0, SKY_TEXTURE);
 
         BufferBuilder buffer = Tesselator.getInstance().getBuilder();
@@ -171,11 +176,16 @@ public class BloodDimensionSkyRenderer {
     private static void renderBloodMoon(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.disableCull();
+
+
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, BLOOD_MOON);
 
         BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+
+
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         float size = 40.0F;
         float y = -100.0F;
@@ -186,14 +196,15 @@ public class BloodDimensionSkyRenderer {
 
         Matrix4f matrix = poseStack.last().pose();
 
-        buffer.vertex(matrix, -size, y, -size).uv(0.0F, 0.0F).endVertex();
-        buffer.vertex(matrix, -size, y,  size).uv(0.0F, 1.0F).endVertex();
-        buffer.vertex(matrix,  size, y,  size).uv(1.0F, 1.0F).endVertex();
-        buffer.vertex(matrix,  size, y, -size).uv(1.0F, 0.0F).endVertex();
+        buffer.vertex(matrix, -size, y, -size).uv(0.0F, 0.0F).color(255, 255, 255, 255).endVertex();
+        buffer.vertex(matrix, -size, y,  size).uv(0.0F, 1.0F).color(255, 255, 255, 255).endVertex();
+        buffer.vertex(matrix,  size, y,  size).uv(1.0F, 1.0F).color(255, 255, 255, 255).endVertex();
+        buffer.vertex(matrix,  size, y, -size).uv(1.0F, 0.0F).color(255, 255, 255, 255).endVertex();
 
         BufferUploader.drawWithShader(buffer.end());
         poseStack.popPose();
 
         RenderSystem.disableBlend();
+        RenderSystem.enableCull();
     }
 }

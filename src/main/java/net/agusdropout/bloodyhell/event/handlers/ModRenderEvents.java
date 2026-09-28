@@ -13,9 +13,7 @@ public class ModRenderEvents {
     @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
 
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
-            BloodBlobRenderManager.renderAll(event);
-        }
+
 
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             SwirlRenderManager.renderAllAndClear();
@@ -35,6 +33,8 @@ public class ModRenderEvents {
             TinyBloomRenderManager.renderAllAndClear();
             RadiantEnergyRenderManager.renderAllAndClear();
             FrenziedExplosionRenderManager.renderAllAndClear();
+            BloodBlobRenderManager.renderAll(event);
+
         }
     }
 }
