@@ -37,7 +37,7 @@ public class BloodFireMeteorModel<T extends BloodFireMeteorEntity> extends Entit
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        // Continuous Rotation based on age
+
         float speed = 0.2f;
         this.bloodFireMeteor.xRot = ageInTicks * speed;
         this.bloodFireMeteor.yRot = ageInTicks * speed * 0.7f;

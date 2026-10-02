@@ -27,18 +27,18 @@ public class RitekeeperRenderer extends GeoEntityRenderer<RitekeeperEntity> {
 
     @Override
     public void render(RitekeeperEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        // 1. Hide if Dashing
+
         if (entity.isEvading()) {
             return;
         }
 
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
 
-        // 2. Particle Logic
+
         GeoModel<RitekeeperEntity> model = this.getGeoModel();
         if (model != null) {
 
-            // A. Steam Bone (Passive)
+
             model.getBone("steam").ifPresent(bone -> {
                 Vector3d pos = bone.getWorldPosition();
                 if (entity.getRandom().nextFloat() < 0.2f) {
@@ -48,7 +48,7 @@ public class RitekeeperRenderer extends GeoEntityRenderer<RitekeeperEntity> {
                 }
             });
 
-            // B. Casting Hands (Only when casting)
+
             if (entity.isCasting()) {
                 spawnHandMagic(entity, model.getBone("rightCastParticle"));
                 spawnHandMagic(entity, model.getBone("leftCastParticle"));
@@ -61,32 +61,31 @@ public class RitekeeperRenderer extends GeoEntityRenderer<RitekeeperEntity> {
             Vector3d pos = bone.getWorldPosition();
             RandomSource rand = entity.getRandom();
 
-            // Spawn 2 particles per tick per hand for density
+
             for(int i=0; i<2; i++) {
 
-                // Jitter: Random offset around the hand (0.15 blocks)
+
                 double jx = (rand.nextDouble() - 0.5) * 0.3;
                 double jy = (rand.nextDouble() - 0.5) * 0.3;
                 double jz = (rand.nextDouble() - 0.5) * 0.3;
 
-                // Color Selection (Red / Yellow / Dark Red)
+
                 Vector3f color;
                 float chance = rand.nextFloat();
 
                 if (chance < 0.4f) {
-                    color = new Vector3f(1.0f, 0.1f, 0.1f); // Bright Red
+                    color = new Vector3f(1.0f, 0.1f, 0.1f);
                 } else if (chance < 0.5f) {
-                    color = new Vector3f(1.0f, 1.0f, 1.0f); // Yellow/Gold
+                    color = new Vector3f(1.0f, 1.0f, 1.0f);
                 } else {
-                    color = new Vector3f(0.5f, 0.0f, 0.0f); // Dark Blood Red
+                    color = new Vector3f(0.5f, 0.0f, 0.0f);
                 }
 
-                // Create and Spawn
-                // Life: 10-20 ticks, Size: 0.4, Glowing: false
+
                 ParticleHelper.spawn(entity.level(),
                         new MagicParticleOptions(color, 0.4f, false, 10 + rand.nextInt(10)),
                         pos.x + jx, pos.y + jy, pos.z + jz,
-                        jx * 0.2, 0.05, jz * 0.2 // Slight outward expansion velocity
+                        jx * 0.2, 0.05, jz * 0.2
                 );
             }
         });

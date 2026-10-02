@@ -20,5 +20,6 @@ public class ModShaders {
     public static ShaderInstance FRENZIED_EXPLOSION_SHADER;
     public static ShaderInstance BLOOD_BLOB_SHADER;
     public static ShaderInstance BLOOD_DROP_SHADER;
+    public static ShaderInstance BLOOD_ORB_SHADER;
 
 }

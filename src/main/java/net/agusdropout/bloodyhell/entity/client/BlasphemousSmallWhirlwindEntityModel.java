@@ -32,7 +32,7 @@ public class BlasphemousSmallWhirlwindEntityModel extends GeoModel<BlasphemousSm
         float pt = animationState.getPartialTick();
         float time = animatable.tickCount + pt;
 
-        // ==== MAIN RING ====
+
         CoreGeoBone mainRing = this.getAnimationProcessor().getBone("mainring");
         if (mainRing != null) {
             float angle = time * 0.15f;

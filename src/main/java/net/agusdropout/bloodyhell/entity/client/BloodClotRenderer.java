@@ -79,7 +79,6 @@ public class BloodClotRenderer extends EntityRenderer<BloodClotProjectile> {
                         g = 20; b = 20;
                     }
 
-                    // --- REFACTORED CALL ---
                     RenderHelper.renderPixel(consumer, p, n, finalX, finalY, d, drawSize,
                             r/255f, g/255f, b/255f, 1.0f, packedLight);
                 }

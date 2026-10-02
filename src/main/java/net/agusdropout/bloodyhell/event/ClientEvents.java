@@ -270,6 +270,10 @@ public class ClientEvents {
                 ModShaders.BLOOD_DROP_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "blood_orb"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
+                ModShaders.BLOOD_ORB_SHADER = shaderInstance;
+            });
+
 
         }
 

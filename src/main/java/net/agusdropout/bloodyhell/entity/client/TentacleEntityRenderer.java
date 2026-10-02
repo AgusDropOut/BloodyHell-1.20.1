@@ -22,7 +22,7 @@ public class TentacleEntityRenderer extends EntityRenderer<TentacleEntity> {
     private final TentacleEntityModel model;
     private static final ResourceLocation TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/entity_tentacles.png");
 
-    // Instancia de nuestra capa de brillo
+
     private final TentacleGlowLayer glowLayer;
 
     public TentacleEntityRenderer(EntityRendererProvider.Context context) {

@@ -53,13 +53,13 @@ public class FrenziedTrailRenderManager {
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        /* Inside the renderAllAndClear() method loop for TrailData */
+
         for (TrailData data : ACTIVE_TRAILS) {
             if (ModShaders.RADIANT_ENERGY_SHADER.getUniform("AnimTime") != null) {
                 ModShaders.RADIANT_ENERGY_SHADER.getUniform("AnimTime").set(data.time);
             }
 
-            /* Subdivide the raw history into a smooth curve */
+
             List<Vec3> rawHistory = data.history;
             List<Vec3> smoothHistory = new ArrayList<>();
             int subdivisions = 3;
@@ -90,7 +90,7 @@ public class FrenziedTrailRenderManager {
             int size = smoothHistory.size();
             float vStep = 2.0F / (size - 1);
 
-            /* Generate quads using the new smoothed history */
+
             for (int i = 0; i < size - 1; i++) {
                 Vec3 current = smoothHistory.get(i);
                 Vec3 next = smoothHistory.get(i + 1);

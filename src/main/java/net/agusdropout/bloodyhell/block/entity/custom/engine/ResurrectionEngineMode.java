@@ -35,12 +35,39 @@ public class ResurrectionEngineMode implements IEngineMode {
         if (engine.getVisceralTank().getFluidAmount() < REQUIRED_VISCERAL_BLOOD) return false;
         if (engine.getViscousTank().getFluidAmount() < REQUIRED_VISCOUS_BLASPHEMY) return false;
 
+
         return true;
     }
 
     @Override
     public void tickProcess(Level level, BlockPos pos, BlockState state, RhnullBloodEngineBlockEntity engine) {
         processTick++;
+
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            double cX = pos.getX() + 0.5;
+            double cY = pos.getY() + 2.5;
+            double cZ = pos.getZ() + 0.5;
+
+            if (processTick % 4 == 0) {
+                for (BlockPos offset : RhnullBloodEngineBlockEntity.PILLAR_OFFSETS) {
+                    BlockPos pillarPos = pos.offset(offset);
+                    double pX = pillarPos.getX() + 0.5;
+                    double pY = pillarPos.getY() + 1.2;
+                    double pZ = pillarPos.getZ() + 0.5;
+
+                    serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions(engine.getBloodGlowColor(), 0.6f, false, 15, true),
+                            pX, pY, pZ, 0, (cX - pX) * 0.15, (cY - pY) * 0.15, (cZ - pZ) * 0.15, 1.0);
+                }
+            }
+
+            int heartbeatFrequency = Math.max(5, 20 - (processTick / 10));
+            if (processTick % heartbeatFrequency == 0) {
+                level.playSound(null, pos, SoundEvents.WARDEN_HEARTBEAT, SoundSource.BLOCKS, 1.2F, 1.0F + (processTick / 200.0F));
+                serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions(engine.getBloodBaseColor(), 1.2f),
+                        cX, cY, cZ, 10, 0.4, 0.4, 0.4, 0.1);
+            }
+        }
+
         if (processTick >= MAX_PROCESS_TIME) {
             finishProcess(level, pos, engine);
             resetProcess();
@@ -105,23 +132,18 @@ public class ResurrectionEngineMode implements IEngineMode {
         for (ItemStack item : modifiers) {
             if (item.isEmpty()) continue;
 
-
             if (item.is(Items.MAGMA_BLOCK) || item.is(ModItems.BLASPHEMOUS_EYE.get())) {
                 forgeData.putBoolean("BlasphemousFireResist", true);
             }
-
             else if (item.is(Items.RABBIT_FOOT) || item.is(ModItems.SCARLET_FEATHER.get())) {
                 forgeData.putBoolean("BlasphemousSpeed", true);
             }
-
             else if (item.is(ModItems.VEINREAVER_HORN.get())) {
                 forgeData.putBoolean("BlasphemousStrength", true);
             }
-
             else if (item.is(ModItems.PURE_BLOOD_GEM.get())) {
                 forgeData.putBoolean("BlasphemousRegen", true);
             }
-
             else if (item.is(ModItems.CRIMSON_SHELL.get())) {
                 forgeData.putBoolean("BlasphemousResistance", true);
             }

@@ -26,12 +26,6 @@ public class SmallCrimsonDaggerModel<T extends Entity> extends EntityModel<T> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        // --- BURROWING FIX ---
-        // 1. Y = 0.0F: Centers the model vertically on the hitbox (no flying above/below).
-        // 2. Z = -6.0F: Moves the model BACKWARDS by 6 pixels.
-        //    Since the dagger is 11 pixels long, shifting back ~5.5 pixels aligns the tip
-        //    with the entity's location (0,0,0). The body will now trail behind the impact.
-
         partdefinition.addOrReplaceChild("small_crimson_dagger",
                 CubeListBuilder.create().texOffs(0, 0)
                         .addBox(-2.0F, -5.5F, 0.0F, 4.0F, 11.0F, 0.0F, new CubeDeformation(0.0F)),
@@ -42,7 +36,7 @@ public class SmallCrimsonDaggerModel<T extends Entity> extends EntityModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        // Rotation is handled by the Renderer via PoseStack
+
     }
 
     @Override

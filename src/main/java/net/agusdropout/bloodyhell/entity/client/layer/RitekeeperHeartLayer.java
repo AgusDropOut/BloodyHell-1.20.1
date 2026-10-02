@@ -26,7 +26,7 @@ public class RitekeeperHeartLayer extends GeoRenderLayer<RitekeeperEntity> {
         bakedModel.getBone("heart").ifPresent(heartBone -> {
             poseStack.pushPose();
 
-            // ... Position mapping code (kept same) ...
+
             Vector3d worldPos = heartBone.getWorldPosition();
             double lerpX = Mth.lerp(partialTick, animatable.xo, animatable.getX());
             double lerpY = Mth.lerp(partialTick, animatable.yo, animatable.getY());
@@ -43,11 +43,11 @@ public class RitekeeperHeartLayer extends GeoRenderLayer<RitekeeperEntity> {
 
             VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(BLANK_TEXTURE));
 
-            // Core
+
             RenderHelper.renderIcosahedron(consumer, poseStack.last().pose(), poseStack.last().normal(),
                     0.08f, 0.8f, 0.04f, 0.04f, 1.0f, 15728880);
 
-            // Shell
+
             RenderHelper.renderIcosahedron(consumer, poseStack.last().pose(), poseStack.last().normal(),
                     0.15f, 1.0f, 0.2f, 0.2f, 0.3f, 15728880);
 

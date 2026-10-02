@@ -50,33 +50,31 @@ public class SpecialSlashRenderer extends EntityRenderer<SpecialSlashEntity> {
                 float rad = 3.5f * ghostScale;
                 float width = 0.8f * ghostScale;
 
-                // DEFINE COLORS
-                // Inner: Black
+
                 float[] colInner = {0.0f, 0.0f, 0.0f, 0.9f * ghostAlpha};
-                // Outer: Yellow
+
                 float[] colOuter = {1.0f, 1.0f, 0.0f, 0.6f * ghostAlpha};
 
                 buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
-                // Slash 1
                 poseStack.pushPose();
                 poseStack.mulPose(Axis.ZP.rotationDegrees(90));
                 poseStack.mulPose(Axis.XN.rotationDegrees(180));
                 poseStack.mulPose(Axis.YN.rotationDegrees(45));
 
-                // Use Gradient Helper
+
                 RenderHelper.renderCrescentGradient(buffer, poseStack.last().pose(), null,
                         rad, width, (float)Math.PI/1.2f,
                         colInner, colOuter, 15728880);
 
                 poseStack.popPose();
 
-                // Slash 2
+
                 poseStack.pushPose();
                 poseStack.mulPose(Axis.ZP.rotationDegrees(-90));
                 poseStack.mulPose(Axis.YN.rotationDegrees(-45));
 
-                // Use Gradient Helper
+
                 RenderHelper.renderCrescentGradient(buffer, poseStack.last().pose(), null,
                         rad, width, (float)Math.PI/1.2f,
                         colInner, colOuter, 15728880);

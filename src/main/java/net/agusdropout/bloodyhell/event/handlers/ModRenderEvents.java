@@ -14,7 +14,6 @@ public class ModRenderEvents {
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
 
 
-
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             SwirlRenderManager.renderAllAndClear();
             BlackHoleRenderManager.renderAllAndClear();
@@ -34,7 +33,14 @@ public class ModRenderEvents {
             RadiantEnergyRenderManager.renderAllAndClear();
             FrenziedExplosionRenderManager.renderAllAndClear();
             BloodBlobRenderManager.renderAll(event);
+            BloodOrbRenderManager.renderAll(event);
+
+
 
         }
+
+
+
+
     }
 }

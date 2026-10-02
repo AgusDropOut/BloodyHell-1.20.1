@@ -86,6 +86,11 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private int heartbeatTimer = 0;
     private int ambientSoundTimer = 0;
 
+
+    private int clientRitualTick = 0;
+    private int explosionTimer = -1;
+    private float heartbeatPulse = 0.0f;
+
     private Vector3f currentBaseColor = new Vector3f(0.5f, 0.0f, 0.05f);
     private Vector3f currentGlowColor = new Vector3f(1.0f, 0.1f, 0.1f);
 
@@ -95,19 +100,15 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
         super(ModBlockEntities.RHNULL_BLOOD_ENGINE.get(), pos, state);
     }
 
-
     private void updateMode() {
         ItemStack stack = this.itemHandler.getStackInSlot(0);
 
         if (this.currentMode != null) {
             this.currentMode.resetProcess();
         }
-
         this.currentMode = null;
 
-        if (stack.isEmpty()) {
-            return;
-        }
+        if (stack.isEmpty()) return;
 
         if (stack.getItem() == ModItems.BOUND_BLOOD_FLASK.get()) {
             CompoundTag nbt = stack.getTag();
@@ -120,6 +121,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             }
         }
     }
+
     public void setCraftingFinished(boolean finished) {
         this.isCraftingFinished = finished;
         if (this.level != null && !this.level.isClientSide) {
@@ -147,9 +149,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
         return InteractionResult.PASS;
     }
 
-    public ItemStack getRenderStack() {
-        return itemHandler.getStackInSlot(0);
-    }
+    public ItemStack getRenderStack() { return itemHandler.getStackInSlot(0); }
 
     public void clearInventory() {
         itemHandler.setStackInSlot(0, ItemStack.EMPTY);
@@ -179,6 +179,11 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                 this.hasPlayedFullyCharged = false;
                 this.heartbeatTimer = 0;
                 this.ambientSoundTimer = 0;
+
+                this.clientRitualTick = 0;
+                this.explosionTimer = -1;
+                this.heartbeatPulse = 0.0f;
+
                 if (currentMode != null) currentMode.resetProcess();
             } else {
                 this.activationSequenceTimer = 0;
@@ -186,7 +191,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             }
 
             updatePillars(active);
-
             this.setChanged();
             if (this.level != null && !this.level.isClientSide) {
                 this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
@@ -196,7 +200,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
 
     private void updatePillars(boolean active) {
         if (this.level == null || this.level.isClientSide) return;
-
         for (BlockPos offset : PILLAR_OFFSETS) {
             BlockPos targetPos = this.worldPosition.offset(offset);
             if (this.level.getBlockEntity(targetPos) instanceof RhnullBloodEnginePillarBlockEntity pillar) {
@@ -206,9 +209,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     }
 
     @Override
-    public boolean isActive() {
-        return this.isActive;
-    }
+    public boolean isActive() { return this.isActive; }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
         int totalFluid = bloodTank.getFluidAmount() + corruptedTank.getFluidAmount() + viscousTank.getFluidAmount() + visceralTank.getFluidAmount();
@@ -218,31 +219,15 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             updateColors(totalFluid);
         }
 
-        if (level.isClientSide) return;
 
         if (this.isActive) {
-
-            if (this.isCraftingFinished) {
-                this.setActive(false);
-                return;
-            }
-
             if (this.activationSequenceTimer >= 0) {
                 this.activationSequenceTimer++;
-
-                if (this.activationSequenceTimer == 20 || this.activationSequenceTimer == 35 || this.activationSequenceTimer == 55) {
-                    level.playSound(null, pos, ModSounds.HARVESTER_PUMP.get(), SoundSource.BLOCKS, 1.2f, 0.8f);
-                } else if (this.activationSequenceTimer >= 65) {
+                if (this.activationSequenceTimer >= 65) {
                     this.activationSequenceTimer = -1;
                     this.isHeating = true;
                 }
-
-                setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
-                return;
-            }
-
-            if (this.isHeating && !this.isStabilized) {
+            } else if (this.isHeating && !this.isStabilized) {
                 if (hasFluid) {
                     heatProgress += 0.002f;
                     if (heatProgress >= 1.0f) {
@@ -257,7 +242,70 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                     heatProgress = Math.max(0.0f, heatProgress - 0.005f);
                     stabilizationLevel = Math.max(0.0f, stabilizationLevel - 0.01f);
                 }
+            }
+        } else {
+            this.isHeating = false;
+            this.isStabilized = false;
+            this.isCraftingFinished = false;
+            this.heatProgress = Math.max(0.0f, heatProgress - 0.05f);
+            this.stabilizationLevel = Math.max(0.0f, stabilizationLevel - 0.1f);
+            this.explosionTimer = -1;
+            this.clientRitualTick = 0;
+            this.heartbeatPulse = 0.0f;
+        }
 
+
+        if (level.isClientSide) {
+            if (this.heartbeatPulse > 0.0f) {
+                this.heartbeatPulse = Math.max(0.0f, this.heartbeatPulse - 0.05f);
+            }
+
+            if (this.isActive) {
+                if (this.isCraftingFinished) {
+                    if (this.explosionTimer == -1) this.explosionTimer = 20;
+                    if (this.explosionTimer > 0) {
+                        this.explosionTimer--;
+                        this.heartbeatPulse = 1.0f;
+                    }
+                } else if (this.isStabilized && this.currentMode != null && this.currentMode.canProcess(this)) {
+                    int oldTick = this.clientRitualTick;
+                    this.clientRitualTick++;
+
+                    int heartbeatFrequency = Math.max(5, 20 - (this.clientRitualTick / 10));
+                    if (this.clientRitualTick % heartbeatFrequency == 0 && oldTick % heartbeatFrequency != 0) {
+                        this.heartbeatPulse = 1.0f;
+                    }
+                } else {
+                    this.clientRitualTick = 0;
+                }
+            }
+            return;
+        }
+
+
+        if (this.isActive) {
+
+            if (this.isCraftingFinished) {
+                if (this.explosionTimer == -1) {
+                    this.explosionTimer = 20;
+                    level.playSound(null, pos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 0.4f, 1.5f);
+                }
+                if (this.explosionTimer > 0) {
+                    this.explosionTimer--;
+                } else {
+                    this.setActive(false);
+                    this.explosionTimer = -1;
+                }
+                return;
+            }
+
+            if (this.activationSequenceTimer == 20 || this.activationSequenceTimer == 35 || this.activationSequenceTimer == 55) {
+                level.playSound(null, pos, ModSounds.HARVESTER_PUMP.get(), SoundSource.BLOCKS, 1.2f, 0.8f);
+                setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+
+            if (this.isHeating && !this.isStabilized) {
                 if (this.soundTimer <= 0) {
                     level.playSound(null, pos, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 0.15f, 1.2f + (this.heatProgress * 0.8f));
                     this.soundTimer = 20;
@@ -296,32 +344,30 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                     this.ambientSoundTimer--;
                 }
 
-                if (this.heartbeatTimer <= 0) {
-                    level.playSound(null, pos, SoundEvents.WARDEN_HEARTBEAT, SoundSource.BLOCKS, 0.7f, 1.2f);
-
-                    if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                        net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
-
-                        serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions(this.currentGlowColor, 0.8f, false, 20, false),
-                                center.x, center.y, center.z, 4, 0.6D, 0.6D, 0.6D, 0.02D);
+                if (currentMode == null || !currentMode.canProcess(this)) {
+                    if (this.heartbeatTimer <= 0) {
+                        level.playSound(null, pos, SoundEvents.WARDEN_HEARTBEAT, SoundSource.BLOCKS, 0.7f, 1.2f);
+                        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                            net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
+                            serverLevel.sendParticles(new net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions(this.currentGlowColor, 0.8f, false, 20, false),
+                                    center.x, center.y, center.z, 4, 0.6D, 0.6D, 0.6D, 0.02D);
+                        }
+                        this.heartbeatTimer = 10;
+                    } else {
+                        this.heartbeatTimer--;
                     }
-                    this.heartbeatTimer = 10;
-                } else {
-                    this.heartbeatTimer--;
                 }
 
                 if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                     if (level.random.nextFloat() < 0.25f) {
                         net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
                         int amount = level.random.nextInt(3) + 1;
-
                         for (int i = 0; i < amount; i++) {
                             double offsetX = (level.random.nextDouble() - 0.5) * 0.2;
                             double offsetZ = (level.random.nextDouble() - 0.5) * 0.2;
                             double speedX = (level.random.nextDouble() - 0.5) * 0.2;
                             double speedY = level.random.nextDouble() * 0.15 + 0.05;
                             double speedZ = (level.random.nextDouble() - 0.5) * 0.2;
-
                             serverLevel.sendParticles(new BloodDropParticleOption(this.currentBaseColor),
                                     center.x + offsetX, center.y - 0.5D, center.z + offsetZ,
                                     0, speedX, speedY, speedZ, 1.0D);
@@ -343,22 +389,26 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                     }
                 }
             }
-        } else {
-            this.isHeating = false;
-            this.isStabilized = false;
-            this.isCraftingFinished = false;
-            this.heatProgress = Math.max(0.0f, heatProgress - 0.05f);
-            this.stabilizationLevel = Math.max(0.0f, stabilizationLevel - 0.1f);
-            this.hasPlayedFullyCharged = false;
-            if (currentMode != null) currentMode.resetProcess();
         }
+    }
 
-        setChanged();
-        level.sendBlockUpdated(pos, state, state, 3);
+
+    @Override
+    public float getExplosionProgress() {
+        return explosionTimer < 0 ? 0.0f : 1.0f - (explosionTimer / 20.0f);
+    }
+
+    @Override
+    public float getSpasmIntensity() {
+        return Math.min(1.0f, (float)this.clientRitualTick / 200.0f);
+    }
+
+    @Override
+    public float getHeartbeatPulse() {
+        return this.heartbeatPulse;
     }
 
     private void updateColors(int totalFluid) {
-
         if (this.currentMode != null) {
             Vector3f customBase = this.currentMode.getCustomBaseColor();
             Vector3f customGlow = this.currentMode.getCustomGlowColor();
@@ -369,7 +419,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                 return;
             }
         }
-
 
         if (totalFluid <= 0) return;
 
@@ -457,7 +506,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             @Override
             public int fill(FluidStack resource, FluidAction action) {
                 if (resource.isEmpty()) return 0;
-
                 int filled = 0;
                 if (resource.getFluid() == ModFluids.BLOOD_SOURCE.get()) filled = bloodTank.fill(resource, action);
                 else if (resource.getFluid() == ModFluids.CORRUPTED_BLOOD_SOURCE.get()) filled = corruptedTank.fill(resource, action);
@@ -523,6 +571,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
         tag.putInt("SoundTimer", soundTimer);
         tag.putInt("ActivationSequenceTimer", activationSequenceTimer);
         tag.putBoolean("HasPlayedFullyCharged", hasPlayedFullyCharged);
+
         tag.put("BloodTank", bloodTank.writeToNBT(new CompoundTag()));
         tag.put("CorruptedTank", corruptedTank.writeToNBT(new CompoundTag()));
         tag.put("ViscousTank", viscousTank.writeToNBT(new CompoundTag()));
@@ -541,6 +590,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
         soundTimer = tag.getInt("SoundTimer");
         activationSequenceTimer = tag.getInt("ActivationSequenceTimer");
         hasPlayedFullyCharged = tag.getBoolean("HasPlayedFullyCharged");
+
         bloodTank.readFromNBT(tag.getCompound("BloodTank"));
         corruptedTank.readFromNBT(tag.getCompound("CorruptedTank"));
         viscousTank.readFromNBT(tag.getCompound("ViscousTank"));

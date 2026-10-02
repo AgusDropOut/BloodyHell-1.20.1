@@ -2,97 +2,70 @@ package net.agusdropout.bloodyhell.item.client.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.agusdropout.bloodyhell.item.client.layer.BloodOrbLayer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.RenderUtils;
 
 public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
 
-
-    private Matrix4f capturedArmMatrix = null;
+    private ItemDisplayContext currentTransform = ItemDisplayContext.NONE;
 
     public BaseStaffRenderer() {
         super(new BaseStaffModel());
+        this.addRenderLayer(new BloodOrbLayer(this));
     }
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        this.capturedArmMatrix = null;
 
+        this.currentTransform = transformType;
 
-        super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
-
-        if (this.capturedArmMatrix != null && (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND)) {
-            Minecraft mc = Minecraft.getInstance();
-            if (mc.player != null) {
-                poseStack.pushPose();
-
-
-                poseStack.last().pose().set(this.capturedArmMatrix);
-
-
-                boolean isRightHand = transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND;
-                float offsetX = 1.0f / 16.0f ;
-                float offsetZ = 2.0f / 16.0f ;
-                float offsetY = 5f / 16.0f;
-
-                poseStack.translate(offsetX, offsetY, offsetZ);
-
-
-
-                poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(-90.0F));
-                poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(-90.0F));
-
-                renderPlayerArm(poseStack, bufferSource, packedLight, mc.player, isRightHand);
-
-                poseStack.popPose();
-            }
+        if (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
+            poseStack.pushPose();
+            poseStack.translate(0.15f, -0.2f, -0.4f);
+            super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
+            poseStack.popPose();
+        } else {
+            super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
         }
     }
-
 
     @Override
-    public void renderRecursively(PoseStack poseStack, BaseStaffItem animatable, GeoBone bone,
-                                  RenderType renderType, MultiBufferSource bufferSource,
-                                  VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-                                  int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderRecursively(PoseStack poseStack, BaseStaffItem animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
-        if (bone.getName().equals("right_arm_anchor")) {
+        if (bone.getName().equals("arm")) {
 
-            poseStack.pushPose();
-            RenderUtils.prepMatrixForBone(poseStack, bone);
-            this.capturedArmMatrix = new Matrix4f(poseStack.last().pose());
-            poseStack.popPose();
+            if (this.currentTransform != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
+                return;
+            }
 
-            return;
-        }
+            if (Minecraft.getInstance().player != null) {
+                poseStack.pushPose();
+                RenderUtils.prepMatrixForBone(poseStack, bone);
 
+                ResourceLocation skinTexture = Minecraft.getInstance().player.getSkinTextureLocation();
+                RenderType customRenderType = RenderType.entityCutoutNoCull(skinTexture);
+                VertexConsumer skinBuffer = bufferSource.getBuffer(customRenderType);
 
-        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
-    }
+                this.renderCubesOfBone(poseStack, bone, skinBuffer, packedLight, packedOverlay, red, green, blue, alpha);
 
+                VertexConsumer originalBuffer = bufferSource.getBuffer(renderType);
+                this.renderChildBones(poseStack, animatable, bone, renderType, bufferSource, originalBuffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 
-    private void renderPlayerArm(PoseStack poseStack, MultiBufferSource buffer, int packedLight, AbstractClientPlayer player, boolean rightArm) {
-        EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        EntityRenderer<? super AbstractClientPlayer> renderer = dispatcher.getRenderer(player);
-
-        if (renderer instanceof PlayerRenderer playerRenderer) {
-            if (rightArm) {
-                playerRenderer.renderRightHand(poseStack, buffer, packedLight, player);
-            } else {
-                playerRenderer.renderLeftHand(poseStack, buffer, packedLight, player);
+                poseStack.popPose();
+                return;
             }
         }
+
+        VertexConsumer safeBuffer = bufferSource.getBuffer(renderType);
+        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, safeBuffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

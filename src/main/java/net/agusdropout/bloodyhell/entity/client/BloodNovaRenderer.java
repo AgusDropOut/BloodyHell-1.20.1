@@ -20,7 +20,7 @@ public class BloodNovaRenderer extends EntityRenderer<BloodNovaEntity> {
 
     private static final ResourceLocation BLANK = new ResourceLocation(BloodyHell.MODID, "textures/misc/white.png");
 
-    // Must match the DEFAULT_RADIUS in BloodNovaEntity to ensure 1.0x scale represents the base size
+
     private static final float BASE_RADIUS = 10.0f;
 
     private static final Vector3f COL_CORE = new Vector3f(0.0f, 0.0f, 0.0f);
@@ -36,23 +36,23 @@ public class BloodNovaRenderer extends EntityRenderer<BloodNovaEntity> {
     public void render(BloodNovaEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         float age = entity.tickCount + partialTicks;
 
-        // 1. Calculate the Size Multiplier based on the Gem upgrades
+
         float radiusCorrection = entity.getRadius() / BASE_RADIUS;
 
-        // 2. Base pulsating animation (approx 2.5 blocks wide normally)
+
         float baseAnimationScale = 2.5f + 0.1f * Mth.sin(age * 0.1f);
 
-        // 3. Combine them
+
         float scale = baseAnimationScale * radiusCorrection;
 
-        // 4. Handle Fade Out (Collapse)
+
         if (entity.tickCount > entity.getCollapseTime()) {
             float timeRemaining = entity.getLifeTicks() - age;
             scale *= Math.max(0, timeRemaining / 30.0f);
         }
 
         poseStack.pushPose();
-        poseStack.scale(scale, scale, scale); // This applies the size upgrade to ALL shapes below
+        poseStack.scale(scale, scale, scale);
         poseStack.mulPose(Axis.YP.rotationDegrees(age * 1.5f));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.sin(age * 0.03f) * 15f));
 

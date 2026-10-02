@@ -35,14 +35,14 @@ public class StarfallProjectileEntityRenderer extends GeoEntityRenderer<Starfall
     public void render(StarfallProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
 
-        // Calcular factor de escala basado en lifeTicks
-        float maxLife = 200f; // ajustar al máximo de lifeTicks de tu entidad
+
+        float maxLife = 200f;
         float scale = 1.0f + (1.0f - ((float) entity.getLifeTicks() / maxLife)) * 1.5f;
-        // Esto hace que la escala vaya de 1.0 a 2.5 a medida que lifeTicks baja a 0
+
 
         poseStack.scale(scale, scale, scale);
 
-        // Render normal
+
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
 
         poseStack.popPose();

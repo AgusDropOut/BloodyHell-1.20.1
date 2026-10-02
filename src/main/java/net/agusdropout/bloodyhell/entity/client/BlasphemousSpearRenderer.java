@@ -25,7 +25,7 @@ public class BlasphemousSpearRenderer extends GeoEntityRenderer<BlasphemousSpear
     public void render(BlasphemousSpearEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
 
-        // Mantenemos solo la escala aleatoria (Efecto visual bonito)
+
         float randomVar = (entity.getId() % 5) * 0.05f;
         float scaleXZ = 0.8f + randomVar;
         float scaleY = 0.8f + ((entity.getId() % 3) * 0.15f);

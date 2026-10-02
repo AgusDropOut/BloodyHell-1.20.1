@@ -14,7 +14,7 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-// Nota: Ahora extiende de GeoRenderLayer<BlasphemousTwinDaggersCloneEntity>
+
 public class PlayerSkinLayer extends GeoRenderLayer<BlasphemousTwinDaggersCloneEntity> {
 
     public PlayerSkinLayer(GeoEntityRenderer<BlasphemousTwinDaggersCloneEntity> entityRendererIn) {
@@ -30,24 +30,21 @@ public class PlayerSkinLayer extends GeoRenderLayer<BlasphemousTwinDaggersCloneE
             ResourceLocation skinLocation = clientPlayer.getSkinTextureLocation();
             RenderType skinRenderType = RenderType.entityTranslucent(skinLocation);
 
-            // --- LÓGICA DE OCULTACIÓN ROBUSTA ---
 
-            // 1. Recorremos TODOS los huesos principales para asegurarnos
             for (GeoBone bone : bakedModel.topLevelBones()) {
                 recursiveHide(bone);
             }
 
-            // Renderizar
+
             getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, skinRenderType, bufferSource.getBuffer(skinRenderType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         }
     }
 
-    // Método auxiliar para buscar huesos hijos y ocultar lo correcto
+
     private void recursiveHide(GeoBone bone) {
         String name = bone.getName();
 
-        // PASADA 2: Textura de SKIN (Piel)
-        // Queremos ver SOLO el cuerpo. Ocultamos las dagas.
+
 
         if (name.contains("dagger") || name.contains("weapon")) {
             bone.setHidden(true);
@@ -57,7 +54,7 @@ public class PlayerSkinLayer extends GeoRenderLayer<BlasphemousTwinDaggersCloneE
             bone.setHidden(false);
         }
 
-        // Seguir bajando por la jerarquía
+
         for (GeoBone child : bone.getChildBones()) {
             recursiveHide(child);
         }

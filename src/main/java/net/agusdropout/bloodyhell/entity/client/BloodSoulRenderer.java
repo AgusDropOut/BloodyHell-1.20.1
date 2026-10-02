@@ -15,5 +15,5 @@ public class BloodSoulRenderer extends EntityRenderer<BloodSoulEntity> {
         return null; // No texture needed
     }
 
-    // Override render to do nothing (particles handled in entity tick)
+
 }

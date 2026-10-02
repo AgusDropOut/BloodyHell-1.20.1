@@ -22,12 +22,11 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class BloodFireGeoLayer<T extends LivingEntity & software.bernie.geckolib.animatable.GeoEntity> extends GeoRenderLayer<T> {
 
-    // --- CONFIGURATION ---
+
     private static final boolean FLIP_X = true;
     private static final boolean FLIP_Y = false;
 
-    // ADJUST THIS IF IT'S STILL ROTATED WRONG!
-    // Common values to try: 90.0F, -90.0F, 180.0F
+
     private static final float ROTATION_OFFSET = 180.0F;
 
     public BloodFireGeoLayer(GeoRenderer<T> entityRendererIn) {
@@ -44,25 +43,24 @@ public class BloodFireGeoLayer<T extends LivingEntity & software.bernie.geckolib
 
         poseStack.pushPose();
 
-        // 1. Center
+
         poseStack.translate(0.0D, animatable.getBbHeight() * 0.5F, 0.0D);
 
-        // 2. Undo Body Rotation
+
         float bodyRot = Mth.rotLerp(partialTick, animatable.yBodyRotO, animatable.yBodyRot);
         poseStack.mulPose(Axis.YP.rotationDegrees(-bodyRot));
 
-        // 3. Billboard (Face Camera)
+
         Quaternionf cameraRot = Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation();
         poseStack.mulPose(cameraRot);
 
-        // 4. --- ROTATION OFFSET FIX ---
-        // We apply a manual correction here to fix the "Rotated to the right" issue.
+
         poseStack.mulPose(Axis.YP.rotationDegrees(ROTATION_OFFSET));
 
-        // Move slightly towards camera
+
         poseStack.translate(0.0F, 0.0F, 0.1F);
 
-        // 5. Dynamic Scaling
+
         float xScale = animatable.getBbWidth() * 2.0F;
         float yScale = Math.max(xScale, animatable.getBbHeight() * 1.2F);
 
@@ -71,7 +69,6 @@ public class BloodFireGeoLayer<T extends LivingEntity & software.bernie.geckolib
 
         poseStack.scale(xFinal, yFinal, xScale);
 
-        // 6. Render
         TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer()
                 .getBlockModel(ModBlocks.BLOOD_FIRE.get().defaultBlockState())
                 .getParticleIcon();

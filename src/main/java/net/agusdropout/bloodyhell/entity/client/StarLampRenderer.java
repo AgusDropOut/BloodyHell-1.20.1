@@ -24,13 +24,10 @@ public class StarLampRenderer implements BlockEntityRenderer<StarLampBlockEntity
     public void render(StarLampBlockEntity entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         float time = (Minecraft.getInstance().level.getGameTime() + partialTick) * ROTATION_SPEED;
 
-        // Original logic: Base is static from block config, Tips pulse
-        float baseScale = entity.getStarPoints(); // In old code this was 'PEAK_BASE_SCALE' used for tips
 
-        // Wait, looking at old code:
-        // tips[i] = baseVerts[i].scale(scale); where scale = PEAK_BASE_SCALE + pulse.
-        // baseVerts were unit vector size (approx 1.0).
-        // So actually: Inner radius is 1.0 (Unit Icosahedron), Outer radius is entity.getStarPoints() + Pulse.
+        float baseScale = entity.getStarPoints();
+
+
 
         float pulse = (float)Math.abs(Math.sin(time * PEAK_PULSE_SPEED)) * PEAK_PULSE_AMOUNT;
         float tipScale = baseScale + pulse;
@@ -43,15 +40,12 @@ public class StarLampRenderer implements BlockEntityRenderer<StarLampBlockEntity
 
         VertexConsumer vertex = bufferSource.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
 
-        // Use the specialized helper method
-        // Colors from old code: 255, 255, 180, 200 -> 1.0, 1.0, 0.7, 0.8
-        // Light: 0xF000F0 -> 15728880 (Fullbright)
 
         RenderHelper.renderStarLampIcosahedron(vertex, poseStack.last().pose(), poseStack.last().normal(),
-                1.0f,       // Base Scale (Inner)
-                tipScale,   // Tip Scale (Outer + Pulse)
-                1.0f, 1.0f, 0.7f, 0.8f, // Color (Pale Yellow)
-                15728880);  // Full Brightness
+                1.0f,
+                tipScale,
+                1.0f, 1.0f, 0.7f, 0.8f,
+                15728880);
 
         poseStack.popPose();
     }

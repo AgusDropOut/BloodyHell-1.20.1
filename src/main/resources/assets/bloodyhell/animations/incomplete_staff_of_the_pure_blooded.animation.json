@@ -1,25 +1,28 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"casting": {
-			"animation_length": 1,
+		"hold_casting": {
+			"loop": true,
 			"bones": {
-				"shoulder_pivot": {
+				"wrist_pivot": {
 					"rotation": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"1.0": {
-							"vector": [7.5, 0, 0]
-						}
+						"vector": [82.6587, -7.0453, -2.5781]
 					},
 					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"1.0": {
-							"vector": [0, 0, -7]
-						}
+						"vector": [1, 1, 0]
+					}
+				},
+				"shoulder_pivot": {
+					"rotation": {
+						"vector": [-12.5, 0, 0]
+					}
+				},
+				"arm": {
+					"rotation": {
+						"vector": [2.5071, -2.4786, -0.3265]
+					},
+					"position": {
+						"vector": [0, 0, -3]
 					}
 				}
 			}
@@ -27,12 +30,9 @@
 		"idle": {
 			"loop": true,
 			"bones": {
-				"shoulder_pivot": {
-					"rotation": {
-						"vector": [2.5, 0, 0]
-					},
+				"root": {
 					"position": {
-						"vector": [0, 0, 2]
+						"vector": [0, 0, -2]
 					}
 				}
 			}

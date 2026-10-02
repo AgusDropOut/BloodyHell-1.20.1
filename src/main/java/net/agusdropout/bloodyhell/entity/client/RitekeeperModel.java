@@ -31,14 +31,14 @@ public class RitekeeperModel extends GeoModel<RitekeeperEntity> {
     public void setCustomAnimations(RitekeeperEntity animatable, long instanceId, AnimationState<RitekeeperEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
 
-        // 1. Find the head bone (Ensure your bone in Blockbench is named "head")
+
         CoreGeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {
-            // 2. Get the head rotation data from the entity
+
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
-            // 3. Apply the rotation (Convert degrees to radians)
+
             head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
             head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
         }

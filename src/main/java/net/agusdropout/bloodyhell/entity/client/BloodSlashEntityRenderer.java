@@ -15,7 +15,6 @@ import net.minecraft.util.Mth;
 
 public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
 
-    // CONSTANTS ---
 
     private static final ResourceLocation BLANK_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/misc/white.png");
 
@@ -28,13 +27,12 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
         super(context);
     }
 
-    // --- MAIN RENDER ---
 
     @Override
     public void render(BloodSlashEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         float age = entity.tickCount + partialTicks;
 
-        // Use Synced Rotation for smooth interpolation
+
         float lerpYaw = Mth.lerp(partialTicks, entity.getYawSynced(), entity.getYawSynced());
         float lerpPitch = Mth.lerp(partialTicks, entity.getPitchSynced(), entity.getPitchSynced());
 
@@ -43,10 +41,10 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
             lerpPitch = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
         }
 
-        // Get the synchronized scale (Gem Upgrade)
+
         float entityScale = entity.getScale();
 
-        // Setup Render State
+
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
         RenderSystem.enableBlend();
@@ -56,22 +54,22 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
         RenderSystem.depthMask(false);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-        // A. AIR SLASH RENDERING
+
         poseStack.pushPose();
 
-        // Orient to entity rotation
+
         poseStack.mulPose(Axis.YP.rotationDegrees(GLOBAL_YAW_OFFSET - lerpYaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(lerpPitch));
         poseStack.mulPose(Axis.ZP.rotationDegrees(MESH_ROTATION_Z));
         poseStack.mulPose(Axis.XP.rotationDegrees(MESH_ROTATION_X));
         poseStack.mulPose(Axis.YP.rotationDegrees(MESH_ROTATION_Y));
 
-        // Render Core
+
         renderAirSlash(poseStack, buffer, age, 1.0f, entityScale);
 
-        // Render Side Echoes
+
         for (int i = 1; i <= 2; i++) {
-            float offset = i * 0.25f * entityScale; // Scale the offset too
+            float offset = i * 0.25f * entityScale;
             float fade = 0.5f / (i + 1);
 
             poseStack.pushPose(); poseStack.translate(0, 0, offset);
@@ -83,7 +81,7 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
             poseStack.popPose();
         }
 
-        // Render Back Trails
+
         for (int i = 1; i <= 3; i++) {
             float backOffset = i * 0.6f * entityScale;
             float fade = 0.6f / i;
@@ -96,19 +94,19 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
         }
         poseStack.popPose();
 
-        // B. FLOOR TRAIL RENDERING
+
         RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-        // Cleanup
+
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
         super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }
 
-    // --- HELPERS ---
+
 
     private void renderAirSlash(PoseStack poseStack, BufferBuilder buffer, float age, float alphaMult, float entityScale) {
-        // Base animation growth * Entity Scale
+
         float animationScale = 1.0f + (age * 0.15f);
         float finalScale = animationScale * entityScale;
 
@@ -119,11 +117,10 @@ public class BloodSlashEntityRenderer extends EntityRenderer<BloodSlashEntity> {
 
         buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
-        // Render Core Crescent
         RenderHelper.renderCrescent(buffer, poseStack.last().pose(), null,
                 1.5f, 0.5f, (float)Math.PI / 1.5f, 1.0f, 0.2f, 0.0f, alpha, 15728880);
 
-        // Render Edge Glow
+
         RenderHelper.renderCrescent(buffer, poseStack.last().pose(), null,
                 1.6f, 0.7f, (float)Math.PI / 1.5f, 0.0f, 0.0f, 0.0f, alpha * 0.6f, 15728880);
 

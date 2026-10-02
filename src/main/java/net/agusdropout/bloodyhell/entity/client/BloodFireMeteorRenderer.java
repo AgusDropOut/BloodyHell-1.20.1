@@ -30,7 +30,7 @@ public class BloodFireMeteorRenderer extends EntityRenderer<BloodFireMeteorEntit
 
         poseStack.translate(0.0D, 1.5D, 0.0D);
 
-        // Scale Logic
+
         float maxScale = entity.getScale();
         float scale = maxScale;
 
@@ -41,7 +41,7 @@ public class BloodFireMeteorRenderer extends EntityRenderer<BloodFireMeteorEntit
 
         poseStack.scale(-scale, -scale, scale);
 
-        // Apply Rotation
+
         this.model.setupAnim(entity, 0, 0, entity.tickCount + partialTick, 0, 0);
 
 

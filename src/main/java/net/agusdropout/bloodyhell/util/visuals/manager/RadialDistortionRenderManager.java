@@ -54,7 +54,7 @@ public class RadialDistortionRenderManager {
             ModShaders.RADIAL_DISTORTION_SHADER.getUniform("ScreenSize").set((float) screenW, (float) screenH);
         }
 
-        // Binds the safe, completed screen texture
+
         RenderSystem.setShaderTexture(0, mainTarget.getColorTextureId());
 
         Tesselator tess = Tesselator.getInstance();
@@ -71,7 +71,7 @@ public class RadialDistortionRenderManager {
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-            // Fallback to camera rotation if custom rotation is null
+
             Quaternionf rotationToUse = (data.camRot == null) ? mc.gameRenderer.getMainCamera().rotation() : data.camRot;
 
             Vector3f[] corners = {

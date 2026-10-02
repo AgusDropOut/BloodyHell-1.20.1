@@ -36,7 +36,7 @@ public class BlasphemousImpalerEntityRenderer extends EntityRenderer<Blasphemous
         poseStack.mulPose(Axis.YP.rotationDegrees(yRot - 180.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(xRot));
 
-        // 2. SHAKE EFFECT
+
         float shake = (float)entity.shakeTime - partialTick;
         if (shake > 0.0F) {
             float angle = -Mth.sin(shake * 3.0F) * shake;

@@ -27,10 +27,9 @@ public class SmallCrimsonDaggerRenderer extends EntityRenderer<SmallCrimsonDagge
     private static final ResourceLocation TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/small_crimson_dagger.png");
     private static final ResourceLocation TRAIL_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/effect/blood_trail.png");
 
-    // --- CONFIGURATION ---
-    private static final float STUCK_DEPTH_OFFSET = 0.0f; // Keep 0 if you fixed the model Z-offset
 
-    // CHANGE THIS NUMBER TO RESIZE THE DAGGER
+    private static final float STUCK_DEPTH_OFFSET = 0.0f;
+
     private static final float SCALE_MODIFIER = 2.5f;
 
     public SmallCrimsonDaggerRenderer(EntityRendererProvider.Context context) {
@@ -42,33 +41,32 @@ public class SmallCrimsonDaggerRenderer extends EntityRenderer<SmallCrimsonDagge
     public void render(SmallCrimsonDagger entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
-        // 1. Interpolated Rotation
+
         float yRot = Mth.lerp(partialTicks, entity.yRotO, entity.getYRot());
         float xRot = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
 
-        // 2. Apply Rotation
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yRot));
         poseStack.mulPose(Axis.XP.rotationDegrees(xRot));
 
-        // 3. Stuck Offset
+
         if (entity.isStuckInGround()) {
             poseStack.translate(0, 0, STUCK_DEPTH_OFFSET);
         }
 
-        // 4. SCALE & FADE (UPDATED)
-        float scale = SCALE_MODIFIER; // Use our new modifier
+
+        float scale = SCALE_MODIFIER;
         float alpha = entity.getFadeAlpha(partialTicks);
         if (alpha < 1.0f) scale *= alpha;
 
         poseStack.scale(scale, scale, scale);
 
-        // 5. Render Model
+
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         poseStack.popPose();
 
-        // 6. RENDER TRAIL
+
         if (!entity.isStuckInGround() && !entity.isInvisible()) {
             renderTrail(entity, partialTicks, poseStack, buffer);
         }
@@ -93,7 +91,6 @@ public class SmallCrimsonDaggerRenderer extends EntityRenderer<SmallCrimsonDagge
         Matrix4f pose = poseStack.last().pose();
         Matrix3f normal = poseStack.last().normal();
 
-        // We scale the trail width too, so it matches the bigger dagger
         float width = 0.35f * SCALE_MODIFIER;
 
         for (int i = 0; i < history.size() - 1; i++) {

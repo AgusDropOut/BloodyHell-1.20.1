@@ -36,18 +36,15 @@ public class BloodBlobRenderManager {
         RenderSystem.setShaderTexture(0, mc.getMainRenderTarget().getDepthTextureId());
         RenderSystem.setShader(() -> shader);
 
-
         Matrix4f vanillaViewMat = new Matrix4f(event.getPoseStack().last().pose());
         Matrix4f projMat = new Matrix4f(event.getProjectionMatrix());
         Matrix4f invProjMat = new Matrix4f(projMat).invert();
-
 
         PoseStack cleanStack = new PoseStack();
         cleanStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(camera.getXRot()));
         cleanStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
         Matrix4f cleanViewMat = new Matrix4f(cleanStack.last().pose());
         Matrix4f cleanInvViewMat = new Matrix4f(cleanViewMat).invert();
-
 
         float partialTicks = mc.getFrameTime();
         double bobX = 0.0;
@@ -85,7 +82,6 @@ public class BloodBlobRenderManager {
 
             Vector3f absCenter = emitter.getBlobCenter();
 
-
             float relX = (float) (absCenter.x() - compCamX);
             float relY = (float) (absCenter.y() - compCamY);
             float relZ = (float) (absCenter.z() - compCamZ);
@@ -100,6 +96,11 @@ public class BloodBlobRenderManager {
             if(shader.safeGetUniform("bloodGlowColor") != null) shader.safeGetUniform("bloodGlowColor").set(glowColor.x(), glowColor.y(), glowColor.z());
             if(shader.safeGetUniform("chargeLevel") != null) shader.safeGetUniform("chargeLevel").set(emitter.getChargeLevel());
             if(shader.safeGetUniform("stabilization") != null) shader.safeGetUniform("stabilization").set(emitter.getStabilizationLevel());
+
+
+            if(shader.safeGetUniform("u_Explosion") != null) shader.safeGetUniform("u_Explosion").set(emitter.getExplosionProgress());
+            if(shader.safeGetUniform("u_Spasm") != null) shader.safeGetUniform("u_Spasm").set(emitter.getSpasmIntensity());
+            if(shader.safeGetUniform("u_Pulse") != null) shader.safeGetUniform("u_Pulse").set(emitter.getHeartbeatPulse());
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
             buffer.vertex(-1, -1, 0).endVertex();

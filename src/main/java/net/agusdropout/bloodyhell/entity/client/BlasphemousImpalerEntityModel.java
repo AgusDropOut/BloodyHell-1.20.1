@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 public class BlasphemousImpalerEntityModel extends EntityModel<BlasphemousImpalerEntity> {
-    // Usamos tu LayerLocation centralizado
+
     public static final ModelLayerLocation LAYER_LOCATION = ModModelLayers.BLASPHEMOUS_IMPALER_ENTITY;
 
     private final ModelPart blasphemous_impaler;
@@ -21,7 +21,7 @@ public class BlasphemousImpalerEntityModel extends EntityModel<BlasphemousImpale
     private final ModelPart a1;
     private final ModelPart lower_anim;
 
-    // CORRECCIÓN: Renombradas variables numéricas (1 -> part1)
+
     private final ModelPart part1;
     private final ModelPart part2;
     private final ModelPart part3;
@@ -43,7 +43,7 @@ public class BlasphemousImpalerEntityModel extends EntityModel<BlasphemousImpale
         this.a1 = this.upper_anim.getChild("a1");
         this.lower_anim = this.blasphemous_impaler.getChild("lower_anim");
 
-        // CORRECCIÓN: Mapeamos los nombres originales ("1") a variables válidas (part1)
+
         this.part1 = this.lower_anim.getChild("1");
         this.part2 = this.lower_anim.getChild("2");
         this.part3 = this.lower_anim.getChild("3");
@@ -129,7 +129,7 @@ public class BlasphemousImpalerEntityModel extends EntityModel<BlasphemousImpale
 
     @Override
     public void setupAnim(BlasphemousImpalerEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        // Deja esto vacío ya que rotamos el modelo entero en el Renderer
+
     }
 
     @Override

@@ -21,6 +21,9 @@
     { "name": "bloodBaseColor", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
     { "name": "bloodGlowColor", "type": "float", "count": 3, "values": [ 1.0, 0.1, 0.1 ] },
     { "name": "chargeLevel", "type": "float", "count": 1, "values": [ 0.0 ] },
-    { "name": "stabilization", "type": "float", "count": 1, "values": [ 0.0 ] }
+    { "name": "stabilization", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "u_Explosion", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "u_Spasm", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "u_Pulse", "type": "float", "count": 1, "values": [ 0.0 ] }
   ]
 }

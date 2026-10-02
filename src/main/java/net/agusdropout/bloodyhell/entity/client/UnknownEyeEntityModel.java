@@ -46,7 +46,6 @@ public class UnknownEyeEntityModel extends GeoModel<UnknownEyeEntity> {
             float lookPitch = animatable.getLookPitch();
             float lookYaw = animatable.getLookYaw();
 
-            // Aplicar la rotación
             head.setRotX(-lookPitch * Mth.DEG_TO_RAD);
             head.setRotY(-lookYaw * Mth.DEG_TO_RAD);
 
