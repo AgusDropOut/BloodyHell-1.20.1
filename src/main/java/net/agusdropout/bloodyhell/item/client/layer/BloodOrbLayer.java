@@ -38,12 +38,7 @@ public class BloodOrbLayer extends GeoRenderLayer<BaseStaffItem> {
 
                 poseStack.translate(pivotX, pivotY, pivotZ);
 
-                VertexConsumer debugBuffer = bufferSource.getBuffer(RenderType.lines());
-                net.minecraft.client.renderer.LevelRenderer.renderLineBox(
-                        poseStack, debugBuffer,
-                        -0.05, -0.05, -0.05, 0.05, 0.05, 0.05,
-                        1.0F, 1.0F, 0.0F, 1.0F
-                );
+
 
                 Matrix4f boneMat = new Matrix4f(poseStack.last().pose());
                 Matrix4f handProj = new Matrix4f(RenderSystem.getProjectionMatrix());

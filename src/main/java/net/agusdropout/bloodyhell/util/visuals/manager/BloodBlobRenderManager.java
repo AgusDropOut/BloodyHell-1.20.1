@@ -1,5 +1,7 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEngineBlockEntity;
@@ -14,8 +16,13 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
 
 public class BloodBlobRenderManager {
+
+    private static int copiedColorTexture = -1;
+    private static int lastWidth = 0;
+    private static int lastHeight = 0;
 
     public static void renderAll(RenderLevelStageEvent event) {
         if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
@@ -26,6 +33,24 @@ public class BloodBlobRenderManager {
         ShaderInstance shader = ModShaders.BLOOD_BLOB_SHADER;
         if (shader == null) return;
 
+        RenderTarget mainTarget = mc.getMainRenderTarget();
+
+        if (copiedColorTexture == -1 || lastWidth != mainTarget.width || lastHeight != mainTarget.height) {
+            if (copiedColorTexture != -1) {
+                TextureUtil.releaseTextureId(copiedColorTexture);
+            }
+            copiedColorTexture = TextureUtil.generateTextureId();
+            lastWidth = mainTarget.width;
+            lastHeight = mainTarget.height;
+
+            RenderSystem.bindTexture(copiedColorTexture);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        }
+
+        RenderSystem.bindTexture(copiedColorTexture);
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, mainTarget.width, mainTarget.height, 0);
+
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -33,7 +58,8 @@ public class BloodBlobRenderManager {
         RenderSystem.depthMask(false);
 
         int currentTex = RenderSystem.getShaderTexture(0);
-        RenderSystem.setShaderTexture(0, mc.getMainRenderTarget().getDepthTextureId());
+        RenderSystem.setShaderTexture(0, copiedColorTexture);
+        RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
         RenderSystem.setShader(() -> shader);
 
         Matrix4f vanillaViewMat = new Matrix4f(event.getPoseStack().last().pose());
@@ -96,7 +122,6 @@ public class BloodBlobRenderManager {
             if(shader.safeGetUniform("bloodGlowColor") != null) shader.safeGetUniform("bloodGlowColor").set(glowColor.x(), glowColor.y(), glowColor.z());
             if(shader.safeGetUniform("chargeLevel") != null) shader.safeGetUniform("chargeLevel").set(emitter.getChargeLevel());
             if(shader.safeGetUniform("stabilization") != null) shader.safeGetUniform("stabilization").set(emitter.getStabilizationLevel());
-
 
             if(shader.safeGetUniform("u_Explosion") != null) shader.safeGetUniform("u_Explosion").set(emitter.getExplosionProgress());
             if(shader.safeGetUniform("u_Spasm") != null) shader.safeGetUniform("u_Spasm").set(emitter.getSpasmIntensity());

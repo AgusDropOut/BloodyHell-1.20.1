@@ -10,7 +10,9 @@ uniform mat4 u_InvProjMat;
 uniform vec3 relativeBlobCenter;
 uniform vec3 u_BobbingOffset;
 uniform float u_Time;
+
 uniform sampler2D Sampler0;
+uniform sampler2D Sampler1;
 
 uniform vec3 bloodBaseColor;
 uniform vec3 bloodGlowColor;
@@ -26,7 +28,6 @@ out vec4 fragColor;
 float map(vec3 localP) {
     float baseRadius = mix(0.1, 0.55, chargeLevel);
     baseRadius += u_Explosion * 1.5;
-
 
     float spasmEffect = 0.0;
     if (u_Spasm > 0.0) {
@@ -49,10 +50,8 @@ float map(vec3 localP) {
 
     float core = length(localP) - (baseRadius + spasmEffect);
 
-
     float freq = mix(5.0, 18.0, stabilization);
     float amp = mix(0.15, 0.03, stabilization);
-
 
     float expFreq = 25.0 - (u_Explosion * 10.0);
     float expAmp = u_Explosion * 0.8;
@@ -103,7 +102,7 @@ void main() {
     float t = -b - sqrt(h);
     t = max(0.0, t);
 
-    float sceneDepth = texture(Sampler0, v_TexCoords).r;
+    float sceneDepth = texture(Sampler1, v_TexCoords).r;
     float ndcDepth = sceneDepth * 2.0 - 1.0;
     vec4 sceneClip = vec4(ndc, ndcDepth, 1.0);
     vec4 sceneView = u_InvProjMat * sceneClip;
@@ -113,10 +112,8 @@ void main() {
     bool hit = false;
     vec3 p;
 
-
     for(int i = 0; i < 120; i++) {
         p = ro + rayDir * t;
-
 
         if(length(p - relativeBlobCenter) > 1.55 + (u_Explosion * 3.0) + (u_Spasm * 1.5)) break;
 
@@ -130,18 +127,50 @@ void main() {
             break;
         }
 
-
         float safeStep = mix(0.8, 0.15, u_Spasm);
         t += d * safeStep;
     }
 
     if(hit) {
         vec3 nLocal = calcNormal(p - relativeBlobCenter);
+
+
+        vec2 offset = nLocal.xy * 0.15;
+        vec2 targetUV = clamp(v_TexCoords + offset, 0.001, 0.999);
+
+        float distDepth = texture(Sampler1, targetUV).r;
+        float distMaxT = 99999.0;
+
+        if (distDepth < 0.9999 && distDepth > 0.0001) {
+            vec4 distClip = vec4(targetUV * 2.0 - 1.0, distDepth * 2.0 - 1.0, 1.0);
+            vec4 distView = u_InvProjMat * distClip;
+            if (abs(distView.w) > 0.0001) {
+                distView /= distView.w;
+                distMaxT = length(distView.xyz);
+            }
+        }
+
+        vec2 finalUV = (distMaxT < t) ? v_TexCoords : targetUV;
+        vec3 distortedBg = texture(Sampler0, finalUV).rgb;
+        float luma = dot(distortedBg, vec3(0.299, 0.587, 0.114));
+
+
+        vec3 anomalyColor;
+        if (luma > 0.45) {
+            anomalyColor = vec3(1.0, 0.0, 0.0);
+        } else {
+            anomalyColor = vec3(0.0, 0.0, 0.0);
+        }
+
         vec3 lightDir = normalize(vec3(0.5, 1.0, 0.3));
         float diff = max(dot(nLocal, lightDir), 0.0);
         float fresnel = pow(1.0 - max(dot(nLocal, -rayDir), 0.0), 3.0);
 
-        vec3 finalColor = bloodBaseColor * (diff * 0.8 + 0.2) + (bloodGlowColor * fresnel);
+        vec3 baseVolume = vec3(0.08, 0.0, 0.0);
+        vec3 edgeGlow = vec3(1.0, 0.1, 0.1);
+
+        vec3 finalColor = anomalyColor + (baseVolume * diff) + (edgeGlow * fresnel * 0.8);
+
 
         if (stabilization > 0.9) {
             finalColor += vec3(1.0, 0.9, 0.8) * pow(fresnel, 5.0) * stabilization;
