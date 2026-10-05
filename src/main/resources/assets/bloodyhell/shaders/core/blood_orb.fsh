@@ -61,10 +61,16 @@ void main() {
 
     float sceneDepth = texture(Sampler1, v_ScreenUV).r;
     vec2 ndc = v_ScreenUV * 2.0 - 1.0;
-    vec4 sceneClip = vec4(ndc, sceneDepth * 2.0 - 1.0, 1.0);
-    vec4 sceneView = u_InvProjMat * sceneClip;
-    sceneView /= sceneView.w;
-    float maxT = length(sceneView.xyz);
+
+    float maxT = 99999.0;
+
+
+    if (sceneDepth < 0.9999) {
+        vec4 sceneClip = vec4(ndc, sceneDepth * 2.0 - 1.0, 1.0);
+        vec4 sceneView = u_InvProjMat * sceneClip;
+        sceneView /= sceneView.w;
+        maxT = length(sceneView.xyz);
+    }
 
     bool hit = false;
     vec3 p;
@@ -98,9 +104,11 @@ void main() {
         vec3 localP = p - u_OrbViewPos;
         vec3 alignedP = invOrbRot * localP;
         vec3 nLocal = calcNormal(alignedP, u_Time);
+        vec2 distortedUV = vec2(0.0) ;
+
+        distortedUV = v_ScreenUV + nLocal.xy * 0.15;
 
 
-        vec2 distortedUV = v_ScreenUV + nLocal.xy * 0.15;
 
 
         vec3 distortedBg = texture(Sampler0, distortedUV).rgb;
