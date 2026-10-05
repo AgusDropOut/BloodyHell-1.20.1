@@ -422,5 +422,9 @@
 
   "message.bloodyhell.whispers_fade": "The whispers fade into silence...",
 
-  "block.bloodyhell.flask_fill": "Filling Flask..."
+  "block.bloodyhell.flask_fill": "Filling Flask...",
+
+  "_comment": "=== KEYS ===",
+  "key.bloodyhell.inspect": "Inspect Weapon",
+  "category.bloodyhell.keys": "Bloody Hell! Mod"
 }

@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullPainThroneEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
@@ -149,5 +150,10 @@ public class RhnullGoldenThroneSpellBookItem extends BaseSpellBookItem<RhnullGol
     @Override
     public String getSpellBookId() {
         return "rhnull_golden_throne_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.CIRCLE;
     }
 }

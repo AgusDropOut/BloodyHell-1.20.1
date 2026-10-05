@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireMeteorEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
@@ -61,38 +62,38 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
             placeMeteors(player, level, meteorEntities);
         }
 
-        // Impact sound on fire
+
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0f, 0.8f);
     }
 
     @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
-        // Spin speed increases with charge time
+
         double speed = 0.2 + (tick * 0.01);
         double radius = 2.0;
 
-        // Base rotating circle
+
         double angle = (tick * speed) % (2 * Math.PI);
 
-        // Spawn 3 particles per tick for a trail effect
+
         for (int i = 0; i < 3; i++) {
             double currentAngle = angle + (i * (Math.PI * 2 / 3));
             double xOffset = radius * Math.cos(currentAngle);
             double zOffset = radius * Math.sin(currentAngle);
 
-            // Particles spiral up slightly
+
             double yOffset = 0.1 + (tick * 0.02);
-            if (yOffset > 1.5) yOffset = 0.1; // Reset height if too high
+            if (yOffset > 1.5) yOffset = 0.1;
 
             level.addParticle(ModParticles.BLOOD_SIGIL_PARTICLE.get(),
                     player.getX() + xOffset,
                     player.getY() + yOffset,
                     player.getZ() + zOffset,
-                    0, 0.05, 0); // Slight upward velocity
+                    0, 0.05, 0);
         }
 
-        // Burst visual when fully charged
+
         if (tick == getMinChargeTime()) {
             spawnParticleCircle(level, player, ModParticles.BLOOD_SIGIL_PARTICLE.get(), 2.5, 40);
         }
@@ -125,7 +126,7 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
         double targetHeight = 5.0;
         Vec3 end = start.add(0, targetHeight, 0);
 
-        // Raycast upwards to find the ceiling
+
         BlockHitResult result = level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner));
 
         double spawnY;
@@ -135,7 +136,7 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
             spawnY = start.y + targetHeight;
         }
 
-        // Safety check to prevent spawning inside the owner
+
         if (spawnY < owner.getEyeY()) {
             spawnY = owner.getEyeY() + 0.5;
         }
@@ -146,30 +147,28 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
 
         int count = meteorEntities.size();
 
-        // Configurable: How far from the center they spawn
+
         double radius = 2.0;
 
-        // Configurable: Rotate the whole ring so it aligns with where player is looking
-        // (Optional: remove this line to align to North/South grid)
+
         float startRotation = -owner.getYRot() * ((float)Math.PI / 180F);
 
         for (int i = 0; i < count; i++) {
             BloodFireMeteorEntity meteor = meteorEntities.get(i);
 
-            // EDGE CASE: If only 1 meteor, spawn it perfectly centered
+
             if (count == 1) {
                 meteor.setPos(owner.getX(), spawnY, owner.getZ());
             }
             else {
-                // 1. Calculate Angle
-                // StartAngle + (Step * Index)
+
                 double angle = startRotation + (i * (Math.PI * 2 / count));
 
-                // 2. Calculate Offset
+
                 double offsetX = Math.sin(angle) * radius;
                 double offsetZ = Math.cos(angle) * radius;
 
-                // 3. Set Position
+
                 meteor.setPos(owner.getX() + offsetX, spawnY, owner.getZ() + offsetZ);
             }
         }
@@ -178,7 +177,7 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
 
     @Override
     public int getMinChargeTime() {
-        return 20; // 1 second charge
+        return 20;
     }
 
     @Override
@@ -189,5 +188,10 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
     @Override
     public String getSpellBookId() {
         return "bloodfire_meteor_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.THROW;
     }
 }

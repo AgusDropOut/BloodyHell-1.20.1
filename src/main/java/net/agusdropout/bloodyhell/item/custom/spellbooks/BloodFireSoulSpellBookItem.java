@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireSoulEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +21,7 @@ import java.util.List;
 public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulSpellBookItem> {
 
     private static final int COST = 20;
-    private static final float SPREAD_DEGREES = 15.0f; // Angle between projectiles
+    private static final float SPREAD_DEGREES = 15.0f;
 
     @Override
     public int getCrimsonCost() {
@@ -71,7 +72,6 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
                 SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0f, 0.8f);
     }
 
-    // --- VISUALS (Unchanged) ---
 
     @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
@@ -132,4 +132,9 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
 
     @Override
     public String getSpellBookId() { return "bloodfire_soul_spellbook"; }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.THROW;
+    }
 }

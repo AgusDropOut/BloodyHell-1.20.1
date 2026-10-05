@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullOrbEmitter;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -148,5 +149,10 @@ public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem<RhnullOrbEm
     @Override
     public String getSpellBookId() {
         return "rhnull_orb_emitter_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.CIRCLE;
     }
 }

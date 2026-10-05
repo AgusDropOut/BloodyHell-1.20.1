@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -16,7 +17,21 @@ import software.bernie.geckolib.util.RenderUtils;
 
 public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
 
+    // Weapon sway :L
+    private static final float SWAY_RECOVERY_SPEED = 0.55f;
+    private static final float SWAY_MAX_ANGLE = 25f;
+    private static final float SWAY_MULT_HORIZONTAL = -1.1f;
+    private static final float SWAY_MULT_VERTICAL = 0.1f;
+    private static final float SWAY_MULT_ROLL = -0.4f;
+
+
     private ItemDisplayContext currentTransform = ItemDisplayContext.NONE;
+
+    private float swayX = 0f;
+    private float swayY = 0f;
+    private float lastCameraYaw = 0f;
+    private float lastCameraPitch = 0f;
+    private boolean isInitialized = false;
 
     public BaseStaffRenderer() {
         super(new BaseStaffModel());
@@ -30,7 +45,46 @@ public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
 
         if (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
             poseStack.pushPose();
-            poseStack.translate(0.15f, -0.2f, -0.4f);
+
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null && !mc.isPaused()) {
+
+                float partialTick = mc.getFrameTime();
+                float currentYaw = mc.player.getViewYRot(partialTick);
+                float currentPitch = mc.player.getViewXRot(partialTick);
+
+                if (!isInitialized) {
+                    lastCameraYaw = currentYaw;
+                    lastCameraPitch = currentPitch;
+                    isInitialized = true;
+                }
+
+                float deltaYaw = Mth.wrapDegrees(currentYaw - lastCameraYaw);
+                float deltaPitch = currentPitch - lastCameraPitch;
+
+                lastCameraYaw = currentYaw;
+                lastCameraPitch = currentPitch;
+
+                swayX += deltaPitch;
+                swayY += deltaYaw;
+
+                swayX = Mth.lerp(SWAY_RECOVERY_SPEED, swayX, 0f);
+                swayY = Mth.lerp(SWAY_RECOVERY_SPEED, swayY, 0f);
+
+                float clampedX = Mth.clamp(swayX, -SWAY_MAX_ANGLE, SWAY_MAX_ANGLE);
+                float clampedY = Mth.clamp(swayY, -SWAY_MAX_ANGLE, SWAY_MAX_ANGLE);
+
+                poseStack.translate(0.15f, -0.6f, -0.4f);
+
+                poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(clampedY * SWAY_MULT_HORIZONTAL));
+                poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(clampedX * SWAY_MULT_VERTICAL));
+                poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(clampedY * SWAY_MULT_ROLL));
+
+                poseStack.translate(0.0f, 0.4f, 0.0f);
+            } else {
+                poseStack.translate(0.15f, -0.2f, -0.4f);
+            }
+
             super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
             poseStack.popPose();
         } else {

@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilP
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSlashEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -22,7 +23,7 @@ import org.joml.Vector3f;
 import java.util.List;
 
 public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpellBookItem> {
-    private static final int COST = 20;
+    private static final int COST = 5;
 
 
     public BloodScratchSpellBookItem(Properties properties) {
@@ -39,7 +40,7 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
         if (!level.isClientSide) {
             List<Gem> gems = super.getGemsFromItemStack(itemStack);
-            // Calculate total projectiles: Minimum 3 + gems
+
             int projectileCount = 3 + getProjectileAdditionalFromGems(gems);
 
             player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(playerCrimsonVeil -> {
@@ -49,7 +50,7 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
                     float yaw = player.getYRot();
                     float pitch = player.getXRot();
 
-                    // Calculate Base Center Position
+
                     double radians = Math.toRadians(-yaw);
                     double xDir = Math.sin(radians);
                     double zDir = Math.cos(radians);
@@ -58,30 +59,26 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
                     double baseY = player.getEyeY() - 0.4;
                     double baseZ = player.getZ() + zDir * 1.5;
 
-                    // Calculate Perpendicular Vector (for left/right spacing)
-                    // -yaw + 90 gives us the vector pointing to the "Left" (or Right depending on coordinate system)
+
                     double offsetRadians = Math.toRadians(-yaw + 90);
                     double perpX = Math.sin(offsetRadians);
                     double perpZ = Math.cos(offsetRadians);
 
-                    float spreadDistance = 1.2f; // Distance between projectiles
-                    float spreadAngle = 10.0f;   // Angle variation between projectiles
+                    float spreadDistance = 1.2f;
+                    float spreadAngle = 10.0f;
 
                     for (int i = 0; i < projectileCount; i++) {
-                        // Multiplier centers the projectiles.
-                        // e.g., for 3 projectiles: -1.0, 0.0, 1.0
-                        // e.g., for 4 projectiles: -1.5, -0.5, 0.5, 1.5
+
                         float multiplier = i - (projectileCount - 1) / 2.0f;
 
-                        // Calculate position offset
+
                         double currentOffsetX = perpX * (multiplier * spreadDistance);
                         double currentOffsetZ = perpZ * (multiplier * spreadDistance);
 
                         double spawnX = baseX /*+ currentOffsetX*/;
                         double spawnZ = baseZ  /*currentOffsetZ*/;
 
-                        // Calculate angle offset (flips multiplier to fan out correctly)
-                        // You might need to swap +/- depending on if you want them to converge or diverge
+
                         float spawnYaw = yaw - (multiplier * spreadAngle);
 
                         BloodSlashEntity slash = new BloodSlashEntity(level, spawnX, baseY, spawnZ, 10.0F, player, spawnYaw, pitch, gems);
@@ -99,8 +96,8 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
 
     @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
-        // Retrieve gems to ensure particle count matches projectile count
-        ItemStack itemStack = player.getMainHandItem(); // Assuming spell is cast from main hand
+
+        ItemStack itemStack = player.getMainHandItem();
         List<Gem> gems = super.getGemsFromItemStack(itemStack);
         int projectileCount = 3 + getProjectileAdditionalFromGems(gems);
 
@@ -119,7 +116,7 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
 
         double spreadDistance = 1.2;
 
-        // 1. Magic Sparkles (Charging up at ALL scratch locations)
+
         for (int i = 0; i < projectileCount; i++) {
             float multiplier = i - (projectileCount - 1) / 2.0f;
 
@@ -136,13 +133,13 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
                         0, 0, 0);
             }
 
-            // Burst effect right before cast (moved inside loop to happen at all spots)
+
             if (tick == getMinChargeTime()) {
                 ParticleHelper.spawnCircle(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), new Vec3(pX, baseY, pZ), 1.5, 10);
             }
         }
 
-        // 2. Pulsar Blood Particles (Emit from player center outwards)
+
         if (tick % 5 == 0) {
             level.addParticle(ModParticles.BLOOD_PULSE_PARTICLE.get(),
                     player.getX(), player.getY() + 1.0, player.getZ(),
@@ -160,16 +157,21 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
 
     @Override
     public int getMinChargeTime() {
-        return 15;
+        return 5;
     }
 
     @Override
     public int getCooldown() {
-        return 30;
+        return 5;
     }
 
     @Override
     public String getSpellBookId() {
         return "blood_scratch_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.SEQUENTIAL;
     }
 }

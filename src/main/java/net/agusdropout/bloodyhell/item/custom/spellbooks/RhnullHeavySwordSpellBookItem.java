@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom.spellbooks;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -128,5 +129,10 @@ public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavy
     @Override
     public String getSpellBookId() {
         return "rhnull_heavy_sword_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.RISE;
     }
 }

@@ -5,6 +5,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireColumnEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -211,5 +212,9 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
     @Override
     public String getSpellBookId() {
         return "bloodfire_column_spellbook";
+    }
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.RISE;
     }
 }

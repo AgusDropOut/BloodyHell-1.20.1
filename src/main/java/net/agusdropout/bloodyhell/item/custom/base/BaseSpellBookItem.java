@@ -66,53 +66,58 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         }).triggerableAnim("attack", ATTACK_ANIM));
     }
 
-    @Override
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
-        super.inventoryTick(itemStack, level, entity, slot, isSelected);
 
-        if (entity instanceof Player player) {
-            boolean isHeld = player.getItemInHand(InteractionHand.MAIN_HAND) == itemStack
-                    || player.getItemInHand(InteractionHand.OFF_HAND) == itemStack;
+    public boolean canStartCasting(Level level, Player player) {
 
-            CompoundTag tag = itemStack.getOrCreateTag();
+        if (player.getCooldowns().isOnCooldown(this)) {
+            return false;
+        }
 
-            if (tag.getBoolean(NBT_OPEN_KEY) != isHeld) {
-                tag.putBoolean(NBT_OPEN_KEY, isHeld);
+
+        if (!CrimsonVeilHelper.hasEnough(player, getCrimsonCost())) {
+            level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0f, 2.0f);
+
+            if (!level.isClientSide) {
+                player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
+                        .withStyle(ChatFormatting.DARK_RED), true);
             }
+            return false;
         }
-    }
 
-    @Override
-    public boolean onDroppedByPlayer(ItemStack item, Player player) {
-        if (item.hasTag()) {
-            item.getTag().putBoolean(NBT_OPEN_KEY, false);
-        }
-        return super.onDroppedByPlayer(item, player);
+        return true;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
 
-        // 1. Check for resource immediately
-        if (!CrimsonVeilHelper.hasEnough(player, getCrimsonCost())) {
-
-            // Audio Feedback: Pitch-shifted "Deactivate" sound implies failure
-            level.playSound(player, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0f, 2.0f);
-
-            if (!level.isClientSide) {
-                // Visual/Text Feedback: Action Bar Message
-                player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
-                        .withStyle(ChatFormatting.DARK_RED), true);
-            }
-
-            // Fail the interaction so no animation plays
+        if (!canStartCasting(level, player)) {
             return InteractionResultHolder.fail(itemstack);
         }
 
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(itemstack);
+    }
+
+    public void executeCast(Level level, Player player, InteractionHand hand, ItemStack stack) {
+        if (!level.isClientSide) {
+            if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
+                performSpell(level, player, hand, stack);
+                triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel)level), "controller", "attack");
+
+
+
+                if (getCooldown() > 0 && getStaffCastType() != StaffCastType.SEQUENTIAL) {
+                    player.getCooldowns().addCooldown(this, getCooldown());
+                }
+            } else {
+                player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil").withStyle(ChatFormatting.DARK_RED), true);
+                player.stopUsingItem(); 
+            }
+        } else {
+            performSpell(level, player, hand, stack);
+        }
     }
 
     @Override
@@ -135,13 +140,11 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
 
             if (duration >= getMinChargeTime()) {
                 if (!level.isClientSide) {
-                    // 2. Consume Resource
                     if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
                         performSpell(level, player, InteractionHand.MAIN_HAND, stack);
                         triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel)level), "controller", "attack");
                         player.getCooldowns().addCooldown(this, getCooldown());
                     } else {
-                        // Fallback feedback if they somehow lost resources WHILE charging
                         player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
                                 .withStyle(ChatFormatting.DARK_RED), true);
                     }
@@ -152,32 +155,34 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         }
     }
 
+    @Override
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
+        super.inventoryTick(itemStack, level, entity, slot, isSelected);
+        if (entity instanceof Player player) {
+            boolean isHeld = player.getItemInHand(InteractionHand.MAIN_HAND) == itemStack || player.getItemInHand(InteractionHand.OFF_HAND) == itemStack;
+            CompoundTag tag = itemStack.getOrCreateTag();
+            if (tag.getBoolean(NBT_OPEN_KEY) != isHeld) tag.putBoolean(NBT_OPEN_KEY, isHeld);
+        }
+    }
+
+    @Override
+    public boolean onDroppedByPlayer(ItemStack item, Player player) {
+        if (item.hasTag()) item.getTag().putBoolean(NBT_OPEN_KEY, false);
+        return super.onDroppedByPlayer(item, player);
+    }
+
     public abstract int getCrimsonCost();
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.BOW;
-    }
-
-    @Override
-    public int getUseDuration(ItemStack stack) {
-        return 72000;
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() { return this.cache; }
+    @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.BOW; }
+    @Override public int getUseDuration(ItemStack stack) { return 72000; }
+    @Override public AnimatableInstanceCache getAnimatableInstanceCache() { return this.cache; }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
             private BlockEntityWithoutLevelRenderer renderer;
-
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null) {
-                    // Look how clean this is now! No generic diamond operators <>
-                    this.renderer = new GenericSpellBookRenderer();
-                }
+                if (this.renderer == null) this.renderer = new GenericSpellBookRenderer();
                 return this.renderer;
             }
         });
@@ -186,46 +191,33 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> toolTip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, toolTip, flag);
-
-        // 1. Get the Gems using your new robust method
         List<Gem> gems = GemType.getGemsFromWeapon(itemStack);
-
         if (!gems.isEmpty()) {
             toolTip.add(Component.literal("Socketed Gems:").withStyle(ChatFormatting.GRAY));
-
-            // 2. Iterate the Gem objects directly
             for (Gem gem : gems) {
-                String bonusType = gem.getStat(); // or gem.getStat()
+                String bonusType = gem.getStat();
                 double value = gem.getValue();
-
-                toolTip.add(Component.literal(" " + GemType.getFormattedBonus(bonusType, value))
-                        .withStyle(GemType.getChatFormating(bonusType)));
+                toolTip.add(Component.literal(" " + GemType.getFormattedBonus(bonusType, value)).withStyle(GemType.getChatFormating(bonusType)));
             }
         } else {
             toolTip.add(Component.literal("No Gems Socketed").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 
-    protected List<Gem> getGemsFromItemStack(ItemStack itemStack) {
-        return GemType.getGemsFromWeapon(itemStack);
-    }
-
+    protected List<Gem> getGemsFromItemStack(ItemStack itemStack) { return GemType.getGemsFromWeapon(itemStack); }
     protected int getProjectileAdditionalFromGems(List<Gem> gems) {
         int additionalProjectiles = 0;
         for (Gem gem : gems) {
-            if (gem.getStat().equals(GemType.TYPE_QUANTITY)) {
-                additionalProjectiles += (int) gem.getValue();
-            }
+            if (gem.getStat().equals(GemType.TYPE_QUANTITY)) additionalProjectiles += (int) gem.getValue();
         }
         return additionalProjectiles;
     }
 
     public abstract void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack);
-
     public abstract void spawnProgressiveParticles(Level level, Player player, int chargeTick);
     public abstract void playChargeSound(Level level, Player player, int chargeTick);
     public abstract int getMinChargeTime();
     public abstract int getCooldown();
     public abstract String getSpellBookId();
-
+    public abstract StaffCastType getStaffCastType();
 }

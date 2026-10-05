@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilP
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSphereEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -24,8 +25,8 @@ import java.util.List;
 public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpellBookItem> {
 
     private static final int COST = 10;
-    private static final int COOLDOWN = 50;
-    private static final int CHARGE_TIME = 30;
+    private static final int COOLDOWN = 5;
+    private static final int CHARGE_TIME = 5;
 
     public BloodSphereSpellBookItem(Properties properties) {
         super(properties);
@@ -134,5 +135,10 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
     @Override
     public String getSpellBookId() {
         return "blood_sphere_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.SEQUENTIAL;
     }
 }

@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom.spellbooks;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodPortalEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -169,5 +170,10 @@ public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDagger
     @Override
     public String getSpellBookId() {
         return "blood_daggersrain_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.CIRCLE;
     }
 }

@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom.spellbooks;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodNovaEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
+import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -42,7 +43,7 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     float pitch = player.getXRot();
                     double radians = Math.toRadians(-yaw);
 
-                    // Calculate spawn position (1 block forward, 5 blocks UP)
+
                     double baseX = player.getX() + Math.sin(radians) * 1.0;
                     double baseY = player.getY() + 0.5;
                     double baseZ = player.getZ() + Math.cos(radians) * 1.0;
@@ -52,7 +53,7 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
 
         }
 
-        // Massive explosion sound
+
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0f, 0.5f);
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -65,21 +66,19 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
         Vec3 targetPos = playerPos.add(0, SPAWN_HEIGHT_OFFSET, 0); // Point in the sky
         float progress = (float) tick / CHARGE_TIME;
 
-        // 1. THE BEAM (Connecting Player to Sky)
-        // Spawns a vertical line of particles that gets denser
+
         if (tick % 2 == 0) {
             ParticleHelper.spawnCylinder(level,
                     new MagicParticleOptions(new Vector3f(1.0f, 0.0f, 0.0f), 0.5f, false, 10),
                     playerPos, 0.2, SPAWN_HEIGHT_OFFSET, 3 + (int)(progress * 5), 0.2);
         }
 
-        // 2. GROUND SWIRL (Charging energy at feet)
-        // Spawns a ring that contracts inwards
+
         double ringRadius = 3.0 * (1.0 - progress);
         ParticleHelper.spawnRing(level, ModParticles.BLOOD_PULSE_PARTICLE.get(),
                 playerPos.add(0, 0.2, 0), ringRadius, 4, 0);
 
-        // 3. ASCENSION (Particles spiral up the beam)
+
         int spiralCount = 2;
         for (int i = 0; i < spiralCount; i++) {
             double angle = (tick * 0.3) + (i * Math.PI);
@@ -94,19 +93,19 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     0, 0.1, 0);
         }
 
-        // 4. FINAL DETONATION VISUAL
+
         if (tick == CHARGE_TIME) {
-            // Shockwave on ground
+
             ParticleHelper.spawnRing(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), playerPos, 1.0, 40, 0.5);
 
-            // Explosion in sky at spawn point
+
             ParticleHelper.spawnExplosion(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), targetPos, 50, 0.5, 1.0);
         }
     }
 
     @Override
     public void playChargeSound(Level level, Player player, int tick) {
-        // Low hum that builds into a scream
+
         if (tick % 5 == 0 && tick < CHARGE_TIME) {
             float pitch = 0.5f + (tick / (float)CHARGE_TIME);
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
@@ -127,5 +126,10 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
     @Override
     public String getSpellBookId() {
         return "blood_nova_spellbook";
+    }
+
+    @Override
+    public StaffCastType getStaffCastType() {
+        return StaffCastType.CIRCLE;
     }
 }
