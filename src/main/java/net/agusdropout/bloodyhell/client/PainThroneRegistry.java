@@ -51,7 +51,7 @@ public class PainThroneRegistry {
         }
     }
 
-    // Returns the list of active breaks and updates their progress
+
     public static List<BrokenBoneInfo> getActiveBreaks(UUID uuid) {
         List<BrokenBoneInfo> breaks = BROKEN_BONES.get(uuid);
         if (breaks == null) return Collections.emptyList();

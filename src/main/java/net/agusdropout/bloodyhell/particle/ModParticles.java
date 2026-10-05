@@ -239,6 +239,13 @@ public class ModParticles {
 
     public static final RegistryObject<SimpleParticleType> FRENZIED_SUN =
             PARTICLE_TYPES.register("frenzied_sun", () -> new SimpleParticleType(true));
+    public static final RegistryObject<ParticleType<MiniBlobParticleOptions>> MINI_BLOB_PARTICLE =
+            PARTICLE_TYPES.register("mini_blob_particle", () -> new ParticleType<>(false, MiniBlobParticleOptions.DESERIALIZER) {
+                @Override
+                public Codec<MiniBlobParticleOptions> codec() {
+                    return MiniBlobParticleOptions.CODEC;
+                }
+            });
 
 
 

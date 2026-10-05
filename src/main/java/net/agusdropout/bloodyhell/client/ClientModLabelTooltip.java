@@ -21,28 +21,24 @@ public class ClientModLabelTooltip implements ClientTooltipComponent {
 
     @Override
     public int getHeight() {
-        return 12; // Height of the row
+        return 12;
     }
 
     @Override
     public int getWidth(Font font) {
-        // Icon (10px) + Spacing (4px) + Text Width
+
         return 10 + 4 + font.width("BloodyHell!");
     }
 
     @Override
     public void renderImage(Font font, int x, int y, GuiGraphics graphics) {
-        // You generally don't need setShaderTexture in 1.20+ when using graphics.blit with a ResourceLocation,
-        // the method handles the binding internally.
 
-        // CORRECT BLIT FOR SCALING:
-        // blit(texture, x, y, destWidth, destHeight, u, v, srcWidth, srcHeight, texWidth, texHeight)
         graphics.blit(ICON,
-                x, y + 1,      // Destination X, Y
-                10, 10,        // Destination Width, Height (Draw it small)
-                0, 0,          // Source U, V (Start at top-left of texture)
-                16, 16,        // Source Width, Height (Use the FULL 16x16 image)
-                16, 16         // Texture File Dimensions (Total size of the png)
+                x, y + 1,
+                10, 10,
+                0, 0,
+                16, 16,
+                16, 16
         );
 
         graphics.drawString(font, "BloodyHell!", x + 14, y + 2, 0xFFAA0000, false);

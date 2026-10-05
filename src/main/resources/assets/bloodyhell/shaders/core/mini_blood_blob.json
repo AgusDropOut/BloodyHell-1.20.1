@@ -1,0 +1,46 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "srcalpha",
+    "dstrgb": "1-srcalpha"
+  },
+  "vertex": "bloodyhell:mini_blood_blob",
+  "fragment": "bloodyhell:mini_blood_blob",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "Sampler0" },
+    { "name": "Sampler1" }
+  ],
+  "uniforms": [
+    { "name": "u_CleanInvViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "u_ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "u_InvProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "u_Time", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "u_BlobCount", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "relativeClusterCenter", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob0", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob1", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob2", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob3", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob4", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob5", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob6", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Blob7", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+    { "name": "u_Size0", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Size1", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Size2", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Size3", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Size4", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Size5", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Size6", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Size7", "type": "float", "count": 1, "values": [ 0.15 ] },
+    { "name": "u_Color0", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "u_Color1", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "u_Color2", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "u_Color3", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "u_Color4", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "u_Color5", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "u_Color6", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] },
+    { "name": "u_Color7", "type": "float", "count": 3, "values": [ 0.5, 0.0, 0.05 ] }
+  ]
+}

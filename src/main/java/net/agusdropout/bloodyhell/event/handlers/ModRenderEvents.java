@@ -34,6 +34,7 @@ public class ModRenderEvents {
             FrenziedExplosionRenderManager.renderAllAndClear();
             BloodBlobRenderManager.renderAll(event);
             BloodOrbRenderManager.renderAll(event);
+            MiniBlobRenderManager.renderAll(event);
 
 
 

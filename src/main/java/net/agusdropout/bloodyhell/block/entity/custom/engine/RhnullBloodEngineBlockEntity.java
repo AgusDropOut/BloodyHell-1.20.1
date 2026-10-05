@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGeckoBlockEntity;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModItems;
-import net.agusdropout.bloodyhell.particle.ParticleOptions.BloodDropParticleOption;
+import net.agusdropout.bloodyhell.particle.ParticleOptions.MiniBlobParticleOptions;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.util.visuals.types.IBloodBlobEmitter;
 import net.minecraft.core.BlockPos;
@@ -85,7 +85,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     private boolean hasPlayedFullyCharged = false;
     private int heartbeatTimer = 0;
     private int ambientSoundTimer = 0;
-
 
     private int clientRitualTick = 0;
     private int explosionTimer = -1;
@@ -219,7 +218,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             updateColors(totalFluid);
         }
 
-
         if (this.isActive) {
             if (this.activationSequenceTimer >= 0) {
                 this.activationSequenceTimer++;
@@ -254,7 +252,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             this.heartbeatPulse = 0.0f;
         }
 
-
         if (level.isClientSide) {
             if (this.heartbeatPulse > 0.0f) {
                 this.heartbeatPulse = Math.max(0.0f, this.heartbeatPulse - 0.05f);
@@ -282,9 +279,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             return;
         }
 
-
         if (this.isActive) {
-
             if (this.isCraftingFinished) {
                 if (this.explosionTimer == -1) {
                     this.explosionTimer = 20;
@@ -359,16 +354,21 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
                 }
 
                 if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                    if (level.random.nextFloat() < 0.25f) {
+
+                    if (level.random.nextFloat() < 0.10f) {
                         net.minecraft.world.phys.Vec3 center = new net.minecraft.world.phys.Vec3(pos.getX() + 0.5D, pos.getY() + orbYOffset, pos.getZ() + 0.5D);
-                        int amount = level.random.nextInt(3) + 1;
+
+                        int amount = 1;
                         for (int i = 0; i < amount; i++) {
                             double offsetX = (level.random.nextDouble() - 0.5) * 0.2;
                             double offsetZ = (level.random.nextDouble() - 0.5) * 0.2;
-                            double speedX = (level.random.nextDouble() - 0.5) * 0.2;
-                            double speedY = level.random.nextDouble() * 0.15 + 0.05;
-                            double speedZ = (level.random.nextDouble() - 0.5) * 0.2;
-                            serverLevel.sendParticles(new BloodDropParticleOption(this.currentBaseColor),
+
+                            double speedX = (level.random.nextDouble() - 0.5) * 0.02;
+
+                            double speedY = -0.1D;
+                            double speedZ = (level.random.nextDouble() - 0.5) * 0.02;
+
+                            serverLevel.sendParticles(new MiniBlobParticleOptions(0.15f, this.currentBaseColor.x(), this.currentBaseColor.y(), this.currentBaseColor.z(), false),
                                     center.x + offsetX, center.y - 0.5D, center.z + offsetZ,
                                     0, speedX, speedY, speedZ, 1.0D);
                         }
@@ -391,7 +391,6 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
             }
         }
     }
-
 
     @Override
     public float getExplosionProgress() {

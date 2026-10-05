@@ -19,8 +19,7 @@ import org.joml.Matrix4f;
 
 public class BloodFireOverlay {
 
-    // Make sure this texture is in assets/bloodyhell/textures/block/blood_fire_0.png
-    // It MUST have a .mcmeta file for animation and be registered in the block atlas.
+
     private static final ResourceLocation BLOOD_FIRE_TEXTURE = new ResourceLocation("bloodyhell", "block/blood_fire");
 
     public static final IGuiOverlay HUD_BLOOD_FIRE = BloodFireOverlay::renderOverlay;
@@ -34,25 +33,22 @@ public class BloodFireOverlay {
         PoseStack posestack = guiGraphics.pose();
         posestack.pushPose();
 
-        // --- CRITICAL FIX: Match Vanilla Projection ---
-        // 1. Move to Center of Screen
+
         posestack.translate(width / 2.0F, height / 2.0F, 0.0F);
 
-        // 2. Scale up so the 1x1 unit quad covers the whole screen.
-        // We use the negative Y scale because GUI coordinate systems are flipped compared to World systems.
-        // We use Math.max(width, height) to ensure it covers the screen even in wide/tall aspect ratios.
+
         float scale = Math.max(width, height);
-        posestack.scale(scale, -scale, 1.0F); // Note the -scale for Y to flip it upright
-        // ----------------------------------------------
+        posestack.scale(scale, -scale, 1.0F);
+
 
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
-        RenderSystem.depthFunc(519); // GL_ALWAYS
+        RenderSystem.depthFunc(519);
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        // Use your custom texture here
+
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(BLOOD_FIRE_TEXTURE);
         RenderSystem.setShaderTexture(0, sprite.atlasLocation());
 
@@ -70,7 +66,7 @@ public class BloodFireOverlay {
 
         for(int i = 0; i < 2; ++i) {
             posestack.pushPose();
-            // Original vanilla offsets
+
             posestack.translate((float)(-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
             posestack.mulPose(Axis.YP.rotationDegrees((float)(i * 2 - 1) * 10.0F));
 

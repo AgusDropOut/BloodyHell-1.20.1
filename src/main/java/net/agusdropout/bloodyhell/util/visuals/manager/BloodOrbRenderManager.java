@@ -19,7 +19,6 @@ import java.util.List;
 public class BloodOrbRenderManager {
     private static final List<OrbData> ACTIVE_ORBS = new ArrayList<>();
 
-
     private static int copiedColorTexture = -1;
     private static int lastWidth = 0;
     private static int lastHeight = 0;
@@ -37,7 +36,6 @@ public class BloodOrbRenderManager {
             return;
         }
 
-
         if (copiedColorTexture == -1 || lastWidth != mainTarget.width || lastHeight != mainTarget.height) {
             if (copiedColorTexture != -1) {
                 TextureUtil.releaseTextureId(copiedColorTexture);
@@ -51,17 +49,14 @@ public class BloodOrbRenderManager {
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         }
 
-
         RenderSystem.bindTexture(copiedColorTexture);
         GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, mainTarget.width, mainTarget.height, 0);
-
 
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
-
 
         RenderSystem.setShaderTexture(0, copiedColorTexture);
         RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
@@ -105,6 +100,8 @@ public class BloodOrbRenderManager {
         RenderSystem.depthMask(true);
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.colorMask(true, true, true, true);
 
         ACTIVE_ORBS.clear();
     }

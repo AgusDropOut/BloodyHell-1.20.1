@@ -274,6 +274,10 @@ public class ClientEvents {
                 ModShaders.BLOOD_ORB_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "mini_blood_blob"), DefaultVertexFormat.POSITION), shaderInstance -> {
+                ModShaders.MINI_BLOOD_BLOB_SHADER = shaderInstance;
+            });
+
 
         }
 
@@ -345,6 +349,7 @@ public class ClientEvents {
             event.registerSpecial(ModParticles.ORBITAL_FRENZIED_PARTICLE.get(), new OrbitalFrenziedParticle.Provider());
             event.registerSpecial(ModParticles.FRENZIED_EXPLOSION.get(), new FrenziedExplosionParticle.Provider());
             event.registerSpecial(ModParticles.FRENZIED_SUN.get(), new FrenziedSunSkyParticle.Provider());
+            event.registerSpecial(ModParticles.MINI_BLOB_PARTICLE.get(), new MiniBlobParticle.Provider());
         }
 
         @SubscribeEvent

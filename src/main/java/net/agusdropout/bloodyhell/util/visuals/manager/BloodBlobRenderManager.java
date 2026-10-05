@@ -140,6 +140,7 @@ public class BloodBlobRenderManager {
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
+        RenderSystem.colorMask(true, true, true, true);
         RenderSystem.setShaderTexture(0, currentTex);
     }
 }
