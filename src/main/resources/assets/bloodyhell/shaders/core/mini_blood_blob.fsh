@@ -100,21 +100,21 @@ vec3 calcNormal(vec3 localP) {
 void main() {
     vec2 ndc = v_ScreenPos.xy / v_ScreenPos.w;
     vec2 texCoords = ndc * 0.5 + 0.5;
+
     vec4 clipPos = vec4(ndc, 1.0, 1.0);
     vec4 viewPos = u_InvProjMat * clipPos;
     viewPos /= viewPos.w;
+
     vec3 rdView = normalize(viewPos.xyz);
     vec3 rayDir = normalize((u_CleanInvViewMat * vec4(rdView, 0.0)).xyz);
     vec3 ro = vec3(0.0);
 
-    vec3 oc = ro - relativeClusterCenter;
-    float b = dot(oc, rayDir);
-    float c = dot(oc, oc) - (2.5 * 2.5);
-    float h = b * b - c;
 
-    if (h < 0.0) discard;
+    float t = 0.0;
+    float distToCluster = length(relativeClusterCenter);
 
-    float t = max(0.0, -b - sqrt(h));
+
+    t = max(0.0, distToCluster - 3.5);
 
     float sceneDepth = texture(Sampler1, texCoords).r;
     float ndcDepth = sceneDepth * 2.0 - 1.0;
@@ -131,7 +131,10 @@ void main() {
     for(int i = 0; i < 60; i++) {
         p = ro + rayDir * t;
 
-        if(length(p - relativeClusterCenter) > 2.5) break;
+
+        if(length(p - relativeClusterCenter) > 3.5) break;
+
+
         if(t > maxT - 0.05) break;
 
         float d = map(p - relativeClusterCenter);

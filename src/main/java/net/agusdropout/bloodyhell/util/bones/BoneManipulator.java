@@ -9,7 +9,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class BoneManipulator {
-    // IdentityHashMap is faster for storing ModelParts
+
     private static final Map<ModelPart, PoseSnapshot> SNAPSHOT_CACHE = new IdentityHashMap<>();
 
     public static void applyVisceralTwitch(ModelPart part, float time, float intensity) {
