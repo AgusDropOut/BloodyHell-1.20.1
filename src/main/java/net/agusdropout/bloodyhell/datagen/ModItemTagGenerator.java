@@ -88,7 +88,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
                 .add(ModItems.BLASPHEMOUS_IMPALER.get())
                 .add(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
-                .add(ModItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get());
+                .add(ModItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get())
+                .add(ModItems.STAFF_OF_THE_GOLDEN_SORROW.get());
 
         this.tag(ModTags.Items.RELIQUARY_UPGRADE_ITEM)
                 .add(ModItems.ANCIENT_OCULAR_LENSE.get())

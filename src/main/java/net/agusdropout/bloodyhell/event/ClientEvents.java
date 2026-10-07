@@ -278,6 +278,10 @@ public class ClientEvents {
                 ModShaders.MINI_BLOOD_BLOB_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "golden_sorrow_orb"), DefaultVertexFormat.POSITION), shaderInstance -> {
+                ModShaders.GOLDEN_SORROW_ORB_SHADER = shaderInstance;
+            });
+
 
         }
 

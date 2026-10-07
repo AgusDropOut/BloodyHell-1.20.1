@@ -2,7 +2,6 @@ package net.agusdropout.bloodyhell.item.client.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.agusdropout.bloodyhell.item.client.layer.BloodOrbLayer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.RenderUtils;
 
@@ -24,7 +24,6 @@ public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
     private static final float SWAY_MULT_VERTICAL = 0.1f;
     private static final float SWAY_MULT_ROLL = -0.4f;
 
-
     private ItemDisplayContext currentTransform = ItemDisplayContext.NONE;
 
     private float swayX = 0f;
@@ -35,12 +34,14 @@ public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
 
     public BaseStaffRenderer() {
         super(new BaseStaffModel());
-        this.addRenderLayer(new BloodOrbLayer(this));
+    }
+
+    public BaseStaffRenderer(GeoModel<BaseStaffItem> modelProvider) {
+        super(modelProvider);
     }
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-
         this.currentTransform = transformType;
 
         if (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
@@ -96,7 +97,6 @@ public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
     public void renderRecursively(PoseStack poseStack, BaseStaffItem animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
         if (bone.getName().equals("arm")) {
-
             if (this.currentTransform != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
                 return;
             }

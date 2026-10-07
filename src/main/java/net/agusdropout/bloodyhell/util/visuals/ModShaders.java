@@ -22,5 +22,6 @@ public class ModShaders {
     public static ShaderInstance BLOOD_DROP_SHADER;
     public static ShaderInstance BLOOD_ORB_SHADER;
     public static ShaderInstance MINI_BLOOD_BLOB_SHADER;
+    public static ShaderInstance GOLDEN_SORROW_ORB_SHADER;
 
 }

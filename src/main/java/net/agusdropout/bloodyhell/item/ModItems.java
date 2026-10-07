@@ -15,6 +15,7 @@ import net.agusdropout.bloodyhell.item.custom.mechanism.*;
 import net.agusdropout.bloodyhell.item.custom.reliquary.ReliquaryItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.agusdropout.bloodyhell.item.custom.staffs.IncompleteStaffOfThePureBlooded;
+import net.agusdropout.bloodyhell.item.custom.staffs.StaffOfTheGoldenSorrowItem;
 import net.agusdropout.bloodyhell.item.potions.BloodFlaskItem;
 import net.agusdropout.bloodyhell.item.potions.BloodPotionItem;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -356,6 +357,10 @@ public class ModItems {
     //Staffs
     public static final RegistryObject<Item> INCOMPLETE_STAFF_OF_THE_PURE_BLOODED = ITEMS.register("incomplete_staff_of_the_pure_blooded", () -> new IncompleteStaffOfThePureBlooded(
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> STAFF_OF_THE_GOLDEN_SORROW = ITEMS.register("staff_of_the_golden_sorrow",
+            () -> new StaffOfTheGoldenSorrowItem(new Item.Properties()
+                    .stacksTo(1)
+                    .fireResistant()));
 
     //Sanctum of the unbound drops
 
