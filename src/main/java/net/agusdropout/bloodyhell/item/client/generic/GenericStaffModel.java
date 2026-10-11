@@ -1,11 +1,11 @@
-package net.agusdropout.bloodyhell.item.client.base;
+package net.agusdropout.bloodyhell.item.client.generic;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
-public class BaseStaffModel extends GeoModel<BaseStaffItem> {
+public class GenericStaffModel extends GeoModel<BaseStaffItem> {
 
     @Override
     public ResourceLocation getModelResource(BaseStaffItem animatable) {

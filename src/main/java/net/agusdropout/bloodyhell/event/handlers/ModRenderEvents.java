@@ -36,6 +36,7 @@ public class ModRenderEvents {
             BloodOrbRenderManager.renderAll(event);
             MiniBlobRenderManager.renderAll(event);
             GoldenSorrowOrbRenderManager.renderAll(event);
+            ScarletCinderOrbRenderManager.renderAll(event);
 
 
 

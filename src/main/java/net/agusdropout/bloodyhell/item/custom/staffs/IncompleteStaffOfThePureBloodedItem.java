@@ -1,15 +1,14 @@
 package net.agusdropout.bloodyhell.item.custom.staffs;
 
 import net.agusdropout.bloodyhell.item.client.staffs.IncompleteStaffOfThePureBloodedRenderer;
-import net.agusdropout.bloodyhell.item.client.staffs.StaffOfTheGoldenSorrowRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.function.Consumer;
 
-public class IncompleteStaffOfThePureBlooded extends BaseStaffItem {
-    public IncompleteStaffOfThePureBlooded(Properties properties) {
+public class IncompleteStaffOfThePureBloodedItem extends BaseStaffItem {
+    public IncompleteStaffOfThePureBloodedItem(Properties properties) {
         super(properties);
     }
 

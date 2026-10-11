@@ -21,33 +21,31 @@ public class OffhandDaggerLayer extends RenderLayer<AbstractClientPlayer, Player
 
     @Override
     public void render(PoseStack matrixStack, MultiBufferSource buffer, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        // 1. Obtenemos el ítem de la mano principal
+
         ItemStack mainHandItem = player.getMainHandItem();
 
-        // 2. Verificamos si es nuestra daga doble
+
         if (mainHandItem.getItem() instanceof BlasphemousTwinDaggerItem) {
 
             matrixStack.pushPose();
 
-            // 3. Pegamos la renderización al hueso del BRAZO IZQUIERDO
-            // Esto es crucial: Si Player Animator mueve el brazo, la daga se mueve con él.
+
             this.getParentModel().leftArm.translateAndRotate(matrixStack);
 
-            // Posición fina
+
             matrixStack.translate(
-                    0.10,  // X → un poco hacia la palma (menos metida en el brazo)
-                    0.50,  // Y → más arriba (antes 0.65)
-                    -0.05   // Z → más adelante (antes 0.1)
+                    0.10,
+                    0.50,
+                    -0.05
             );
 
-            // Rotaciones
-            matrixStack.mulPose(Axis.XP.rotationDegrees(-115f)); // menos hacia abajo (antes -90)
-            matrixStack.mulPose(Axis.YP.rotationDegrees(180f)); // filo hacia afuera
-            matrixStack.mulPose(Axis.ZP.rotationDegrees(10f));  // leve inclinación natural
+
+            matrixStack.mulPose(Axis.XP.rotationDegrees(-115f));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(180f));
+            matrixStack.mulPose(Axis.ZP.rotationDegrees(10f));
 
 
-            // 5. Renderizamos el ítem como si estuviera en la mano izquierda
-            // Nota: Usamos THIRD_PERSON_LEFT_HAND para que el juego sepa cómo tratarlo
+
             Minecraft.getInstance().getItemRenderer().renderStatic(
                     mainHandItem,
                     ItemDisplayContext.THIRD_PERSON_LEFT_HAND,

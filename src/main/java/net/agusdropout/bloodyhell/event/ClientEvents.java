@@ -282,6 +282,10 @@ public class ClientEvents {
                 ModShaders.GOLDEN_SORROW_ORB_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "scarlet_cinder_orb"), DefaultVertexFormat.POSITION), shaderInstance -> {
+                ModShaders.SCARLET_CINDER_ORB_SHADER = shaderInstance;
+            });
+
 
         }
 

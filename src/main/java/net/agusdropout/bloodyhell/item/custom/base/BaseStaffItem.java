@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
-import net.agusdropout.bloodyhell.item.client.base.BaseStaffRenderer;
+import net.agusdropout.bloodyhell.item.client.generic.GenericStaffRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -54,10 +54,10 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private BaseStaffRenderer renderer;
+            private GenericStaffRenderer renderer;
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null) this.renderer = new BaseStaffRenderer();
+                if (this.renderer == null) this.renderer = new GenericStaffRenderer();
                 return this.renderer;
             }
         });

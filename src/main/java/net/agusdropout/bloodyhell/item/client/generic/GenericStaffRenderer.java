@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.item.client.base;
+package net.agusdropout.bloodyhell.item.client.generic;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,7 +15,7 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.RenderUtils;
 
-public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
+public class GenericStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
 
     // Weapon sway :L
     private static final float SWAY_RECOVERY_SPEED = 0.55f;
@@ -32,11 +32,11 @@ public class BaseStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
     private float lastCameraPitch = 0f;
     private boolean isInitialized = false;
 
-    public BaseStaffRenderer() {
-        super(new BaseStaffModel());
+    public GenericStaffRenderer() {
+        super(new GenericStaffModel());
     }
 
-    public BaseStaffRenderer(GeoModel<BaseStaffItem> modelProvider) {
+    public GenericStaffRenderer(GeoModel<BaseStaffItem> modelProvider) {
         super(modelProvider);
     }
 

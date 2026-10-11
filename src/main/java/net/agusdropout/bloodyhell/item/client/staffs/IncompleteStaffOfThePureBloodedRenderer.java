@@ -1,10 +1,10 @@
 package net.agusdropout.bloodyhell.item.client.staffs;
 
-import net.agusdropout.bloodyhell.item.client.base.BaseStaffRenderer;
+import net.agusdropout.bloodyhell.item.client.generic.GenericStaffRenderer;
 import net.agusdropout.bloodyhell.item.client.layer.BloodOrbLayer;
 
 
-public class IncompleteStaffOfThePureBloodedRenderer extends BaseStaffRenderer {
+public class IncompleteStaffOfThePureBloodedRenderer extends GenericStaffRenderer {
     public IncompleteStaffOfThePureBloodedRenderer() {
         super();
 

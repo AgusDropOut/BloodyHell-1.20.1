@@ -2,7 +2,6 @@ package net.agusdropout.bloodyhell.item;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.custom.*;
@@ -14,7 +13,8 @@ import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
 import net.agusdropout.bloodyhell.item.custom.mechanism.*;
 import net.agusdropout.bloodyhell.item.custom.reliquary.ReliquaryItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
-import net.agusdropout.bloodyhell.item.custom.staffs.IncompleteStaffOfThePureBlooded;
+import net.agusdropout.bloodyhell.item.custom.staffs.IncompleteStaffOfThePureBloodedItem;
+import net.agusdropout.bloodyhell.item.custom.staffs.StaffOfScarletCinderItem;
 import net.agusdropout.bloodyhell.item.custom.staffs.StaffOfTheGoldenSorrowItem;
 import net.agusdropout.bloodyhell.item.potions.BloodFlaskItem;
 import net.agusdropout.bloodyhell.item.potions.BloodPotionItem;
@@ -355,10 +355,15 @@ public class ModItems {
 
 
     //Staffs
-    public static final RegistryObject<Item> INCOMPLETE_STAFF_OF_THE_PURE_BLOODED = ITEMS.register("incomplete_staff_of_the_pure_blooded", () -> new IncompleteStaffOfThePureBlooded(
+    public static final RegistryObject<Item> INCOMPLETE_STAFF_OF_THE_PURE_BLOODED = ITEMS.register("incomplete_staff_of_the_pure_blooded", () -> new IncompleteStaffOfThePureBloodedItem(
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> STAFF_OF_THE_GOLDEN_SORROW = ITEMS.register("staff_of_the_golden_sorrow",
             () -> new StaffOfTheGoldenSorrowItem(new Item.Properties()
+                    .stacksTo(1)
+                    .fireResistant()));
+
+    public static final RegistryObject<Item> STAFF_OF_SCARLET_CINDER = ITEMS.register("staff_of_scarlet_cinder",
+            () -> new StaffOfScarletCinderItem(new Item.Properties()
                     .stacksTo(1)
                     .fireResistant()));
 

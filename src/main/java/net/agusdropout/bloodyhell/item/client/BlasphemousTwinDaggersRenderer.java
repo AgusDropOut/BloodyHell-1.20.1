@@ -18,24 +18,21 @@ public class BlasphemousTwinDaggersRenderer extends GeoItemRenderer<BlasphemousT
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        // Obtenemos el modelo actual
+
         GeoModel<BlasphemousTwinDaggerItem> model = this.getGeoModel();
 
-        // Buscamos el hueso "left_dagger" tal como aparece en tu imagen de Blockbench
         GeoBone leftDaggerBone = model.getBone("left_dagger").orElse(null);
 
         if (leftDaggerBone != null) {
-            // LÓGICA:
-            // Si es PRIMERA PERSONA (Mano derecha o izquierda) -> MOSTRAR TODO
+
             if (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
                 leftDaggerBone.setHidden(false);
             }
-            // Si es GUI (Inventario) -> MOSTRAR TODO (para que se vea bonito en el slot)
+
             else if (transformType == ItemDisplayContext.GUI || transformType == ItemDisplayContext.GROUND || transformType == ItemDisplayContext.FIXED) {
                 leftDaggerBone.setHidden(false);
             }
-            // Si es TERCERA PERSONA -> OCULTAR LA IZQUIERDA
-            // (Porque la renderizaremos manualmente pegada al brazo izquierdo del jugador)
+
             else {
                 leftDaggerBone.setHidden(true);
             }
