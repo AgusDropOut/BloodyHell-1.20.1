@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"texture_size": [128, 128],
 	"textures": {
@@ -904,25 +905,36 @@
 			}
 		}
 	],
+	"display": {
+		"gui": {
+			"rotation": [30, -135, 0],
+			"translation": [0, -2.5, 0],
+			"scale": [0.53125, 0.53125, 0.53125]
+		}
+	},
 	"groups": [
 		{
 			"name": "oni",
 			"origin": [8, 0, 8],
+			"scope": 0,
 			"color": 0,
 			"children": [
 				{
 					"name": "torso",
 					"origin": [8, 14.5, 11.125],
+					"scope": 0,
 					"color": 0,
 					"children": [
 						{
 							"name": "arms",
 							"origin": [8, 14.5, 11.125],
+							"scope": 0,
 							"color": 0,
 							"children": [
 								{
 									"name": "rightArm",
 									"origin": [15.95, 16.7, 8.575],
+									"scope": 0,
 									"color": 0,
 									"children": [
 										0,
@@ -930,23 +942,27 @@
 										{
 											"name": "fingersRight",
 											"origin": [16.375, 4.75, 9.625],
+											"scope": 0,
 											"color": 0,
 											"children": [
 												{
 													"name": "fr1",
 													"origin": [14.875, 4.75, 8.625],
+													"scope": 0,
 													"color": 0,
 													"children": [2]
 												},
 												{
 													"name": "fr2",
 													"origin": [16.375, 4.75, 7.625],
+													"scope": 0,
 													"color": 0,
 													"children": [3]
 												},
 												{
 													"name": "fr3",
 													"origin": [16.375, 4.75, 9.625],
+													"scope": 0,
 													"color": 0,
 													"children": [4]
 												}
@@ -960,6 +976,7 @@
 								{
 									"name": "leftArm",
 									"origin": [0.125, 16.625, 8.6875],
+									"scope": 0,
 									"color": 0,
 									"children": [
 										8,
@@ -967,23 +984,27 @@
 										{
 											"name": "fingersLeft",
 											"origin": [-0.375, 4.75, 9.625],
+											"scope": 0,
 											"color": 0,
 											"children": [
 												{
 													"name": "fl1",
 													"origin": [1.125, 4.75, 8.625],
+													"scope": 0,
 													"color": 0,
 													"children": [10]
 												},
 												{
 													"name": "fl2",
 													"origin": [-0.375, 4.75, 9.625],
+													"scope": 0,
 													"color": 0,
 													"children": [11]
 												},
 												{
 													"name": "fl3",
 													"origin": [-0.375, 4.75, 9.625],
+													"scope": 0,
 													"color": 0,
 													"children": [12]
 												}
@@ -1015,6 +1036,7 @@
 						{
 							"name": "head",
 							"origin": [8.0031, 18.3637, 6.9514],
+							"scope": 0,
 							"color": 0,
 							"children": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
 						}
@@ -1023,6 +1045,7 @@
 				{
 					"name": "lowerBody",
 					"origin": [7.98943, 8.52042, 8.83654],
+					"scope": 0,
 					"color": 0,
 					"children": [
 						58,
@@ -1033,17 +1056,20 @@
 						{
 							"name": "legs",
 							"origin": [8, 0, 8],
+							"scope": 0,
 							"color": 0,
 							"children": [
 								{
 									"name": "leftLeg",
 									"origin": [5.66667, 5.375, 7.375],
+									"scope": 0,
 									"color": 0,
 									"children": [63, 64, 65]
 								},
 								{
 									"name": "rightLeg",
 									"origin": [10.25, 5.375, 7.375],
+									"scope": 0,
 									"color": 0,
 									"children": [66, 67, 68]
 								}

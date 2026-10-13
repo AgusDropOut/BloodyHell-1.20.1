@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "bloodyhell:block/sanguine_crucible_main",
@@ -398,27 +399,38 @@
 			}
 		}
 	],
+	"display": {
+		"gui": {
+			"rotation": [30, -135, 0],
+			"translation": [0, -2, 0],
+			"scale": [0.43945, 0.43945, 0.43945]
+		}
+	},
 	"groups": [
 		{
 			"name": "sanguine_crucible",
 			"origin": [0, 0, 0],
+			"scope": 0,
 			"color": 0,
 			"children": [
 				{
 					"name": "main",
 					"origin": [0, 0, 0],
+					"scope": 0,
 					"color": 0,
 					"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 				},
 				{
 					"name": "liquid",
 					"origin": [0, 0, 0],
+					"scope": 0,
 					"color": 0,
 					"children": [25]
 				},
 				{
 					"name": "details",
 					"origin": [0, 0, 0],
+					"scope": 0,
 					"color": 0,
 					"children": [26, 27, 28, 29]
 				}
