@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.event.handlers;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
+import net.agusdropout.bloodyhell.screen.custom.screen.SpellWheelScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -24,11 +25,20 @@ public class ClientInputHandler {
             "category.bloodyhell.keys"
     );
 
+    public static final KeyMapping SPELL_WHEEL_KEY = new KeyMapping(
+            "key.bloodyhell.spell_wheel",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_R,
+            "category.bloodyhell.keys"
+    );
+
     @Mod.EventBusSubscriber(modid = "bloodyhell", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModBusEvents {
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
             event.register(INSPECT_KEY);
+            event.register(SPELL_WHEEL_KEY);
         }
     }
 
@@ -37,8 +47,18 @@ public class ClientInputHandler {
         @SubscribeEvent
         public static void onClientTick(TickEvent.ClientTickEvent event) {
             if (event.phase == TickEvent.Phase.END) {
+                Minecraft mc = Minecraft.getInstance();
+
+
+                while (SPELL_WHEEL_KEY.consumeClick()) {
+                    if (mc.screen == null) {
+                        mc.setScreen(new SpellWheelScreen());
+                    }
+                }
+
+
                 while (INSPECT_KEY.consumeClick()) {
-                    Player player = Minecraft.getInstance().player;
+                    Player player = mc.player;
                     if (player != null) {
                         ItemStack mainHandItem = player.getMainHandItem();
 

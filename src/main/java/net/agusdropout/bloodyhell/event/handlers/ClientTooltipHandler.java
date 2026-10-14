@@ -20,7 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT)
 public class ClientTooltipHandler {
 
-    // --- 1. HANDLE FRAME & BACKGROUND COLORS ---
+    // --- HANDLE FRAME & BACKGROUND COLORS ---
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
 
@@ -28,27 +28,27 @@ public class ClientTooltipHandler {
 
         ItemStack stack = event.getItemStack();
 
-        // Check 1: Sanguinite OR Rhnull (Reddish-Gold Frame, Red Background)
+
         if (stack.is(ModTags.Items.SANGUINITE_TIER_ITEMS) || stack.is(ModTags.Items.RHNULL_TIER_ITEMS)) {
-            int borderStart = 0xffffdd6b; // Light Gold
-            int borderEnd = 0xffffc400;   // Darker Gold
-            int background = 0xf0590000;  // Dark Red Transparency
+            int borderStart = 0xffffdd6b;
+            int borderEnd = 0xffffc400;
+            int background = 0xf0590000;
 
             event.setBorderStart(borderStart);
             event.setBorderEnd(borderEnd);
             event.setBackground(background);
         }
-        // Check 2: Blasphemous (Gold Frame, Very Dark Yellow/Black Background)
+
         else if (stack.is(ModTags.Items.BLASPHEMOUS_TIER_ITEMS)) {
-            int borderStart = 0xffffe100; // Bright Gold
-            int borderEnd = 0xffe6b800;   // Muted Gold
-            int background = 0xf01a1600;  // Very Dark Yellow/Black (Almost Black with a yellow tint)
+            int borderStart = 0xffffe100;
+            int borderEnd = 0xffe6b800;
+            int background = 0xf01a1600;
 
             event.setBorderStart(borderStart);
             event.setBorderEnd(borderEnd);
             event.setBackground(background);
         }
-        // Check 3: Base Power Gem (Legacy check)
+
         else if (stack.getItem() instanceof BasePowerGemItem) {
             int borderStart = 0xffffdd6b;
             int borderEnd = 0xffffc400;
@@ -58,7 +58,7 @@ public class ClientTooltipHandler {
         }
     }
 
-    // --- 2. HANDLE TEXT COLORS ---
+    // --- HANDLE TEXT COLORS ---
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
 
@@ -67,28 +67,28 @@ public class ClientTooltipHandler {
         ItemStack stack = event.getItemStack();
         if (event.getToolTip().isEmpty()) return;
 
-        // Priority 1: Sanguinite -> Red Text
+
         if (stack.is(ModTags.Items.SANGUINITE_TIER_ITEMS)) {
-            setColor(event, 0xAA0000); // Deep Red
-            return; // Stop here so we don't overwrite with default
+            setColor(event, 0xAA0000);
+            return;
         }
 
-        // Priority 2: Rhnull -> Gold Text
+
         if (stack.is(ModTags.Items.RHNULL_TIER_ITEMS)) {
             setColor(event, 0xFFAA00); // Gold
             return;
         }
 
-        // Priority 3: Blasphemous -> Gold Text (Matches frame)
+
         if (stack.is(ModTags.Items.BLASPHEMOUS_TIER_ITEMS)) {
             setColor(event, 0xFFAA00); // Gold
             return;
         }
 
-        // Priority 4: Default Mod Items -> Standard Bloody Hell Red
+
         ResourceLocation registryName = ForgeRegistries.ITEMS.getKey(stack.getItem());
         if (registryName != null && registryName.getNamespace().equals(BloodyHell.MODID)) {
-            setColor(event, 0x880000); // Standard Mod Red
+            setColor(event, 0x880000);
         }
     }
 
@@ -97,7 +97,7 @@ public class ClientTooltipHandler {
 
         if (ModClientConfigs.DISABLE_MOD_TOOLTIPS.get()) return;
 
-        // Ensure stack is valid before checking creator mod ID
+
         if (!event.getItemStack().isEmpty() &&
                 event.getItemStack().getItem().getCreatorModId(event.getItemStack()) != null &&
                 event.getItemStack().getItem().getCreatorModId(event.getItemStack()).equals(BloodyHell.MODID)) {

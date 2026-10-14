@@ -24,5 +24,7 @@ public class ModShaders {
     public static ShaderInstance MINI_BLOOD_BLOB_SHADER;
     public static ShaderInstance GOLDEN_SORROW_ORB_SHADER;
     public static ShaderInstance SCARLET_CINDER_ORB_SHADER;
+    public static ShaderInstance CRIMSON_VEIL_GUI_SHADER;
+    public static ShaderInstance SPELL_WHEEL_BG_SHADER;
 
 }

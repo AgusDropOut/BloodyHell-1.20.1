@@ -286,6 +286,14 @@ public class ClientEvents {
                 ModShaders.SCARLET_CINDER_ORB_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "crimson_veil_gui"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
+                    ModShaders.CRIMSON_VEIL_GUI_SHADER = shaderInstance;
+            });
+
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "spell_wheel_bg"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
+                ModShaders.SPELL_WHEEL_BG_SHADER = shaderInstance;
+            });
+
 
         }
 
