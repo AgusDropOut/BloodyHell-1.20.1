@@ -4,7 +4,7 @@ package net.agusdropout.bloodyhell.block;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.custom.SanguiniteCondenserBlock;
+import net.agusdropout.bloodyhell.block.custom.mechanism.SanguiniteCondenserBlock;
 import net.agusdropout.bloodyhell.block.custom.altar.BlasphemousBloodAltarBlock;
 import net.agusdropout.bloodyhell.block.custom.altar.BloodAltarBlock;
 import net.agusdropout.bloodyhell.block.custom.altar.MainBlasphemousBloodAltarBlock;
