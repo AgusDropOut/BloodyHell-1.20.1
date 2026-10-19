@@ -3,9 +3,9 @@
 uniform float Time;
 uniform float Intensity;
 uniform vec2 Resolution;
+uniform float Seed;
 
 in vec2 texCoord0;
-in vec4 vertexColor;
 out vec4 fragColor;
 
 void main() {
@@ -14,34 +14,47 @@ void main() {
         return;
     }
 
-    vec2 uv = (texCoord0 - 0.5) * 2.0;
-    uv.x *= Resolution.x / Resolution.y;
+    float pixelSize = 6.0;
+    vec2 gridRes = Resolution / pixelSize;
+    vec2 pUV = floor(texCoord0 * gridRes) / gridRes;
 
-    float radius = length(uv);
-    float angle = atan(uv.y, uv.x);
+    vec2 uv = pUV;
+    uv.y -= 0.5;
 
-    float bend = sin(radius * 2.0 - Time * 1.5) * 0.5;
-    float wiggledAngle = angle + (bend * Intensity);
+    float maxLength = 0.8 * Intensity;
+    float uniqueThickness = 0.10 + mod(Seed, 0.08);
+    float uniqueFlexibility = 0.4 + mod(Seed, 0.4);
 
-    float tentacles = 0.0;
+    float bendAmp = uv.x * uniqueFlexibility;
 
-    tentacles += abs(sin(wiggledAngle * 5.0 + Time)) * 0.3;
+    float dynamicSpeed = Time * mix(1.2, 3.5, Intensity);
 
-    float midWiggle = sin(radius * 5.0 + Time * 3.0) * 0.2;
-    tentacles += abs(sin((wiggledAngle + midWiggle) * 12.0 - Time * 2.0)) * 0.15;
+    float speed1 = dynamicSpeed * (0.8 + mod(Seed, 1.2));
+    float speed2 = dynamicSpeed * (1.2 + mod(Seed, 0.7));
 
-    tentacles += abs(sin(wiggledAngle * 25.0 + Time * 5.0)) * 0.05;
 
-    float distortedRadius = radius + (tentacles * Intensity);
+    float wave = sin(uv.x * 8.0 - speed1 + Seed * 13.0) * bendAmp;
+    wave += cos(uv.x * 14.0 - speed2) * (bendAmp * 0.4);
 
-    float safeZone = 2.0 - (Intensity * 0.8);
 
-    float alpha = smoothstep(safeZone - 0.2, safeZone + 0.1, distortedRadius);
+    wave += sin(uv.x * 25.0 - speed1 * 1.5) * (bendAmp * 0.1);
 
-    vec3 color = vec3(0.0);
-    if (distortedRadius > safeZone + 0.2) {
-        color = vec3(0.05, 0.0, 0.0);
+    float distortedY = uv.y - wave;
+
+
+    float taper = clamp(1.0 - (uv.x / maxLength), 0.0, 1.0);
+    taper = pow(taper, 1.3);
+
+    float currentThickness = uniqueThickness * taper;
+
+    float alpha = 0.0;
+    if (uv.x > 0.0 && uv.x < maxLength) {
+        alpha = step(abs(distortedY), currentThickness);
     }
 
-    fragColor = vec4(color, clamp(alpha, 0.0, 1.0));
+    alpha *= step(0.01, Intensity);
+
+    vec3 color = vec3(0.05, 0.0, 0.0);
+
+    fragColor = vec4(color, alpha);
 }

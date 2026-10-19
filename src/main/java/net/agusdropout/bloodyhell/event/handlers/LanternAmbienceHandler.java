@@ -29,20 +29,17 @@ public class LanternAmbienceHandler {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null) return;
 
-
         float targetIntensity = 0.0f;
         if (mc.player.hasEffect(ModEffects.FRENZY.get())) {
             int amplifier = mc.player.getEffect(ModEffects.FRENZY.get()).getAmplifier();
             targetIntensity = Mth.clamp((amplifier + 1) / 100.0f, 0.0f, 1.0f);
         }
 
-
         if (currentIntensity < targetIntensity) {
             currentIntensity = Math.min(targetIntensity, currentIntensity + TRANSITION_SPEED);
         } else if (currentIntensity > targetIntensity) {
             currentIntensity = Math.max(targetIntensity, currentIntensity - TRANSITION_SPEED);
         }
-
 
         if (currentIntensity > 0.2f && mc.level.random.nextFloat() < (currentIntensity * 0.4f)) {
             double offsetX = (mc.level.random.nextDouble() - 0.5) * 16.0;
@@ -65,16 +62,30 @@ public class LanternAmbienceHandler {
         previousGazeIntensity = currentIntensity;
     }
 
+
     @SubscribeEvent
-    public static void onComputeFov(ViewportEvent.ComputeFov event) {
-        if (currentIntensity <= 0 || !ModClientConfigs.ENABLE_FOV_EFFECTS.get()) return;
+    public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        if (currentIntensity <= 0 || !ModClientConfigs.ENABLE_CAMERA_SHAKE.get()) return;
 
-        double fov = event.getFOV();
-        float time = Minecraft.getInstance().player.tickCount + (float) event.getPartialTick();
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || mc.isPaused()) return;
 
-        float heartbeat = (float) Math.sin(time * 0.2f) * (15.0f * currentIntensity);
-        float jitter = (Minecraft.getInstance().player.getRandom().nextFloat() - 0.5f) * (2.0f * currentIntensity);
+        float time = mc.player.tickCount + (float) event.getPartialTick();
 
-        event.setFOV(fov - (heartbeat + jitter));
+        float speed = 25.0f + (currentIntensity * 55.0f);
+
+
+        float amplitude = 0.3f + (currentIntensity * 0.5f);
+
+
+        float pitchShake = (float) Math.sin(time * speed) * amplitude;
+        float yawShake = (float) Math.cos(time * speed * 1.1f + 12.3f) * amplitude;
+
+
+        float rollShake = (float) Math.sin(time * speed * 0.8f + 5.5f) * (amplitude * 0.6f);
+
+        event.setPitch(event.getPitch() + pitchShake);
+        event.setYaw(event.getYaw() + yawShake);
+        event.setRoll(event.getRoll() + rollShake);
     }
 }
