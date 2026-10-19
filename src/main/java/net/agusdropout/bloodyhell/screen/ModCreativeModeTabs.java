@@ -110,6 +110,11 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get());
                         output.accept(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get());
                         output.accept(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
+                        output.accept(ModItems.THE_OMNITOME.get());
+
+                        output.accept(ModItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get());
+                        output.accept(ModItems.STAFF_OF_THE_GOLDEN_SORROW.get());
+                        output.accept(ModItems.STAFF_OF_SCARLET_CINDER.get());
 
                         output.accept(ModItems.RELIQUARY.get());
                         output.accept(ModItems.ANCIENT_OCULAR_LENSE.get());

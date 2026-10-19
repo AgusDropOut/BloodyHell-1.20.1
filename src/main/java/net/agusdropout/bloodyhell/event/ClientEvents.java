@@ -294,6 +294,13 @@ public class ClientEvents {
                 ModShaders.SPELL_WHEEL_BG_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "omnitome_void"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+                ModShaders.OMNITOME_VOID_SHADER = shaderInstance;
+            });
+
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "omnitome_emerge_clip"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+                ModShaders.EMERGE_CLIP_SHADER = shaderInstance;
+            });
 
         }
 

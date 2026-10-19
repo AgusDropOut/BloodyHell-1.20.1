@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.agusdropout.bloodyhell.util.visuals.manager.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -38,9 +39,19 @@ public class ModRenderEvents {
             GoldenSorrowOrbRenderManager.renderAll(event);
             ScarletCinderOrbRenderManager.renderAll(event);
 
+            OmnitomeBookRenderManager.INSTANCE.renderAllAndClear();
+            OmnitomeClipRenderManager.INSTANCE.renderAllAndClear();
+            OmnitomeVoidRenderManager.INSTANCE.renderAllAndClear();
+
+
+
+
 
 
         }
+
+
+
 
 
 

@@ -1,10 +1,7 @@
 package net.agusdropout.bloodyhell.screen;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.screen.custom.menu.BloodWorkBenchMenu;
-import net.agusdropout.bloodyhell.screen.custom.menu.ReliquaryMenu;
-import net.agusdropout.bloodyhell.screen.custom.menu.SanguineLapidaryMenu;
-import net.agusdropout.bloodyhell.screen.custom.menu.VesperMenu;
+import net.agusdropout.bloodyhell.screen.custom.menu.*;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -32,6 +29,9 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<ReliquaryMenu>> RELIQUARY_MENU =
             registerMenuType(ReliquaryMenu::new, "reliquary_menu");
+
+    public static final RegistryObject<MenuType<OmnitomeMenu>> OMNITOME_MENU =
+            registerMenuType(OmnitomeMenu::new, "omnitome_menu");
 
 
     // --- Helper Methods ---

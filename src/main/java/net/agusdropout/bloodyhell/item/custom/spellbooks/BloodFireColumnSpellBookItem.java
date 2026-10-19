@@ -77,7 +77,7 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
     private List<Vec3> findTargetPosition(Level level, Player player,int targetsCount) {
         List<Vec3> targetPositions = new ArrayList<>();
 
-        // 1. Scan for nearby enemies
+
         AABB searchBox = player.getBoundingBox().inflate(SPELL_RADIUS, 5.0, SPELL_RADIUS);
         List<LivingEntity> potentialTargets = level.getEntitiesOfClass(LivingEntity.class, searchBox,
                 entity -> entity != player && !entity.isAlliedTo(player) && entity.isAlive());
@@ -100,7 +100,7 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
 
 
     private Vec3 getPlayerColumnPosition(Player player,Level level){
-        // 2. Raycast to find what the player is looking at
+
         Vec3 startPos = player.getEyePosition();
         Vec3 viewVector = player.getViewVector(1.0F);
         Vec3 endPos = startPos.add(viewVector.scale(SPELL_RADIUS));
@@ -113,7 +113,7 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
                 player
         ));
 
-        // If looking directly at a floor (UP face), spawn exactly there
+
         if (result.getType() == HitResult.Type.BLOCK) {
             if (result instanceof net.minecraft.world.phys.BlockHitResult blockHit) {
                 if (blockHit.getDirection() == Direction.UP) {
@@ -122,12 +122,10 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
             }
         }
 
-        // 3. Fallback: Find Ground Position
-        // Use the Raycast Hit X/Z (or the Max Range X/Z if it missed)
         double targetX = result.getLocation().x;
         double targetZ = result.getLocation().z;
 
-        // Start the floor check from either the Hit height (e.g., looking at a high wall) or the Player's eye height
+
         double startY = Math.max(player.getEyeY(), result.getLocation().y) + 0.5;
 
         Vec3 floorRayStart = new Vec3(targetX, startY, targetZ);
@@ -216,5 +214,10 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
     @Override
     public StaffCastType getStaffCastType() {
         return StaffCastType.RISE;
+    }
+
+    @Override
+    public String getSpellIconName() {
+        return "blood_fire_column_icon";
     }
 }

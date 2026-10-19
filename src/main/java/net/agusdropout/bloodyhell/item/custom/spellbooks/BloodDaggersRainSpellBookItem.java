@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
+import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodPortalEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
@@ -9,6 +10,7 @@ import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -175,5 +177,10 @@ public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDagger
     @Override
     public StaffCastType getStaffCastType() {
         return StaffCastType.CIRCLE;
+    }
+
+    @Override
+    public String getSpellIconName() {
+        return "daggers_rain_icon";
     }
 }

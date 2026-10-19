@@ -137,4 +137,9 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
     public StaffCastType getStaffCastType() {
         return StaffCastType.THROW;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "blood_fire_soul_icon";
+    }
 }

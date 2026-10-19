@@ -1,11 +1,14 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
+import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookRenderer;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.agusdropout.bloodyhell.util.capability.CrimsonVeilHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -35,7 +38,8 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     private static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenLoop("open");
     private static final RawAnimation CLOSED_ANIM = RawAnimation.begin().thenLoop("closed");
     private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenPlay("attack");
-    private static final List<String> gem_sockets = List.of("socket_1","socket_2","socket_3");
+    private static final List<String> gem_sockets = List.of("socket_1", "socket_2", "socket_3");
+    private static final RawAnimation ATTACK_SEQ_ANIM = RawAnimation.begin().thenLoop("attack_seq");
 
     private static final String NBT_OPEN_KEY = "spellbook_is_open";
 
@@ -46,33 +50,131 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
+    public CompoundTag serializeBookData(ItemStack bookStack) {
+        CompoundTag serialized = new CompoundTag();
+        bookStack.save(serialized);
+        return serialized;
+    }
+
+    public static ItemStack deserializeBookData(CompoundTag nbt) {
+        if (nbt == null || nbt.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        return ItemStack.of(nbt);
+    }
+
+    @Override
+    public boolean isPerspectiveAware() {
+        return true;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
+        if (livingEntity instanceof Player player) {
+            int ticksUsed = getUseDuration(stack) - remainingUseDuration;
+
+
+            if (getStaffCastType() == StaffCastType.SEQUENTIAL && ticksUsed > 0) {
+                int chargeTime = Math.max(1, getMinChargeTime());
+                int cooldown = Math.max(0, getCooldown());
+                int cycleLength = chargeTime + cooldown;
+
+
+                if (ticksUsed % cycleLength == chargeTime % cycleLength) {
+                    executeCast(level, player, player.getUsedItemHand(), stack);
+                }
+            }
+
+            if (level.isClientSide) {
+                spawnProgressiveParticles(level, player, ticksUsed);
+            }
+            playChargeSound(level, player, ticksUsed);
+        }
+    }
+
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft, InteractionHand hand) {
+        if (entity instanceof Player player) {
+            int duration = getUseDuration(stack) - timeLeft;
+
+            if (duration >= getMinChargeTime()) {
+
+                if (getStaffCastType() != StaffCastType.SEQUENTIAL) {
+                    if (!level.isClientSide) {
+                        if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
+                            performSpell(level, player, hand, stack);
+                            triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) level), "controller", "attack");
+                            player.getCooldowns().addCooldown(this, getCooldown());
+                        } else {
+                            player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
+                                    .withStyle(ChatFormatting.DARK_RED), true);
+                        }
+                    } else {
+                        performSpell(level, player, hand, stack);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 5, state -> {
             ItemDisplayContext context = state.getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
 
-            if (context == ItemDisplayContext.GROUND || context == ItemDisplayContext.FIXED) {
+            if (context != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND &&
+                    context != ItemDisplayContext.FIRST_PERSON_LEFT_HAND &&
+                    context != ItemDisplayContext.THIRD_PERSON_RIGHT_HAND &&
+                    context != ItemDisplayContext.THIRD_PERSON_LEFT_HAND) {
+                state.getController().setAnimationSpeed(1.0f);
                 return state.setAndContinue(CLOSED_ANIM);
+            }
+
+            Entity entity = state.getData(DataTickets.ENTITY);
+            if (entity == null) {
+                entity = net.minecraft.client.Minecraft.getInstance().player;
+            }
+
+
+            if (entity instanceof LivingEntity living && living.isUsingItem()) {
+                Item usedItem = living.getUseItem().getItem();
+                if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem<?> || usedItem instanceof OmnitomeItem) {
+                    if (getStaffCastType() == StaffCastType.SEQUENTIAL) {
+                        int cycleLength = Math.max(1, getMinChargeTime()) + Math.max(0, getCooldown());
+                        state.getController().setAnimationSpeed(10.0f / (float) cycleLength);
+                        return state.setAndContinue(ATTACK_SEQ_ANIM);
+                    }
+                }
+            }
+
+            boolean isAttacking = state.getController().getCurrentAnimation() != null &&
+                    state.getController().getCurrentAnimation().animation().name().equals("attack");
+
+            if (isAttacking) {
+                float speed = 1.0f;
+                if (getStaffCastType() == StaffCastType.THROW || getStaffCastType() == StaffCastType.RISE) {
+                    speed = 10.0f / (float)Math.max(1, getMinChargeTime());
+                }
+                state.getController().setAnimationSpeed(Math.min(speed, 8.0f));
+
+                if (!state.getController().hasAnimationFinished()) {
+                    return software.bernie.geckolib.core.object.PlayState.CONTINUE;
+                }
+            } else {
+                state.getController().setAnimationSpeed(1.0f);
             }
 
             ItemStack stack = state.getData(DataTickets.ITEMSTACK);
-            boolean isOpen = stack.hasTag() && stack.getTag().getBoolean(NBT_OPEN_KEY);
+            boolean isOpen = stack != null && stack.hasTag() && stack.getTag().getBoolean(NBT_OPEN_KEY);
 
-            if (isOpen) {
-                return state.setAndContinue(OPEN_ANIM);
-            } else {
-                return state.setAndContinue(CLOSED_ANIM);
-            }
+            return state.setAndContinue(isOpen ? OPEN_ANIM : CLOSED_ANIM);
+
         }).triggerableAnim("attack", ATTACK_ANIM));
     }
 
-
     public boolean canStartCasting(Level level, Player player) {
-
         if (player.getCooldowns().isOnCooldown(this)) {
             return false;
         }
-
 
         if (!CrimsonVeilHelper.hasEnough(player, getCrimsonCost())) {
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -104,56 +206,24 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         if (!level.isClientSide) {
             if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
                 performSpell(level, player, hand, stack);
-                triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel)level), "controller", "attack");
 
 
+                if (getStaffCastType() != StaffCastType.SEQUENTIAL) {
+                    triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) level), "controller", "attack");
+                }
 
                 if (getCooldown() > 0 && getStaffCastType() != StaffCastType.SEQUENTIAL) {
                     player.getCooldowns().addCooldown(this, getCooldown());
                 }
             } else {
                 player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil").withStyle(ChatFormatting.DARK_RED), true);
-                player.stopUsingItem(); 
+                player.stopUsingItem();
             }
         } else {
             performSpell(level, player, hand, stack);
         }
     }
 
-    @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (livingEntity instanceof Player player) {
-            int tick = getUseDuration(stack) - remainingUseDuration;
-
-            if (level.isClientSide) {
-                spawnProgressiveParticles(level, player, tick);
-            }
-
-            playChargeSound(level, player, tick);
-        }
-    }
-
-    @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
-        if (entity instanceof Player player) {
-            int duration = getUseDuration(stack) - timeLeft;
-
-            if (duration >= getMinChargeTime()) {
-                if (!level.isClientSide) {
-                    if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
-                        performSpell(level, player, InteractionHand.MAIN_HAND, stack);
-                        triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel)level), "controller", "attack");
-                        player.getCooldowns().addCooldown(this, getCooldown());
-                    } else {
-                        player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
-                                .withStyle(ChatFormatting.DARK_RED), true);
-                    }
-                } else {
-                    performSpell(level, player, InteractionHand.MAIN_HAND, stack);
-                }
-            }
-        }
-    }
 
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
@@ -220,4 +290,12 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     public abstract int getCooldown();
     public abstract String getSpellBookId();
     public abstract StaffCastType getStaffCastType();
+    public abstract String getSpellIconName();
+    public ResourceLocation getSpellIconLocation() {
+        return new ResourceLocation(BloodyHell.MODID, "textures/gui/" + getSpellIconName() + ".png");
+    }
+
+    public String getAnimationFileName() {
+        return "generic_spellbook";
+    }
 }

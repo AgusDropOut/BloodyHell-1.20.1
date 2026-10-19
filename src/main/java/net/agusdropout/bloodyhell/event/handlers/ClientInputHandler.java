@@ -2,9 +2,11 @@ package net.agusdropout.bloodyhell.event.handlers;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.agusdropout.bloodyhell.screen.custom.screen.SpellWheelScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -51,8 +53,12 @@ public class ClientInputHandler {
 
 
                 while (SPELL_WHEEL_KEY.consumeClick()) {
-                    if (mc.screen == null) {
-                        mc.setScreen(new SpellWheelScreen());
+                    if (mc.screen == null && mc.player != null) {
+                        if (mc.player.getOffhandItem().getItem() instanceof OmnitomeItem) {
+                            mc.setScreen(new SpellWheelScreen(InteractionHand.OFF_HAND, mc.player.getOffhandItem()));
+                        } else if (mc.player.getMainHandItem().getItem() instanceof OmnitomeItem) {
+                            mc.setScreen(new SpellWheelScreen(InteractionHand.MAIN_HAND, mc.player.getMainHandItem()));
+                        }
                     }
                 }
 

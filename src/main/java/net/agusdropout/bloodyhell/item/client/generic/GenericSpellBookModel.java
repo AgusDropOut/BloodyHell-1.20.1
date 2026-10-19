@@ -5,7 +5,7 @@ import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
-// No more <T extends ...>
+
 public class GenericSpellBookModel extends GeoModel<BaseSpellBookItem<?>> {
 
     @Override
@@ -20,6 +20,6 @@ public class GenericSpellBookModel extends GeoModel<BaseSpellBookItem<?>> {
 
     @Override
     public ResourceLocation getAnimationResource(BaseSpellBookItem<?> animatable) {
-        return new ResourceLocation(BloodyHell.MODID, "animations/" + animatable.getSpellBookId() + ".animation.json");
+        return new ResourceLocation(BloodyHell.MODID, "animations/" + animatable.getAnimationFileName() + ".animation.json");
     }
 }

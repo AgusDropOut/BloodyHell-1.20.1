@@ -141,4 +141,9 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
     public StaffCastType getStaffCastType() {
         return StaffCastType.SEQUENTIAL;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "blood_sphere_icon";
+    }
 }

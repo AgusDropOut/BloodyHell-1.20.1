@@ -156,4 +156,9 @@ public class RhnullGoldenThroneSpellBookItem extends BaseSpellBookItem<RhnullGol
     public StaffCastType getStaffCastType() {
         return StaffCastType.CIRCLE;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "rhnull_golden_throne_icon";
+    }
 }

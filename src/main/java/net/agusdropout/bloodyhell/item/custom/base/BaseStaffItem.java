@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
 import net.agusdropout.bloodyhell.item.client.generic.GenericStaffRenderer;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -8,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -41,6 +43,21 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
+    protected ItemStack getActualSpellStack(ItemStack offhandStack) {
+        if (offhandStack.getItem() instanceof BaseSpellBookItem) {
+            return offhandStack;
+        } else if (offhandStack.getItem() instanceof OmnitomeItem omnitome) {
+            return omnitome.getActiveSpellBook(offhandStack);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    protected void syncSpellStackIfOmnitome(ItemStack offhandStack, ItemStack activeSpellStack) {
+        if (offhandStack.getItem() instanceof OmnitomeItem && activeSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
+            offhandStack.getOrCreateTag().put(OmnitomeItem.NBT_ACTIVE_SPELL, spellBook.serializeBookData(activeSpellStack));
+        }
+    }
+
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return slotChanged || oldStack.getItem() != newStack.getItem();
@@ -49,6 +66,11 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     @Override
     public net.minecraft.world.item.UseAnim getUseAnimation(ItemStack stack) {
         return net.minecraft.world.item.UseAnim.NONE;
+    }
+
+    @Override
+    public boolean isPerspectiveAware() {
+        return true;
     }
 
     @Override
@@ -67,7 +89,6 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "base_controller", 2, this::basePredicate));
 
-
         controllers.add(new AnimationController<>(this, "action_controller", 2, state -> PlayState.STOP)
                 .triggerableAnim("inspect_1", RawAnimation.begin().thenPlay("inspect_1"))
                 .triggerableAnim("inspect_2", RawAnimation.begin().thenPlay("inspect_2"))
@@ -76,12 +97,21 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     }
 
     protected <T extends GeoAnimatable> PlayState basePredicate(AnimationState<T> event) {
+        ItemDisplayContext perspective = event.getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
+
+        if (perspective != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND && perspective != ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
+            event.getController().setAnimationSpeed(1.0f);
+            event.getController().setAnimation(IDLE_ANIM);
+            return PlayState.CONTINUE;
+        }
+
         Entity entity = event.getData(DataTickets.ENTITY);
         if (entity == null) entity = net.minecraft.client.Minecraft.getInstance().player;
 
         if (entity instanceof LivingEntity livingEntity && livingEntity.isUsingItem() && livingEntity.getUseItem().getItem() == this) {
             ItemStack stack = livingEntity.getUseItem();
             ItemStack offhandStack = livingEntity.getItemInHand(InteractionHand.OFF_HAND);
+            ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
             String castTypeStr = stack.getOrCreateTag().getString("CastType");
             StaffCastType castType = StaffCastType.HOLD;
@@ -91,7 +121,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
             int chargeTime = 20;
             int cooldown = 0;
 
-            if (offhandStack.getItem() instanceof BaseSpellBookItem spellBook) {
+            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
                 chargeTime = Math.max(1, spellBook.getMinChargeTime());
                 cooldown = Math.max(0, spellBook.getCooldown());
             }
@@ -146,14 +176,16 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         ItemStack offhandStack = player.getItemInHand(InteractionHand.OFF_HAND);
+        ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
-        if (offhandStack.getItem() instanceof BaseSpellBookItem spellBook) {
+        if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
             if (!spellBook.canStartCasting(level, player)) {
                 return InteractionResultHolder.fail(itemStack);
             }
 
             if (!level.isClientSide) {
                 itemStack.getOrCreateTag().putString("CastType", spellBook.getStaffCastType().name());
+                syncSpellStackIfOmnitome(offhandStack, actualSpellStack);
             }
 
             player.startUsingItem(hand);
@@ -166,9 +198,10 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         if (livingEntity instanceof Player player) {
             ItemStack offhandStack = player.getItemInHand(InteractionHand.OFF_HAND);
+            ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
-            if (offhandStack.getItem() instanceof BaseSpellBookItem spellBook) {
-                spellBook.onUseTick(level, player, offhandStack, remainingUseDuration);
+            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
+                spellBook.onUseTick(level, player, actualSpellStack, remainingUseDuration);
 
                 int ticksUsed = getUseDuration(stack) - remainingUseDuration;
                 int chargeTime = Math.max(1, spellBook.getMinChargeTime());
@@ -180,14 +213,15 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
                     if (castType == StaffCastType.SEQUENTIAL) {
                         int currentCycleTick = ticksUsed % cycleLength;
                         if (currentCycleTick == chargeTime) {
-                            spellBook.executeCast(level, player, InteractionHand.MAIN_HAND, offhandStack);
+                            spellBook.executeCast(level, player, InteractionHand.MAIN_HAND, actualSpellStack);
                         }
                     }
                     else if (castType == StaffCastType.THROW && ticksUsed == chargeTime) {
-                        spellBook.executeCast(level, player, InteractionHand.MAIN_HAND, offhandStack);
+                        spellBook.executeCast(level, player, InteractionHand.MAIN_HAND, actualSpellStack);
                         player.stopUsingItem();
                     }
                 }
+                syncSpellStackIfOmnitome(offhandStack, actualSpellStack);
             }
         }
         super.onUseTick(level, livingEntity, stack, remainingUseDuration);
@@ -197,12 +231,14 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
             ItemStack offhandStack = player.getItemInHand(InteractionHand.OFF_HAND);
+            ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
-            if (offhandStack.getItem() instanceof BaseSpellBookItem spellBook) {
+            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
                 StaffCastType castType = spellBook.getStaffCastType();
                 if (castType != StaffCastType.SEQUENTIAL && castType != StaffCastType.THROW) {
-                    spellBook.releaseUsing(offhandStack, level, player, timeLeft);
+                    spellBook.releaseUsing(actualSpellStack, level, player, timeLeft, InteractionHand.MAIN_HAND);
                 }
+                syncSpellStackIfOmnitome(offhandStack, actualSpellStack);
             }
 
             if (!level.isClientSide) {
@@ -216,7 +252,6 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     }
 
     public void triggerInspect(Player player, ItemStack stack) {
-
         int randomInspect = player.level().random.nextInt(3) + 1;
         triggerAnim(player, GeoItem.getId(stack), "action_controller", "inspect_" + randomInspect);
     }

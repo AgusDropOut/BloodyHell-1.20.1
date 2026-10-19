@@ -135,4 +135,9 @@ public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavy
     public StaffCastType getStaffCastType() {
         return StaffCastType.RISE;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "rhnull_heavy_sword_icon";
+    }
 }

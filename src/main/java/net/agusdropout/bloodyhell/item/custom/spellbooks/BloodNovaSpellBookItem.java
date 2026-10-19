@@ -132,4 +132,9 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
     public StaffCastType getStaffCastType() {
         return StaffCastType.CIRCLE;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "blood_nova_icon";
+    }
 }

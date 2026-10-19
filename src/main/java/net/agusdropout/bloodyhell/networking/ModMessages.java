@@ -86,6 +86,11 @@ public class ModMessages {
                 .encoder(SyncGrabBonePacket::toBytes)
                 .consumerMainThread(SyncGrabBonePacket::handle)
                 .add();
+        net.messageBuilder(SelectOmnitomeSlotC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SelectOmnitomeSlotC2SPacket::new)
+                .encoder(SelectOmnitomeSlotC2SPacket::toBytes)
+                .consumerMainThread(SelectOmnitomeSlotC2SPacket::handle)
+                .add();
     }
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);

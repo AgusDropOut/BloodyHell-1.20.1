@@ -50,8 +50,8 @@ public class BloodWorkBenchMenu extends AbstractContainerMenu {
 
     public int getScaledProgress() {
         int progress = this.data.get(0);
-        int maxProgress = this.data.get(1);  // Max Progress
-        int progressArrowSize = 26; // This is the height in pixels of your arrow
+        int maxProgress = this.data.get(1);
+        int progressArrowSize = 26;
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
@@ -71,13 +71,13 @@ public class BloodWorkBenchMenu extends AbstractContainerMenu {
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
-    // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
+
+    private static final int TE_INVENTORY_SLOT_COUNT = 3;
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
         if (index < 0 || index >= slots.size()) {
-            // Índice fuera de los límites, manejar según sea necesario
+
             return ItemStack.EMPTY;
         }
 
@@ -87,14 +87,14 @@ public class BloodWorkBenchMenu extends AbstractContainerMenu {
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
-        // Verificar si la ranura clickeada es una de las ranuras del inventario vanilla
+
         if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // Esta es una ranura del inventario vanilla, así que fusiona la pila en el inventario del bloque
+
             if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;
             }
         } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // Esta es una ranura del inventario del bloque, así que fusiona la pila en el inventario del jugador
+
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;
             }
@@ -103,7 +103,7 @@ public class BloodWorkBenchMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
 
-        // Si el tamaño de la pila es 0 (se movió toda la pila), establece el contenido de la ranura como nulo
+
         if (sourceStack.getCount() == 0) {
             sourceSlot.set(ItemStack.EMPTY);
         } else {

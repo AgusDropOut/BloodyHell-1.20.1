@@ -101,7 +101,7 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
 
     @Override
     public void playChargeSound(Level level, Player player, int tick) {
-        // Play sound every 5 ticks, pitch increases as charge builds
+
         if (tick % 5 == 0 && tick < getMinChargeTime()) {
             float pitch = 0.5f + (tick / (float)getMinChargeTime());
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
@@ -193,5 +193,10 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
     @Override
     public StaffCastType getStaffCastType() {
         return StaffCastType.THROW;
+    }
+
+    @Override
+    public String getSpellIconName() {
+        return "blood_fire_meteor_icon";
     }
 }

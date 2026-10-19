@@ -174,4 +174,9 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
     public StaffCastType getStaffCastType() {
         return StaffCastType.SEQUENTIAL;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "blood_scratch_icon";
+    }
 }

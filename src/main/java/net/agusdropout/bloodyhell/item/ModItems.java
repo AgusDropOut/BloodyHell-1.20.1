@@ -6,6 +6,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.custom.*;
 
+
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
 import net.agusdropout.bloodyhell.item.custom.altar.BlasphemousBloodAltarItem;
 import net.agusdropout.bloodyhell.item.custom.altar.MainBlasphemousBloodAltarItem;
@@ -352,6 +353,8 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> RHNULL_ORB_EMITTER_SPELLBOOK = ITEMS.register("rhnull_orb_emitter_spellbook", () -> new RhnullOrbEmitterSpellBookItem(
             new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> THE_OMNITOME = ITEMS.register("the_omnitome",
+            () -> new OmnitomeItem(new Item.Properties().stacksTo(1).fireResistant()));
 
 
     //Staffs

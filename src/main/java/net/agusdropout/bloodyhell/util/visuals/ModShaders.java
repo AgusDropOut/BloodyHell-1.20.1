@@ -26,5 +26,8 @@ public class ModShaders {
     public static ShaderInstance SCARLET_CINDER_ORB_SHADER;
     public static ShaderInstance CRIMSON_VEIL_GUI_SHADER;
     public static ShaderInstance SPELL_WHEEL_BG_SHADER;
+    public static ShaderInstance OMNITOME_VOID_SHADER;
+    public static ShaderInstance EMERGE_CLIP_SHADER;
+
 
 }

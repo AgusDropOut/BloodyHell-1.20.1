@@ -18,12 +18,12 @@ public class SanguineLapidaryMenu extends BasePlayerInventoryMenu {
     private final ContainerLevelAccess levelAccess;
     private static final int TE_INVENTORY_SLOT_COUNT = 4;
 
-    // Client Constructor
+
     public SanguineLapidaryMenu(int containerId, Inventory playerInv, FriendlyByteBuf extraData) {
         this(containerId, playerInv, new ItemStackHandler(TE_INVENTORY_SLOT_COUNT), null);
     }
 
-    // Server Constructor
+
     public SanguineLapidaryMenu(int containerId, Inventory playerInv, IItemHandler dataInventory, BaseSanguineLapidaryBlockEntity blockEntity) {
         super(ModMenuTypes.SANGUINE_LAPIDARY_MENU.get(), containerId, playerInv, TE_INVENTORY_SLOT_COUNT);
 
@@ -32,7 +32,7 @@ public class SanguineLapidaryMenu extends BasePlayerInventoryMenu {
                 ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()) :
                 ContainerLevelAccess.NULL;
 
-        // Custom Slots (Index 36, 37, 38, 39)
+
         this.addSlot(new SlotItemHandler(dataInventory, 0, 22, 56));
         this.addSlot(new SlotItemHandler(dataInventory, 1, 136, 56));
         this.addSlot(new SlotItemHandler(dataInventory, 2, 79, 12));

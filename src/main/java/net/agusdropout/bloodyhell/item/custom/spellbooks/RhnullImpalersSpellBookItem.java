@@ -153,4 +153,9 @@ public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpaler
     public StaffCastType getStaffCastType() {
         return StaffCastType.THROW;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "rhnull_impalers_icon";
+    }
 }

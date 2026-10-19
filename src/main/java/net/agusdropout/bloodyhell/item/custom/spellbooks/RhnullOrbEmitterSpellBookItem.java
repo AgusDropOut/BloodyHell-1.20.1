@@ -155,4 +155,9 @@ public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem<RhnullOrbEm
     public StaffCastType getStaffCastType() {
         return StaffCastType.CIRCLE;
     }
+
+    @Override
+    public String getSpellIconName() {
+        return "rhnull_orb_emitter_icon";
+    }
 }
