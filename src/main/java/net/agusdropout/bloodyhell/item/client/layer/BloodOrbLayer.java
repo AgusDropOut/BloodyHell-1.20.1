@@ -27,10 +27,8 @@ public class BloodOrbLayer extends GeoRenderLayer<BaseStaffItem> {
             bakedModel.getBone("orb").ifPresent(orbBone -> {
                 poseStack.pushPose();
 
-
                 Matrix4f m = orbBone.getModelSpaceMatrix();
                 poseStack.last().pose().mul(m);
-
 
                 float pivotX = orbBone.getPivotX() / 16.0f;
                 float pivotY = orbBone.getPivotY() / 16.0f;
@@ -38,15 +36,13 @@ public class BloodOrbLayer extends GeoRenderLayer<BaseStaffItem> {
 
                 poseStack.translate(pivotX, pivotY, pivotZ);
 
-
-
                 Matrix4f boneMat = new Matrix4f(poseStack.last().pose());
                 Matrix4f handProj = new Matrix4f(RenderSystem.getProjectionMatrix());
 
                 org.joml.Matrix3f boneRotation = new org.joml.Matrix3f();
                 boneMat.get3x3(boneRotation);
 
-                BloodOrbRenderManager.addOrbData(boneMat, handProj, boneRotation);
+                BloodOrbRenderManager.addOrbData(boneMat, handProj, boneRotation, net.minecraft.world.item.ItemDisplayContext.FIRST_PERSON_RIGHT_HAND);
 
                 poseStack.popPose();
             });

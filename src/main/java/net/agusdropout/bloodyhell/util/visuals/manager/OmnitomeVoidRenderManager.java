@@ -24,8 +24,11 @@ public class OmnitomeVoidRenderManager {
 
     private static class VoidTask {
         OmnitomeRenderer renderer;
+        ItemDisplayContext transform;
         Matrix4f poseMatrix;
         Matrix3f normalMatrix;
+        Matrix4f projectionMatrix;
+        Matrix4f modelViewMatrix;
         GeoBone bone;
         ResourceLocation texture;
         int packedLight;
@@ -34,20 +37,18 @@ public class OmnitomeVoidRenderManager {
     }
 
     private final List<VoidTask> TASKS = new ArrayList<>();
-    private final Matrix4f savedProjection = new Matrix4f();
 
     public void queueVoidBone(OmnitomeRenderer renderer, Matrix4f poseMatrix, Matrix3f normalMatrix, GeoBone bone, ResourceLocation texture, ItemDisplayContext transform, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-
-        if (transform == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transform == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-        } else if (TASKS.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-        }
-
+        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
         VoidTask task = new VoidTask();
         task.renderer = renderer;
+        task.transform = transform;
         task.poseMatrix = new Matrix4f(poseMatrix);
         task.normalMatrix = new Matrix3f(normalMatrix);
+
+        task.projectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
+        task.modelViewMatrix = new Matrix4f(RenderSystem.getModelViewMatrix());
+
         task.bone = bone;
         task.texture = texture;
         task.packedLight = packedLight;
@@ -63,18 +64,10 @@ public class OmnitomeVoidRenderManager {
     public void renderAllAndClear() {
         if (TASKS.isEmpty()) return;
 
-
-
-
         RenderSystem.enableDepthTest();
+
         Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-
-        rsStack.setIdentity();
-        RenderSystem.applyModelViewMatrix();
+        VertexSorting currentSorting = RenderSystem.getVertexSorting();
 
         MultiBufferSource.BufferSource immediateBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
 
@@ -83,21 +76,28 @@ public class OmnitomeVoidRenderManager {
                 ModShaders.OMNITOME_VOID_SHADER.safeGetUniform("TimeAnim").set((float) (net.minecraft.Util.getMillis() % 100000L) / 1000.0f);
             }
 
+            VertexSorting sorting = (task.transform == ItemDisplayContext.GUI) ?
+                    VertexSorting.ORTHOGRAPHIC_Z : VertexSorting.DISTANCE_TO_ORIGIN;
+            RenderSystem.setProjectionMatrix(task.projectionMatrix, sorting);
+
+            PoseStack rsStack = RenderSystem.getModelViewStack();
+            rsStack.pushPose();
+            rsStack.setIdentity();
+            rsStack.mulPoseMatrix(task.modelViewMatrix);
+            RenderSystem.applyModelViewMatrix();
+
             RenderType voidType = ModRenderTypes.getOmnitomeVoid(task.texture);
             VertexConsumer voidBuffer = immediateBuffer.getBuffer(voidType);
 
             task.renderer.renderVoidCubesDirect(task.poseMatrix, task.normalMatrix, task.bone, voidBuffer, task.packedLight, task.packedOverlay, task.red, task.green, task.blue, task.alpha);
 
             immediateBuffer.endBatch(voidType);
+
+            rsStack.popPose();
+            RenderSystem.applyModelViewMatrix();
         }
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
-
-
-
-
+        RenderSystem.setProjectionMatrix(currentProj, currentSorting);
         TASKS.clear();
     }
 }

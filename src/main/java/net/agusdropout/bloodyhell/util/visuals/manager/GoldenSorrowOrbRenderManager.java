@@ -73,7 +73,6 @@ public class GoldenSorrowOrbRenderManager {
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-
         float size = 0.8f;
 
         for (OrbData data : ACTIVE_ORBS) {
@@ -109,7 +108,8 @@ public class GoldenSorrowOrbRenderManager {
         ACTIVE_ORBS.clear();
     }
 
-    public static void addOrbData(Matrix4f pose, Matrix4f projection, org.joml.Matrix3f rotation) {
+    public static void addOrbData(Matrix4f pose, Matrix4f projection, org.joml.Matrix3f rotation, net.minecraft.world.item.ItemDisplayContext transform) {
+        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
         ACTIVE_ORBS.add(new OrbData(pose, projection, rotation));
     }
 

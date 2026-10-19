@@ -38,6 +38,7 @@ public class ModRenderEvents {
             MiniBlobRenderManager.renderAll(event);
             GoldenSorrowOrbRenderManager.renderAll(event);
             ScarletCinderOrbRenderManager.renderAll(event);
+            BloodStainDecalRenderManager.renderAllAndClear(event);
 
             OmnitomeBookRenderManager.INSTANCE.renderAllAndClear();
             OmnitomeClipRenderManager.INSTANCE.renderAllAndClear();
@@ -49,6 +50,8 @@ public class ModRenderEvents {
 
 
         }
+
+
 
 
 

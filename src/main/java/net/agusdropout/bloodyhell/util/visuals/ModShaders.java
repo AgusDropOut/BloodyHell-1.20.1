@@ -28,6 +28,7 @@ public class ModShaders {
     public static ShaderInstance SPELL_WHEEL_BG_SHADER;
     public static ShaderInstance OMNITOME_VOID_SHADER;
     public static ShaderInstance EMERGE_CLIP_SHADER;
+    public static ShaderInstance BLOOD_STAIN_SHADER;
 
 
 }

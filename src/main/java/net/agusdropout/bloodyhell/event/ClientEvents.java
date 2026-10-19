@@ -302,6 +302,10 @@ public class ClientEvents {
                 ModShaders.EMERGE_CLIP_SHADER = shaderInstance;
             });
 
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "blood_stain"), DefaultVertexFormat.POSITION_COLOR_TEX), shaderInstance -> {
+                ModShaders.BLOOD_STAIN_SHADER = shaderInstance;
+            });
+
         }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {

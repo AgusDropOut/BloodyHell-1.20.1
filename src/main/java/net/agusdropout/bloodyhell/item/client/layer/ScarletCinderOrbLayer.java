@@ -44,7 +44,7 @@ public class ScarletCinderOrbLayer extends GeoRenderLayer<BaseStaffItem> {
                 org.joml.Matrix3f boneRotation = new org.joml.Matrix3f();
                 boneMat.get3x3(boneRotation);
 
-                ScarletCinderOrbRenderManager.addOrbData(boneMat, handProj, boneRotation);
+                ScarletCinderOrbRenderManager.addOrbData(boneMat, handProj, boneRotation, net.minecraft.world.item.ItemDisplayContext.FIRST_PERSON_RIGHT_HAND);
 
                 poseStack.popPose();
             });

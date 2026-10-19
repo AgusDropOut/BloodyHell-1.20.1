@@ -74,7 +74,6 @@ public class ScarletCinderOrbRenderManager {
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-
         float size = 1.5f;
 
         for (OrbData data : ACTIVE_ORBS) {
@@ -112,7 +111,8 @@ public class ScarletCinderOrbRenderManager {
         ACTIVE_ORBS.clear();
     }
 
-    public static void addOrbData(Matrix4f pose, Matrix4f projection, Matrix3f rotation) {
+    public static void addOrbData(Matrix4f pose, Matrix4f projection, Matrix3f rotation, net.minecraft.world.item.ItemDisplayContext transform) {
+        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
         ACTIVE_ORBS.add(new OrbData(pose, projection, rotation));
     }
 

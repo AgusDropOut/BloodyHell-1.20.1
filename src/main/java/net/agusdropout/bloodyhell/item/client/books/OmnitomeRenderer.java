@@ -57,14 +57,8 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        if (!isManagerRendering && (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND)) {
+        if (!isManagerRendering && !isChildMorphing && (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND)) {
             net.agusdropout.bloodyhell.util.visuals.manager.OmnitomeBookRenderManager.INSTANCE.queueBook(this, stack, transformType, poseStack, packedLight, packedOverlay);
-
-
-            if (bufferSource instanceof MultiBufferSource.BufferSource immediate) {
-                immediate.endBatch();
-            }
-
             return;
         }
 
@@ -125,7 +119,6 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
 
             this.renderingSpell = isRevertingVisual ? this.prevSpell : this.activeSpell;
             this.renderingChild = hasActiveSpell || isRevertingVisual;
-
             this.virtualElapsed = isRevertingVisual ? (MORPH_DURATION - this.morphElapsed) : this.morphElapsed;
         }
 
@@ -164,7 +157,7 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
 
         if (name.startsWith("tentacle") || name.equals("eye")) {
             if (this.renderingChild && this.virtualElapsed < OMNITOME_COLLAPSE_END) {
-                float tentacleProgress = Mth.clamp(this.virtualElapsed / (OMNITOME_COLLAPSE_END * 0.85f), 0.0f, 1.0f);
+                float tentacleProgress = Mth.clamp(this.virtualElapsed / (OMNITOME_COLLAPSE_END - 0.85f), 0.0f, 1.0f);
                 float s = 1.0f - easeInBack(tentacleProgress);
                 bone.updateScale(s, s, s);
             } else {
@@ -205,8 +198,6 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
         poseStack.last().pose().set(poseMatrix);
         poseStack.last().normal().set(normalMatrix);
 
-
-
         for (GeoCube cube : bone.getCubes()) {
             poseStack.pushPose();
             this.renderCube(poseStack, cube, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -220,6 +211,7 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
 
         float tremor = (float) Math.sin(elapsed * 75.0f) * 0.012f * (1.0f - collapseProgress);
         float swell = (float) Math.sin(fullProgress * Math.PI) * 0.22f * (1.0f - collapseProgress);
+
         float shrink = 1.0f - easeInCubic(collapseProgress);
         float scaleXZ = Math.max(0.001f, (shrink + swell) * (1.0f - 0.35f * collapseProgress));
         float scaleY = Math.max(0.001f, shrink + swell * 1.6f);

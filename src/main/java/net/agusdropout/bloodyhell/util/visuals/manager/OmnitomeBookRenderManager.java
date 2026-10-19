@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.item.client.books.OmnitomeRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,23 +23,25 @@ public class OmnitomeBookRenderManager {
         ItemDisplayContext transform;
         Matrix4f poseMatrix;
         Matrix3f normalMatrix;
+        Matrix4f projectionMatrix;
+        Matrix4f modelViewMatrix;
         int packedLight;
         int packedOverlay;
     }
 
     private final List<BookTask> TASKS = new ArrayList<>();
-    private final Matrix4f savedProjection = new Matrix4f();
 
     public void queueBook(OmnitomeRenderer renderer, ItemStack stack, ItemDisplayContext transform, PoseStack poseStack, int packedLight, int packedOverlay) {
+        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
         if (transform == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transform == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-
             BookTask task = new BookTask();
             task.renderer = renderer;
             task.stack = stack.copy();
             task.transform = transform;
             task.poseMatrix = new Matrix4f(poseStack.last().pose());
             task.normalMatrix = new Matrix3f(poseStack.last().normal());
+            task.projectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
+            task.modelViewMatrix = new Matrix4f(RenderSystem.getModelViewMatrix());
             task.packedLight = packedLight;
             task.packedOverlay = packedOverlay;
 
@@ -49,41 +52,43 @@ public class OmnitomeBookRenderManager {
     public void renderAllAndClear() {
         if (TASKS.isEmpty()) return;
 
-
-
         RenderSystem.depthMask(true);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
         Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, com.mojang.blaze3d.vertex.VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        RenderSystem.applyModelViewMatrix();
+        VertexSorting currentSorting = RenderSystem.getVertexSorting();
 
         MultiBufferSource.BufferSource immediateBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
-
 
         OmnitomeRenderer.isManagerRendering = true;
 
         for (BookTask task : TASKS) {
+            VertexSorting sorting = (task.transform == ItemDisplayContext.GUI) ?
+                    VertexSorting.ORTHOGRAPHIC_Z : VertexSorting.DISTANCE_TO_ORIGIN;
+            RenderSystem.setProjectionMatrix(task.projectionMatrix, sorting);
+
+            PoseStack rsStack = RenderSystem.getModelViewStack();
+            rsStack.pushPose();
+            rsStack.setIdentity();
+            rsStack.mulPoseMatrix(task.modelViewMatrix);
+            RenderSystem.applyModelViewMatrix();
+
             PoseStack reconstructedPose = new PoseStack();
             reconstructedPose.last().pose().set(task.poseMatrix);
             reconstructedPose.last().normal().set(task.normalMatrix);
 
-
             task.renderer.renderByItem(task.stack, task.transform, reconstructedPose, immediateBuffer, task.packedLight, task.packedOverlay);
+
+            immediateBuffer.endBatch();
+
+            rsStack.popPose();
+            RenderSystem.applyModelViewMatrix();
         }
 
-        immediateBuffer.endBatch();
         OmnitomeRenderer.isManagerRendering = false;
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, com.mojang.blaze3d.vertex.VertexSorting.ORTHOGRAPHIC_Z);
-
+        RenderSystem.setProjectionMatrix(currentProj, currentSorting);
         RenderSystem.disableBlend();
 
         TASKS.clear();
