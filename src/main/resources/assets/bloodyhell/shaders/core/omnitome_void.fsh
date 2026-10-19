@@ -2,7 +2,7 @@
 
 uniform float TimeAnim;
 uniform sampler2D Sampler0;
-// Eliminamos Sampler2 de acá porque no se usa y tiraba un warning inofensivo en la consola.
+
 
 in vec2 texCoord0;
 out vec4 fragColor;
@@ -108,7 +108,6 @@ float evalBgStars(vec2 uvDir) {
 }
 
 vec2 getLocalPageUV(vec2 atlasUV) {
-    // Restaurado a la matemática precisa original para evitar que el shader dibuje el borde oscuro
     vec2 px = atlasUV * 128.0;
     vec2 local = vec2(0.0);
     if (px.y < 36.0) {
