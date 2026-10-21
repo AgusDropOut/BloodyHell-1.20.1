@@ -92,7 +92,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
         super.tick();
 
         if(!this.level().isClientSide()){
-            if (!target.isAlive()){
+            if (target != null && !target.isAlive()){
                 entityData.set(IS_TARGET_ALIVE, false);
             }
         }

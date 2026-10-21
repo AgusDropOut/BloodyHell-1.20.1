@@ -96,6 +96,8 @@ public class ModEvents {
             event.put(WEEPING_OCULAR.get(), WeepingOcularEntity.createAttributes().build());
             event.put(BURDEN_OF_THE_UNKNOWN.get(), BurdenOfTheUnknownEntity.createAttributes().build());
             event.put(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), BastionOfTheUnknownEntity.createAttributes().build());
+            event.put(ModEntityTypes.CYCLOPS_ENTITY.get(), CyclopsEntity.createAttributes().build());
+            event.put(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneEntity.createAttributes().build());
         }
 
         public static AttributeSupplier.Builder createGenericAttributes() {

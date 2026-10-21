@@ -141,15 +141,16 @@ public class SanguineSacrificeEntity extends Entity implements TraceableEntity, 
 
 
         if (!level().isClientSide()) {
+            if(target == null){
+                this.discard();
+                return;
+            }
+
             if(!target.isAlive()) {
                 isTargetAlive = false;
                 entityData.set(IS_TARGET_ALIVE, false);
             }
 
-            if(target == null){
-                this.discard();
-                return;
-            }
             target.setDeltaMovement(0,0,0);
             target.hasImpulse = false;
             target.teleportTo(this.getX(), this.getY(), this.getZ());
