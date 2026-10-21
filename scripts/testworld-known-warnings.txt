@@ -14,3 +14,7 @@ Missing sound for event: minecraft:(item.goat_horn|entity.goat)
 SystemPropertyUtil
 Unable to load model: .bloodyhell:block/seliora_resting_block.
 Rubidium/\]: Force-disabling mixin
+Oculus/\]: (Failed to resolve uniform|The following uniforms|Error while parsing the block ID map|- The block )
+RuntimeException: Unknown variable
+Oculus/\]: Tried to get boolean value for unknown option
+Shader clouds could not find

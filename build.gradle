@@ -92,6 +92,9 @@ minecraft {
             if (project.hasProperty('bhAutoTest')) {
                 property 'bloodyhell.autotest', 'true'
                 property 'bloodyhell.autotest.exitTicks', findProperty('bhExitTicks') ?: '0'
+                if (project.hasProperty('bhShaderCycle')) {
+                    property 'bloodyhell.autotest.shaders', findProperty('bhShaderCycle')
+                }
                 args '--quickPlaySingleplayer', 'BHTestWorld'
             }
         }

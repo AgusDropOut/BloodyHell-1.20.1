@@ -1,7 +1,8 @@
 param(
     [string]$JavaHome = "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot",
     [int]$ExitTicks = 600,
-    [switch]$Shaders
+    [switch]$Shaders,
+    [switch]$ShaderCycle
 )
 
 $env:JAVA_HOME = $JavaHome
@@ -15,6 +16,7 @@ if (-not (Test-Path $world)) {
     exit 1
 }
 
+$startedAt = Get-Date
 $log = Join-Path $root "run\logs\latest.log"
 if (Test-Path $log) {
     Remove-Item $log -Force -ErrorAction SilentlyContinue
@@ -23,7 +25,17 @@ if (Test-Path $log) {
 Push-Location $root
 try {
     $gradleArgs = @("runClient", "-PbhAutoTest", "-PbhExitTicks=$ExitTicks")
-    if ($Shaders) { $gradleArgs += "-PbhShaders" }
+    if ($Shaders -or $ShaderCycle) { $gradleArgs += "-PbhShaders" }
+    if ($ShaderCycle) {
+        $packsDir = Join-Path $root "run\shaderpacks"
+        $packs = @(Get-ChildItem $packsDir -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
+        if ($packs.Count -eq 0) {
+            Write-Host "No shader packs in run\shaderpacks. Run 'make sync-shaders' first."
+            exit 1
+        }
+        Write-Host ("Cycling shader packs: " + ($packs -join ", "))
+        $gradleArgs += "-PbhShaderCycle=$($packs -join ',')"
+    }
     & .\gradlew.bat @gradleArgs
     $gradleExit = $LASTEXITCODE
 } finally {
@@ -32,6 +44,11 @@ try {
 
 if ($gradleExit -ne 0) {
     Write-Host "Gradle failed with exit code $gradleExit."
+    $crash = Get-ChildItem (Join-Path $root "run\crash-reports") -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $startedAt } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($crash) {
+        Write-Host ("Crash report: " + $crash.FullName)
+        Select-String -Path $crash.FullName -Pattern "^Description:|^Caused by:|^java\.|^net\." | Select-Object -First 6 | ForEach-Object { $_.Line }
+    }
     exit 1
 }
 

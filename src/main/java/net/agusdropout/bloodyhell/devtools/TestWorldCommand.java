@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -34,8 +36,20 @@ public class TestWorldCommand {
     private static final int SPACING = 3;
     private static final int COLUMNS = 16;
     private static final int SECTION_GAP = 6;
-    private static final int CLEAR_HEIGHT = 6;
+    private static final int CLEAR_HEIGHT = 8;
+    private static final int CLEAR_MARGIN = 6;
+    private static final int CLEAR_DEPTH_BELOW = 2;
+    private static final int ENTITY_CLEAR_HEIGHT = 32;
     private static final int CHEST_SLOTS = 27;
+
+    public record Layout(BlockPos blockOrigin, BlockPos entityOrigin, BlockPos itemOrigin, int width, int totalDepth) {
+    }
+
+    private static volatile Layout lastLayout;
+
+    public static Layout getLastLayout() {
+        return lastLayout;
+    }
 
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
@@ -47,7 +61,37 @@ public class TestWorldCommand {
                     CommandSourceStack source = context.getSource();
                     build(source.getLevel(), BlockPos.containing(source.getPosition()));
                     return 1;
+                }))
+                .then(Commands.literal("clear").executes(context -> {
+                    CommandSourceStack source = context.getSource();
+                    Layout layout = lastLayout != null ? lastLayout : layoutFor(BlockPos.containing(source.getPosition()));
+                    int[] cleared = clearWorld(source.getLevel(), layout);
+                    String summary = TAG + "cleared blocks=" + cleared[0] + " entities=" + cleared[1];
+                    BloodyHell.LOGGER.info(summary);
+                    source.sendSuccess(() -> Component.literal(summary), false);
+                    return 1;
                 })));
+    }
+
+    private static Layout layoutFor(BlockPos origin) {
+        int blockCount = 0;
+        for (Block block : ForgeRegistries.BLOCKS) {
+            if (isOurs(ForgeRegistries.BLOCKS.getKey(block).getNamespace())) blockCount++;
+        }
+        int entityCount = 0;
+        for (EntityType<?> type : ForgeRegistries.ENTITY_TYPES) {
+            if (isOurs(ForgeRegistries.ENTITY_TYPES.getKey(type).getNamespace())) entityCount++;
+        }
+        int itemCount = 0;
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (isOurs(ForgeRegistries.ITEMS.getKey(item).getNamespace())) itemCount++;
+        }
+        int chestCount = (itemCount + CHEST_SLOTS - 1) / CHEST_SLOTS;
+        BlockPos blockOrigin = origin.offset(0, 0, SECTION_GAP);
+        BlockPos entityOrigin = blockOrigin.offset(0, 0, rows(blockCount) * SPACING + SECTION_GAP);
+        BlockPos itemOrigin = entityOrigin.offset(0, 0, rows(entityCount) * SPACING + SECTION_GAP);
+        int totalDepth = (rows(blockCount) + rows(entityCount) + rows(chestCount)) * SPACING + SECTION_GAP * 3;
+        return new Layout(blockOrigin, entityOrigin, itemOrigin, COLUMNS * SPACING, totalDepth);
     }
 
     public static void build(ServerLevel level, BlockPos origin) {
@@ -70,21 +114,14 @@ public class TestWorldCommand {
             if (isOurs(ForgeRegistries.ITEMS.getKey(item).getNamespace())) items.add(item);
         }
 
-        int blockRows = rows(blocks.size());
-        int entityRows = rows(entityTypes.size());
-        int chestCount = (items.size() + CHEST_SLOTS - 1) / CHEST_SLOTS;
-        int itemRows = rows(chestCount);
+        Layout layout = layoutFor(origin);
+        lastLayout = layout;
+        int[] cleared = clearWorld(level, layout);
+        BloodyHell.LOGGER.info(TAG + "cleared blocks=" + cleared[0] + " entities=" + cleared[1]);
 
-        BlockPos blockOrigin = origin.offset(0, 0, SECTION_GAP);
-        BlockPos entityOrigin = blockOrigin.offset(0, 0, blockRows * SPACING + SECTION_GAP);
-        BlockPos itemOrigin = entityOrigin.offset(0, 0, entityRows * SPACING + SECTION_GAP);
-
-        int totalDepth = (blockRows + entityRows + itemRows) * SPACING + SECTION_GAP * 3;
-        clearArea(level, blockOrigin, COLUMNS * SPACING, totalDepth);
-
-        int placedBlocks = placeBlocks(level, blocks, blockOrigin);
-        int spawnedEntities = spawnEntities(level, entityTypes, entityOrigin);
-        int filledChests = placeItemChests(level, items, itemOrigin);
+        int placedBlocks = placeBlocks(level, blocks, layout.blockOrigin());
+        int spawnedEntities = spawnEntities(level, entityTypes, layout.entityOrigin());
+        int filledChests = placeItemChests(level, items, layout.itemOrigin());
 
         String summary = TAG + "built blocks=" + placedBlocks + "/" + blocks.size()
                 + " entities=" + spawnedEntities + "/" + entityTypes.size()
@@ -105,17 +142,31 @@ public class TestWorldCommand {
         return (count + COLUMNS - 1) / COLUMNS;
     }
 
-    private static void clearArea(ServerLevel level, BlockPos start, int width, int depth) {
+    private static int[] clearWorld(ServerLevel level, Layout layout) {
+        BlockPos start = layout.blockOrigin();
         BlockState air = Blocks.AIR.defaultBlockState();
         BlockState floor = Blocks.SMOOTH_STONE.defaultBlockState();
-        for (int x = 0; x < width; x++) {
-            for (int z = 0; z < depth; z++) {
+        int clearedBlocks = 0;
+        for (int x = -CLEAR_MARGIN; x < layout.width() + CLEAR_MARGIN; x++) {
+            for (int z = -CLEAR_MARGIN; z < layout.totalDepth() + CLEAR_MARGIN; z++) {
+                boolean inside = x >= 0 && x < layout.width() && z >= 0 && z < layout.totalDepth();
                 for (int y = 0; y < CLEAR_HEIGHT; y++) {
-                    level.setBlock(start.offset(x, y, z), air, Block.UPDATE_CLIENTS);
+                    BlockPos pos = start.offset(x, y, z);
+                    if (!level.getBlockState(pos).isAir() || !level.getFluidState(pos).isEmpty()) clearedBlocks++;
+                    level.setBlock(pos, air, Block.UPDATE_CLIENTS | Block.UPDATE_SUPPRESS_DROPS);
                 }
-                level.setBlock(start.offset(x, -1, z), floor, Block.UPDATE_CLIENTS);
+                if (inside) level.setBlock(start.offset(x, -1, z), floor, Block.UPDATE_CLIENTS);
             }
         }
+        AABB area = new AABB(
+                start.getX() - CLEAR_MARGIN, start.getY() - CLEAR_DEPTH_BELOW, start.getZ() - CLEAR_MARGIN,
+                start.getX() + layout.width() + CLEAR_MARGIN, start.getY() + ENTITY_CLEAR_HEIGHT,
+                start.getZ() + layout.totalDepth() + CLEAR_MARGIN);
+        List<Entity> leftovers = level.getEntities((Entity) null, area, entity -> !(entity instanceof Player));
+        for (Entity entity : leftovers) {
+            entity.discard();
+        }
+        return new int[]{clearedBlocks, leftovers.size()};
     }
 
     private static int placeBlocks(ServerLevel level, List<Block> blocks, BlockPos origin) {

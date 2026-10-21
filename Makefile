@@ -14,7 +14,7 @@ TESTWORLD := pwsh ./scripts/run-testworld.ps1 -ExitTicks $(EXIT_TICKS)
 SYNC_SHADERS := mkdir -p run/shaderpacks && for p in $(SHADER_PACKS); do cp "$$HOME/.minecraft/shaderpacks/$$p" run/shaderpacks/; done
 endif
 
-.PHONY: help compile build test gametest client client-shaders sync-shaders testworld testworld-shaders clean
+.PHONY: help compile build test gametest client client-shaders sync-shaders testworld testworld-shaders shader-cycle clean
 
 help:
 	@echo "compile             Compile the mod"
@@ -26,6 +26,7 @@ help:
 	@echo "sync-shaders        Copy SHADER_PACKS from the normal .minecraft into run/shaderpacks"
 	@echo "testworld           Run the automated test world and scan the log (EXIT_TICKS=600)"
 	@echo "testworld-shaders   Same as testworld, with Oculus and Rubidium"
+	@echo "shader-cycle        Switch through every pack in run/shaderpacks at runtime and look for crashes"
 	@echo "clean               Remove build output"
 
 compile:
@@ -54,6 +55,9 @@ testworld:
 
 testworld-shaders: sync-shaders
 	$(TESTWORLD) -Shaders
+
+shader-cycle: sync-shaders
+	$(TESTWORLD) -ShaderCycle
 
 clean:
 	$(GRADLE) clean
