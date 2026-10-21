@@ -6,6 +6,8 @@ Generates every block, entity and item of the mod in an organized grid, then sca
 
 One-time setup: create a singleplayer world named `BHTestWorld` (Creative, Allow Cheats ON, Superflat).
 
+Shortcuts (`Makefile`): `make compile`, `make build`, `make test`, `make gametest`, `make testworld` (`EXIT_TICKS=600`). `make help` lists them.
+
 Run:
 - `scripts/run-testworld.ps1` launches the client (`gradlew runClient -PbhAutoTest`), joins `BHTestWorld`, waits for the world to load, runs `/bhtest build`, closes the client after `-ExitTicks` ticks (default 600) and prints the `[BHTEST]` summary plus every suspicious log line. Exit code 2 means new problems were found, 1 means the run itself failed. Do not close the game window while it runs.
 - Inside any world with cheats, `/bhtest build` builds the same layout around the player, in this order along +Z: blocks, entities (AI disabled), chests with every item.

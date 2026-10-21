@@ -25,14 +25,13 @@ Pending work. Remove an item when it is done; move any lasting reasoning to `doc
 ## Next session (resume here)
 
 State at the end of the last session:
-- Nothing is committed yet. Working tree has: package refactor of client code (`client/render/...`, generic Gecko renderer, `ModRenderers`), `docs/`, `devtools/`, `scripts/`, `build.gradle` change, and entity fixes.
+- Everything is committed in three commits: entity fixes, test tooling and docs, client package refactor. Working tree is clean except this file.
 - The test world baseline is clean (see `docs/TESTING.md`). Compiles with JDK 17 only.
 
 Suggested order:
-1. Split the pending work into separate commits: (a) client package refactor, (b) entity fixes (`UnknownEntityArms`, `SanguineSacrificeEntity`, Cyclops and Twin Daggers Clone attributes), (c) docs, `devtools/` and `scripts/` testing tooling. No Claude co-author lines.
-2. Walk the entity grid in game, with and without a shader pack, and tick the checklist in `docs/TESTING.md`.
-3. Attack `docs/TECH_DEBT.md` items 1 to 6 (render managers), then 7 to 16.
-4. Write the ADR for each debt item fixed that changes a decision (for example the shared scene-color copy, a single `ShaderTime`, the ordered manager registry).
+1. Walk the entity grid in game, with and without a shader pack, and tick the checklist in `docs/TESTING.md`.
+2. Attack `docs/TECH_DEBT.md` items 1 to 6 (render managers), then 7 to 16.
+3. Write the ADR for each debt item fixed that changes a decision (for example the shared scene-color copy, a single `ShaderTime`, the ordered manager registry).
 
 Decisions made:
 - `/bhtest` is disabled in the released mod (`FMLEnvironment.production` check).
