@@ -89,6 +89,11 @@ minecraft {
         client {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
+            if (project.hasProperty('bhAutoTest')) {
+                property 'bloodyhell.autotest', 'true'
+                property 'bloodyhell.autotest.exitTicks', findProperty('bhExitTicks') ?: '0'
+                args '--quickPlaySingleplayer', 'BHTestWorld'
+            }
         }
 
         server {

@@ -43,3 +43,6 @@ usercache.json
 forge*changelog.txt
 
 .aider*
+
+# Claude Code instructions (local only)
+CLAUDE.md
