@@ -13,7 +13,7 @@ Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered r
 
 ## Found by the test world
 
-7. `seliora_resting_block` blockstate references `bloodyhell:block/seliora_resting_block`, which does not exist.
+7. `seliora_resting_block` blockstate references `bloodyhell:block/seliora_resting_block`, which does not exist. Ignored by `scripts/testworld-known-warnings.txt` until fixed.
 8. Nine block items have no `#inventory` model: `ancient_torch_block`, `blood_gem_sprout`, `blooddirt_farmland`, `crimson_lure_mushroom_block`, `giant_blood_sapling`, `rhnull_condenser`, `sanguinite_condenser`, `seliora_resting_block`, `small_blood_sapling`.
 9. Blockstates with missing variant models: `star_lamp_block`, `giant_blood_sapling`, `small_blood_sapling` (the fluid blocks are probably harmless).
 10. `sounds/dagger_attack_3.ogg` is declared but the file does not exist.
