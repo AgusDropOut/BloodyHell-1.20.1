@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.block.entity.base.IGeoFluidBlock;
 import net.agusdropout.bloodyhell.block.entity.base.IFluidBlockHolder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,7 +44,7 @@ public class GeoFluidLayer <T extends BaseGeckoBlockEntity & IFluidBlockHolder &
 
         RenderUtils.prepMatrixForBone(poseStack, bloodBone);
 
-        VertexConsumer builder = bufferSource.getBuffer(RenderType.translucent());
+        VertexConsumer builder = bufferSource.getBuffer(Sheets.translucentCullBlockSheet());
 
         poseStack.translate(0,0.9,0);
 

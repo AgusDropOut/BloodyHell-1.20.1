@@ -8,6 +8,8 @@ import net.agusdropout.bloodyhell.block.entity.base.AbstractTankBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -67,7 +69,7 @@ public class TankRenderer<T extends AbstractTankBlockEntity> implements BlockEnt
 
         float yBase = 0.0625f + 0.001f;
 
-        VertexConsumer builder = bufferSource.getBuffer(RenderType.translucent());
+        VertexConsumer builder = bufferSource.getBuffer(Sheets.translucentCullBlockSheet());
         poseStack.pushPose();
         Matrix4f matrix = poseStack.last().pose();
 
@@ -84,25 +86,25 @@ public class TankRenderer<T extends AbstractTankBlockEntity> implements BlockEnt
             float vMin = sprite.getV(0);
             float vMax = sprite.getV(segmentHeight * 16);
 
-            builder.vertex(matrix, xMax, yStart, zMin).color(r, g, b, a).uv(uMin, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMin, yStart, zMin).color(r, g, b, a).uv(uMax, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMin, yEnd, zMin).color(r, g, b, a).uv(uMax, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMax, yEnd, zMin).color(r, g, b, a).uv(uMin, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yStart, zMin).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yStart, zMin).color(r, g, b, a).uv(uMax, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yEnd, zMin).color(r, g, b, a).uv(uMax, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yEnd, zMin).color(r, g, b, a).uv(uMin, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
 
-            builder.vertex(matrix, xMin, yStart, zMax).color(r, g, b, a).uv(uMin, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMax, yStart, zMax).color(r, g, b, a).uv(uMax, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMax, yEnd, zMax).color(r, g, b, a).uv(uMax, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMin, yEnd, zMax).color(r, g, b, a).uv(uMin, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yStart, zMax).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yStart, zMax).color(r, g, b, a).uv(uMax, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yEnd, zMax).color(r, g, b, a).uv(uMax, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yEnd, zMax).color(r, g, b, a).uv(uMin, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
 
-            builder.vertex(matrix, xMin, yStart, zMin).color(r, g, b, a).uv(uMin, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMin, yStart, zMax).color(r, g, b, a).uv(uMax, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMin, yEnd, zMax).color(r, g, b, a).uv(uMax, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMin, yEnd, zMin).color(r, g, b, a).uv(uMin, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yStart, zMin).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yStart, zMax).color(r, g, b, a).uv(uMax, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yEnd, zMax).color(r, g, b, a).uv(uMax, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMin, yEnd, zMin).color(r, g, b, a).uv(uMin, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
 
-            builder.vertex(matrix, xMax, yStart, zMax).color(r, g, b, a).uv(uMin, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMax, yStart, zMin).color(r, g, b, a).uv(uMax, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMax, yEnd, zMin).color(r, g, b, a).uv(uMax, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
-            builder.vertex(matrix, xMax, yEnd, zMax).color(r, g, b, a).uv(uMin, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yStart, zMax).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yStart, zMin).color(r, g, b, a).uv(uMax, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yEnd, zMin).color(r, g, b, a).uv(uMax, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+            builder.vertex(matrix, xMax, yEnd, zMax).color(r, g, b, a).uv(uMin, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
 
             remainingHeight -= segmentHeight;
             currentY += segmentHeight;
@@ -114,16 +116,16 @@ public class TankRenderer<T extends AbstractTankBlockEntity> implements BlockEnt
         float vMin = sprite.getV(0);
         float vMax = sprite.getV(16);
 
-        builder.vertex(matrix, xMin, yTop, zMin).color(r, g, b, a).uv(uMin, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix, xMin, yTop, zMax).color(r, g, b, a).uv(uMin, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix, xMax, yTop, zMax).color(r, g, b, a).uv(uMax, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix, xMax, yTop, zMin).color(r, g, b, a).uv(uMax, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMin, yTop, zMin).color(r, g, b, a).uv(uMin, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMin, yTop, zMax).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMax, yTop, zMax).color(r, g, b, a).uv(uMax, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMax, yTop, zMin).color(r, g, b, a).uv(uMax, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
 
         float yBottom = yBase;
-        builder.vertex(matrix, xMin, yBottom, zMin).color(r, g, b, a).uv(uMin, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix, xMax, yBottom, zMin).color(r, g, b, a).uv(uMax, vMin).uv2(packedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix, xMax, yBottom, zMax).color(r, g, b, a).uv(uMax, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix, xMin, yBottom, zMax).color(r, g, b, a).uv(uMin, vMax).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMin, yBottom, zMin).color(r, g, b, a).uv(uMin, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMax, yBottom, zMin).color(r, g, b, a).uv(uMax, vMin).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMax, yBottom, zMax).color(r, g, b, a).uv(uMax, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix, xMin, yBottom, zMax).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0, 1, 0).endVertex();
 
         poseStack.popPose();
     }

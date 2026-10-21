@@ -11,6 +11,7 @@ import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -85,7 +86,7 @@ public class AltarRenderHelper {
             poseStack.translate(0, be.getFluidYOffset(), 0);
         }
 
-        VertexConsumer builder = bufferSource.getBuffer(RenderType.translucent());
+        VertexConsumer builder = bufferSource.getBuffer(Sheets.translucentCullBlockSheet());
 
         float xMin = -be.getFluidRadius();
         float xMax = be.getFluidRadius();

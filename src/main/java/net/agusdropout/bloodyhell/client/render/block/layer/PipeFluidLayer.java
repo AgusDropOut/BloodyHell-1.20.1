@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.block.base.AbstractPipeBlock;
 import net.agusdropout.bloodyhell.block.entity.base.AbstractPipeBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -55,7 +56,7 @@ public class PipeFluidLayer<T extends AbstractPipeBlockEntity> extends GeoRender
         poseStack.pushPose();
         RenderUtils.prepMatrixForBone(poseStack, fluidBone);
 
-        VertexConsumer builder = bufferSource.getBuffer(RenderType.translucent());
+        VertexConsumer builder = bufferSource.getBuffer(Sheets.translucentCullBlockSheet());
 
         float radius = 3.95f / 16.0f;
         float length = 8.0f / 16.0f;
