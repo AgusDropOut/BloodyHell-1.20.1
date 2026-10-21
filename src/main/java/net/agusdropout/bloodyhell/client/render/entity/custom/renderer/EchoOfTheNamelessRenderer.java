@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 
+import net.agusdropout.bloodyhell.client.render.entity.generic.ConfigurableGeoModel;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.shaders.Uniform;
@@ -11,7 +12,6 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.client.render.entity.generic.InsightCreatureRenderer;
 import net.agusdropout.bloodyhell.client.render.entity.layer.EchoGlowLayer;
-import net.agusdropout.bloodyhell.client.render.entity.custom.model.EchoOfTheNamelessModel;
 import net.agusdropout.bloodyhell.entity.unknown.custom.EchoOfTheNamelessEntity;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
@@ -23,7 +23,7 @@ import org.joml.Matrix4f;
 public class EchoOfTheNamelessRenderer extends InsightCreatureRenderer<EchoOfTheNamelessEntity> {
 
     public EchoOfTheNamelessRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new EchoOfTheNamelessModel());
+        super(renderManager, new ConfigurableGeoModel<>("echo_of_the_nameless"));
         this.addRenderLayer(new EchoGlowLayer(this));
     }
 

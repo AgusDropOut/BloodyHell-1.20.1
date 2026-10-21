@@ -35,7 +35,12 @@ import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.BastionOf
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.BurdenOfTheUnknownRenderer;
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.FailedSonOfTheUnknownRenderer;
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.WeepingOcularRenderer;
+import net.agusdropout.bloodyhell.entity.custom.SanguineSacrificeEntity;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousSmallWhirlwindEntity;
+import net.agusdropout.bloodyhell.entity.projectile.BlasphemousSpearEntity;
+import net.agusdropout.bloodyhell.entity.projectile.BlasphemousSpinesEntity;
+import net.agusdropout.bloodyhell.entity.projectile.StarfallProjectile;
+import net.agusdropout.bloodyhell.entity.projectile.VirulentAnchorProjectileEntity;
 import net.agusdropout.bloodyhell.screen.ModMenuTypes;
 import net.agusdropout.bloodyhell.screen.custom.screen.*;
 
@@ -153,7 +158,14 @@ public class ModRenderers {
 
         event.registerEntityRenderer(ModEntityTypes.HORNED_WORM.get(), context ->
                 ConfigurableGeoEntityRenderer.<HornedWormEntity>builder(
-                                context, new HornedWormModel())
+                                context, new ConfigurableGeoModel<HornedWormEntity>("horned_worm", "horned_worm",
+                                        "head", -1.0f, -1.0f,
+                                        (model, entity, animationState) -> {
+                                            var body = model.getAnimationProcessor().getBone("horned_worm");
+                                            if (body != null) {
+                                                body.setHidden(entity.isBurrowed());
+                                            }
+                                        }))
                         .shadow(0.001f).glowing()
                         .layer(bloodFire()).build());
         event.registerEntityRenderer(ModEntityTypes.VEIL_STALKER.get(), context ->
@@ -180,12 +192,35 @@ public class ModRenderers {
     private static void registerProjectileRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.BLOOD_ARROW.get(), BloodArrowRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.BLOOD_PROJECTILE.get(), BloodSphereRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.VIRULENT_ANCHOR_PROJECTILE.get(), VirulentAnchorProjectileEntityRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.VIRULENT_ANCHOR_PROJECTILE.get(), context ->
+                ConfigurableGeoEntityRenderer.<VirulentAnchorProjectileEntity>builder(context,
+                                new ConfigurableGeoModel<>("virulent_anchor_projectile", "virulent_anchor_projectile",
+                                        null, 0.0f, 0.0f,
+                                        ConfigurableGeoModel.alignBoneToRotation("virulent_anchor_projectile")))
+                        .shadow(0.01f).glowing().build());
         event.registerEntityRenderer(ModEntityTypes.SMALL_CRIMSON_DAGGER.get(), SmallCrimsonDaggerRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.VISCERAL_PROJECTILE.get(), VisceralProjectileEntityRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.STARFALL_PROJECTILE.get(), StarfallProjectileEntityRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.BLASPHEMOUS_SPINES.get(), BlasphemousSpinesRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.BLASPHEMOUS_SPEAR.get(), BlasphemousSpearRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.STARFALL_PROJECTILE.get(), context ->
+                ConfigurableGeoEntityRenderer.<StarfallProjectile>builder(context,
+                                new ConfigurableGeoModel<>("starfall_projectile", "starfall_projectile",
+                                        null, 0.0f, 0.0f,
+                                        ConfigurableGeoModel.alignBoneToRotation("starfall_projectile")))
+                        .shadow(0.01f).glowing()
+                        .scaleBy(entity -> 1.0f + (1.0f - entity.getLifeTicks() / 200.0f) * 1.5f)
+                        .build());
+        event.registerEntityRenderer(ModEntityTypes.BLASPHEMOUS_SPINES.get(), context ->
+                ConfigurableGeoEntityRenderer.<BlasphemousSpinesEntity>builder(context,
+                                new ConfigurableGeoModel<>("blasphemous_spines"))
+                        .scaleBy(entity -> 0.6f + (entity.getId() % 5) * 0.05f,
+                                entity -> 0.7f + (entity.getId() % 3) * 0.1f)
+                        .build());
+        event.registerEntityRenderer(ModEntityTypes.BLASPHEMOUS_SPEAR.get(), context ->
+                ConfigurableGeoEntityRenderer.<BlasphemousSpearEntity>builder(context,
+                                new ConfigurableGeoModel<>("blasphemous_spear"))
+                        .shadow(0.3f).glowing()
+                        .scaleBy(entity -> 0.8f + (entity.getId() % 5) * 0.05f,
+                                entity -> 0.8f + (entity.getId() % 3) * 0.15f)
+                        .build());
         event.registerEntityRenderer(ModEntityTypes.BLASPHEMOUS_IMPALER_ENTITY.get(), BlasphemousImpalerEntityRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.BLOOD_CLOT_PROJECTILE.get(), BloodClotRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(), BloodFireColumnRenderer::new);
@@ -201,7 +236,14 @@ public class ModRenderers {
 
     private static void registerEffectAndDecalRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.CRYSTAL_PILLAR.get(), CrystalPillarRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.SANGUINE_SACRIFICE_ENTITY.get(), SanguineSacrificeEntityRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.SANGUINE_SACRIFICE_ENTITY.get(), context -> {
+            float verticalScale = (float) (0.8 + 0.6 * Math.random());
+            return ConfigurableGeoEntityRenderer.<SanguineSacrificeEntity>builder(context,
+                            new ConfigurableGeoModel<>("sanguine_sacrifice_entity"))
+                    .shadow(0.8f).glowing()
+                    .scaleBy(entity -> 1.0f, entity -> verticalScale)
+                    .build();
+        });
         event.registerEntityRenderer(ModEntityTypes.BLOOD_SLASH_ENTITY.get(), BloodSlashEntityRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.SPECIAL_SLASH.get(), SpecialSlashRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.ENTITY_FALLING_BLOCK.get(), EntityFallingBlockRenderer::new);

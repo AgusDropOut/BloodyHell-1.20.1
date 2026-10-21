@@ -15,15 +15,18 @@ import java.util.function.Consumer;
 
 public class ConfigurableGeoEntityRenderer<T extends Entity & GeoAnimatable>
         extends GenericGeckoEntityRenderer<T> {
-    private final Function<T, Float> scale;
+    private final Function<T, Float> horizontalScale;
+    private final Function<T, Float> verticalScale;
 
     public ConfigurableGeoEntityRenderer(EntityRendererProvider.Context context, GeoModel<T> model,
                                           float shadowRadius, boolean glowing,
-                                          Function<T, Float> scale,
+                                          Function<T, Float> horizontalScale,
+                                          Function<T, Float> verticalScale,
                                           List<Consumer<ConfigurableGeoEntityRenderer<T>>> customLayers) {
         super(context, model);
         this.shadowRadius = shadowRadius;
-        this.scale = scale;
+        this.horizontalScale = horizontalScale;
+        this.verticalScale = verticalScale;
 
         if (glowing) {
             addRenderLayer(new AutoGlowingGeoLayer<>(this));
@@ -41,7 +44,8 @@ public class ConfigurableGeoEntityRenderer<T extends Entity & GeoAnimatable>
         private final GeoModel<T> model;
         private float shadowRadius;
         private boolean glowing;
-        private Function<T, Float> scale = entity -> 1.0f;
+        private Function<T, Float> horizontalScale = entity -> 1.0f;
+        private Function<T, Float> verticalScale = entity -> 1.0f;
         private final List<Consumer<ConfigurableGeoEntityRenderer<T>>> customLayers = new ArrayList<>();
 
         private Builder(EntityRendererProvider.Context context, GeoModel<T> model) {
@@ -60,12 +64,18 @@ public class ConfigurableGeoEntityRenderer<T extends Entity & GeoAnimatable>
         }
 
         public Builder<T> scale(float value) {
-            this.scale = entity -> value;
-            return this;
+            return scaleBy(entity -> value);
         }
 
         public Builder<T> scaleBy(Function<T, Float> value) {
-            this.scale = value;
+            this.horizontalScale = value;
+            this.verticalScale = value;
+            return this;
+        }
+
+        public Builder<T> scaleBy(Function<T, Float> horizontal, Function<T, Float> vertical) {
+            this.horizontalScale = horizontal;
+            this.verticalScale = vertical;
             return this;
         }
 
@@ -75,15 +85,15 @@ public class ConfigurableGeoEntityRenderer<T extends Entity & GeoAnimatable>
         }
 
         public ConfigurableGeoEntityRenderer<T> build() {
-            return new ConfigurableGeoEntityRenderer<>(context, model, shadowRadius, glowing, scale, customLayers);
+            return new ConfigurableGeoEntityRenderer<>(context, model, shadowRadius, glowing, horizontalScale, verticalScale, customLayers);
         }
     }
 
     @Override
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack,
                        MultiBufferSource bufferSource, int packedLight) {
-        float entityScale = scale.apply(entity);
-        poseStack.scale(entityScale, entityScale, entityScale);
+        float horizontal = horizontalScale.apply(entity);
+        poseStack.scale(horizontal, verticalScale.apply(entity), horizontal);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 }

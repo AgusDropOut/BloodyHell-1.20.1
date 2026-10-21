@@ -23,7 +23,6 @@ import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.BurdenOfT
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.FailedSonOfTheUnknownRenderer;
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.WeepingOcularRenderer;
 import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
-import net.agusdropout.bloodyhell.client.render.entity.custom.model.CrawlingDelusionModel;
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.CrawlingDelusionRenderer;
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.EchoOfTheNamelessRenderer;
 import net.agusdropout.bloodyhell.fluid.ModFluidTypes;

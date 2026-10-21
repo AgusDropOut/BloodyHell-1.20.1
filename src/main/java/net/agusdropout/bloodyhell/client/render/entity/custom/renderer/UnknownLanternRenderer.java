@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 
+import net.agusdropout.bloodyhell.client.render.entity.generic.ConfigurableGeoModel;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import net.agusdropout.bloodyhell.client.render.entity.generic.InsightCreatureRenderer;
@@ -19,7 +20,7 @@ import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 public class UnknownLanternRenderer extends InsightCreatureRenderer<UnknownLanternEntity> {
 
     public UnknownLanternRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new UnknownLanternModel(), true);
+        super(renderManager, new ConfigurableGeoModel<>("unknown_lantern", "head", 1.0f, 1.0f), true);
     }
 
     public void spawnRadialStepParticles(UnknownLanternEntity entity, boolean isRightLeg) {

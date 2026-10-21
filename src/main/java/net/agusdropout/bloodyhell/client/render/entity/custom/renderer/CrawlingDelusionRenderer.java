@@ -1,11 +1,11 @@
 package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 
+import net.agusdropout.bloodyhell.client.render.entity.generic.ConfigurableGeoModel;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.client.render.entity.generic.InsightCreatureRenderer;
-import net.agusdropout.bloodyhell.client.render.entity.custom.model.CrawlingDelusionModel;
 import net.agusdropout.bloodyhell.entity.unknown.custom.CrawlingDelusionEntity;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ChillFallingParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.LinearFrenziedFlameParticleOptions;
@@ -25,7 +25,7 @@ public class CrawlingDelusionRenderer extends InsightCreatureRenderer<CrawlingDe
     private int lastParticleTick = -1;
 
     public CrawlingDelusionRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new CrawlingDelusionModel());
+        super(renderManager, new ConfigurableGeoModel<>("crawling_delusion", "head", 1.0f, 1.0f));
     }
 
     @Override

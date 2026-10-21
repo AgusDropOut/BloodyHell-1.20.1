@@ -53,6 +53,12 @@ public class GenericGeckoEntityModel<T extends GeoAnimatable> extends GeoModel<T
         this(resourceId, textureId, null, 0.0f, 0.0f, null, customAnimations);
     }
 
+    public GenericGeckoEntityModel(String resourceId, String textureId, String headBone,
+                                   float pitchFactor, float yawFactor,
+                                   CustomAnimation<T> customAnimations) {
+        this(resourceId, textureId, headBone, pitchFactor, yawFactor, null, customAnimations);
+    }
+
     private GenericGeckoEntityModel(String resourceId, String textureId, String headBone,
                                     float pitchFactor, float yawFactor,
                                     BiConsumer<T, CoreGeoBone> customHeadRotation,

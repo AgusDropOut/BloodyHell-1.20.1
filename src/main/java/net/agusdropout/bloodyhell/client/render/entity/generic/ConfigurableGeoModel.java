@@ -1,5 +1,7 @@
 package net.agusdropout.bloodyhell.client.render.entity.generic;
 
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 
@@ -31,5 +33,22 @@ public class ConfigurableGeoModel<T extends GeoAnimatable> extends GenericGeckoE
     public ConfigurableGeoModel(String resourceId, String textureId,
                                 CustomAnimation<T> customAnimations) {
         super(resourceId, textureId, customAnimations);
+    }
+
+    public ConfigurableGeoModel(String resourceId, String textureId, String headBone,
+                                float pitchFactor, float yawFactor,
+                                CustomAnimation<T> customAnimations) {
+        super(resourceId, textureId, headBone, pitchFactor, yawFactor, customAnimations);
+    }
+
+    public static <T extends Entity & GeoAnimatable> CustomAnimation<T> alignBoneToRotation(String boneName) {
+        return (model, animatable, animationState) -> {
+            CoreGeoBone bone = model.getAnimationProcessor().getBone(boneName);
+            if (bone != null) {
+                bone.setRotY(animatable.getYRot() * Mth.DEG_TO_RAD);
+                bone.setRotX(-animatable.getXRot() * Mth.DEG_TO_RAD);
+                bone.setRotZ(-animatable.getXRot() * Mth.DEG_TO_RAD);
+            }
+        };
     }
 }

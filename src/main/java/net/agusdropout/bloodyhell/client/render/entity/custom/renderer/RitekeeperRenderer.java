@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 
+import net.agusdropout.bloodyhell.client.render.entity.generic.ConfigurableGeoModel;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,7 +24,7 @@ import java.util.Optional;
 public class RitekeeperRenderer extends GeoEntityRenderer<RitekeeperEntity> {
 
     public RitekeeperRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new RitekeeperModel());
+        super(renderManager, new ConfigurableGeoModel<>("ritekeeper", "head", 1.0f, 1.0f));
         this.addRenderLayer(new RitekeeperHeartLayer(this));
         this.addRenderLayer(new BloodFireGeoLayer<>(this));
         this.shadowRadius = 0.8f;

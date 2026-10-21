@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 
+import net.agusdropout.bloodyhell.client.render.entity.generic.ConfigurableGeoModel;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,7 +16,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 public class BlasphemousTwinDaggersCloneRenderer extends GeoEntityRenderer<BlasphemousTwinDaggersCloneEntity> {
 
     public BlasphemousTwinDaggersCloneRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new BlasphemousTwinDaggersCloneModel());
+        super(renderManager, new ConfigurableGeoModel<>("blasphemous_twin_daggers_clone"));
 
         addRenderLayer(new PlayerSkinLayer(this));
     }
