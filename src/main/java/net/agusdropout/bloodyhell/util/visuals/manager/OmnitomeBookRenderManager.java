@@ -3,7 +3,8 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
-import net.agusdropout.bloodyhell.item.client.books.OmnitomeRenderer;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -32,7 +33,7 @@ public class OmnitomeBookRenderManager {
     private final List<BookTask> TASKS = new ArrayList<>();
 
     public void queueBook(OmnitomeRenderer renderer, ItemStack stack, ItemDisplayContext transform, PoseStack poseStack, int packedLight, int packedOverlay) {
-        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
+        if (RenderPassGuard.shouldSkipDeferred(transform)) return;
         if (transform == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transform == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
             BookTask task = new BookTask();
             task.renderer = renderer;

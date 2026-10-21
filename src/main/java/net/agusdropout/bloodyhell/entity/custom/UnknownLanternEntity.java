@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.entity.custom;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.ai.goals.LanternPersecutionGoal;
 import net.agusdropout.bloodyhell.entity.base.InsightEntity;
-import net.agusdropout.bloodyhell.entity.client.UnknownLanternRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.UnknownLanternRenderer;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.UnknownLanternRiftEntity;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;

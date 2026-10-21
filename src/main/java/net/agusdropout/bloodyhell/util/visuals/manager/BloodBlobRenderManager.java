@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEngineBlockEntity;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.types.IBloodBlobEmitter;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;

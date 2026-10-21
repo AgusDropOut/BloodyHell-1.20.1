@@ -14,7 +14,7 @@ import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItemStackHandler;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.SelectOmnitomeSlotC2SPacket;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;

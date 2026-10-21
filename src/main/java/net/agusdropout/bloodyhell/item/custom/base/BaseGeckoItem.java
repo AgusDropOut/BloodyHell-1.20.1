@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
-import net.agusdropout.bloodyhell.item.client.generic.GenericGeckoItemRenderer;
+import net.agusdropout.bloodyhell.client.render.item.generic.GenericGeckoItemRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;

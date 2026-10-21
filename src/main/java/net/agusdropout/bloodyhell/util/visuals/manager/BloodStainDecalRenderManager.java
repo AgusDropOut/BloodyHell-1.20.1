@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.Direction;

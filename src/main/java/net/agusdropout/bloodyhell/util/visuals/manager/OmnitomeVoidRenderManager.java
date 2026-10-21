@@ -4,9 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexSorting;
-import net.agusdropout.bloodyhell.item.client.books.OmnitomeRenderer;
-import net.agusdropout.bloodyhell.util.visuals.ModRenderTypes;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
+import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -39,7 +40,7 @@ public class OmnitomeVoidRenderManager {
     private final List<VoidTask> TASKS = new ArrayList<>();
 
     public void queueVoidBone(OmnitomeRenderer renderer, Matrix4f poseMatrix, Matrix3f normalMatrix, GeoBone bone, ResourceLocation texture, ItemDisplayContext transform, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
+        if (RenderPassGuard.shouldSkipDeferred(transform)) return;
         VoidTask task = new VoidTask();
         task.renderer = renderer;
         task.transform = transform;

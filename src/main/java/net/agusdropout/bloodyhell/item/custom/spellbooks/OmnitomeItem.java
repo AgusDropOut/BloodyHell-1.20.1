@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
-import net.agusdropout.bloodyhell.item.client.books.OmnitomeRenderer;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;

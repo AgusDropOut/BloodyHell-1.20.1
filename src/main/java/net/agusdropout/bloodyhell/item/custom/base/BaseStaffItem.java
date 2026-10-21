@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
-import net.agusdropout.bloodyhell.item.client.generic.GenericStaffRenderer;
+import net.agusdropout.bloodyhell.client.render.item.generic.GenericStaffRenderer;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;

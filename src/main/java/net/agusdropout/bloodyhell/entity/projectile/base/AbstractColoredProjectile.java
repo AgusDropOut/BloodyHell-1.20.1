@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.projectile.base;
 
 
-import net.agusdropout.bloodyhell.entity.client.base.SimpleColorProjectile;
+import net.agusdropout.bloodyhell.entity.projectile.base.SimpleColorProjectile;
 import net.agusdropout.bloodyhell.util.visuals.ColorHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;

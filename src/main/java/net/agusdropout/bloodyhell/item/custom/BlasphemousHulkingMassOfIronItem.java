@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.item.custom;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousSpearEntity;
-import net.agusdropout.bloodyhell.item.client.BlasphemousHulkingMassOfIronRenderer;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.BlasphemousHulkingMassOfIronRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseMeleeComboWeapon;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;

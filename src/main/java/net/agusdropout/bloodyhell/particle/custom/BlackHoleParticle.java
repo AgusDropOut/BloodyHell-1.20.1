@@ -7,8 +7,8 @@ import net.agusdropout.bloodyhell.block.entity.custom.mechanism.UnknownPortalBlo
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.manager.BlackHoleRenderManager;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
-import net.agusdropout.bloodyhell.util.visuals.RenderHelper;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

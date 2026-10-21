@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;

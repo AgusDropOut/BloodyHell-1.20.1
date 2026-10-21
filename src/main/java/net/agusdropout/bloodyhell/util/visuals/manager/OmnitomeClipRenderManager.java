@@ -4,10 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexSorting;
-import net.agusdropout.bloodyhell.item.client.books.OmnitomeRenderer;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
-import net.agusdropout.bloodyhell.util.visuals.ModRenderTypes;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -42,7 +43,7 @@ public class OmnitomeClipRenderManager {
     public void queueClipBook(ItemStack stack, ItemDisplayContext transform, PoseStack poseStack, int packedLight, int packedOverlay, float morphProgress) {
         if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseSpellBookItem<?>)) return;
 
-        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
+        if (RenderPassGuard.shouldSkipDeferred(transform)) return;
         ClipTask task = new ClipTask();
         task.stack = stack.copy();
         task.stack.getOrCreateTag().putBoolean("spellbook_is_open", true);

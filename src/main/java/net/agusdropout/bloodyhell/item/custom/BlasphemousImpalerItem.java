@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
-import net.agusdropout.bloodyhell.item.client.BlasphemousImpalerItemRenderer;
-import net.agusdropout.bloodyhell.item.client.ClientItemHooks;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.BlasphemousImpalerItemRenderer;
+import net.agusdropout.bloodyhell.client.ClientItemHooks;
 import net.agusdropout.bloodyhell.item.custom.base.BaseThrowableMeleeComboWeapon;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;

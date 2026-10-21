@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis; // Import Axis for rotation
 import net.agusdropout.bloodyhell.particle.ParticleOptions.HollowRectangleOptions;
-import net.agusdropout.bloodyhell.util.visuals.RenderHelper;
+import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;

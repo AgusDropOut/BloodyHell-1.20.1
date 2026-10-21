@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom.reliquary;
 
 import net.agusdropout.bloodyhell.entity.minions.base.AbstractMinionEntity;
-import net.agusdropout.bloodyhell.item.client.ClientItemHooks;
+import net.agusdropout.bloodyhell.client.ClientItemHooks;
 import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoItem;
 import net.agusdropout.bloodyhell.screen.custom.menu.ReliquaryMenu;
 import net.minecraft.core.BlockPos;

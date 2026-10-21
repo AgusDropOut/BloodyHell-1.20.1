@@ -7,7 +7,7 @@ import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGemSproutBlockEntity;
 import net.agusdropout.bloodyhell.config.ModCommonConfig;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
-import net.agusdropout.bloodyhell.util.visuals.RenderHelper;
+import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;

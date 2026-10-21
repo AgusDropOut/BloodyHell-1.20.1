@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.entity.projectile.SpecialSlashEntity;
-import net.agusdropout.bloodyhell.item.client.BlasphemousTwinDaggersRenderer;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.BlasphemousTwinDaggersRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseMeleeComboWeapon;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

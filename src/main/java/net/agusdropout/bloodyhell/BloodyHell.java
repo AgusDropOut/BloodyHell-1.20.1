@@ -2,29 +2,30 @@ package net.agusdropout.bloodyhell;
 
 import com.mojang.logging.LogUtils;
 
-import net.agusdropout.bloodyhell.block.client.renderer.BlasphemousBloodAltarRenderer;
+import net.agusdropout.bloodyhell.client.render.block.custom.renderer.BlasphemousBloodAltarRenderer;
 import net.agusdropout.bloodyhell.block.ModBlocks;
-import net.agusdropout.bloodyhell.block.client.renderer.*;
+import net.agusdropout.bloodyhell.client.render.block.custom.renderer.*;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
 import net.agusdropout.bloodyhell.config.ModClientConfigs;
 import net.agusdropout.bloodyhell.config.ModCommonConfig;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.entity.client.*;
+import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.*;
 
-import net.agusdropout.bloodyhell.entity.minions.client.base.GenericMinionModel;
-import net.agusdropout.bloodyhell.entity.minions.client.base.GenericMinionRenderer;
-import net.agusdropout.bloodyhell.entity.minions.client.model.BastionOfTheUnknownModel;
-import net.agusdropout.bloodyhell.entity.minions.client.model.BurdenOfTheUnknownModel;
-import net.agusdropout.bloodyhell.entity.minions.client.renderer.BastionOfTheUnknownRenderer;
-import net.agusdropout.bloodyhell.entity.minions.client.renderer.BurdenOfTheUnknownRenderer;
-import net.agusdropout.bloodyhell.entity.minions.client.renderer.FailedSonOfTheUnknownRenderer;
-import net.agusdropout.bloodyhell.entity.minions.client.renderer.WeepingOcularRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.generic.GenericMinionModel;
+import net.agusdropout.bloodyhell.client.render.entity.generic.GenericMinionRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.custom.model.BastionOfTheUnknownModel;
+import net.agusdropout.bloodyhell.client.render.entity.custom.model.BurdenOfTheUnknownModel;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.BastionOfTheUnknownRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.BurdenOfTheUnknownRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.FailedSonOfTheUnknownRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.WeepingOcularRenderer;
 import net.agusdropout.bloodyhell.entity.minions.custom.BurdenOfTheUnknownEntity;
-import net.agusdropout.bloodyhell.entity.unknown.client.model.CrawlingDelusionModel;
-import net.agusdropout.bloodyhell.entity.unknown.client.renderer.CrawlingDelusionRenderer;
-import net.agusdropout.bloodyhell.entity.unknown.client.renderer.EchoOfTheNamelessRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.custom.model.CrawlingDelusionModel;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.CrawlingDelusionRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.EchoOfTheNamelessRenderer;
 import net.agusdropout.bloodyhell.fluid.ModFluidTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModCreativeModeTab;
@@ -87,7 +88,6 @@ import software.bernie.geckolib.GeckoLib;
 import java.util.Locale;
 
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(BloodyHell.MODID)
 public class
 BloodyHell
@@ -164,7 +164,7 @@ BloodyHell
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Monster::checkAnyLightMonsterSpawnRules);
 
-            // CAMBIO 2: Blasphemous Malformation
+
             SpawnPlacements.register(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(),
                     SpawnPlacements.Type.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -187,7 +187,7 @@ BloodyHell
 
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.BLOOD_FLOWER.getId(),ModBlocks.POTTED_BLOOD_FLOWER);
             ModMessages.register();
-           //ModVillagers.registerPOIs();
+
             MinecraftForge.EVENT_BUS.addListener(this::onPlayerInteract);
 
 
@@ -216,145 +216,6 @@ BloodyHell
 
     }
 
-
-
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
-
-
-
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get(), RenderType.translucent());
-            Minecraft.getInstance().particleEngine.register(ModParticles.CYLINDER_PARTICLE.get(), new CylinderParticle.Provider());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ANCIENT_BLOOD_CAPSULE.get(), RenderType.translucent());
-            MenuScreens.register(ModMenuTypes.BLOOD_WORKBENCH_MENU.get(), BloodWorkBenchScreen::new);
-            MenuScreens.register(ModMenuTypes.VESPER_MENU.get(), VesperScreen::new);
-            MenuScreens.register(ModMenuTypes.SANGUINE_LAPIDARY_MENU.get(), SanguineLapidaryScreen::new);
-            MenuScreens.register(ModMenuTypes.RELIQUARY_MENU.get(), ReliquaryScreen::new);
-            MenuScreens.register(ModMenuTypes.OMNITOME_MENU.get(), OmnitomeScreen::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_SEEKER.get(), BloodSeekerRenderer::new);
-            EntityRenderers.register(ModEntityTypes.OMEN_GAZER_ENTITY.get(), OmenGazerRenderer::new);
-            EntityRenderers.register(ModEntityTypes.VEINRAVER_ENTITY.get(), VeinRaverEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOODY_SOUL_ENTITY.get(), BloodySoulEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.CORRUPTED_BLOODY_SOUL_ENTITY.get(), CorruptedBloodySoulEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOODTHIRSTYBEAST.get(), BloodThirstyBeastRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_ARM_ENTITY.get(), BlasphemousArmEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.ONI.get(), OniRenderer::new);
-            EntityRenderers.register(ModEntityTypes.SCARLETSPECKLED_FISH.get(), ScarletSpeckledFishRenderer::new);
-            EntityRenderers.register(ModEntityTypes.CRIMSON_RAVEN.get(), CrimsonRavenRenderer::new);
-            EntityRenderers.register(ModEntityTypes.EYESHELL_SNAIL.get(), EyeshellSnailRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOODPIG.get(), BloodPigRenderer::new);
-            EntityRenderers.register(ModEntityTypes.CRYSTAL_PILLAR.get(), CrystalPillarRenderer::new);
-            EntityRenderers.register(ModEntityTypes.UNKNOWN_EYE_ENTITY.get(), UnknownEyeEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.UNKNOWN_ENTITY_ARMS.get(), UnknownEntityArmsRenderer::new);
-            EntityRenderers.register(ModEntityTypes.OFFSPRING_OF_THE_UNKNOWN.get(), OffspringOfTheUnknownRenderer::new);
-            EntityRenderers.register(ModEntityTypes.SELIORA.get(), SelioraRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(), BlasphemousMalformationRenderer::new);
-            EntityRenderers.register(ModEntityTypes.HORNED_WORM.get(), HornedWormRenderer::new);
-            EntityRenderers.register(ModEntityTypes.VEIL_STALKER.get(), VeilStalkerRenderer::new);
-            EntityRenderers.register(ModEntityTypes.SANGUINE_SACRIFICE_ENTITY.get(), SanguineSacrificeEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_ENTITY.get(), BloodSlashEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_ARROW.get(), BloodArrowRenderer::new);
-            EntityRenderers.register(ModEntityTypes.ENTITY_FALLING_BLOCK.get(), EntityFallingBlockRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_NOVA_DEBRIS_ENTITY.get(), EntityFallingBlockRenderer::new);
-            EntityRenderers.register(ModEntityTypes.ENTITY_CAMERA_SHAKE.get(), RenderNothing::new);
-            BlockEntityRenderers.register(ModBlockEntities.BH_CHEST.get(),BHChestRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_CONDENSER_BE.get(), CondenserRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.RHNULL_CONDENSER_BE.get(), CondenserRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_ARROW.get(), BloodArrowRenderer::new);
-            EntityRenderers.register(ModEntityTypes.VESPER.get(), VesperRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_PROJECTILE.get(), BloodSphereRenderer::new);
-            EntityRenderers.register(ModEntityTypes.VIRULENT_ANCHOR_PROJECTILE.get(), VirulentAnchorProjectileEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_NOVA_ENTITY.get(), BloodNovaRenderer::new);
-            EntityRenderers.register(ModEntityTypes.SMALL_CRIMSON_DAGGER.get(), SmallCrimsonDaggerRenderer::new);
-            EntityRenderers.register(ModEntityTypes.VISCERAL_PROJECTILE.get(), VisceralProjectileEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.STARFALL_PROJECTILE.get(), StarfallProjectileEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), BloodPortalRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SMALL_WHIRLWIND_ENTITY.get(), BlasphemousSmallWhirlwindEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_WHIRLWIND_ENTITY.get(), BlasphemousWhirlwindEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_TWIN_DAGGERS_CLONE.get(), BlasphemousTwinDaggersCloneRenderer::new);
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_BUSH.get(), RenderType::canConsolidateConsecutiveGeometry);
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_PETALS.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SPIKY_GRASS.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_CRUCIBLE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_MUSHROOM_BLOCK.get(), RenderType.translucent());
-            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_INFUSOR_BE.get(), SanguiniteInfusorRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.SANGUINE_LAPIDARY_BE.get(), SanguineLapidaryRenderer::new);
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_LAPIDARY.get(), RenderType.cutout());
-
-            BlockEntityRenderers.register(ModBlockEntities.UNKNOWN_PORTAL_BE.get(), UnknownPortalRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_PIPE_BE.get(), PipeRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.RHNULL_PIPE_BE.get(), PipeRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_TANK_BE.get(), TankRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.RHNULL_TANK_BE.get(), TankRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.SANGUINITE_BLOOD_HARVESTER_BE.get(), SanguiniteHarvesterRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.STAR_LAMP.get(), StarLampRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.SELIORA_RESTING.get(), SelioraRestingBlockRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.BLASPHEMOUS_BLOOD_ALTAR.get(), BlasphemousBloodAltarRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), MainBlasphemousBloodAltarRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.RHNULL_BLOOD_ENGINE.get(), RhnullBloodEngineRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.RHNULL_BLOOD_ENGINE_PILLAR.get(), RhnullBloodEnginePillarRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.BLOOD_GEM_SPROUT_BE.get(), BloodGemSproutRenderer::new);
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_CON.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_GEM_SPROUT.get(), RenderType.cutout());
-            EntityRenderers.register(ModEntityTypes.CYCLOPS_ENTITY.get(), CyclopsRenderer::new);
-            EntityRenderers.register(ModEntityTypes.SPECIAL_SLASH.get(), SpecialSlashRenderer::new);
-            EntityRenderers.register(ModEntityTypes.ENTITY_CAMERA_SHAKE.get(), RenderNothing::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SPINES.get(), BlasphemousSpinesRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_SPEAR.get(), BlasphemousSpearRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLASPHEMOUS_IMPALER_ENTITY.get(), BlasphemousImpalerEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.GRAVE_WALKER_ENTITY.get(), GraveWalkerEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.TENTACLE_ENTITY.get(), TentacleEntityRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_SLASH_DECAL.get(), BloodSlashDecalRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_STAIN_ENTITY.get(), BloodStainRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_CLOT_PROJECTILE.get(), BloodClotRenderer::new);
-            EntityRenderers.register(ModEntityTypes.RITEKEEPER.get(), RitekeeperRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_SOUL.get(), BloodFireSoulRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(), BloodFireColumnRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), BloodFireMeteorRenderer::new);
-            EntityRenderers.register(ModEntityTypes.CINDER_ACOLYTE.get(), CinderAcolyteRenderer::new);
-            EntityRenderers.register(ModEntityTypes.FAILED_REMNANT.get(), FailedRemnantRenderer::new);
-            EntityRenderers.register(ModEntityTypes.RHNULL_IMPALER_PROJECTILE.get(), RhnullImpalerRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLOOD_SOUL.get(), BloodSoulRenderer::new);
-            EntityRenderers.register(ModEntityTypes.INFESTATION_DECAL.get(), InfestationDecalRenderer::new);
-            EntityRenderers.register(ModEntityTypes.RHNULL_HEAVY_SWORD_PROJECTILE.get(), RhnullIHeavySwordRenderer::new);
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
-            EntityRenderers.register(ModEntityTypes.RHNULL_PAIN_THRONE.get(), RhnullPainThroneRenderer::new);
-            EntityRenderers.register(ModEntityTypes.RHNULL_DROPLET_PROJECTILE.get(), SimpleColoredLineProjectileRenderer::new);
-            EntityRenderers.register(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), RhnullOrbEmitterRenderer::new);
-            EntityRenderers.register(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), context -> new GenericMinionRenderer<>(context, new GenericMinionModel<>()));
-            EntityRenderers.register(ModEntityTypes.WEEPING_OCULAR.get(), WeepingOcularRenderer::new);
-            EntityRenderers.register(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), FailedSonOfTheUnknownRenderer::new);
-            EntityRenderers.register(ModEntityTypes.WEEPING_TEAR_PROJECTILE.get(), SimpleColoredLineProjectileRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BLACK_HOLE.get(), BlackHoleRenderer::new);
-            EntityRenderers.register(ModEntityTypes.UNKNOWN_LANTERN_RIFT.get(), BlackHoleRenderer::new);
-            EntityRenderers.register(ModEntityTypes.NAMELESS_TRIAL_RIFT.get(), BlackHoleRenderer::new);
-            EntityRenderers.register(ModEntityTypes.UNKNOWN_LANTERN.get(), UnknownLanternRenderer::new);
-            EntityRenderers.register(ModEntityTypes.HOSTILE_UNKNOWN_ENTITY_ARMS.get(), HostileUnknownEntityArmsRenderer::new);
-            EntityRenderers.register(ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get(), context -> new BurdenOfTheUnknownRenderer(context, new BurdenOfTheUnknownModel()));
-            EntityRenderers.register(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), context -> new BastionOfTheUnknownRenderer(context, new BastionOfTheUnknownModel()));
-            BlockEntityRenderers.register(ModBlockEntities.BLOOD_ALTAR_BE.get(), BloodAltarRenderer::new);
-            BlockEntityRenderers.register(ModBlockEntities.MAIN_BLOOD_ALTAR_BE.get(), MainBloodAltarRenderer::new);
-
-            EntityRenderers.register(ModEntityTypes.VISCOUS_PROJECTILE.get(), ViscousProjectileRenderer::new);
-            EntityRenderers.register(ModEntityTypes.FRENZIED_FIRE.get(), FrenziedFireRenderer::new);
-            EntityRenderers.register(ModEntityTypes.CRAWLING_DELUSION.get(), CrawlingDelusionRenderer::new);
-            EntityRenderers.register(ModEntityTypes.ECHO_OF_THE_NAMELESS.get(), EchoOfTheNamelessRenderer::new);
-            EntityRenderers.register(ModEntityTypes.ORBITAL_FRENZIED_PROJECTILE.get(), OrbitalFrenziedProjectileRenderer::new);
-        }
-
-
-
-
-
-    }
     public void portalTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         if (entity instanceof Player player) {

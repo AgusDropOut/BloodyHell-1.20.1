@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.staffs;
 
-import net.agusdropout.bloodyhell.item.client.staffs.StaffOfTheGoldenSorrowRenderer;
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.StaffOfTheGoldenSorrowRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;

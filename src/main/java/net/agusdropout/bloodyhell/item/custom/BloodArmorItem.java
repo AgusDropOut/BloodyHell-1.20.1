@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.item.custom;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.agusdropout.bloodyhell.entity.client.armor.BloodArmorRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.armor.BloodArmorRenderer;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;

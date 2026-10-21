@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.item.client.generic.GenericSpellBookRenderer;
+import net.agusdropout.bloodyhell.client.render.item.generic.GenericSpellBookRenderer;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.agusdropout.bloodyhell.util.capability.CrimsonVeilHelper;
 import net.minecraft.ChatFormatting;

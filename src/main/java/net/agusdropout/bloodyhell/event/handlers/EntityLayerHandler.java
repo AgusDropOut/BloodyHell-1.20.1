@@ -1,9 +1,9 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
 import com.google.common.collect.ImmutableList;
-import net.agusdropout.bloodyhell.entity.client.layer.BloodFireLayer;
-import net.agusdropout.bloodyhell.entity.client.layer.PainThroneLayer;
-import net.agusdropout.bloodyhell.entity.client.layer.VisceralLayer; // Ensure this import matches your package
+import net.agusdropout.bloodyhell.client.render.entity.layer.BloodFireLayer;
+import net.agusdropout.bloodyhell.client.render.entity.layer.PainThroneLayer;
+import net.agusdropout.bloodyhell.client.render.entity.layer.VisceralLayer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;

@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.util.visuals.RenderHelper;
+import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;

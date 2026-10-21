@@ -8,22 +8,24 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory; // Moved here
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.overlay.*;
 import net.agusdropout.bloodyhell.client.ClientModLabelTooltip;
-import net.agusdropout.bloodyhell.client.render.BloodDimensionRenderInfo;
+import net.agusdropout.bloodyhell.client.render.ambient.BloodDimensionRenderInfo;
 import net.agusdropout.bloodyhell.config.ModClientConfigs;
-import net.agusdropout.bloodyhell.entity.client.*;
+import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
+import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.*;
+import net.agusdropout.bloodyhell.client.render.entity.layer.ModModelLayers;
 import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.event.handlers.EntityLayerHandler;
 import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
 import net.agusdropout.bloodyhell.item.ModItems;
-import net.agusdropout.bloodyhell.item.client.OffhandDaggerLayer;
+import net.agusdropout.bloodyhell.client.render.item.layer.OffhandDaggerLayer;
 import net.agusdropout.bloodyhell.item.custom.base.IComboWeapon;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.*;
 import net.agusdropout.bloodyhell.screen.ModLabelTooltipData;
 import net.agusdropout.bloodyhell.util.ClientTickHandler;
 import net.agusdropout.bloodyhell.util.ModItemProperties;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.WindController;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.client.Minecraft;
@@ -213,100 +215,7 @@ public class ClientEvents {
             ModItemProperties.addCustomItemProperties();
         }
 
-        @SubscribeEvent
-        public static void registerShaders(RegisterShadersEvent event) throws IOException {
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "distortion"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.DISTORTION_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "radial_distortion"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.RADIAL_DISTORTION_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "entity_glitter"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
-                ModShaders.ENTITY_GLITTER_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "insight_distortion"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
-                ModShaders.INSIGHT_DISTORTION_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "shape_glitter"), DefaultVertexFormat.POSITION_COLOR), shaderInstance -> {
-                ModShaders.SHAPE_GLITTER_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "shape_unknown_fire"), DefaultVertexFormat.POSITION_COLOR), shaderInstance -> {
-                ModShaders.SHAPE_UNKNOWN_FIRE_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "spherical_rim"), DefaultVertexFormat.POSITION_COLOR), shaderInstance -> {
-                ModShaders.SHAPE_SPHERICAL_RIM_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "ethereal_swirl"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.ETHEREAL_SWIRL_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "black_hole"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
-                ModShaders.BLACK_HOLE_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "frenzy_tentacles"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.FRENZY_TENTACLES = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "frenzied_flame"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.FRENZIED_FLAME_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "linear_frenzied_flame"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.LINEAR_FRENZIED_FLAME_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "tiny_bloom"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.TINY_BLOOM_SHADER = shaderInstance;
-            });
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "radiant_energy"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.RADIANT_ENERGY_SHADER = shaderInstance;
-            });
 
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "frenzied_explosion"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.FRENZIED_EXPLOSION_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "blood_blob"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
-                ModShaders.BLOOD_BLOB_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "blood_drop"), DefaultVertexFormat.POSITION_TEX_COLOR), shaderInstance -> {
-                ModShaders.BLOOD_DROP_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "blood_orb"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
-                ModShaders.BLOOD_ORB_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "mini_blood_blob"), DefaultVertexFormat.POSITION), shaderInstance -> {
-                ModShaders.MINI_BLOOD_BLOB_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "golden_sorrow_orb"), DefaultVertexFormat.POSITION), shaderInstance -> {
-                ModShaders.GOLDEN_SORROW_ORB_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "scarlet_cinder_orb"), DefaultVertexFormat.POSITION), shaderInstance -> {
-                ModShaders.SCARLET_CINDER_ORB_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "crimson_veil_gui"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
-                    ModShaders.CRIMSON_VEIL_GUI_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "spell_wheel_bg"), DefaultVertexFormat.POSITION_TEX), shaderInstance -> {
-                ModShaders.SPELL_WHEEL_BG_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "omnitome_void"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
-                ModShaders.OMNITOME_VOID_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "omnitome_emerge_clip"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
-                ModShaders.EMERGE_CLIP_SHADER = shaderInstance;
-            });
-
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(BloodyHell.MODID, "blood_stain"), DefaultVertexFormat.POSITION_COLOR_TEX), shaderInstance -> {
-                ModShaders.BLOOD_STAIN_SHADER = shaderInstance;
-            });
-
-        }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
             return new ModifierLayer<>();
@@ -377,6 +286,7 @@ public class ClientEvents {
             event.registerSpecial(ModParticles.FRENZIED_EXPLOSION.get(), new FrenziedExplosionParticle.Provider());
             event.registerSpecial(ModParticles.FRENZIED_SUN.get(), new FrenziedSunSkyParticle.Provider());
             event.registerSpecial(ModParticles.MINI_BLOB_PARTICLE.get(), new MiniBlobParticle.Provider());
+            event.registerSpecial(ModParticles.CYLINDER_PARTICLE.get(), new CylinderParticle.Provider());
         }
 
         @SubscribeEvent

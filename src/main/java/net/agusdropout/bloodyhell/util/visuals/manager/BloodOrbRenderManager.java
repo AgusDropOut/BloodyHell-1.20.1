@@ -4,7 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.TextureUtil;
-import net.agusdropout.bloodyhell.util.visuals.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -107,7 +108,7 @@ public class BloodOrbRenderManager {
     }
 
     public static void addOrbData(Matrix4f pose, Matrix4f projection, org.joml.Matrix3f rotation, net.minecraft.world.item.ItemDisplayContext transform) {
-        if (net.agusdropout.bloodyhell.util.visuals.RenderPassGuard.shouldSkipDeferred(transform)) return;
+        if (RenderPassGuard.shouldSkipDeferred(transform)) return;
         ACTIVE_ORBS.add(new OrbData(pose, projection, rotation));
     }
 

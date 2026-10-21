@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom;
 
-import net.agusdropout.bloodyhell.entity.client.armor.BlasphemiteArmorRenderer;
-import net.agusdropout.bloodyhell.entity.client.armor.RhnullArmorRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.armor.BlasphemiteArmorRenderer;
+import net.agusdropout.bloodyhell.client.render.entity.armor.RhnullArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
