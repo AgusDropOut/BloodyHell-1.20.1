@@ -17,7 +17,13 @@ Known and accepted warnings live in `scripts/testworld-known-warnings.txt` (one 
 
 Last clean baseline: blocks=141/141, entities=75/75, itemChests=11, items=284, no ERROR lines.
 
-Run it once with a shader pack and once without.
+## Shaders in the dev environment
+
+`-PbhShaders` adds Rubidium 0.6.5 and Oculus 1.6.4 (the same versions as the regular client) to the dev runtime through CurseMaven. File ids live in `gradle.properties` (`rubidium_file_id`, `oculus_file_id`).
+- `make client-shaders` runs the dev client with them. `make testworld-shaders` runs the automated test world with them.
+- Both first run `make sync-shaders`, which copies `SHADER_PACKS` from your regular `.minecraft/shaderpacks` into `run/shaderpacks` (default: Complementary Reimagined, Complementary Unbound, BSL). Override with `make SHADER_PACKS="a.zip b.zip" ...`.
+- Pick the pack in the in-game shader menu. BSL is the strictest, Complementary Reimagined the most mod friendly, Unbound is close to BSL.
+- Without `-PbhShaders` the dev runtime has no shader mods, so the plain run stays vanilla rendering.
 
 ## Manual checklist (not automatable)
 - [ ] Omnitome in first person and in the GUI.

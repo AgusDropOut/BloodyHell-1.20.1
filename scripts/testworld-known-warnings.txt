@@ -13,3 +13,4 @@ VanillaPackResourcesBuilder
 Missing sound for event: minecraft:(item.goat_horn|entity.goat)
 SystemPropertyUtil
 Unable to load model: .bloodyhell:block/seliora_resting_block.
+Rubidium/\]: Force-disabling mixin

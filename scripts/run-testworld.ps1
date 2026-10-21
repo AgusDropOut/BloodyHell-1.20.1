@@ -1,6 +1,7 @@
 param(
     [string]$JavaHome = "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot",
-    [int]$ExitTicks = 600
+    [int]$ExitTicks = 600,
+    [switch]$Shaders
 )
 
 $env:JAVA_HOME = $JavaHome
@@ -21,7 +22,9 @@ if (Test-Path $log) {
 
 Push-Location $root
 try {
-    & .\gradlew.bat runClient -PbhAutoTest "-PbhExitTicks=$ExitTicks"
+    $gradleArgs = @("runClient", "-PbhAutoTest", "-PbhExitTicks=$ExitTicks")
+    if ($Shaders) { $gradleArgs += "-PbhShaders" }
+    & .\gradlew.bat @gradleArgs
     $gradleExit = $LASTEXITCODE
 } finally {
     Pop-Location
