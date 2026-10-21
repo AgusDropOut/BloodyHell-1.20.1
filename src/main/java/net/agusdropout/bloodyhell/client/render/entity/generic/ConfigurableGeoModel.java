@@ -4,6 +4,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
 
 import java.util.function.BiConsumer;
 
@@ -42,12 +43,15 @@ public class ConfigurableGeoModel<T extends GeoAnimatable> extends GenericGeckoE
     }
 
     public static <T extends Entity & GeoAnimatable> CustomAnimation<T> alignBoneToRotation(String boneName) {
-        return (model, animatable, animationState) -> {
-            CoreGeoBone bone = model.getAnimationProcessor().getBone(boneName);
-            if (bone != null) {
-                bone.setRotY(animatable.getYRot() * Mth.DEG_TO_RAD);
-                bone.setRotX(-animatable.getXRot() * Mth.DEG_TO_RAD);
-                bone.setRotZ(-animatable.getXRot() * Mth.DEG_TO_RAD);
+        return new CustomAnimation<T>() {
+            @Override
+            public void apply(GenericGeckoEntityModel<T> model, T animatable, AnimationState<T> animationState) {
+                CoreGeoBone bone = model.getAnimationProcessor().getBone(boneName);
+                if (bone != null) {
+                    bone.setRotY(animatable.getYRot() * Mth.DEG_TO_RAD);
+                    bone.setRotX(-animatable.getXRot() * Mth.DEG_TO_RAD);
+                    bone.setRotZ(-animatable.getXRot() * Mth.DEG_TO_RAD);
+                }
             }
         };
     }
