@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BlackHoleEntityRenderManager {
     private static final List<BlackHoleData> ACTIVE_BLACK_HOLES = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addBlackHole(Matrix4f pose, float radius, float time, float alpha, int color) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

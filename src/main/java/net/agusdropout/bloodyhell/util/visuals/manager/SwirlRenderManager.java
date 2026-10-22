@@ -17,7 +17,7 @@ public class SwirlRenderManager {
     private static final List<SwirlData> ACTIVE_SWIRLS = new ArrayList<>();
 
 
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addSwirl(Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

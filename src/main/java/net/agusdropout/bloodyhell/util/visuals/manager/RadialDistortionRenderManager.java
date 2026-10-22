@@ -16,7 +16,7 @@ import java.util.List;
 
 public class RadialDistortionRenderManager {
     private static final List<DistortionData> ACTIVE_DISTORTIONS = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addDistortion(Matrix4f pose, float size, Vector3f color, float alpha, float time, Quaternionf customRotation) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

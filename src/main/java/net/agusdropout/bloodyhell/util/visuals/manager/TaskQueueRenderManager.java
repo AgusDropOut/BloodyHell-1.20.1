@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class TaskQueueRenderManager {
     private final List<Runnable> tasks = new ArrayList<>();
-    private final DeferredMatrices matrices = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private final DeferredMatrices matrices = new DeferredMatrices();
 
     public void queue(Runnable task) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

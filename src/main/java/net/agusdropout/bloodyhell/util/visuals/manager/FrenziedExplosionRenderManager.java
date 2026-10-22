@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FrenziedExplosionRenderManager {
     private static final List<ExplosionData> ACTIVE_EXPLOSIONS = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addExplosion(Matrix4f pose, float size, float lifeProgress, float time) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

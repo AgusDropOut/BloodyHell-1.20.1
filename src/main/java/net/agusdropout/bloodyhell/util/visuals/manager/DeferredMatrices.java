@@ -9,11 +9,7 @@ public final class DeferredMatrices {
     private final Matrix4f projection = new Matrix4f();
     private final Matrix4f modelView = new Matrix4f();
     private final Matrix4f previousProjection = new Matrix4f();
-    private final VertexSorting restoreSorting;
-
-    public DeferredMatrices(VertexSorting restoreSorting) {
-        this.restoreSorting = restoreSorting;
-    }
+    private VertexSorting previousSorting = VertexSorting.DISTANCE_TO_ORIGIN;
 
     public void capture() {
         projection.set(RenderSystem.getProjectionMatrix());
@@ -22,6 +18,7 @@ public final class DeferredMatrices {
 
     public void applyProjection() {
         previousProjection.set(RenderSystem.getProjectionMatrix());
+        previousSorting = RenderSystem.getVertexSorting();
         RenderSystem.getModelViewStack().pushPose();
         RenderSystem.setProjectionMatrix(projection, VertexSorting.DISTANCE_TO_ORIGIN);
     }
@@ -37,6 +34,6 @@ public final class DeferredMatrices {
     public void restore() {
         RenderSystem.getModelViewStack().popPose();
         RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(previousProjection, restoreSorting);
+        RenderSystem.setProjectionMatrix(previousProjection, previousSorting);
     }
 }

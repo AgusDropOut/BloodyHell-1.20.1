@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public abstract class BaseShaderRenderManager<T extends BaseShaderRenderManager.ParticleData> {
     protected final List<T> ACTIVE_PARTICLES = new ArrayList<>();
-    protected final DeferredMatrices matrices = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    protected final DeferredMatrices matrices = new DeferredMatrices();
 
     public void addParticle(T data) {
         if (ACTIVE_PARTICLES.isEmpty()) {

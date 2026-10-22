@@ -13,7 +13,7 @@ import java.util.List;
 
 public class LinearFrenziedFlameRenderManager {
     private static final List<FlameData> ACTIVE_FLAMES = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addFlame(Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

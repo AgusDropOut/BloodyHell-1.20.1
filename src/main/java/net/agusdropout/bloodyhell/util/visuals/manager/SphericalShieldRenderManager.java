@@ -2,7 +2,6 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 
 import java.util.Queue;
@@ -11,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class SphericalShieldRenderManager {
 
     private static final Queue<Runnable> RENDER_QUEUE = new ConcurrentLinkedQueue<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void queueRender(Runnable renderTask) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

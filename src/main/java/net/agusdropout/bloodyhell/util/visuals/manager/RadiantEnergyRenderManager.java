@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RadiantEnergyRenderManager {
     private static final List<TrailData> ACTIVE_TRAILS = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addTrail(List<Vec3> history, Vec3 cameraPos, float width, float r, float g, float b, float alpha, float time) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

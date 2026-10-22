@@ -2,7 +2,6 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.particle.custom.BlackHoleParticle;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class BlackHoleRenderManager {
     private static final List<BlackHoleRenderData> ACTIVE_BLACK_HOLES = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addBlackHole(BlackHoleParticle particle, Camera camera, float partialTicks) {
         if (RenderPassGuard.shouldSkipDeferred()) return;

@@ -19,7 +19,7 @@ public class MagicRingRenderManager {
     private static final ResourceLocation AURORA_NOISE = new ResourceLocation(BloodyHell.MODID, "textures/particle/aurora_noise.png");
     private static final ResourceLocation AURORA_NOISE_ALT = new ResourceLocation(BloodyHell.MODID, "textures/particle/aurora_noise2.png");
 
-    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
+    private static final DeferredMatrices MATRICES = new DeferredMatrices();
 
     public static void addRing(float px, float py, float pz, float radius, float ringHeight, float time, float r, float g, float b, float alpha) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
