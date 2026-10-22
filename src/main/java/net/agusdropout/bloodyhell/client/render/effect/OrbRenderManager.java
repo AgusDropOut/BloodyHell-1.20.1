@@ -69,6 +69,7 @@ public class OrbRenderManager implements DeferredRenderManager {
 
         Matrix4f worldProjMat = new Matrix4f(frame.projectionMatrix());
         Matrix4f worldInvProjMat = new Matrix4f(worldProjMat).invert();
+        VertexSorting worldSorting = RenderSystem.getVertexSorting();
 
         if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);
         if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
@@ -102,7 +103,7 @@ public class OrbRenderManager implements DeferredRenderManager {
             tess.end();
         }
 
-        RenderSystem.setProjectionMatrix(worldProjMat, VertexSorting.ORTHOGRAPHIC_Z);
+        RenderSystem.setProjectionMatrix(worldProjMat, worldSorting);
         effect.state().end().run();
 
         activeOrbs.clear();

@@ -9,3 +9,4 @@ RenderSystem.setProjectionMatrix(currentProj, currentSorting);
 RenderSystem.depthMask(true);
 RenderSystem.enableCull();
 RenderSystem.disableBlend();
+RenderSystem.enableDepthTest();

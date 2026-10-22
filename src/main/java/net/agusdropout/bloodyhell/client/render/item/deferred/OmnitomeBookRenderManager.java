@@ -73,6 +73,7 @@ public class OmnitomeBookRenderManager implements DeferredRenderManager {
 
         RenderSystem.setProjectionMatrix(currentProj, currentSorting);
         RenderSystem.disableBlend();
+        RenderSystem.enableDepthTest();
 
         tasks.clear();
     }

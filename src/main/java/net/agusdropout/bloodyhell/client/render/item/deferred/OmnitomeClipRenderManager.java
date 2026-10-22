@@ -101,6 +101,7 @@ public class OmnitomeClipRenderManager implements DeferredRenderManager {
         RenderSystem.depthMask(true);
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
+        RenderSystem.enableDepthTest();
 
         tasks.clear();
     }
