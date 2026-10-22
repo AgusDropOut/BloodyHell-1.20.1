@@ -25,3 +25,4 @@ Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered r
 16. Entities that depend on a `target` field (`UnknownEntityArms`, `SanguineSacrificeEntity`) do not save it to NBT, so they are discarded on world reload. Fixed the crash, the persistence is still missing.
 
 Fixed with the test world: null `target` crashes in `UnknownEntityArms` and `SanguineSacrificeEntity`; `CyclopsEntity` and `BlasphemousTwinDaggersCloneEntity` attributes were never registered.
+17. `InsightRenderManager` leaves the depth test disabled after drawing (seen by `GlStateProbe`), and with shaders active some manager before `BloodDrop` leaves `depthMask(false)` with a changed blend func. Later managers restore them by accident. Preserved on purpose by the render refactor, fix as a separate behavior change.

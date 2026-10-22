@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory = $true)][string]$Name,
-    [switch]$Save
+    [switch]$Save,
+    [switch]$Merge
 )
 
 $root = Split-Path -Parent $PSScriptRoot
@@ -19,7 +20,14 @@ if ($current.Count -eq 0) {
     exit 1
 }
 
-if ($Save) {
+if ($Merge -and (Test-Path $baseline)) {
+    $merged = @(@(Get-Content $baseline) + $current | Sort-Object -Unique)
+    Set-Content -Path $baseline -Value $merged -Encoding utf8
+    Write-Host ("Merged: {0} transitions in {1}" -f $merged.Count, $baseline)
+    exit 0
+}
+
+if ($Save -or $Merge) {
     New-Item -ItemType Directory -Force $baselineDir | Out-Null
     Set-Content -Path $baseline -Value $current -Encoding utf8
     Write-Host ("Saved {0} transitions to {1}" -f $current.Count, $baseline)
@@ -32,16 +40,19 @@ if (-not (Test-Path $baseline)) {
 }
 
 $expected = @(Get-Content $baseline)
-$differences = @(Compare-Object -ReferenceObject $expected -DifferenceObject $current)
+$onlyCurrent = @($current | Where-Object { $expected -notcontains $_ })
+$onlyBaseline = @($expected | Where-Object { $current -notcontains $_ })
 $labelsExpected = $expected | ForEach-Object { ($_ -split ' \| ')[0] } | Sort-Object -Unique
 $labelsCurrent = $current | ForEach-Object { ($_ -split ' \| ')[0] } | Sort-Object -Unique
 Write-Host ("Managers seen: baseline={0} current={1}" -f @($labelsExpected).Count, @($labelsCurrent).Count)
-if ($differences.Count -eq 0) {
-    Write-Host "GL state transitions match the baseline."
-    exit 0
+if ($onlyBaseline.Count -gt 0) {
+    Write-Host ("{0} baseline transitions were not seen in this run (scene coverage, not a failure). Use -Merge to widen the baseline." -f $onlyBaseline.Count)
 }
-$differences | ForEach-Object {
-    $marker = if ($_.SideIndicator -eq '<=') { 'only in baseline: ' } else { 'only in current:  ' }
-    Write-Host ($marker + $_.InputObject)
+if ($onlyCurrent.Count -gt 0) {
+    $onlyCurrent | ForEach-Object { Write-Host ("NEW transition: " + $_) }
+    Write-Host ""
+    Write-Host ("{0} transitions are not in the baseline." -f $onlyCurrent.Count)
+    exit 2
 }
-exit 2
+Write-Host "No new GL state transitions."
+exit 0
