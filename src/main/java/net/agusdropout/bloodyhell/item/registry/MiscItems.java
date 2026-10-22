@@ -15,8 +15,6 @@ public final class MiscItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SANGUINE_CRUCIBLE_CORE = ITEMS.register("sanguine_crucible_core", () -> new Item(
             new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> DIRTY_BLOOD_FLOWER = ITEMS.register("dirty_blood_flower", () -> new Item(
-            new Item.Properties()));
     public static final RegistryObject<Item> ROOTLET_POWDER = ITEMS.register("rootlet_powder", () ->
             new Item( new Item.Properties()));
     public static final RegistryObject<Item> UNKNOWN_GUIDE_BOOK = ITEMS.register("unknown_guide_book",

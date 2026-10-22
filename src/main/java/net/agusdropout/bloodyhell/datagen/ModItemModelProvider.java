@@ -263,7 +263,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(PlantBlocks.ROUNDED_GRASS);
         simpleBlockItemBlockTexture(PlantBlocks.STING_FLOWER);
 
-        normalItem(MiscItems.DIRTY_BLOOD_FLOWER);
         normalItem(BloodGearItems.BLOOD_ARROW);
         normalItem(BlasphemiteItems.BLASPHEMITE);
         normalItem(BlasphemiteItems.BLASPHEMITE_NUGGET);

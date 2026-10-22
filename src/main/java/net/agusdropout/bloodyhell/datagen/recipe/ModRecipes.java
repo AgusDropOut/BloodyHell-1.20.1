@@ -153,7 +153,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .requires(PlantBlocks.BLOOD_FLOWER.get())
                 .requires(MiscItems.BLOODY_SOUL_DUST.get())
                 .requires(SanguiniteItems.SANGUINITE.get())
-                .unlockedBy("has_dirty_blood_flower", has(MiscItems.DIRTY_BLOOD_FLOWER.get()))
+                .unlockedBy("has_blood_flower", has(PlantBlocks.BLOOD_FLOWER.get()))
                 .save(consumer, name("ritual_blood_gem_sprout_seed"));
 
         BlasphemousBloodAltarRecipeBuilder.ritual(PlaceableItems.VORACIOUS_MUSHROOM.get())

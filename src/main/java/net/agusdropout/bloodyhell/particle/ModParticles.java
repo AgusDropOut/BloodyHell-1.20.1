@@ -19,8 +19,6 @@ public class ModParticles {
             PARTICLE_TYPES.register("blood_particles", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> LIGHT_PARTICLES =
             PARTICLE_TYPES.register("light_particles", () -> new SimpleParticleType(true));
-    public static final RegistryObject<SimpleParticleType> DIRTY_BLOOD_FLOWER_PARTICLE =
-            PARTICLE_TYPES.register("dirty_blood_flower_particle", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<SimpleParticleType> BLASPHEMOUS_MAGIC_RING =
             PARTICLE_TYPES.register("blasphemous_magic_ring", () -> new SimpleParticleType(true));

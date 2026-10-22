@@ -223,7 +223,6 @@ public class ModCreativeModeTabs {
                         output.accept(WoodBlocks.SOUL_WOOD.get());
                         output.accept(WoodBlocks.STRIPPED_SOUL_WOOD.get());
                         output.accept(PlantBlocks.BLOOD_FLOWER.get());
-                        output.accept(MiscItems.DIRTY_BLOOD_FLOWER.get());
                         output.accept(PlantBlocks.BLOOD_GRASS.get());
                         output.accept(PlantBlocks.BLOOD_BUSH.get());
                         output.accept(PlantBlocks.BLOOD_PETALS.get());
