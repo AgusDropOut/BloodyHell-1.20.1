@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.entity.ai.goals.FleeFromTargetGoal;
 import net.agusdropout.bloodyhell.capability.insight.PlayerInsight;
 import net.agusdropout.bloodyhell.entity.ai.goals.OffspringOfTheUnknownAttack;
 import net.agusdropout.bloodyhell.entity.base.AbstractInsightMonster;
@@ -69,6 +70,7 @@ public class OffspringOfTheUnknownEntity extends AbstractInsightMonster implemen
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new FleeFromTargetGoal(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
