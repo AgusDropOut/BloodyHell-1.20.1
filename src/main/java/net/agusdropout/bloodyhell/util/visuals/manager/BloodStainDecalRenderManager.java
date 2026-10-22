@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.agusdropout.bloodyhell.client.shader.ShaderUtils;
-import net.agusdropout.bloodyhell.util.visuals.ViewBobbing;
+import net.agusdropout.bloodyhell.util.visuals.ViewEffects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.Direction;
@@ -62,7 +62,7 @@ public class BloodStainDecalRenderManager {
 
             PoseStack poseStack = new PoseStack();
             if (ShaderUtils.areShadersActive()) {
-                ViewBobbing.apply(poseStack, event.getPartialTick());
+                ViewEffects.apply(poseStack, event.getPartialTick());
             }
             poseStack.mulPose(Axis.XP.rotationDegrees(camera.getXRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));

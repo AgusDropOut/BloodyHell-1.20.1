@@ -2,13 +2,16 @@ package net.agusdropout.bloodyhell.util.visuals;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public final class ViewBobbing {
-    private ViewBobbing() {}
+public final class ViewEffects {
+    private ViewEffects() {}
 
     public static void apply(PoseStack poseStack, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -16,6 +19,25 @@ public final class ViewBobbing {
         if (minecraft.options.bobView().get()) {
             bobView(poseStack, partialTick, minecraft);
         }
+        spinningEffect(poseStack, partialTick, minecraft);
+    }
+
+    private static void spinningEffect(PoseStack poseStack, float partialTick, Minecraft minecraft) {
+        LocalPlayer player = minecraft.player;
+        if (player == null) return;
+
+        float scale = minecraft.options.screenEffectScale().get().floatValue();
+        float intensity = Mth.lerp(partialTick, player.oSpinningEffectIntensity, player.spinningEffectIntensity) * scale * scale;
+        if (intensity <= 0.0F) return;
+
+        int speed = player.hasEffect(MobEffects.CONFUSION) ? 7 : 20;
+        float squash = 5.0F / (intensity * intensity + 5.0F) - intensity * 0.04F;
+        squash *= squash;
+        Axis axis = Axis.of(new Vector3f(0.0F, Mth.SQRT_OF_TWO / 2.0F, Mth.SQRT_OF_TWO / 2.0F));
+        float angle = ((float) minecraft.gameRenderer.tick + partialTick) * (float) speed;
+        poseStack.mulPose(axis.rotationDegrees(angle));
+        poseStack.scale(1.0F / squash, 1.0F, 1.0F);
+        poseStack.mulPose(axis.rotationDegrees(-angle));
     }
 
     private static void bobHurt(PoseStack poseStack, float partialTick, Minecraft minecraft) {
