@@ -36,6 +36,10 @@ public class GenericStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
         super(new GenericStaffModel());
     }
 
+    public ItemDisplayContext getCurrentTransform() {
+        return currentTransform;
+    }
+
     public GenericStaffRenderer(GeoModel<BaseStaffItem> modelProvider) {
         super(modelProvider);
     }

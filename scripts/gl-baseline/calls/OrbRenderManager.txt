@@ -8,5 +8,5 @@ if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat"
 if(shader.safeGetUniform("u_OrbViewPos") != null) {
 shader.safeGetUniform("u_OrbViewPos").set(center.x(), center.y(), center.z());
 if(shader.safeGetUniform("u_OrbRotation") != null) {
-shader.safeGetUniform("u_OrbRotation").set(data.rotation());
+shader.safeGetUniform("u_OrbRotation").set(shaderRotation);
 RenderSystem.setProjectionMatrix(worldProjMat, VertexSorting.ORTHOGRAPHIC_Z);

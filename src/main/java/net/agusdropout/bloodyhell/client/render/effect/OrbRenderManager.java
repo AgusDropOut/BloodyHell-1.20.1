@@ -39,7 +39,9 @@ public class OrbRenderManager implements DeferredRenderManager {
 
     public void submit(Matrix4f pose, Matrix4f projection, Matrix3f rotation, ItemDisplayContext transform) {
         if (RenderPassGuard.shouldSkipDeferred(transform)) return;
-        activeOrbs.add(new OrbData(pose, projection, rotation));
+        float scale = rotation.getColumn(0, new Vector3f()).length();
+        if (scale < 1.0e-4f) return;
+        activeOrbs.add(new OrbData(pose, projection, rotation, scale));
     }
 
     @Override
@@ -74,20 +76,20 @@ public class OrbRenderManager implements DeferredRenderManager {
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-        float size = effect.quadSize();
-
         for (OrbData data : activeOrbs) {
             RenderSystem.setProjectionMatrix(data.projection(), VertexSorting.DISTANCE_TO_ORIGIN);
             if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(data.projection());
 
             Vector3f center = new Vector3f(data.pose().m30(), data.pose().m31(), data.pose().m32());
+            float size = effect.quadSize() * data.scale();
+            Matrix3f shaderRotation = new Matrix3f(data.rotation()).scale(1.0f / (data.scale() * data.scale()));
 
             if(shader.safeGetUniform("u_OrbViewPos") != null) {
                 shader.safeGetUniform("u_OrbViewPos").set(center.x(), center.y(), center.z());
             }
 
             if(shader.safeGetUniform("u_OrbRotation") != null) {
-                shader.safeGetUniform("u_OrbRotation").set(data.rotation());
+                shader.safeGetUniform("u_OrbRotation").set(shaderRotation);
             }
 
             effect.perOrbUniforms().accept(shader);
