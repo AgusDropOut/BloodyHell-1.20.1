@@ -10,7 +10,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullOrbEmitter;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
-import net.agusdropout.bloodyhell.util.visuals.manager.ShapeGlitterRenderManager;
+import net.agusdropout.bloodyhell.util.visuals.manager.DeferredTaskQueues;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -35,7 +35,7 @@ public class RhnullOrbEmitterRenderer extends EntityRenderer<RhnullOrbEmitter> {
 
         Matrix4f capturedPose = new Matrix4f(poseStack.last().pose());
 
-        ShapeGlitterRenderManager.queueRender(() -> {
+        DeferredTaskQueues.SHAPE_GLITTER.queue(() -> {
             PoseStack taskStack = new PoseStack();
             taskStack.last().pose().set(capturedPose);
 
