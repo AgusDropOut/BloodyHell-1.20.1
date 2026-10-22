@@ -170,6 +170,26 @@ client/shader/                      RenderPassGuard, ShaderTime, ModShaders, Sha
 
 Rule of thumb: interfaces, descriptors and records go in `api/` or `data/`, implementations stay in the parent folder. Nothing under `effect/` or `deferred/` imports particle, block or Forge code.
 
+## Two ways to apply a custom shader
+
+A shader reaches the screen in one of two ways, depending on who produces the vertices. The deferral (when it is drawn) and the shader choice (how it is drawn) are separate decisions, and some effects use both.
+
+```mermaid
+flowchart TD
+    Q{"Who produces the vertices?"}
+    Q -- "our own quads or geometry" --> A["Manager draws with Tesselator<br/>and RenderSystem.setShader<br/>(EffectState + descriptor)"]
+    Q -- "a vanilla or GeckoLib model" --> B["The model renderer draws.<br/>The shader comes from a RenderType<br/>(ModRenderTypes)"]
+    B --> C{"Must it draw at the end of the pipeline?"}
+    C -- "no" --> D["Return the RenderType from getRenderType"]
+    C -- "yes, plain call" --> E["TaskQueueRenderManager.queue(Runnable)<br/>(Insight entities, glitter)"]
+    C -- "yes, item with context" --> F["Omnitome managers: tasks with a<br/>MatrixSnapshot per task"]
+```
+
+- Billboards, trails, orbs, rings, spheres and the black holes are the first branch.
+- Insight entities are the second branch twice: `getRenderType` returns `ModRenderTypes.getInsightDistortion` and `render` queues the whole model draw in `DeferredTaskQueues.INSIGHT` so it happens at the end of the pipeline.
+- The Omnitome managers draw a GeckoLib model through `ModRenderTypes.getOmnitomeVoid` and `getEmergeClip`, deferred with one `MatrixSnapshot` per task.
+- A `RenderType` has no `equals`, so create it once per texture and reuse it (TECH_DEBT 22).
+
 ## Shader packs
 
 - With a shader pack Iris moves the view bobbing, the hurt tilt and the nausea spin out of the projection and into the model view. A manager that rebuilds the view from the camera rotation must use `ViewEffects.applyCameraView` (ADR 0011).
