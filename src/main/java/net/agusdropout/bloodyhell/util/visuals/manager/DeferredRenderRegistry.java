@@ -13,7 +13,7 @@ public final class DeferredRenderRegistry {
             DeferredRenderManager.of("EntityGlitter", e -> DeferredTaskQueues.ENTITY_GLITTER.renderAndClear()),
             DeferredRenderManager.of("ShapeGlitter", e -> DeferredTaskQueues.SHAPE_GLITTER.renderAndClear()),
             DeferredRenderManager.of("BlackHoleEntity", e -> BlackHoleEntityRenderManager.renderAllAndClear()),
-            DeferredRenderManager.of("Insight", e -> InsightRenderManager.renderAllAndClear()),
+            DeferredRenderManager.of("Insight", e -> DeferredTaskQueues.INSIGHT.renderAndClear()),
             DeferredRenderManager.of("NoiseSphere", e -> NoiseSphereRenderManager.renderAllAndClear()),
             DeferredRenderManager.of("MagicRing", e -> MagicRingRenderManager.renderAllAndClear()),
             DeferredRenderManager.of("SphericalShield", e -> SphericalShieldRenderManager.renderAllAndClear()),

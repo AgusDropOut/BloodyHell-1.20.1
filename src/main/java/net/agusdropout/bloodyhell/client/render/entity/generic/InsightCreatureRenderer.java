@@ -9,7 +9,7 @@ import net.agusdropout.bloodyhell.entity.base.InsightEntity;
 import net.agusdropout.bloodyhell.client.render.entity.layer.InsightGlowingLayer;
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.agusdropout.bloodyhell.util.visuals.manager.InsightRenderManager;
+import net.agusdropout.bloodyhell.util.visuals.manager.DeferredTaskQueues;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -65,7 +65,7 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
         copiedPose.last().normal().set(poseStack.last().normal());
 
 
-        InsightRenderManager.queueInsightRender(() -> {
+        DeferredTaskQueues.INSIGHT.queue(() -> {
             if (ModShaders.INSIGHT_DISTORTION_SHADER != null) {
                 Uniform timeUniform = ModShaders.INSIGHT_DISTORTION_SHADER.getUniform("GameTime");
                 if (timeUniform != null) timeUniform.set(entity.tickCount + partialTick);
