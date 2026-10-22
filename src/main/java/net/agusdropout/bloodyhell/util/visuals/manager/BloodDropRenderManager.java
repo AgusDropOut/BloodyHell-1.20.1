@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.util.visuals.ViewEffects;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -51,8 +52,7 @@ public class BloodDropRenderManager extends BaseShaderRenderManager<BloodDropRen
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         PoseStack rsStack = RenderSystem.getModelViewStack();
         rsStack.setIdentity();
-        rsStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(camera.getXRot()));
-        rsStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
+        ViewEffects.applyCameraView(rsStack, camera);
 
         RenderSystem.applyModelViewMatrix();
 

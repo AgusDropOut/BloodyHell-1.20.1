@@ -3,6 +3,8 @@ package net.agusdropout.bloodyhell.util.visuals;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import org.joml.Vector3f;
+import net.agusdropout.bloodyhell.client.shader.ShaderUtils;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
@@ -13,7 +15,15 @@ import net.minecraft.world.entity.player.Player;
 public final class ViewEffects {
     private ViewEffects() {}
 
-    public static void apply(PoseStack poseStack, float partialTick) {
+    public static void applyCameraView(PoseStack poseStack, Camera camera) {
+        if (ShaderUtils.areShadersActive()) {
+            applyViewEffects(poseStack, Minecraft.getInstance().getFrameTime());
+        }
+        poseStack.mulPose(Axis.XP.rotationDegrees(camera.getXRot()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
+    }
+
+    private static void applyViewEffects(PoseStack poseStack, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
         bobHurt(poseStack, partialTick, minecraft);
         if (minecraft.options.bobView().get()) {
