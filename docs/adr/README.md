@@ -19,3 +19,4 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0011 | Rebuild the camera view with its effects when a shader pack is active |
 | 0012 | Effects are configured instances of a few generic managers |
 | 0013 | The shader clock wraps every hour |
+| 0014 | The Omnitome void pages use the depth test |

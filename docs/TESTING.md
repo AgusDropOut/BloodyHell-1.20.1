@@ -44,4 +44,4 @@ Two checks that need no mixins, used to prove that a refactor of the render mana
 - [ ] Blood stain decals.
 - [ ] Shadow pass with Iris (no duplicated draws).
 - [ ] Translucent blocks (glowing crystal glass, ancient blood capsule) with Oculus and shaders disabled: known to look wrong, see ADR 0008.
-- [ ] Walk the entity grid and check every model, texture and animation looks right.
+- [x] Walk the entity grid and check every model, texture and animation looks right (with and without a shader pack).
