@@ -1,17 +1,15 @@
 # Technical Debt
 
-Known issues found during the review of the render managers. Not decisions: remove each item once fixed.
+Known issues and accepted limitations. Not decisions: remove an item once it is fixed. Item numbers are stable identifiers (other docs refer to them), so do not renumber.
 
-
-Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered registry (done), a shared scene-color copy (done) and a single `ShaderTime` helper (done).
-
-## Found by the test world
-
-
-Fixed with the test world: null `target` crashes in `UnknownEntityArms` and `SanguineSacrificeEntity`; `CyclopsEntity` and `BlasphemousTwinDaggersCloneEntity` attributes were never registered.
 18. Known limitation, not ours: `glowing_crystal_glass_block` and `ancient_blood_capsule` render with the sky color under Rubidium 0.6.5 and Oculus 1.6.4 without shaders, because they need the translucent chunk layer and Rubidium draws it wrong (see ADR 0008). Retest when the pinned Rubidium or Oculus version changes. Fallback if it ever matters: flatten their alpha and use `cutout`.
 28. The Omnitome managers and `TaskQueueRenderManager` solve the same problem (run vanilla or GeckoLib drawing at the end of the pipeline) with different shapes: structured tasks with a `MatrixSnapshot` per task against `Runnable` tasks with one capture. See the table of direct managers in `docs/RENDER_ARCHITECTURE.md`.
 30. The staff orbs are not drawn in the GUI (`StaffOrbLayer` skips the GUI context on purpose). The orb shaders raymarch in perspective view space around the orb centre, and in the GUI the pose is in pixel space with an orthographic projection, so the quad and the sphere would not fit. Drawing them there would need an immediate path with its own sphere shader, like the Omnitome void pages, which the void layer now draws immediately in the GUI.
 31. Accepted as is: `small_blood_sapling` and `giant_blood_sapling` use the `blood_sapling` texture. They had no art of their own and rendered as the missing texture cube. Give them their own textures if that ever matters.
 32. GeckoLib 4.8.2 only knows geometry format 1.12.0 and warns for any other version, but it still builds the model. Blockbench exported `the_omnitome` and the three staffs as 1.21.110; their `format_version` was set to 1.12.0 by hand (they use no rotated face UVs, which is what the newer formats add). Export the Bedrock Entity models as 1.12.0, or the warning comes back. Decided not to re-export the existing models one by one; do it when a model is touched anyway or at the next mod version bump.
 34. The Rhnull blood fluid is deprecated and unused: only its `FluidType` (`ModFluidTypes.RHNULL_BLOOD_FLUID_TYPE`) is registered, with no fluid, block, bucket or blockstate, plus the orphan model `rhnull_blood_fluid_block.json` and two textures. The fluids in use are blood, corrupted blood, viscous blasphemy and visceral blood. Remove the type, the model and the textures at the next version bump, when saved worlds no longer matter.
+35. Classes with no reference anywhere in the code, the resources or the data packs, probably dead: `ModPortalBlock`, `QuarterProperty`, `BaseGeckoBlockRenderer`, `UnknownEyeEntityAnimations`, `ViscousProjectileAnimations`, `RhnullDropletRenderer`, `GenericGlowingGeckoEntityRenderer`, `FleeFromTargetGoal`, `IColoredEntity`, `ModArmorItem`, `CorruptedBloodPotionItem`, `EnergyVortexParticle`, `KeyBinding`, `VecHelper`, `BloodyHellCarver` and `ModBiomeTags`. Check each one and delete it.
+36. Leftover debug output and non-English text: 14 `System.out.println` calls (`SoulTetherEngineMode`, `VesperAttackGoal`, `VesperEntity`, `PainThroneRegistry`, `EntityLayerHandler`, `GlobalBoneHandler`, `BaseMeleeComboWeapon`, `BloodWorkBenchMenu`), two `TODO` comments (`MainBlasphemousBloodAltarBlock`, `SelioraRestingBlock`, which also lacks its sound) and Spanish comments or strings in 49 Java files. The project rule is English only: translate them when a file is touched, or in one pass.
+37. `BLASPHEMOUS_IMPALER` is registered with `stacksTo(0)` in `WeaponItems`. A maximum stack size of 0 is not valid for an item; it should be 1 like the other weapons.
+38. The lore makes Rhnull a golden blood and `filled_rhnull_blood_flask` still exists, but the Rhnull fluid is deprecated (item 34). Decide where the flask comes from now and whether Rhnull blood needs a fluid again.
+39. `ModBlockTagGenerator` adds blocks that are not leaves to `minecraft:leaves` (blood grass, spiky and rounded grass, blood flower, blood petals, small rocks, the light mushroom). The tag drives leaf decay and shears behavior, so it probably should hold only the real leaves.

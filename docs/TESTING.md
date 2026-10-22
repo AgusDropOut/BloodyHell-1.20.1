@@ -18,7 +18,7 @@ Every build also writes `run/bh-block-audit.csv` (`BlockAudit`, devtools): per m
 
 Known and accepted warnings live in `scripts/testworld-known-warnings.txt` (one regex per line). The script ignores them, so any line it prints is new. Remove a line from that file when the underlying issue is fixed.
 
-Last clean baseline: blocks=141/141, entities=75/75, itemChests=11, items=284, no ERROR lines.
+Last clean baseline: blocks=140/140, entities=75/75, itemChests=11, items=274, no ERROR lines.
 
 ## Shaders in the dev environment
 

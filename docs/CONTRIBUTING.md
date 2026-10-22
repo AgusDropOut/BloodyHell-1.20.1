@@ -12,7 +12,7 @@
 ## New blocks
 - Add every block to `BlockToolRules` with its tool and tier. The tags are generated from it; `./gradlew test`, `runData` and the test world fail if a block is missing or if its properties disagree with the rule.
 - A block with a tier must call `requiresCorrectToolForDrops()` in its properties. Do not rely on what `BlockBehaviour.Properties.copy` inherits from the vanilla block: set `strength` and `requiresCorrectToolForDrops()` explicitly.
-- Blocks of one family (base, stairs, slab, fence, gate, wall) share the same hardness and resistance. Use the constants in `ModBlocks`.
+- Blocks of one family (base, stairs, slab, fence, gate, wall) share the same hardness and resistance. Use the constants in `BlockStrength`.
 - Tool tier order, lowest to highest: wood, stone, iron, diamond, netherite, sanguinite, blasphemite, rhnull.
 
 ## Registering blocks and items

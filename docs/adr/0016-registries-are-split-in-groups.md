@@ -6,7 +6,7 @@ Status: Accepted
 `ModBlocks` and `ModItems` held about 140 and 160 constants separated by comment headers, mixed with code that has nothing to do with registering: a sound type, strength constants, anonymous block subclasses and the fluid particle setup.
 
 ## Decision
-`ModBlocks` and `ModItems` only keep the `DeferredRegister`, the registration helpers (`registerBlock`, `registerBlockWithoutBlockItem`, `registerGeckoBlockItem`) and `register(IEventBus)`. The constants live in group classes in `block/registry` (`StoneBlocks`, `WoodBlocks`, `PlantBlocks`, `MachineBlocks`...) and `item/registry` (`SanguiniteItems`, `SpellBookItems`, `FoodItems`...). Each group has an empty `init()`; `register(IEventBus)` calls every `init()` so the static initializers run before the registry event. Code outside the registries is in its own class (`ModSoundTypes`, `BlockStrength`, `FlammablePlanksBlock`, `BloodWallMushroomBlock`).
+`ModBlocks` and `ModItems` only keep the `DeferredRegister`, the registration helpers (`registerBlock`, `registerBlockWithoutBlockItem`, `registerGeckoBlockItem`) and `register(IEventBus)`. The constants live in group classes in `block/registry` (`StoneBlocks`, `WoodBlocks`, `PlantBlocks`, `MachineBlocks`...) and `item/registry` (`SanguiniteItems`, `SpellBookItems`, `FoodItems`...). Each group has an empty `init()`; `register(IEventBus)` calls every `init()` so the static initializers run before the registry event. Code outside the registries is in its own class (`ModSoundTypes`, `BlockStrength`, `FlammablePlanksBlock`, `BloodWallMushroomBlock`). The strength constants named in ADR 0015 now live in `BlockStrength`.
 A group name replaces a classification comment, so groups carry no comments.
 
 ## Consequences
