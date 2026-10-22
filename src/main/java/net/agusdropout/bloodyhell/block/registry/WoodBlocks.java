@@ -28,8 +28,6 @@ public final class WoodBlocks {
             BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistryObject<Block> BLOOD_PLANKS_FENCE_GATE = registerBlock("blood_planks_fence_gate", () -> new FenceGateBlock(
             BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS), SoundEvents.WOOD_PLACE, SoundEvents.WOOD_BREAK));
-    public static final RegistryObject<Block> BLOOD_WOOD_CHEST = registerBlock("blood_wood_chest", () -> new BHChestBlock(
-            BlockBehaviour.Properties.copy(Blocks.CHEST).strength(1F).lightLevel((state)-> 7).noOcclusion()));
     public static final RegistryObject<Block> BLOOD_LEAVES = registerBlock("blood_leaves", ()-> new LeavesBlock(
             BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).lightLevel((state)->15)));
     public static final RegistryObject<Block> SOUL_LOG = registerBlock("soul_log", ()-> new ModFlammableRotatedPillarBlock(

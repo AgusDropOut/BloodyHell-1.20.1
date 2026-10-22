@@ -187,7 +187,6 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get());
             this.dropSelf(LightBlocks.GLOWING_CRYSTAL_LANTERN.get());
             this.dropSelf(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get());
-            this.dropSelf(WoodBlocks.BLOOD_WOOD_CHEST.get());
             this.dropOther(PlantBlocks.DROOPVINE.get(),FoodItems.GLOW_FRUIT.get());
             this.dropOther(PlantBlocks.DROOPVINE_PLANT.get(),FoodItems.GLOW_FRUIT.get());
 

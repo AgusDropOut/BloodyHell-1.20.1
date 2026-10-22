@@ -44,7 +44,6 @@
   "item.bloodyhell.sanguinite_shovel": "Blood Shovel",
   "item.bloodyhell.sanguinite_hoe": "Blood Hoe",
   "item.bloodyhell.blood_bow": "Blood Bow",
-  "item.bloodyhell.blood_scythe": "Blood Scythe",
   "item.bloodyhell.blood_arrow": "Blood Arrow",
   "item.bloodyhell.rhnull_sword": "Rhnull Sword",
   "item.bloodyhell.rhnull_pickaxe": "Rhnull Pickaxe",
@@ -94,7 +93,6 @@
   "item.bloodyhell.rhnull_golden_throne_spellbook": "Rhnull Golden Throne Spellbook",
   "item.bloodyhell.rhnull_orb_emitter_spellbook": "Rhnull Orb Emitter Spellbook",
   "item.bloodyhell.the_omnitome": "The Omnitome",
-  "item.bloodyhell.materialized_soul": "Materialized Soul",
   "item.bloodyhell.chalice_of_the_dammed": "Chalice of the Damned",
   "item.bloodyhell.crimson_idol_coin": "Crimson Idol Coin",
   "item.bloodyhell.amulet_of_ancestral_blood": "Amulet of Ancestral Blood",
@@ -252,7 +250,6 @@
   "block.bloodyhell.blood_planks_slab": "Blood Planks Slab",
   "block.bloodyhell.blood_planks_fence": "Blood Planks Fence",
   "block.bloodyhell.blood_planks_fence_gate": "Blood Planks Gate",
-  "block.bloodyhell.blood_wood_chest": "Blood Wood Chest",
 
   "block.bloodyhell.soul_log": "Soul Log",
   "block.bloodyhell.soul_wood": "Soul Wood",

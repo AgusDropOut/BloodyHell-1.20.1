@@ -193,7 +193,6 @@ public final class BlockToolRules {
                 WoodBlocks.BLOOD_PLANKS_FENCE,
                 WoodBlocks.BLOOD_PLANKS_FENCE_GATE,
                 WoodBlocks.SOUL_PLANKS,
-                WoodBlocks.BLOOD_WOOD_CHEST,
                 MiscBlocks.FORBIDDEN_BOOKSHELF_BLOCK);
 
         add(Tool.HOE, Tier.ANY,

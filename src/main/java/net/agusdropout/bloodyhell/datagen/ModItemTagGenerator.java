@@ -140,7 +140,6 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(BloodGearItems.BLOOD_LEGGINGS.get())
                 .add(BloodGearItems.BLOOD_BOOTS.get())
                 .add(BloodGearItems.BLOOD_BOW.get())
-                .add(BloodGearItems.BLOOD_SCYTHE.get())
                 .add(BloodGearItems.BLOOD_ARROW.get())
                 .add(MetalBlocks.SANGUINITE_BLOCK.get().asItem())
                 .add(MetalBlocks.SANGUINITE_ORE.get().asItem())

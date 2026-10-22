@@ -85,7 +85,6 @@ public class ModCreativeModeTabs {
 
                         output.accept(BloodGearItems.BLOOD_BOW.get());
                         output.accept(BloodGearItems.BLOOD_ARROW.get());
-                        output.accept(BloodGearItems.BLOOD_SCYTHE.get());
                         output.accept(WeaponItems.SACRIFICIAL_DAGGER.get());
                         output.accept(WeaponItems.HERETIC_SACRIFICIAL_DAGGER.get());
 
@@ -196,7 +195,6 @@ public class ModCreativeModeTabs {
                         output.accept(MiscItems.ROOTLET_POWDER.get());
 
                         // --- Mob Drops & Boss Items ---
-                        output.accept(MiscItems.MATERIALIZED_SOUL.get());
                         output.accept(MiscItems.BLOODY_SOUL_DUST.get());
                         output.accept(DropItems.AUREAL_REVENANT_DAGGER.get());
                         output.accept(DropItems.VEINREAVER_HORN.get());

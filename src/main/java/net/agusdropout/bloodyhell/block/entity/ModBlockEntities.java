@@ -31,9 +31,6 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("sanguine_crucible", () ->
                     BlockEntityType.Builder.of(BloodWorkbenchBlockEntity::new,
                             MachineBlocks.SANGUINE_CRUCIBLE.get()).build(null));
-    public static final RegistryObject<BlockEntityType<BHChestBlockEntity>> BH_CHEST = BLOCK_ENTITIES.register("bh_chest", () ->
-            BlockEntityType.Builder.of(BHChestBlockEntity::new,
-                    WoodBlocks.BLOOD_WOOD_CHEST.get()).build(null));
     public static final RegistryObject<BlockEntityType<BlasphemousBloodAltarBlockEntity>> BLASPHEMOUS_BLOOD_ALTAR =
             BLOCK_ENTITIES.register("blasphemous_blood_altar_entity", () ->
                     BlockEntityType.Builder.of(BlasphemousBloodAltarBlockEntity::new,

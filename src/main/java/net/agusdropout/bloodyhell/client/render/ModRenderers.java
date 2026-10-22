@@ -313,7 +313,6 @@ public class ModRenderers {
 
 
     private static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.BH_CHEST.get(), BHChestRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.SANGUINITE_CONDENSER_BE.get(), CondenserRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.RHNULL_CONDENSER_BE.get(), CondenserRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.SANGUINITE_INFUSOR_BE.get(), SanguiniteInfusorRenderer::new);

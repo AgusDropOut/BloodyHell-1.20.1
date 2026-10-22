@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:builtin/entity",
-  "textures": {
-    "particle": "bloodyhell:block/blood_planks"
-
-  }
-}
