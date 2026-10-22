@@ -1,1 +1,0 @@
-﻿RenderSystem.setShader(() -> ModShaders.TINY_BLOOM_SHADER);

@@ -3,8 +3,8 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.LinearFrenziedFlameParticleOptions;
-import net.agusdropout.bloodyhell.client.render.effect.LinearFrenziedFlameRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.client.render.effect.BillboardEffects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -62,7 +62,7 @@ public class LinearFrenziedFlameParticle extends Particle {
 
         float time = ShaderTime.seconds();
 
-        LinearFrenziedFlameRenderManager.addFlame(
+        BillboardEffects.LINEAR_FRENZIED_FLAME.submit(
                 poseStack.last().pose(),
                 this.scale,
                 this.rCol,

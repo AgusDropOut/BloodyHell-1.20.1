@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions;
-import net.agusdropout.bloodyhell.client.render.effect.TinyBloomRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.BillboardEffects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -71,7 +71,7 @@ public class TinyBloomParticle extends Particle {
         float lifeRatio = (float)this.age / (float)this.lifetime;
         float currentScale = this.baseScale * (1.0F - (lifeRatio * lifeRatio));
 
-        TinyBloomRenderManager.addBloom(
+        BillboardEffects.TINY_BLOOM.submit(
                 poseStack.last().pose(),
                 currentScale,
                 this.rCol, this.gCol, this.bCol,

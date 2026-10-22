@@ -3,9 +3,8 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
-import net.agusdropout.bloodyhell.client.render.effect.FrenziedTrailRenderManager;
-import net.agusdropout.bloodyhell.client.render.effect.RadiantEnergyRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.client.render.effect.TrailEffects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -127,7 +126,7 @@ public class OrbitalFrenziedParticle extends Particle {
         Vec3 cameraPos = camera.getPosition();
         float lifeFade = 1.0F - ((float)this.age / (float)this.lifetime);
 
-        FrenziedTrailRenderManager.addTrail(
+        TrailEffects.FRENZIED.submit(
                 new ArrayList<>(this.historyCore),
                 cameraPos,
                 this.coreWidth,
@@ -136,7 +135,7 @@ public class OrbitalFrenziedParticle extends Particle {
                 time
         );
 
-        RadiantEnergyRenderManager.addTrail(
+        TrailEffects.RADIANT.submit(
                 new ArrayList<>(this.historyOrbit1),
                 cameraPos,
                 this.orbitWidth,
@@ -145,7 +144,7 @@ public class OrbitalFrenziedParticle extends Particle {
                 time
         );
 
-        RadiantEnergyRenderManager.addTrail(
+        TrailEffects.RADIANT.submit(
                 new ArrayList<>(this.historyOrbit2),
                 cameraPos,
                 this.orbitWidth,

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BloodDropParticleOption;
-import net.agusdropout.bloodyhell.client.render.effect.BloodDropRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.BillboardEffects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -64,13 +64,13 @@ public class BloodDropParticle extends Particle {
 
         float time = (this.age + partialTicks) * 0.05f;
 
-        BloodDropRenderManager.INSTANCE.addParticle(new BloodDropRenderManager.BloodData(
+        BillboardEffects.BLOOD_DROP.submit(
                 poseStack.last().pose(),
                 this.baseScale,
                 this.rCol, this.gCol, this.bCol,
                 this.alpha,
                 time
-        ));
+        );
     }
 
     @Override

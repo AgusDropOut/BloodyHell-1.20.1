@@ -1,0 +1,4 @@
+﻿PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setShader(effect.shader());
+Uniform uniform = effect.shader().get().getUniform(effect.timeUniform());
