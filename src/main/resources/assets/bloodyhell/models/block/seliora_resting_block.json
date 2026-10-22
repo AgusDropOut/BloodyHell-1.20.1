@@ -1,0 +1,6 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "bloodyhell:block/seliora_resting_block_texture"
+  }
+}

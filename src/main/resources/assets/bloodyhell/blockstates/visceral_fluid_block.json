@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "bloodyhell:block/visceral_fluid_block"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "bloodyhell:block/blood_fluid_block"
+    }
+  }
+}

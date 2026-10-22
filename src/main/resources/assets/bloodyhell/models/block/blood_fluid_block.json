@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "bloodyhell:fluid/blood_fluid_still_texture"
+    "particle": "bloodyhell:block/fluid/blood_still"
   }
 }

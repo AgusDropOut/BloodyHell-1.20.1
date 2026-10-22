@@ -1,10 +1,7 @@
-blockstates/(blood_fluid_block|corrupted_blood_block|visceral_fluid_block|viscous_blasphemy_block|giant_blood_sapling|small_blood_sapling|star_lamp_block)\.json
 Unable to load model: 'bloodyhell:[a-z_]+#inventory'
 Missing textures in model bloodyhell:staff_of_scarlet_cinder#inventory
 Unknown recipe category
 Unsupported geometry json version for model bloodyhell:geo/
-Invalid frame index on sprite bloodyhell:block/(rhnull_)?blood_fluid_flowing_texture
-bloodyhell:sounds/dagger_attack_3.ogg
 Shader (bloodyhell:|rendertype_entity_translucent_emissive).* could not find
 Item Group has no display items
 Realms
@@ -12,7 +9,6 @@ ModFileParser/LOADING
 VanillaPackResourcesBuilder
 Missing sound for event: minecraft:(item.goat_horn|entity.goat)
 SystemPropertyUtil
-Unable to load model: .bloodyhell:block/seliora_resting_block.
 Rubidium/\]: Force-disabling mixin
 Oculus/\]: (Failed to resolve uniform|The following uniforms|Error while parsing the block ID map|- The block )
 RuntimeException: Unknown variable
