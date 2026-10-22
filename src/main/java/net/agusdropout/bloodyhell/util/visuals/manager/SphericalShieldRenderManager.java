@@ -2,10 +2,8 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
-import org.joml.Matrix4f;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -13,14 +11,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class SphericalShieldRenderManager {
 
     private static final Queue<Runnable> RENDER_QUEUE = new ConcurrentLinkedQueue<>();
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
 
     public static void queueRender(Runnable renderTask) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (RENDER_QUEUE.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
+            MATRICES.capture();
         }
         RENDER_QUEUE.add(renderTask);
     }
@@ -30,14 +26,7 @@ public class SphericalShieldRenderManager {
             return;
         }
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
+        MATRICES.apply();
 
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -49,9 +38,7 @@ public class SphericalShieldRenderManager {
             task.run();
         }
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        MATRICES.restore();
 
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
