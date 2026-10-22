@@ -4,6 +4,7 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.shaders.AbstractUniform;
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.agusdropout.bloodyhell.client.render.deferred.base.TaskQueueRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.api.BillboardEffect;
 import net.agusdropout.bloodyhell.client.render.effect.api.OrbEffect;
 import net.agusdropout.bloodyhell.client.render.effect.api.TrailEffect;
@@ -27,7 +28,7 @@ public final class Effects {
                     .build());
 
     public static final BillboardRenderManager SWIRL = new BillboardRenderManager(
-            BillboardEffect.builder("Swirl", () -> ModShaders.ETHEREAL_SWIRL_SHADER, EffectStates.SWIRL)
+            BillboardEffect.builder("Swirl", () -> ModShaders.ETHEREAL_SWIRL_SHADER, EffectStates.SCREEN_OVERLAY)
                     .perItemTime("EtherealTime")
                     .uv(0.0f, 1.0f)
                     .afterBind(Effects::bindSwirlScreen)
@@ -70,7 +71,7 @@ public final class Effects {
     public static final RadialDistortionRenderManager RADIAL_DISTORTION = new RadialDistortionRenderManager();
     public static final MagicRingRenderManager MAGIC_RING = new MagicRingRenderManager();
     public static final NoiseSphereRenderManager NOISE_SPHERE = new NoiseSphereRenderManager();
-    public static final SphericalShieldRenderManager SPHERICAL_SHIELD = new SphericalShieldRenderManager();
+    public static final TaskQueueRenderManager SPHERICAL_SHIELD = new TaskQueueRenderManager("SphericalShield", EffectStates.SHIELD);
     public static final BloodBlobRenderManager BLOOD_BLOB = new BloodBlobRenderManager();
     public static final MiniBlobRenderManager MINI_BLOB = new MiniBlobRenderManager();
     public static final BloodStainDecalRenderManager BLOOD_STAIN_DECAL = new BloodStainDecalRenderManager();

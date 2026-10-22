@@ -1,62 +1,45 @@
 package net.agusdropout.bloodyhell.client.render.effect;
 
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
-import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.base.QueuedRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.data.DistortionData;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.Minecraft;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RadialDistortionRenderManager implements DeferredRenderManager {
-    private final List<DistortionData> ACTIVE_DISTORTIONS = new ArrayList<>();
-    private final DeferredMatrices matrices = new DeferredMatrices();
+public class RadialDistortionRenderManager extends QueuedRenderManager<DistortionData> {
+
+    public RadialDistortionRenderManager() {
+        super("RadialDistortion", EffectStates.SCREEN_OVERLAY);
+    }
 
     public void addDistortion(Matrix4f pose, float size, Vector3f color, float alpha, float time, Quaternionf customRotation) {
-        if (RenderPassGuard.shouldSkipDeferred()) return;
-        if (ACTIVE_DISTORTIONS.isEmpty()) {
-            matrices.capture();
-        }
-        ACTIVE_DISTORTIONS.add(new DistortionData(pose, size, color, alpha, time, customRotation));
+        enqueue(new DistortionData(pose, size, color, alpha, time, customRotation));
     }
 
     @Override
-    public String name() {
-        return "RadialDistortion";
-    }
-
-    @Override
-    public void renderAndClear(FrameContext frame) {
-        if (ACTIVE_DISTORTIONS.isEmpty()) return;
-
+    protected void draw(FrameContext frame, List<DistortionData> items) {
         Minecraft mc = Minecraft.getInstance();
         RenderTarget mainTarget = mc.getMainRenderTarget();
         int screenW = mc.getWindow().getWidth();
         int screenH = mc.getWindow().getHeight();
-
-        RenderSystem.disableDepthTest();
-        RenderSystem.depthMask(false);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-
-        matrices.apply();
 
         RenderSystem.setShader(() -> ModShaders.RADIAL_DISTORTION_SHADER);
 
         if (ModShaders.RADIAL_DISTORTION_SHADER.getUniform("ScreenSize") != null) {
             ModShaders.RADIAL_DISTORTION_SHADER.getUniform("ScreenSize").set((float) screenW, (float) screenH);
         }
-
 
         RenderSystem.setShaderTexture(0, mainTarget.getColorTextureId());
 
@@ -67,13 +50,12 @@ public class RadialDistortionRenderManager implements DeferredRenderManager {
                 {0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}
         };
 
-        for (DistortionData data : ACTIVE_DISTORTIONS) {
+        for (DistortionData data : items) {
             if (ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime") != null) {
                 ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime").set(data.time());
             }
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-
 
             Quaternionf rotationToUse = (data.camRot() == null) ? mc.gameRenderer.getMainCamera().rotation() : data.camRot();
 
@@ -98,14 +80,5 @@ public class RadialDistortionRenderManager implements DeferredRenderManager {
             }
             tess.end();
         }
-
-        matrices.restore();
-
-        RenderSystem.depthMask(true);
-        RenderSystem.enableDepthTest();
-        RenderSystem.disableBlend();
-
-        ACTIVE_DISTORTIONS.clear();
     }
-
 }

@@ -1,62 +1,42 @@
 package net.agusdropout.bloodyhell.client.render.effect;
 
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
-import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
-import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.base.QueuedRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.data.SphereData;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class NoiseSphereRenderManager implements DeferredRenderManager {
-    private final List<SphereData> ACTIVE_SPHERES = new ArrayList<>();
-
+public class NoiseSphereRenderManager extends QueuedRenderManager<SphereData> {
     private static final ResourceLocation OUTER_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/particle/sphere_noise_alt.png");
     private static final ResourceLocation INNER_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/particle/sphere_noise_abs.png");
 
-    private final DeferredMatrices matrices = new DeferredMatrices();
+    public NoiseSphereRenderManager() {
+        super("NoiseSphere", EffectStates.NOISE_SPHERE);
+    }
 
     public void addSphere(float px, float py, float pz, float radius, Vector3f color, float alpha, float uOffset, float vOffset) {
-        if (RenderPassGuard.shouldSkipDeferred()) return;
-        if (ACTIVE_SPHERES.isEmpty()) {
-            matrices.capture();
-        }
-        ACTIVE_SPHERES.add(new SphereData(px, py, pz, radius, color, alpha, uOffset, vOffset));
+        enqueue(new SphereData(px, py, pz, radius, color, alpha, uOffset, vOffset));
     }
 
     @Override
-    public String name() {
-        return "NoiseSphere";
-    }
-
-    @Override
-    public void renderAndClear(FrameContext frame) {
-        if (ACTIVE_SPHERES.isEmpty()) return;
-
-        matrices.apply();
-
-
-        RenderSystem.enableDepthTest();
-        RenderSystem.depthMask(false);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-
+    protected void draw(FrameContext frame, List<SphereData> items) {
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
 
-        for (SphereData data : ACTIVE_SPHERES) {
+        for (SphereData data : items) {
             int r = (int) (data.color().x() * 255);
             int g = (int) (data.color().y() * 255);
             int b = (int) (data.color().z() * 255);
@@ -64,7 +44,6 @@ public class NoiseSphereRenderManager implements DeferredRenderManager {
 
             PoseStack poseStack = new PoseStack();
             poseStack.translate(data.px(), data.py(), data.pz());
-
 
             RenderSystem.setShaderTexture(0, OUTER_TEXTURE);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
@@ -80,14 +59,5 @@ public class NoiseSphereRenderManager implements DeferredRenderManager {
             poseStack.popPose();
             tess.end();
         }
-
-
-        matrices.restore();
-
-        RenderSystem.depthMask(true);
-        RenderSystem.disableBlend();
-
-        ACTIVE_SPHERES.clear();
     }
-
 }

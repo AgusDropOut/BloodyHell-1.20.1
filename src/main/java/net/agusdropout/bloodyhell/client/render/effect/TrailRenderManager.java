@@ -6,12 +6,10 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
-import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.base.QueuedRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.api.TrailEffect;
 import net.agusdropout.bloodyhell.client.render.effect.data.TrailData;
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.util.visuals.SplineHelper;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
@@ -19,38 +17,21 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrailRenderManager implements DeferredRenderManager {
+public class TrailRenderManager extends QueuedRenderManager<TrailData> {
     private final TrailEffect effect;
-    private final List<TrailData> queue = new ArrayList<>();
-    private final DeferredMatrices matrices = new DeferredMatrices();
 
     public TrailRenderManager(TrailEffect effect) {
+        super(effect.name(), effect.state());
         this.effect = effect;
     }
 
-    @Override
-    public String name() {
-        return effect.name();
-    }
-
     public void submit(List<Vec3> history, Vec3 cameraPos, float width, float r, float g, float b, float alpha, float time) {
-        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (history.size() < 2) return;
-
-        if (queue.isEmpty()) {
-            matrices.capture();
-        }
-        queue.add(new TrailData(new ArrayList<>(history), cameraPos, width, r, g, b, alpha, time));
+        enqueue(new TrailData(new ArrayList<>(history), cameraPos, width, r, g, b, alpha, time));
     }
 
     @Override
-    public void renderAndClear(FrameContext frame) {
-        if (queue.isEmpty()) return;
-
-        effect.state().begin().run();
-
-        matrices.apply();
-
+    protected void draw(FrameContext frame, List<TrailData> items) {
         RenderSystem.setShader(effect.shader());
 
         Tesselator tess = Tesselator.getInstance();
@@ -58,7 +39,7 @@ public class TrailRenderManager implements DeferredRenderManager {
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        for (TrailData data : queue) {
+        for (TrailData data : items) {
             Uniform timeUniform = effect.timeTarget().get().getUniform("AnimTime");
             if (timeUniform != null) {
                 timeUniform.set(data.time());
@@ -133,11 +114,5 @@ public class TrailRenderManager implements DeferredRenderManager {
         }
 
         tess.end();
-
-        matrices.restore();
-
-        effect.state().end().run();
-
-        queue.clear();
     }
 }

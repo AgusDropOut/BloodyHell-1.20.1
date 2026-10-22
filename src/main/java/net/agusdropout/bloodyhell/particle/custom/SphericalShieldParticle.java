@@ -61,7 +61,7 @@ public class SphericalShieldParticle extends Particle {
         Matrix4f capturedPose = new Matrix4f(poseStack.last().pose());
         float currentAlpha = this.alpha;
 
-        Effects.SPHERICAL_SHIELD.queueRender(() -> {
+        Effects.SPHERICAL_SHIELD.queue(() -> {
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder builder = tesselator.getBuilder();
 

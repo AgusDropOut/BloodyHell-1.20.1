@@ -1,13 +1,6 @@
-﻿RenderSystem.disableDepthTest();
-RenderSystem.depthMask(false);
-RenderSystem.enableBlend();
-RenderSystem.defaultBlendFunc();
-RenderSystem.setShader(() -> ModShaders.RADIAL_DISTORTION_SHADER);
+﻿RenderSystem.setShader(() -> ModShaders.RADIAL_DISTORTION_SHADER);
 if (ModShaders.RADIAL_DISTORTION_SHADER.getUniform("ScreenSize") != null) {
 ModShaders.RADIAL_DISTORTION_SHADER.getUniform("ScreenSize").set((float) screenW, (float) screenH);
 RenderSystem.setShaderTexture(0, mainTarget.getColorTextureId());
 if (ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime") != null) {
 ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime").set(data.time());
-RenderSystem.depthMask(true);
-RenderSystem.enableDepthTest();
-RenderSystem.disableBlend();

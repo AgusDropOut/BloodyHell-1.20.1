@@ -8,40 +8,28 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
-import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.base.QueuedRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.api.BillboardEffect;
 import net.agusdropout.bloodyhell.client.render.effect.data.BillboardData;
 import net.agusdropout.bloodyhell.client.render.view.ViewEffects;
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class BillboardRenderManager implements DeferredRenderManager {
+public class BillboardRenderManager extends QueuedRenderManager<BillboardData> {
     private final BillboardEffect effect;
-    private final List<BillboardData> queue = new ArrayList<>();
-    private final DeferredMatrices matrices = new DeferredMatrices();
 
     public BillboardRenderManager(BillboardEffect effect) {
+        super(effect.name(), effect.state());
         this.effect = effect;
     }
 
-    @Override
-    public String name() {
-        return effect.name();
-    }
-
     public void submit(Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
-        if (RenderPassGuard.shouldSkipDeferred()) return;
-        if (queue.isEmpty()) {
-            matrices.capture();
-        }
-        queue.add(new BillboardData(pose, size, r, g, b, alpha, time));
+        enqueue(new BillboardData(pose, size, r, g, b, alpha, time));
     }
 
     public void submit(Matrix4f pose, float size, float r, float g, float b, float alpha) {
@@ -53,11 +41,7 @@ public class BillboardRenderManager implements DeferredRenderManager {
     }
 
     @Override
-    public void renderAndClear(FrameContext frame) {
-        if (queue.isEmpty()) return;
-
-        effect.state().begin().run();
-
+    protected void applyView(DeferredMatrices matrices, FrameContext frame) {
         if (effect.cameraView()) {
             matrices.applyProjection();
             PoseStack rsStack = RenderSystem.getModelViewStack();
@@ -67,7 +51,10 @@ public class BillboardRenderManager implements DeferredRenderManager {
         } else {
             matrices.apply();
         }
+    }
 
+    @Override
+    protected void draw(FrameContext frame, List<BillboardData> items) {
         RenderSystem.setShader(effect.shader());
         effect.afterBind().run();
 
@@ -79,7 +66,7 @@ public class BillboardRenderManager implements DeferredRenderManager {
         float[][] uvs = {{min, min}, {min, max}, {max, max}, {max, min}};
 
         if (effect.timeMode() == BillboardEffect.TimeMode.PER_ITEM) {
-            for (BillboardData data : queue) {
+            for (BillboardData data : items) {
                 setTime(data.time());
                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
                 addQuad(buffer, data, uvs);
@@ -90,17 +77,11 @@ public class BillboardRenderManager implements DeferredRenderManager {
                 setTime(ShaderTime.seconds());
             }
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-            for (BillboardData data : queue) {
+            for (BillboardData data : items) {
                 addQuad(buffer, data, uvs);
             }
             tess.end();
         }
-
-        matrices.restore();
-
-        effect.state().end().run();
-
-        queue.clear();
     }
 
     private void setTime(float value) {

@@ -50,7 +50,7 @@ public class EchoOfTheNamelessRenderer extends InsightCreatureRenderer<EchoOfThe
 
         float baseAlpha = 0.3F * energyRatio;
 
-        Effects.SPHERICAL_SHIELD.queueRender(() -> {
+        Effects.SPHERICAL_SHIELD.queue(() -> {
 
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();

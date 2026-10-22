@@ -1,86 +1,55 @@
 package net.agusdropout.bloodyhell.client.render.effect;
 
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
-import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
-import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.base.QueuedRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.data.RingData;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MagicRingRenderManager implements DeferredRenderManager {
-    private final List<RingData> ACTIVE_RINGS = new ArrayList<>();
-
+public class MagicRingRenderManager extends QueuedRenderManager<RingData> {
     private static final ResourceLocation AURORA_NOISE = new ResourceLocation(BloodyHell.MODID, "textures/particle/aurora_noise.png");
     private static final ResourceLocation AURORA_NOISE_ALT = new ResourceLocation(BloodyHell.MODID, "textures/particle/aurora_noise2.png");
 
-    private final DeferredMatrices matrices = new DeferredMatrices();
+    public MagicRingRenderManager() {
+        super("MagicRing", EffectStates.MAGIC_RING);
+    }
 
     public void addRing(float px, float py, float pz, float radius, float ringHeight, float time, float r, float g, float b, float alpha) {
-        if (RenderPassGuard.shouldSkipDeferred()) return;
-        if (ACTIVE_RINGS.isEmpty()) {
-            matrices.capture();
-        }
-        ACTIVE_RINGS.add(new RingData(px, py, pz, radius, ringHeight, time, r, g, b, alpha));
+        enqueue(new RingData(px, py, pz, radius, ringHeight, time, r, g, b, alpha));
     }
 
     @Override
-    public String name() {
-        return "MagicRing";
-    }
-
-    @Override
-    public void renderAndClear(FrameContext frame) {
-        if (ACTIVE_RINGS.isEmpty()) return;
-
-        matrices.apply();
-
-
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        RenderSystem.disableCull();
-        RenderSystem.depthMask(false);
-        RenderSystem.enableDepthTest();
-
+    protected void draw(FrameContext frame, List<RingData> items) {
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
 
-        for (RingData data : ACTIVE_RINGS) {
+        for (RingData data : items) {
             PoseStack poseStack = new PoseStack();
             poseStack.translate(data.px(), data.py(), data.pz());
             Matrix4f pose = poseStack.last().pose();
-
 
             RenderSystem.setShaderTexture(0, AURORA_NOISE);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
             RenderHelper.renderTexturedAuroraRing(buffer, pose, data.radius(), data.ringHeight(), 200, data.time() * 0.5f, data.r(), data.g(), data.b(), data.alpha());
             tess.end();
 
-
             RenderSystem.setShaderTexture(0, AURORA_NOISE_ALT);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
             RenderHelper.renderTexturedAuroraRing(buffer, pose, data.radius(), data.ringHeight(), 200, -data.time(), data.r(), data.g(), data.b(), data.alpha());
             tess.end();
         }
-
-        matrices.restore();
-
-        RenderSystem.depthMask(true);
-        RenderSystem.enableCull();
-        RenderSystem.disableBlend();
-
-        ACTIVE_RINGS.clear();
     }
-
 }

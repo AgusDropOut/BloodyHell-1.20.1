@@ -1,49 +1,32 @@
 package net.agusdropout.bloodyhell.client.render.effect;
 
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
-import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.base.QueuedRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.data.BlackHoleData;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class BlackHoleEntityRenderManager implements DeferredRenderManager {
-    private final List<BlackHoleData> ACTIVE_BLACK_HOLES = new ArrayList<>();
-    private final DeferredMatrices matrices = new DeferredMatrices();
+public class BlackHoleEntityRenderManager extends QueuedRenderManager<BlackHoleData> {
+
+    public BlackHoleEntityRenderManager() {
+        super("BlackHoleEntity", EffectStates.BLACK_HOLE_ENTITY);
+    }
 
     public void addBlackHole(Matrix4f pose, float radius, float time, float alpha, int color) {
-        if (RenderPassGuard.shouldSkipDeferred()) return;
-        if (ACTIVE_BLACK_HOLES.isEmpty()) {
-            matrices.capture();
-        }
-        ACTIVE_BLACK_HOLES.add(new BlackHoleData(new Matrix4f(pose), radius, time, alpha, color));
+        enqueue(new BlackHoleData(new Matrix4f(pose), radius, time, alpha, color));
     }
 
     @Override
-    public String name() {
-        return "BlackHoleEntity";
-    }
-
-    @Override
-    public void renderAndClear(FrameContext frame) {
-        if (ACTIVE_BLACK_HOLES.isEmpty()) return;
-
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        RenderSystem.disableCull();
-        RenderSystem.depthMask(false);
-
-        matrices.apply();
-
+    protected void draw(FrameContext frame, List<BlackHoleData> items) {
         ShaderInstance shader = ModShaders.BLACK_HOLE_SHADER;
         if (shader != null) {
             RenderSystem.setShader(() -> ModShaders.BLACK_HOLE_SHADER);
@@ -52,7 +35,7 @@ public class BlackHoleEntityRenderManager implements DeferredRenderManager {
             Tesselator tess = Tesselator.getInstance();
             BufferBuilder buffer = tess.getBuilder();
 
-            for (BlackHoleData data : ACTIVE_BLACK_HOLES) {
+            for (BlackHoleData data : items) {
                 float r = ((data.color() >> 16) & 0xFF) / 255.0f;
                 float g = ((data.color() >> 8) & 0xFF) / 255.0f;
                 float b = (data.color() & 0xFF) / 255.0f;
@@ -70,14 +53,5 @@ public class BlackHoleEntityRenderManager implements DeferredRenderManager {
                 tess.end();
             }
         }
-
-        matrices.restore();
-
-        RenderSystem.depthMask(true);
-        RenderSystem.enableCull();
-        RenderSystem.disableBlend();
-
-        ACTIVE_BLACK_HOLES.clear();
     }
-
 }
