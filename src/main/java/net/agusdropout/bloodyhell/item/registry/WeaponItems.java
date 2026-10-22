@@ -20,7 +20,7 @@ public final class WeaponItems {
     public static final RegistryObject<Item> BLASPHEMOUS_HULKING_MASS_OF_IRON = ITEMS.register("blasphemous_hulking_mass_of_iron", () -> new BlasphemousHulkingMassOfIronItem(ModToolTiers.RHNULL,10,-2.4F,
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLASPHEMOUS_IMPALER = ITEMS.register("blasphemous_impaler", () -> new BlasphemousImpalerItem(ModToolTiers.BLASPHEMITE, 10, -3.0F,
-            new Item.Properties().stacksTo(0)));
+            new Item.Properties().stacksTo(1)));
 
     private WeaponItems() {}
 
