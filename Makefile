@@ -14,13 +14,14 @@ TESTWORLD := pwsh ./scripts/run-testworld.ps1 -ExitTicks $(EXIT_TICKS)
 SYNC_SHADERS := mkdir -p run/shaderpacks && for p in $(SHADER_PACKS); do cp "$$HOME/.minecraft/shaderpacks/$$p" run/shaderpacks/; done
 endif
 
-.PHONY: help compile build test gametest client client-shaders sync-shaders testworld testworld-shaders shader-cycle clean
+.PHONY: help compile build test gametest check client client-shaders sync-shaders testworld testworld-shaders shader-cycle clean
 
 help:
 	@echo "compile             Compile the mod"
 	@echo "build               Build the mod jar"
 	@echo "test                Run unit tests"
-	@echo "gametest            Run the Forge GameTest server"
+	@echo "gametest            Run the GameTests (machines, every block) on a dedicated server"
+	@echo "check               test + gametest + testworld, everything automatic before a push"
 	@echo "client              Run the dev client"
 	@echo "client-shaders      Run the dev client with Oculus and Rubidium"
 	@echo "sync-shaders        Copy SHADER_PACKS from the normal .minecraft into run/shaderpacks"
@@ -40,6 +41,8 @@ test:
 
 gametest:
 	$(GRADLE) runGameTestServer
+
+check: test gametest testworld
 
 client:
 	$(GRADLE) runClient

@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -35,6 +36,10 @@ public class ClientItemHooks {
     }
 
 
+
+    public static Entity getLocalPlayerAsEntity() {
+        return Minecraft.getInstance().player;
+    }
 
     public static LocalPlayer getLocalPlayer() {
         return Minecraft.getInstance().player;

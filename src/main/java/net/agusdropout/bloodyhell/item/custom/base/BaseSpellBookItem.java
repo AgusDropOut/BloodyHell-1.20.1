@@ -131,7 +131,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
 
             Entity entity = state.getData(DataTickets.ENTITY);
             if (entity == null) {
-                entity = net.minecraft.client.Minecraft.getInstance().player;
+                entity = net.agusdropout.bloodyhell.client.ClientItemHooks.getLocalPlayerAsEntity();
             }
 
 

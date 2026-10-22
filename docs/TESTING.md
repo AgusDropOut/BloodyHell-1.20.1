@@ -33,6 +33,15 @@ Test-only code (`/bhtest`, the auto test, the shader cycle and `GlStateProbe`) l
 
 Commit messages are checked by `scripts/git-hooks/commit-msg`, which rejects Claude co-authorship and generation lines. On a fresh clone run `git config core.hooksPath scripts/git-hooks` once.
 
+## GameTests
+
+`make gametest` (`./gradlew runGameTestServer`) starts a dedicated server, builds the tests in `src/devtools/java/.../devtools/gametest` and prints `All N required tests passed` in `run/logs/latest.log`. A failure exits with code 1. The tests live in the `devtools` source set, so they are never in the release jar, and they run on a dedicated server on purpose: if the mod loads a client class on the server, this run crashes at startup (it already found this kind of bug, see ADR 0017).
+- `MachineGameTests`: both condensers and the infusor make every recipe they have, and one test per registered block places it, ticks it for 30 ticks and checks that its block entity is still there.
+- Every test uses the template `bloodyhell:empty` (`src/devtools/resources/data/bloodyhell/structures/empty.nbt`, a 9x6x9 smooth stone floor). It is generated with `python scripts/generate-gametest-structure.py` and can be regenerated at any time.
+- A new test is a static method with `@GameTest(template = "empty", batch = "...")` in a class annotated `@GameTestHolder(BloodyHell.MODID)` and `@PrefixGameTestTemplate(false)`; `@GameTestGenerator` makes one test per element of a registry.
+
+`make check` runs `test`, `gametest` and `testworld` in a row: run it before a push.
+
 ## Static resource test
 
 `make test` (`./gradlew test`) runs `ResourceIntegrityTest`, plain JUnit with no Minecraft classes. It reads the Java sources and the resources (`src/main` and `src/generated`) and fails when:

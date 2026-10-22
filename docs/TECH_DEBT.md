@@ -12,3 +12,4 @@ Known issues and accepted limitations. Not decisions: remove an item once it is 
 41. About 900 English comment lines remain in the code (the Spanish ones were removed). The project rule is no comments without approval; remove them as the files are touched.
 42. `MainBlasphemousBloodAltarBlock.getRitualInteractionResult` mixes the recipe check and the altar location check in one long method; split it.
 43. `SelioraRestingBlock` plays the page turn sound as its ambient sound because `ModSounds` has no Seliora reading sound.
+44. `SanguiniteCondenserBlockEntity.isValidFluid` is `!viscous || !corrupted`, which is always true, so the sanguinite condenser accepts every fluid. It was probably meant to reject viscous blasphemy and corrupted blood (`&&`); check which recipes use that condenser before changing it.

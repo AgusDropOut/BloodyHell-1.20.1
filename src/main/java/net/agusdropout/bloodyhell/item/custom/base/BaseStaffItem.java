@@ -106,7 +106,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         }
 
         Entity entity = event.getData(DataTickets.ENTITY);
-        if (entity == null) entity = net.minecraft.client.Minecraft.getInstance().player;
+        if (entity == null) entity = net.agusdropout.bloodyhell.client.ClientItemHooks.getLocalPlayerAsEntity();
 
         if (entity instanceof LivingEntity livingEntity && livingEntity.isUsingItem() && livingEntity.getUseItem().getItem() == this) {
             ItemStack stack = livingEntity.getUseItem();

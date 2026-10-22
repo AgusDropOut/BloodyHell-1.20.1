@@ -237,7 +237,7 @@ public class OmnitomeItem extends Item implements GeoItem {
 
             Entity entity = state.getData(DataTickets.ENTITY);
             if (entity == null) {
-                entity = net.minecraft.client.Minecraft.getInstance().player;
+                entity = net.agusdropout.bloodyhell.client.ClientItemHooks.getLocalPlayerAsEntity();
             }
 
 
