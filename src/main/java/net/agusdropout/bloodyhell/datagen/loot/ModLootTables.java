@@ -164,7 +164,7 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(WoodBlocks.BLOOD_PLANKS_FENCE.get());
             this.dropSelf(WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get());
 
-            this.dropSelf(PlantBlocks.BLOOD_LILY_BLOCK.get());
+            this.dropOther(PlantBlocks.BLOOD_LILY_BLOCK.get(), PlaceableItems.BLOOD_LILY.get());
             this.dropSelf(PlantBlocks.SMALL_BLOOD_SAPLING.get());
             this.dropSelf(PlantBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get());
             this.dropSelf(PlantBlocks.GIANT_BLOOD_SAPLING.get());

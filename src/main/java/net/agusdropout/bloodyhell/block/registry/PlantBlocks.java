@@ -39,7 +39,7 @@ public final class PlantBlocks {
             BlockBehaviour.Properties.copy(Blocks.POTTED_ALLIUM).noOcclusion()));
     public static final RegistryObject<Block> BLOOD_BUSH = registerBlock("blood_bush", ()-> new DoublePlantBlock(
             BlockBehaviour.Properties.copy(Blocks.ROSE_BUSH)));
-    public static final RegistryObject<Block> BLOOD_LILY_BLOCK = registerBlock("blood_lily_block", ()-> new BloodLilyBlock(
+    public static final RegistryObject<Block> BLOOD_LILY_BLOCK = registerBlockWithoutBlockItem("blood_lily_block", ()-> new BloodLilyBlock(
             BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).mapColor(MapColor.COLOR_PINK).noOcclusion().noCollission().lightLevel((state)->20).instabreak().sound(SoundType.LILY_PAD).offsetType(BlockBehaviour.OffsetType.XZ)));
     public static final RegistryObject<Block> BLOOD_PETALS = registerBlock("blood_petals", ()-> new FlowerBlock(()-> MobEffects.HARM,5,
             BlockBehaviour.Properties.copy(Blocks.ALLIUM).noCollission().noOcclusion()));
