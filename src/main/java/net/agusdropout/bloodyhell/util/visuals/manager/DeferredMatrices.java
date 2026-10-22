@@ -20,12 +20,15 @@ public final class DeferredMatrices {
         modelView.set(RenderSystem.getModelViewMatrix());
     }
 
-    public void apply() {
+    public void applyProjection() {
         previousProjection.set(RenderSystem.getProjectionMatrix());
-        PoseStack stack = RenderSystem.getModelViewStack();
-        stack.pushPose();
-
+        RenderSystem.getModelViewStack().pushPose();
         RenderSystem.setProjectionMatrix(projection, VertexSorting.DISTANCE_TO_ORIGIN);
+    }
+
+    public void apply() {
+        applyProjection();
+        PoseStack stack = RenderSystem.getModelViewStack();
         stack.setIdentity();
         stack.mulPoseMatrix(modelView);
         RenderSystem.applyModelViewMatrix();

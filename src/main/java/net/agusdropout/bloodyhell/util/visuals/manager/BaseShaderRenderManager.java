@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
 import org.joml.Matrix4f;
 
@@ -10,13 +9,11 @@ import java.util.List;
 
 public abstract class BaseShaderRenderManager<T extends BaseShaderRenderManager.ParticleData> {
     protected final List<T> ACTIVE_PARTICLES = new ArrayList<>();
-    protected final Matrix4f savedProjection = new Matrix4f();
-    protected final Matrix4f savedModelView = new Matrix4f();
+    protected final DeferredMatrices matrices = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
 
     public void addParticle(T data) {
         if (ACTIVE_PARTICLES.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
+            matrices.capture();
         }
 
         ACTIVE_PARTICLES.add(data);
@@ -30,21 +27,12 @@ public abstract class BaseShaderRenderManager<T extends BaseShaderRenderManager.
         RenderSystem.enableBlend();
         setupBlendFunc();
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
+        matrices.apply();
 
         bindShader();
         renderGeometry();
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        matrices.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();

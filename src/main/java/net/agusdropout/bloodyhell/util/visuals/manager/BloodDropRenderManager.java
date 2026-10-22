@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -45,14 +44,11 @@ public class BloodDropRenderManager extends BaseShaderRenderManager<BloodDropRen
         RenderSystem.enableBlend();
         setupBlendFunc();
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
+        matrices.applyProjection();
 
 
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        PoseStack rsStack = RenderSystem.getModelViewStack();
         rsStack.setIdentity();
         rsStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(camera.getXRot()));
         rsStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
@@ -62,9 +58,7 @@ public class BloodDropRenderManager extends BaseShaderRenderManager<BloodDropRen
         bindShader();
         renderGeometry();
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        matrices.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
