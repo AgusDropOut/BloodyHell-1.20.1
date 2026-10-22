@@ -1,0 +1,15 @@
+﻿savedProjection.set(RenderSystem.getProjectionMatrix());
+savedModelView.set(RenderSystem.getModelViewMatrix());
+RenderSystem.disableDepthTest();
+RenderSystem.depthMask(false);
+RenderSystem.enableBlend();
+RenderSystem.defaultBlendFunc();
+Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
+RenderSystem.applyModelViewMatrix();
+RenderSystem.enableDepthTest();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+RenderSystem.depthMask(true);
+RenderSystem.disableBlend();

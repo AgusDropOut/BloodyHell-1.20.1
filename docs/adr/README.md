@@ -12,3 +12,4 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0004 | Capture projection and modelview matrices when queueing |
 | 0005 | Shader animation time does not use the game time |
 | 0006 | Raymarching through a quad |
+| 0007 | Deferred manager refactor keeps the GL state calls untouched |

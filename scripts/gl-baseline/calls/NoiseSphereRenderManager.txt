@@ -1,0 +1,17 @@
+﻿savedProjection.set(RenderSystem.getProjectionMatrix());
+savedModelView.set(RenderSystem.getModelViewMatrix());
+Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
+RenderSystem.applyModelViewMatrix();
+RenderSystem.enableDepthTest();
+RenderSystem.depthMask(false);
+RenderSystem.enableBlend();
+RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+RenderSystem.setShaderTexture(0, OUTER_TEXTURE);
+RenderSystem.setShaderTexture(0, INNER_TEXTURE);
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+RenderSystem.depthMask(true);
+RenderSystem.disableBlend();

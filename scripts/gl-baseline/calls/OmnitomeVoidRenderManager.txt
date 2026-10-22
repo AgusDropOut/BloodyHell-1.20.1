@@ -1,0 +1,11 @@
+﻿task.projectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
+task.modelViewMatrix = new Matrix4f(RenderSystem.getModelViewMatrix());
+RenderSystem.enableDepthTest();
+Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+VertexSorting currentSorting = RenderSystem.getVertexSorting();
+ModShaders.OMNITOME_VOID_SHADER.safeGetUniform("TimeAnim").set((float) (net.minecraft.Util.getMillis() % 100000L) / 1000.0f);
+RenderSystem.setProjectionMatrix(task.projectionMatrix, sorting);
+PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setProjectionMatrix(currentProj, currentSorting);

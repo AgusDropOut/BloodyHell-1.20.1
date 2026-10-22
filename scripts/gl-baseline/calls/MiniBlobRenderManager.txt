@@ -1,0 +1,36 @@
+﻿RenderSystem.bindTexture(copiedColorTexture);
+GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+RenderSystem.bindTexture(copiedColorTexture);
+GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, mainTarget.width, mainTarget.height, 0);
+RenderSystem.disableCull();
+RenderSystem.enableBlend();
+RenderSystem.defaultBlendFunc();
+RenderSystem.disableDepthTest();
+RenderSystem.depthMask(false);
+int currentTex = RenderSystem.getShaderTexture(0);
+RenderSystem.setShaderTexture(0, copiedColorTexture);
+RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
+RenderSystem.setShader(() -> shader);
+if (shader.safeGetUniform("u_CleanInvViewMat") != null) shader.safeGetUniform("u_CleanInvViewMat").set(cleanInvViewMat);
+if (shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(projMat);
+if (shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(invProjMat);
+if (shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(System.currentTimeMillis() % 100000L) / 1000.0f);
+RenderSystem.enableDepthTest();
+RenderSystem.depthMask(true);
+RenderSystem.enableCull();
+RenderSystem.disableBlend();
+RenderSystem.defaultBlendFunc();
+RenderSystem.colorMask(true, true, true, true);
+RenderSystem.setShaderTexture(0, currentTex);
+if (shader.safeGetUniform("u_BlobCount") != null) {
+shader.safeGetUniform("u_BlobCount").set((float) cluster.size());
+if (shader.safeGetUniform(posUniform) != null && shader.safeGetUniform(sizeUniform) != null && shader.safeGetUniform(colorUniform) != null) {
+shader.safeGetUniform(posUniform).set(relX, relY, relZ);
+shader.safeGetUniform(sizeUniform).set(blob.getSize());
+shader.safeGetUniform(colorUniform).set(blob.getR(), blob.getG(), blob.getB());
+shader.safeGetUniform(posUniform).set(0.0f, 0.0f, 0.0f);
+shader.safeGetUniform(sizeUniform).set(0.15f);
+shader.safeGetUniform(colorUniform).set(0.5f, 0.0f, 0.05f);
+if (shader.safeGetUniform("relativeClusterCenter") != null) {
+shader.safeGetUniform("relativeClusterCenter").set(relCenterX, relCenterY, relCenterZ);

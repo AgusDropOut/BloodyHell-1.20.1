@@ -27,6 +27,13 @@ Last clean baseline: blocks=141/141, entities=75/75, itemChests=11, items=284, n
 - `make shader-cycle` runs the test world and, once built, switches at runtime through every pack in `run/shaderpacks` and finally back to no shaders (Oculus `save()` + `reload()`, the same calls as its menu). It walks the player to the start of the blocks, entities and chests sections for each pack. A crash on a switch ends the run and the script prints the crash report path; `[BHTEST] shader cycle finished ... failures=N` reports packs that did not load. Oculus is resolved by reflection, so the mod does not depend on it.
 - Without `-PbhShaders` the dev runtime has no shader mods, so the plain run stays vanilla rendering.
 
+## Render refactor safety net
+
+Two checks that need no mixins, used to prove that a refactor of the render managers did not change the OpenGL state calls.
+- `scripts/check-gl-calls.ps1` compares, per manager source file, the ordered list of `RenderSystem` / `GlStateManager` / `GL*` / uniform lines against `scripts/gl-baseline/calls/`. The matrix capture and restore lines are ignored, because the base class takes them over. `-Snapshot` rewrites the baseline, only do that after a deliberate behavior change. Exit code 2 means a difference.
+- `GlStateProbe` (enabled with `-PbhGlProbe`, or `scripts/run-testworld.ps1 -GlProbe`) reads the real GL state with `glGet` before and after every manager in `ModRenderEvents` and logs each distinct transition as `[GLPROBE]`. `scripts/glprobe.ps1 -Name vanilla -Save` stores the transitions of the last run as a baseline, `scripts/glprobe.ps1 -Name vanilla` compares the last run against it. Take one baseline without shaders and one with a shader pack (`-Shaders`, then select the pack), always on the unmodified code.
+- The probe only sees managers that had queued work during the run, and it checks the state at the boundary of each manager (leaks and wrong restores), not the calls in the middle. The static check covers the middle.
+
 ## Manual checklist (not automatable)
 - [ ] Omnitome in first person and in the GUI.
 - [ ] Raymarching: blood blob, blood/golden/scarlet orbs.

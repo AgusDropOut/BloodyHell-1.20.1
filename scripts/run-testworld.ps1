@@ -2,7 +2,8 @@ param(
     [string]$JavaHome = "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot",
     [int]$ExitTicks = 600,
     [switch]$Shaders,
-    [switch]$ShaderCycle
+    [switch]$ShaderCycle,
+    [switch]$GlProbe
 )
 
 $env:JAVA_HOME = $JavaHome
@@ -26,6 +27,7 @@ Push-Location $root
 try {
     $gradleArgs = @("runClient", "-PbhAutoTest", "-PbhExitTicks=$ExitTicks")
     if ($Shaders -or $ShaderCycle) { $gradleArgs += "-PbhShaders" }
+    if ($GlProbe) { $gradleArgs += "-PbhGlProbe" }
     if ($ShaderCycle) {
         $packsDir = Join-Path $root "run\shaderpacks"
         $packs = @(Get-ChildItem $packsDir -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })

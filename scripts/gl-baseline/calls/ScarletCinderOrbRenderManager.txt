@@ -1,0 +1,29 @@
+﻿RenderSystem.bindTexture(copiedColorTexture);
+GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+RenderSystem.bindTexture(copiedColorTexture);
+GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, mainTarget.width, mainTarget.height, 0);
+RenderSystem.disableCull();
+RenderSystem.enableBlend();
+RenderSystem.defaultBlendFunc();
+RenderSystem.disableDepthTest();
+RenderSystem.depthMask(false);
+RenderSystem.setShaderTexture(0, copiedColorTexture);
+RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
+RenderSystem.setShader(() -> shader);
+if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);
+if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(Util.getMillis() % 100000L) / 1000.0f);
+RenderSystem.setProjectionMatrix(data.projection, VertexSorting.DISTANCE_TO_ORIGIN);
+if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(data.projection);
+if(shader.safeGetUniform("u_OrbViewPos") != null) {
+shader.safeGetUniform("u_OrbViewPos").set(center.x(), center.y(), center.z());
+if(shader.safeGetUniform("u_OrbRotation") != null) {
+shader.safeGetUniform("u_OrbRotation").set(data.rotation);
+if(shader.safeGetUniform("u_Pitch") != null) shader.safeGetUniform("u_Pitch").set(mc.player.getXRot());
+RenderSystem.setProjectionMatrix(worldProjMat, VertexSorting.ORTHOGRAPHIC_Z);
+RenderSystem.enableDepthTest();
+RenderSystem.depthMask(true);
+RenderSystem.enableCull();
+RenderSystem.disableBlend();
+RenderSystem.defaultBlendFunc();
+RenderSystem.colorMask(true, true, true, true);

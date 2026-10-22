@@ -1,0 +1,13 @@
+﻿task.projectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
+task.modelViewMatrix = new Matrix4f(RenderSystem.getModelViewMatrix());
+RenderSystem.depthMask(true);
+RenderSystem.enableBlend();
+RenderSystem.defaultBlendFunc();
+Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+VertexSorting currentSorting = RenderSystem.getVertexSorting();
+RenderSystem.setProjectionMatrix(task.projectionMatrix, sorting);
+PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setProjectionMatrix(currentProj, currentSorting);
+RenderSystem.disableBlend();

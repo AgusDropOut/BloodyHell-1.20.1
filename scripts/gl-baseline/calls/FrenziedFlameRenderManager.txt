@@ -1,0 +1,21 @@
+﻿savedProjection.set(RenderSystem.getProjectionMatrix());
+savedModelView.set(RenderSystem.getModelViewMatrix());
+//RenderSystem.disableDepthTest();
+RenderSystem.depthMask(false);
+RenderSystem.enableBlend();
+RenderSystem.blendFunc(
+com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE,
+com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
+Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setShader(() -> ModShaders.FRENZIED_FLAME_SHADER);
+if (ModShaders.FRENZIED_FLAME_SHADER.getUniform("AnimTime") != null) {
+ModShaders.FRENZIED_FLAME_SHADER.getUniform("AnimTime").set(data.time);
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+RenderSystem.depthMask(true);
+// RenderSystem.enableDepthTest();
+RenderSystem.disableBlend();
+RenderSystem.defaultBlendFunc();

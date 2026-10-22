@@ -1,0 +1,17 @@
+﻿task.projectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
+task.modelViewMatrix = new Matrix4f(RenderSystem.getModelViewMatrix());
+RenderSystem.enableBlend();
+RenderSystem.defaultBlendFunc();
+RenderSystem.disableCull();
+Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+VertexSorting currentSorting = RenderSystem.getVertexSorting();
+ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("TimeAnim").set((float) (net.minecraft.Util.getMillis() % 100000L) / 1000.0f);
+ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("MorphProgress").set(task.morphProgress);
+RenderSystem.setProjectionMatrix(task.projectionMatrix, sorting);
+PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.setProjectionMatrix(currentProj, currentSorting);
+RenderSystem.depthMask(true);
+RenderSystem.enableCull();
+RenderSystem.disableBlend();

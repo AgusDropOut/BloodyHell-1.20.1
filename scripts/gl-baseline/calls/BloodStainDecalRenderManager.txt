@@ -1,0 +1,18 @@
+﻿RenderSystem.depthMask(false);
+RenderSystem.enableBlend();
+RenderSystem.enableDepthTest();
+RenderSystem.disableCull();
+RenderSystem.blendFunc(
+com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA,
+com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
+if (shader.safeGetUniform("Time") != null) {
+shader.safeGetUniform("Time").set((float) (System.currentTimeMillis() % 100000L) / 1000.0f);
+if (shader.safeGetUniform("Intensity") != null) {
+shader.safeGetUniform("Intensity").set(1.0f);
+if (shader.safeGetUniform("RealProjMat") != null) {
+shader.safeGetUniform("RealProjMat").set(event.getProjectionMatrix());
+RenderSystem.setShader(() -> shader);
+RenderSystem.depthMask(true);
+RenderSystem.disableBlend();
+RenderSystem.enableCull();
+RenderSystem.defaultBlendFunc();
