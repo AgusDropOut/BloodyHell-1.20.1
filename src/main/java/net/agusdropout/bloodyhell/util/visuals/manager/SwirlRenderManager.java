@@ -17,14 +17,12 @@ public class SwirlRenderManager {
     private static final List<SwirlData> ACTIVE_SWIRLS = new ArrayList<>();
 
 
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
 
     public static void addSwirl(Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_SWIRLS.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
+            MATRICES.capture();
         }
         ACTIVE_SWIRLS.add(new SwirlData(pose, size, r, g, b, alpha, time));
     }
@@ -43,14 +41,7 @@ public class SwirlRenderManager {
         RenderSystem.defaultBlendFunc();
 
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
+        MATRICES.apply();
 
         RenderSystem.setShader(() -> ModShaders.ETHEREAL_SWIRL_SHADER);
 
@@ -95,9 +86,7 @@ public class SwirlRenderManager {
         }
 
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        MATRICES.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
