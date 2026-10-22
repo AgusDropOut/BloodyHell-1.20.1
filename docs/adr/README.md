@@ -21,3 +21,4 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0013 | The shader clock wraps every hour |
 | 0014 | The Omnitome void pages use the depth test |
 | 0015 | Block tool rules are declared once |
+| 0016 | Block and item registries are split in logical groups |

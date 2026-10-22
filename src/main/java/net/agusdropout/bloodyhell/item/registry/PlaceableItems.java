@@ -5,8 +5,6 @@ import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.agusdropout.bloodyhell.item.custom.*;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
-import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -19,7 +17,7 @@ public final class PlaceableItems {
             new Item.Properties()));
     public static final RegistryObject<Item> CRIMSON_LURE_MUSHROOM = ITEMS.register("crimson_lure_mushroom_item", () -> new BlockItem(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(),
             new Item.Properties()));
-    public static final RegistryObject<Item> Eyeball_seed = ITEMS.register("eyeball_seed", () -> new ItemNameBlockItem(PlantBlocks.EYEBALL_CROP.get(),
+    public static final RegistryObject<Item> EYEBALL_SEED = ITEMS.register("eyeball_seed", () -> new ItemNameBlockItem(PlantBlocks.EYEBALL_CROP.get(),
             new Item.Properties()));
     public static final RegistryObject<Item> BLOOD_LILY = ITEMS.register("blood_lily", () -> new PlaceOnWaterBlockItem(
             PlantBlocks.BLOOD_LILY_BLOCK.get(),new Item.Properties()));

@@ -1,8 +1,5 @@
 package net.agusdropout.bloodyhell.block.registry;
 
-import net.agusdropout.bloodyhell.block.base.*;
-import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.custom.mechanism.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
@@ -27,9 +24,9 @@ public final class SandstoneBlocks {
     public static final RegistryObject<Block> SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK = registerBlock("smooth_blasphemous_sandstone_block", ()-> new Block(
             BlockBehaviour.Properties.copy(Blocks.STONE).strength(3f).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS = registerBlock("smooth_blasphemous_sandstone_stairs", () -> new StairBlock(() -> SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState(),
-            BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()));
+            BlockBehaviour.Properties.copy(Blocks.STONE).strength(3f).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB = registerBlock("smooth_blasphemous_sandstone_slab", () -> new SlabBlock(
-            BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()));
+            BlockBehaviour.Properties.copy(Blocks.STONE).strength(3f).requiresCorrectToolForDrops()));
 
     private SandstoneBlocks() {}
 

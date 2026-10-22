@@ -141,7 +141,7 @@ public final class BlockToolRules {
                 MetalBlocks.SANGUINITE_BLOCK,
                 MetalBlocks.SANGUINITE_ORE,
                 MiscBlocks.BLEEDING_BLOCK,
-                MiscBlocks.Jumpy_Block,
+                MiscBlocks.JUMPY_BLOCK,
                 MachineBlocks.SANGUINE_CRUCIBLE,
                 LightBlocks.GLOWING_CRYSTAL,
                 StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS,

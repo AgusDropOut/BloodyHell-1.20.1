@@ -1,8 +1,6 @@
 package net.agusdropout.bloodyhell.block.registry;
 
-import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.custom.mechanism.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
@@ -27,8 +25,7 @@ public final class LightBlocks {
     public static final RegistryObject<Block> ANCIENT_BLOODY_LAMP = registerBlock("ancient_bloody_lamp", () -> new AncientBloodyLamp(
             BlockBehaviour.Properties.copy(Blocks.LANTERN).strength(1F).lightLevel((state)-> 14).noOcclusion()));
     public static final RegistryObject<Block> ANCIENT_TORCH_BLOCK = registerBlockWithoutBlockItem("ancient_torch_block", () -> new AncientTorchBlock(
-                    BlockBehaviour.Properties.copy(Blocks.TORCH).strength(1F).lightLevel((state) -> 14).noOcclusion()) {
-            });
+                    BlockBehaviour.Properties.copy(Blocks.TORCH).strength(1F).lightLevel((state) -> 14).noOcclusion()));
 
     private LightBlocks() {}
 

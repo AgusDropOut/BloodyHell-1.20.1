@@ -78,7 +78,7 @@ public class ModLootTables extends LootTableProvider {
         protected void generate() {
             this.dropSelf(MetalBlocks.SANGUINITE_BLOCK.get());
             this.dropSelf(MetalBlocks.RHNULL_BLOCK);
-            this.dropSelf(MiscBlocks.Jumpy_Block.get());
+            this.dropSelf(MiscBlocks.JUMPY_BLOCK.get());
             this.dropSelf(LightBlocks.SOUL_LAMP.get());
             this.dropSelf(MachineBlocks.SANGUINE_CRUCIBLE.get());
             this.dropSelf(MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR.get());
@@ -233,8 +233,8 @@ public class ModLootTables extends LootTableProvider {
                             .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EyeballCropBlock.AGE, 6)));
 
 
-            this.add(PlantBlocks.EYEBALL_CROP.get(), createCropDrops(PlantBlocks.EYEBALL_CROP.get(), FoodItems.Eyeball.get(),
-                    PlaceableItems.Eyeball_seed.get(), lootitemcondition$builder2));
+            this.add(PlantBlocks.EYEBALL_CROP.get(), createCropDrops(PlantBlocks.EYEBALL_CROP.get(), FoodItems.EYEBALL.get(),
+                    PlaceableItems.EYEBALL_SEED.get(), lootitemcondition$builder2));
 
             this.add(WoodBlocks.BLOOD_LEAVES.get(), block ->
                     createLeavesDrops(block, PlantBlocks.BLOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
@@ -243,7 +243,7 @@ public class ModLootTables extends LootTableProvider {
 
 
 
-            this.createGrassDrops(PlantBlocks.BLOOD_GRASS, PlaceableItems.Eyeball_seed.get());
+            this.createGrassDrops(PlantBlocks.BLOOD_GRASS, PlaceableItems.EYEBALL_SEED.get());
 
             this.createPlantsDrops(PlantBlocks.BLOOD_PETALS, PlantBlocks.BLOOD_PETALS.get().asItem());
             this.createSilkTouchOrShearsDispatchTable(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(), FoodItems.GLOW_MUSHROOM.get());

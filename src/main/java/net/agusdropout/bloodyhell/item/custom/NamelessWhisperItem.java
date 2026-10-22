@@ -26,7 +26,7 @@ public class NamelessWhisperItem extends Item {
 
         if (level instanceof ServerLevel serverLevel && entityLiving instanceof Player player) {
 
-            // --- CREEPY AUDIO TRIGGER ---
+
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.AMBIENT_CAVE.get(), SoundSource.AMBIENT, 1.5F, 0.8F);
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.WARDEN_HEARTBEAT, SoundSource.PLAYERS, 2.0F, 1.0F);
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.SCULK_SHRIEKER_SHRIEK, SoundSource.HOSTILE, 0.5F, 0.5F);

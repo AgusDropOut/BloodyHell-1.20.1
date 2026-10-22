@@ -168,7 +168,7 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
        int i = 1 + this.random.nextInt(3);
 
         for(int j = 0; j < i; ++j) {
-            ItemEntity itementity = this.spawnAtLocation(FoodItems.Eyeball.get(), 1);
+            ItemEntity itementity = this.spawnAtLocation(FoodItems.EYEBALL.get(), 1);
             if (itementity != null) {
                 itementity.setDeltaMovement(itementity.getDeltaMovement().add((double)((this.random.nextFloat() - this.random.nextFloat()) * 0.1F), (double)(this.random.nextFloat() * 0.05F), (double)((this.random.nextFloat() - this.random.nextFloat()) * 0.1F)));
             }
@@ -209,7 +209,7 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
 
             java.util.List<ItemStack> items = new java.util.ArrayList<>();
             for (int j = 0; j < i; ++j) {
-                items.add(new ItemStack(FoodItems.Eyeball.get()));
+                items.add(new ItemStack(FoodItems.EYEBALL.get()));
             }
             return items;
         }

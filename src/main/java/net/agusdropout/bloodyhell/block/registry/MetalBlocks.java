@@ -1,8 +1,5 @@
 package net.agusdropout.bloodyhell.block.registry;
 
-import net.agusdropout.bloodyhell.block.base.*;
-import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.custom.mechanism.*;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;

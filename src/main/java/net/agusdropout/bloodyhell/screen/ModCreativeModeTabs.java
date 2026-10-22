@@ -49,7 +49,7 @@ public class ModCreativeModeTabs {
 
                         // --- Ores & Minerals ---
                         output.accept(MetalBlocks.SANGUINITE_ORE.get());
-                        output.accept(MiscBlocks.Jumpy_Block.get());
+                        output.accept(MiscBlocks.JUMPY_BLOCK.get());
                         output.accept(MetalBlocks.BLASPHEMITE_ORE.get());
 
                         // --- Base Materials ---
@@ -117,7 +117,7 @@ public class ModCreativeModeTabs {
                         output.accept(GemItems.BLASPHEMOUS_RING.get());
                         output.accept(MiscItems.CHALICE_OF_THE_DAMMED.get());
                         output.accept(MiscItems.CRIMSON_IDOL_COIN.get());
-                        output.accept(MiscItems.Eight_ball.get());
+                        output.accept(MiscItems.EIGHT_BALL.get());
                         output.accept(DropItems.BLOOD_ECHO_SHARD.get());
                         output.accept(DropItems.NAMELESS_ECHO_SHARD.get());
 
@@ -218,8 +218,8 @@ public class ModCreativeModeTabs {
                         output.accept(FoodItems.SCARLET_COOKED_CHICKEN.get());
                         output.accept(FoodItems.GOREHOG_RAW_STEAK.get());
                         output.accept(FoodItems.GOREHOG_COOKED_STEAK.get());
-                        output.accept(FoodItems.Eyeball.get());
-                        output.accept(PlaceableItems.Eyeball_seed.get());
+                        output.accept(FoodItems.EYEBALL.get());
+                        output.accept(PlaceableItems.EYEBALL_SEED.get());
                         output.accept(FoodItems.GLOW_FRUIT.get());
 
                         // --- Nature, Plants & Mushrooms ---

@@ -1,8 +1,6 @@
 package net.agusdropout.bloodyhell.item.registry;
 
 import net.agusdropout.bloodyhell.item.custom.*;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
-import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.RegistryObject;
@@ -10,7 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 import static net.agusdropout.bloodyhell.item.ModItems.*;
 
 public final class MiscItems {
-    public static final RegistryObject<Item> Eight_ball = ITEMS.register("eight_ball", () -> new EightBallItem(
+    public static final RegistryObject<Item> EIGHT_BALL = ITEMS.register("eight_ball", () -> new EightBallItem(
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLOODY_SOUL_DUST = ITEMS.register("bloody_soul_dust", () -> new Item(
             new Item.Properties()));

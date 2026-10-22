@@ -1,9 +1,7 @@
 package net.agusdropout.bloodyhell.block.registry;
 
 import net.agusdropout.bloodyhell.block.ModSoundTypes;
-import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.custom.mechanism.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -23,7 +21,7 @@ public final class MiscBlocks {
             BlockBehaviour.Properties.copy(Blocks.STONE).noCollission().noOcclusion().strength(1)));
     public static final RegistryObject<Block> ONI_STATUE = registerBlock("oni_statue", () -> new OniStatueBlock(
             BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK).strength(1F).noOcclusion().randomTicks().noLootTable()));
-    public static final RegistryObject<Block> Jumpy_Block = registerBlock("jumpy_block", ()-> new JumpyBlock(
+    public static final RegistryObject<Block> JUMPY_BLOCK = registerBlock("jumpy_block", ()-> new JumpyBlock(
             BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(6f).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SELIORA_RESTING_BLOCK = registerBlockWithoutBlockItem("seliora_resting_block", () -> new SelioraRestingBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().strength(2000f)));

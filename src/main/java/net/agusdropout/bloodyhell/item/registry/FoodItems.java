@@ -1,9 +1,6 @@
 package net.agusdropout.bloodyhell.item.registry;
 
 import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
-import net.agusdropout.bloodyhell.item.custom.*;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
-import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -25,7 +22,7 @@ public final class FoodItems {
             .effect(
                     () -> new MobEffectInstance(MobEffects.CONFUSION,200,0),1
             ).build())));
-    public static final RegistryObject<Item> Eyeball = ITEMS.register("eyeball", () ->
+    public static final RegistryObject<Item> EYEBALL = ITEMS.register("eyeball", () ->
                     new Item(new Item.Properties()
                             .food(new FoodProperties.Builder().nutrition(3).saturationMod(2f)
                                     .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 6000, 0), 1.0f)

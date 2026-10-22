@@ -2,7 +2,6 @@ package net.agusdropout.bloodyhell.block.registry;
 
 import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
-import net.agusdropout.bloodyhell.block.custom.mechanism.*;
 import net.agusdropout.bloodyhell.block.custom.mushroom.CrimsonLureMushroomBlock;
 import net.agusdropout.bloodyhell.block.custom.mushroom.InfestationVeinBlock;
 import net.agusdropout.bloodyhell.block.custom.mushroom.VoraciousMushroomBlock;
@@ -13,8 +12,6 @@ import net.agusdropout.bloodyhell.worldgen.tree.SoulTreeGrower;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.RegistryObject;
@@ -48,13 +45,8 @@ public final class PlantBlocks {
             BlockBehaviour.Properties.copy(Blocks.ALLIUM).noCollission().noOcclusion()));
     public static final RegistryObject<Block> LIGHT_MUSHROOM_BLOCK = registerBlock("light_mushroom_block", ()-> new FlowerBlock(()-> MobEffects.POISON,5,
             BlockBehaviour.Properties.copy(Blocks.BROWN_MUSHROOM_BLOCK).noCollission().noOcclusion().lightLevel((state)->15)));
-    public static final RegistryObject<Block> BLOOD_WALL_MUSHROOM_BLOCK = registerBlock("blood_wall_mushroom_block", ()-> new BaseWallPlantBlock(
-            BlockBehaviour.Properties.copy(Blocks.COCOA).noOcclusion().dynamicShape().lightLevel( (state)->15 )) {
-                @Override
-                protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
-                    super.createBlockStateDefinition(stateManager);
-                }
-            });
+    public static final RegistryObject<Block> BLOOD_WALL_MUSHROOM_BLOCK = registerBlock("blood_wall_mushroom_block", ()-> new BloodWallMushroomBlock(
+            BlockBehaviour.Properties.copy(Blocks.COCOA).noOcclusion().dynamicShape().lightLevel( (state)->15 )));
     public static final RegistryObject<Block> DROOPVINE = registerBlock("droopvine", () -> new DroopvineBlock(
             BlockBehaviour.Properties.copy(Blocks.CAVE_VINES).strength(0.1F).lightLevel(Droopvine.light())));
     public static final RegistryObject<Block> DROOPVINE_PLANT = registerBlock("droopvine_plant", () -> new DroopvinePlantBlock(
@@ -73,12 +65,7 @@ public final class PlantBlocks {
     public static final RegistryObject<Block> CINDER_BLOOM_CACTUS_ROOT = registerBlock("cinder_bloom_cactus_root", ()-> new CinderBloomCactusRoot(
             BlockBehaviour.Properties.copy(Blocks.CACTUS).strength(0.5f).noOcclusion()));
     public static final RegistryObject<Block> CINDER_BLOOM_CACTUS_CON = registerBlock("cinder_bloom_cactus_con", ()-> new CinderBloomCactusCon(
-                    BlockBehaviour.Properties.copy(Blocks.CACTUS).strength(0.5f).noOcclusion()) {
-                @Override
-                protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
-                    super.createBlockStateDefinition(stateManager);
-                }
-            });
+                    BlockBehaviour.Properties.copy(Blocks.CACTUS).strength(0.5f).noOcclusion()));
     public static final RegistryObject<Block> CINDER_BLOOM_CACTUS_CENTER = registerBlock("cinder_bloom_cactus_center", ()-> new CinderBloomCactusCenter(
             BlockBehaviour.Properties.copy(Blocks.CACTUS).strength(0.5f).noOcclusion()));
     public static final RegistryObject<Block> CINDER_BLOOM_CACTUS_FLOWER = registerBlock("cinder_bloom_cactus_flower", ()-> new CinderBloomCactusFlower(

@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.block.registry;
 
-import net.agusdropout.bloodyhell.block.base.*;
 import net.agusdropout.bloodyhell.block.custom.*;
 import net.agusdropout.bloodyhell.block.custom.altar.BlasphemousBloodAltarBlock;
 import net.agusdropout.bloodyhell.block.custom.altar.BloodAltarBlock;
@@ -25,7 +24,7 @@ public final class MachineBlocks {
     public static final RegistryObject<Block> MAIN_BLOOD_ALTAR = registerBlock("main_blood_altar",
             () -> new MainBloodAltarBlock(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
     public static final RegistryObject<Block> UNKNOWN_PORTAL_BLOCK = registerBlockWithoutBlockItem("unknown_portal_block",
-            () -> new UnknownPortalBlock(BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.STONE).noOcclusion()));
+            () -> new UnknownPortalBlock(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
     public static final RegistryObject<Block> SANGUINE_CRUCIBLE = registerBlock("sanguine_crucible", ()-> new BloodWorkbenchBlock(
             BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noCollission()));
     public static final RegistryObject<Block> RHNULL_BLOOD_ENGINE_BLOCK = BLOCKS.register("rhnull_blood_engine_block",

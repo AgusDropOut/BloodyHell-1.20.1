@@ -1,8 +1,5 @@
 package net.agusdropout.bloodyhell.item.registry;
 
-import net.agusdropout.bloodyhell.item.custom.*;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
-import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.agusdropout.bloodyhell.item.custom.staffs.IncompleteStaffOfThePureBloodedItem;
 import net.agusdropout.bloodyhell.item.custom.staffs.StaffOfScarletCinderItem;
 import net.agusdropout.bloodyhell.item.custom.staffs.StaffOfTheGoldenSorrowItem;

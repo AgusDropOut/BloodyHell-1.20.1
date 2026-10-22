@@ -43,18 +43,18 @@ public class HereticSacrificialDagger extends SwordItem {
             }
 
 
-            // 2. Spawnea la entidad "Ojo Desconocido" encima del mob congelado
+
             UnknownEntityArms unknownEye = new UnknownEntityArms(target.level(),target.getX(), target.getY(), target.getZ(), target.getYRot(),0,1,dealer,target);
             unknownEye.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
             target.setDeltaMovement(0, 0, 0);
             target.level().addFreshEntity(unknownEye);
 
-            // 3. Opcional: Efecto de partículas oscuras para darle más impacto
+
             ((ServerLevel) target.level()).sendParticles(ParticleTypes.SMOKE,
                     target.getX(), target.getY() + 0.5, target.getZ(),
                     20, 0.3, 0.3, 0.3, 0.01);
 
-            // 4. Opcional: Sonido de absorción
+
             target.level().playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_TELEPORT,
                     SoundSource.PLAYERS, 1.0F, 0.5F);
 

@@ -18,7 +18,7 @@ public class EyeballCropBlock extends CropBlock {
 
     @Override
     protected ItemLike getBaseSeedId() {
-        return PlaceableItems.Eyeball_seed.get();
+        return PlaceableItems.EYEBALL_SEED.get();
     }
 
     @Override

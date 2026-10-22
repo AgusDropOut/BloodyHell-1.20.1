@@ -1,9 +1,6 @@
 package net.agusdropout.bloodyhell.item.registry;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.item.custom.*;
-import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
-import net.agusdropout.bloodyhell.item.custom.spellbooks.*;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;

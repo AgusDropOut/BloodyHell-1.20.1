@@ -14,3 +14,8 @@
 - A block with a tier must call `requiresCorrectToolForDrops()` in its properties. Do not rely on what `BlockBehaviour.Properties.copy` inherits from the vanilla block: set `strength` and `requiresCorrectToolForDrops()` explicitly.
 - Blocks of one family (base, stairs, slab, fence, gate, wall) share the same hardness and resistance. Use the constants in `ModBlocks`.
 - Tool tier order, lowest to highest: wood, stone, iron, diamond, netherite, sanguinite, blasphemite, rhnull.
+
+## Registering blocks and items
+- Blocks go in a group class in `block/registry` (`StoneBlocks`, `WoodBlocks`, `PlantBlocks`, `MachineBlocks`...), items in `item/registry`. Pick the group by what the thing is; if none fits, add a group and call its `init()` from `ModBlocks.register` or `ModItems.register`.
+- Do not put anything else in `ModBlocks` or `ModItems`: no sound types, no anonymous subclasses, no helper data. Give it its own class.
+- Do not add classification comments; the group name is the classification.
