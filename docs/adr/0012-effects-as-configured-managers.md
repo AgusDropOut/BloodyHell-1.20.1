@@ -16,3 +16,5 @@ Twenty-six deferred managers existed, most of them copies of each other: three o
 ## Consequences
 A new effect of an existing family is one line in `Effects`. A different rendering API or loader replaces the managers and the event adapter, not the call sites.
 The shared draw loop forces the per-item or batched time uniform to be a descriptor option, and the frenzied trail keeps its `timeTarget` because it sets the time on another shader than the one it draws with (TECH_DEBT item 20).
+
+The diagrams and the package map are in `docs/RENDER_ARCHITECTURE.md`.

@@ -79,6 +79,18 @@ public final class EffectStates {
                 RenderSystem.disableBlend();
             });
 
+    public static final EffectState BLACK_HOLE_SCREEN = new EffectState(
+            () -> {
+                RenderSystem.disableDepthTest();
+                RenderSystem.depthMask(false);
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+            },
+            () -> {
+                RenderSystem.depthMask(true);
+                RenderSystem.disableBlend();
+            });
+
     public static final EffectState MAGIC_RING = new EffectState(
             () -> {
                 RenderSystem.enableBlend();
