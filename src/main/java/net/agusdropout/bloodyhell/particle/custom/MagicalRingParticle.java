@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicalRingParticleOptions;
-import net.agusdropout.bloodyhell.client.render.effect.MagicRingRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -62,7 +62,7 @@ public class MagicalRingParticle extends Particle {
 
         float time = (this.age + partialTicks) / 10.0f;
 
-        MagicRingRenderManager.addRing(px, py, pz, this.radius, this.ringHeight, time, this.rCol, this.gCol, this.bCol, this.alpha);
+        Effects.MAGIC_RING.addRing(px, py, pz, this.radius, this.ringHeight, time, this.rCol, this.gCol, this.bCol, this.alpha);
     }
 
     @Override

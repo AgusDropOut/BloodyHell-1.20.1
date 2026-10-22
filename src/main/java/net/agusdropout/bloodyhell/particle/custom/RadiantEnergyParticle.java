@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
-import net.agusdropout.bloodyhell.client.render.effect.TrailEffects;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -70,7 +70,7 @@ public class RadiantEnergyParticle extends Particle {
 
         float lifeFade = 1.0F - ((float)this.age / (float)this.lifetime);
 
-        TrailEffects.RADIANT.submit(
+        Effects.RADIANT_TRAIL.submit(
                 new ArrayList<>(this.history),
                 cameraPos,
                 this.width,

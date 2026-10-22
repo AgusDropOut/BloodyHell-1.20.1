@@ -1,0 +1,3 @@
+﻿AbstractUniform pitch = shader.safeGetUniform("u_Pitch");
+Uniform screenSize = ModShaders.ETHEREAL_SWIRL_SHADER.getUniform("ScreenSize");
+RenderSystem.setShaderTexture(0, mainTarget.getColorTextureId());

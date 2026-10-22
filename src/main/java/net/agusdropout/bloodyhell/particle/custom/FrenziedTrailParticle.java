@@ -5,7 +5,7 @@ import dev.kosmx.playerAnim.core.util.Vec3f;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
-import net.agusdropout.bloodyhell.client.render.effect.TrailEffects;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -92,7 +92,7 @@ public class FrenziedTrailParticle extends Particle {
         float time = ShaderTime.seconds();
         Vec3 cameraPos = camera.getPosition();
 
-        TrailEffects.FRENZIED.submit(
+        Effects.FRENZIED_TRAIL.submit(
                 new ArrayList<>(this.history),
                 cameraPos,
                 this.width,

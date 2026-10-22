@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.agusdropout.bloodyhell.client.render.view.ViewEffects;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.Direction;
@@ -16,15 +17,21 @@ import com.mojang.math.Axis;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BloodStainDecalRenderManager {
-    private static final Map<Integer, DecalData> ACTIVE_DECALS = new ConcurrentHashMap<>();
+public class BloodStainDecalRenderManager implements DeferredRenderManager {
+    private final Map<Integer, DecalData> ACTIVE_DECALS = new ConcurrentHashMap<>();
 
-    public static void addDecal(int id, double x, double y, double z, Direction face, float rot, float size, float r, float g, float b, float a) {
+    public void addDecal(int id, double x, double y, double z, Direction face, float rot, float size, float r, float g, float b, float a) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         ACTIVE_DECALS.put(id, new DecalData(id, x, y, z, face, rot, size, r, g, b, a));
     }
 
-    public static void renderAllAndClear(FrameContext frame) {
+    @Override
+    public String name() {
+        return "BloodStainDecal";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (ACTIVE_DECALS.isEmpty()) return;
 
         Camera camera = frame.camera();

@@ -10,6 +10,8 @@ import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -24,7 +26,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OmnitomeClipRenderManager {
+public class OmnitomeClipRenderManager implements DeferredRenderManager {
     public static final OmnitomeClipRenderManager INSTANCE = new OmnitomeClipRenderManager();
 
     private static class ClipTask {
@@ -62,7 +64,13 @@ public class OmnitomeClipRenderManager {
         TASKS.add(task);
     }
 
-    public void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "OmnitomeClip";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (TASKS.isEmpty()) return;
 
         RenderSystem.enableBlend();

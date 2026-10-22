@@ -1,2 +1,0 @@
-﻿Uniform screenSize = ModShaders.ETHEREAL_SWIRL_SHADER.getUniform("ScreenSize");
-RenderSystem.setShaderTexture(0, mainTarget.getColorTextureId());

@@ -4,8 +4,7 @@ import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
-import net.agusdropout.bloodyhell.client.render.effect.BlackHoleEntityRenderManager;
-import net.agusdropout.bloodyhell.client.render.effect.BlackHoleRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -33,7 +32,7 @@ public class BlackHoleRenderer extends EntityRenderer<BlackHoleEntity> {
 
         Matrix4f pose = poseStack.last().pose();
 
-        BlackHoleEntityRenderManager.addBlackHole(pose, radius, time, alpha, entity.getColor());
+        Effects.BLACK_HOLE_ENTITY.addBlackHole(pose, radius, time, alpha, entity.getColor());
 
         super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }

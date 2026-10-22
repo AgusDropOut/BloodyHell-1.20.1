@@ -6,6 +6,8 @@ import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
@@ -14,26 +16,32 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MagicRingRenderManager {
-    private static final List<RingData> ACTIVE_RINGS = new ArrayList<>();
+public class MagicRingRenderManager implements DeferredRenderManager {
+    private final List<RingData> ACTIVE_RINGS = new ArrayList<>();
 
     private static final ResourceLocation AURORA_NOISE = new ResourceLocation(BloodyHell.MODID, "textures/particle/aurora_noise.png");
     private static final ResourceLocation AURORA_NOISE_ALT = new ResourceLocation(BloodyHell.MODID, "textures/particle/aurora_noise2.png");
 
-    private static final DeferredMatrices MATRICES = new DeferredMatrices();
+    private final DeferredMatrices matrices = new DeferredMatrices();
 
-    public static void addRing(float px, float py, float pz, float radius, float ringHeight, float time, float r, float g, float b, float alpha) {
+    public void addRing(float px, float py, float pz, float radius, float ringHeight, float time, float r, float g, float b, float alpha) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_RINGS.isEmpty()) {
-            MATRICES.capture();
+            matrices.capture();
         }
         ACTIVE_RINGS.add(new RingData(px, py, pz, radius, ringHeight, time, r, g, b, alpha));
     }
 
-    public static void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "MagicRing";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (ACTIVE_RINGS.isEmpty()) return;
 
-        MATRICES.apply();
+        matrices.apply();
 
 
         RenderSystem.enableBlend();
@@ -65,7 +73,7 @@ public class MagicRingRenderManager {
             tess.end();
         }
 
-        MATRICES.restore();
+        matrices.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableCull();

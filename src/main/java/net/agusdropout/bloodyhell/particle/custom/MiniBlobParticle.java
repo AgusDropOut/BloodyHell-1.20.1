@@ -3,8 +3,8 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MiniBlobParticleOptions;
-import net.agusdropout.bloodyhell.client.render.effect.MiniBlobRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.data.MiniBlob;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -58,7 +58,7 @@ public class MiniBlobParticle extends Particle {
         double lerpY = Mth.lerp(partialTicks, this.yo, this.y);
         double lerpZ = Mth.lerp(partialTicks, this.zo, this.z);
 
-        MiniBlobRenderManager.addMiniBlob(new MiniBlob(new Vec3(lerpX, lerpY, lerpZ), this.blobSize, this.rCol, this.gCol, this.bCol));
+        Effects.MINI_BLOB.addMiniBlob(new MiniBlob(new Vec3(lerpX, lerpY, lerpZ), this.blobSize, this.rCol, this.gCol, this.bCol));
     }
 
     @Override

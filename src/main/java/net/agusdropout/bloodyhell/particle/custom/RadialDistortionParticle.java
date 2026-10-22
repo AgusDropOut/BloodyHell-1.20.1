@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.RadialDistortionParticleOptions;
-import net.agusdropout.bloodyhell.client.render.effect.RadialDistortionRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -58,7 +58,7 @@ public class RadialDistortionParticle extends Particle {
         float currentSize = 0.5f + (time * 2.5f);
 
         // Queue the distortion quad instead of drawing immediately
-        RadialDistortionRenderManager.addDistortion(
+        Effects.RADIAL_DISTORTION.addDistortion(
                 poseStack.last().pose(),
                 currentSize,
                 new Vector3f(1, 1, 1),

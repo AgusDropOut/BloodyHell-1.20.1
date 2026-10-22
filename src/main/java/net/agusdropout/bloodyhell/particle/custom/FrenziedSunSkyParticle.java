@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
-import net.agusdropout.bloodyhell.client.render.effect.BillboardEffects;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -71,7 +71,7 @@ public class FrenziedSunSkyParticle extends Particle {
 
         poseStack.pushPose();
         poseStack.translate(0.0D, 0.0D, 5.0D);
-        BillboardEffects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.baseScale * 1.15F, rCol, gCol, bCol, this.alpha * 0.9F, time + 25.0F);
+        Effects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.baseScale * 1.15F, rCol, gCol, bCol, this.alpha * 0.9F, time + 25.0F);
         poseStack.popPose();
 
     }

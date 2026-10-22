@@ -15,8 +15,8 @@ import net.agusdropout.bloodyhell.client.render.entity.layer.EchoGlowLayer;
 import net.agusdropout.bloodyhell.entity.unknown.custom.EchoOfTheNamelessEntity;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
-import net.agusdropout.bloodyhell.client.render.effect.SphericalShieldRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.joml.Matrix4f;
@@ -50,7 +50,7 @@ public class EchoOfTheNamelessRenderer extends InsightCreatureRenderer<EchoOfThe
 
         float baseAlpha = 0.3F * energyRatio;
 
-        SphericalShieldRenderManager.queueRender(() -> {
+        Effects.SPHERICAL_SHIELD.queueRender(() -> {
 
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();

@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.client.render.effect.data.MiniBlob;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.agusdropout.bloodyhell.client.render.deferred.SceneColorCopy;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -18,17 +19,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MiniBlobRenderManager {
+public class MiniBlobRenderManager implements DeferredRenderManager {
 
     private static final int MAX_BLOBS_PER_CLUSTER = 8;
     private static final double MERGE_RADIUS = 1.5;
-    private static final List<MiniBlob> ACTIVE_MINI_BLOBS = new ArrayList<>();
+    private final List<MiniBlob> ACTIVE_MINI_BLOBS = new ArrayList<>();
 
-    public static void addMiniBlob(MiniBlob blob) {
+    public void addMiniBlob(MiniBlob blob) {
         ACTIVE_MINI_BLOBS.add(blob);
     }
 
-    public static void renderAll(FrameContext frame) {
+    @Override
+    public String name() {
+        return "MiniBlob";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (ACTIVE_MINI_BLOBS.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();

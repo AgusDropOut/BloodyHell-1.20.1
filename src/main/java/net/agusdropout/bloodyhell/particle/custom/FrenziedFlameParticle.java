@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.agusdropout.bloodyhell.particle.ParticleOptions.FrenziedFlameParticleOptions;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
-import net.agusdropout.bloodyhell.client.render.effect.BillboardEffects;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -51,16 +51,16 @@ public class FrenziedFlameParticle extends Particle {
 
         poseStack.pushPose();
         poseStack.translate(0.0D, 0.0D, 0.3D);
-        BillboardEffects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.scale * 1.15F, this.rCol, this.gCol, this.bCol, this.alpha * 0.6F, time + 25.0F);
+        Effects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.scale * 1.15F, this.rCol, this.gCol, this.bCol, this.alpha * 0.6F, time + 25.0F);
         poseStack.popPose();
 
 
-        BillboardEffects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.scale, this.rCol, this.gCol, this.bCol, this.alpha, time);
+        Effects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.scale, this.rCol, this.gCol, this.bCol, this.alpha, time);
 
 
         poseStack.pushPose();
         poseStack.translate(0.0D, 0.0D, -0.3D);
-        BillboardEffects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.scale * 0.85F, this.rCol, this.gCol, this.bCol, this.alpha * 0.8F, time - 15.0F);
+        Effects.FRENZIED_FLAME.submit(poseStack.last().pose(), this.scale * 0.85F, this.rCol, this.gCol, this.bCol, this.alpha * 0.8F, time - 15.0F);
         poseStack.popPose();
     }
 

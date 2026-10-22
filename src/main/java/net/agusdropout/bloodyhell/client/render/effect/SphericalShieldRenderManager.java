@@ -4,29 +4,37 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class SphericalShieldRenderManager {
+public class SphericalShieldRenderManager implements DeferredRenderManager {
 
-    private static final Queue<Runnable> RENDER_QUEUE = new ConcurrentLinkedQueue<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices();
+    private final Queue<Runnable> RENDER_QUEUE = new ConcurrentLinkedQueue<>();
+    private final DeferredMatrices matrices = new DeferredMatrices();
 
-    public static void queueRender(Runnable renderTask) {
+    public void queueRender(Runnable renderTask) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (RENDER_QUEUE.isEmpty()) {
-            MATRICES.capture();
+            matrices.capture();
         }
         RENDER_QUEUE.add(renderTask);
     }
 
-    public static void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "SphericalShield";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (RENDER_QUEUE.isEmpty()) {
             return;
         }
 
-        MATRICES.apply();
+        matrices.apply();
 
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -38,7 +46,7 @@ public class SphericalShieldRenderManager {
             task.run();
         }
 
-        MATRICES.restore();
+        matrices.restore();
 
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);

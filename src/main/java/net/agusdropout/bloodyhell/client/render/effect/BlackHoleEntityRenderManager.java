@@ -5,6 +5,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
@@ -13,19 +15,25 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlackHoleEntityRenderManager {
-    private static final List<BlackHoleData> ACTIVE_BLACK_HOLES = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices();
+public class BlackHoleEntityRenderManager implements DeferredRenderManager {
+    private final List<BlackHoleData> ACTIVE_BLACK_HOLES = new ArrayList<>();
+    private final DeferredMatrices matrices = new DeferredMatrices();
 
-    public static void addBlackHole(Matrix4f pose, float radius, float time, float alpha, int color) {
+    public void addBlackHole(Matrix4f pose, float radius, float time, float alpha, int color) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_BLACK_HOLES.isEmpty()) {
-            MATRICES.capture();
+            matrices.capture();
         }
         ACTIVE_BLACK_HOLES.add(new BlackHoleData(new Matrix4f(pose), radius, time, alpha, color));
     }
 
-    public static void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "BlackHoleEntity";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (ACTIVE_BLACK_HOLES.isEmpty()) return;
 
         RenderSystem.enableBlend();
@@ -33,7 +41,7 @@ public class BlackHoleEntityRenderManager {
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);
 
-        MATRICES.apply();
+        matrices.apply();
 
         ShaderInstance shader = ModShaders.BLACK_HOLE_SHADER;
         if (shader != null) {
@@ -62,7 +70,7 @@ public class BlackHoleEntityRenderManager {
             }
         }
 
-        MATRICES.restore();
+        matrices.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableCull();

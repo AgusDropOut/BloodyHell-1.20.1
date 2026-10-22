@@ -5,7 +5,7 @@ import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.entity.effects.FrenziedFireEntity;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
-import net.agusdropout.bloodyhell.client.render.effect.BillboardEffects;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -30,7 +30,7 @@ public class FrenziedFireRenderer extends EntityRenderer<FrenziedFireEntity> {
         float scale = Mth.sin(progress * (float) Math.PI) * 1.5F;
         float alpha = 1.0F - (float) Math.pow(progress, 3.0);
 
-        BillboardEffects.LINEAR_FRENZIED_FLAME.submit(
+        Effects.LINEAR_FRENZIED_FLAME.submit(
                 poseStack.last().pose(),
                 scale,
                 1.0F, 1.0F, 1.0F,

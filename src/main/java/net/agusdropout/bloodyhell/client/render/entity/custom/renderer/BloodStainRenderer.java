@@ -3,8 +3,8 @@ package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.agusdropout.bloodyhell.client.render.effect.BloodStainDecalRenderManager;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -27,7 +27,7 @@ public class BloodStainRenderer extends EntityRenderer<BloodStainEntity> {
         float b = 1.0f - ((entity.tickCount + partialTicks) / (float) entity.getMaxAge());
         float a = 1.0f;
 
-        BloodStainDecalRenderManager.addDecal(
+        Effects.BLOOD_STAIN_DECAL.addDecal(
                 entity.getId(),
                 entity.getX(), entity.getY(), entity.getZ(),
                 entity.getAttachFace(), rot, entity.getSize(),

@@ -4,25 +4,33 @@ import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.agusdropout.bloodyhell.particle.custom.BlackHoleParticle;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlackHoleRenderManager {
-    private static final List<BlackHoleRenderData> ACTIVE_BLACK_HOLES = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices();
+public class BlackHoleRenderManager implements DeferredRenderManager {
+    private final List<BlackHoleRenderData> ACTIVE_BLACK_HOLES = new ArrayList<>();
+    private final DeferredMatrices matrices = new DeferredMatrices();
 
-    public static void addBlackHole(BlackHoleParticle particle, Camera camera, float partialTicks) {
+    public void addBlackHole(BlackHoleParticle particle, Camera camera, float partialTicks) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_BLACK_HOLES.isEmpty()) {
-            MATRICES.capture();
+            matrices.capture();
         }
         ACTIVE_BLACK_HOLES.add(new BlackHoleRenderData(particle, camera, partialTicks));
     }
 
-    public static void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "BlackHole";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (ACTIVE_BLACK_HOLES.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
@@ -33,7 +41,7 @@ public class BlackHoleRenderManager {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        MATRICES.apply();
+        matrices.apply();
 
         RenderSystem.enableDepthTest();
 
@@ -41,7 +49,7 @@ public class BlackHoleRenderManager {
             data.particle.doDeferredRender(data.camera, data.partialTicks, screenTexId);
         }
 
-        MATRICES.restore();
+        matrices.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();

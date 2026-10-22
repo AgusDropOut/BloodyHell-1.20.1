@@ -9,6 +9,8 @@ import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRen
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,7 +23,7 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OmnitomeVoidRenderManager {
+public class OmnitomeVoidRenderManager implements DeferredRenderManager {
     public static final OmnitomeVoidRenderManager INSTANCE = new OmnitomeVoidRenderManager();
 
     private static class VoidTask {
@@ -63,7 +65,13 @@ public class OmnitomeVoidRenderManager {
         TASKS.add(task);
     }
 
-    public void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "OmnitomeVoid";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (TASKS.isEmpty()) return;
 
         RenderSystem.enableDepthTest();

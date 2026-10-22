@@ -11,8 +11,8 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SphericalShieldParticleOptions;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
-import net.agusdropout.bloodyhell.client.render.effect.SphericalShieldRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -61,7 +61,7 @@ public class SphericalShieldParticle extends Particle {
         Matrix4f capturedPose = new Matrix4f(poseStack.last().pose());
         float currentAlpha = this.alpha;
 
-        SphericalShieldRenderManager.queueRender(() -> {
+        Effects.SPHERICAL_SHIELD.queueRender(() -> {
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder builder = tesselator.getBuilder();
 

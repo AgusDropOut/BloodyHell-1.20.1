@@ -6,6 +6,8 @@ import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
@@ -14,26 +16,32 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoiseSphereRenderManager {
-    private static final List<SphereData> ACTIVE_SPHERES = new ArrayList<>();
+public class NoiseSphereRenderManager implements DeferredRenderManager {
+    private final List<SphereData> ACTIVE_SPHERES = new ArrayList<>();
 
     private static final ResourceLocation OUTER_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/particle/sphere_noise_alt.png");
     private static final ResourceLocation INNER_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/particle/sphere_noise_abs.png");
 
-    private static final DeferredMatrices MATRICES = new DeferredMatrices();
+    private final DeferredMatrices matrices = new DeferredMatrices();
 
-    public static void addSphere(float px, float py, float pz, float radius, Vector3f color, float alpha, float uOffset, float vOffset) {
+    public void addSphere(float px, float py, float pz, float radius, Vector3f color, float alpha, float uOffset, float vOffset) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_SPHERES.isEmpty()) {
-            MATRICES.capture();
+            matrices.capture();
         }
         ACTIVE_SPHERES.add(new SphereData(px, py, pz, radius, color, alpha, uOffset, vOffset));
     }
 
-    public static void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "NoiseSphere";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (ACTIVE_SPHERES.isEmpty()) return;
 
-        MATRICES.apply();
+        matrices.apply();
 
 
         RenderSystem.enableDepthTest();
@@ -73,7 +81,7 @@ public class NoiseSphereRenderManager {
         }
 
 
-        MATRICES.restore();
+        matrices.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();

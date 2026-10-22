@@ -4,7 +4,6 @@ Known issues found during the review of the render managers. Not decisions: remo
 
 1. Shader time wraps every 100 s (`WRAP_MILLIS` in `ShaderTime`), causing a visible jump. The formula now lives in one place; particle age animations are still separate.
 3. `SceneColorCopy` never releases its texture on shutdown (the context goes away with the game, harmless in practice).
-5. Managers are invoked in three different styles: static `renderAllAndClear()`, `INSTANCE.renderAllAndClear()` and `renderAll(event)`.
 6. `OmnitomeRenderer.isManagerRendering` and `isChildMorphing` are static mutable flags that are not reset if rendering throws.
 
 Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered registry (done), a shared scene-color copy (done) and a single `ShaderTime` helper (done).

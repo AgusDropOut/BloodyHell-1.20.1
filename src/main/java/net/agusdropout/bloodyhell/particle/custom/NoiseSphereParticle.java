@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.NoiseSphereParticleOptions;
-import net.agusdropout.bloodyhell.client.render.effect.NoiseSphereRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -61,7 +61,7 @@ public class NoiseSphereParticle extends Particle {
         float py = (float) (Mth.lerp(partialTick, this.yo, this.y) - camPos.y());
         float pz = (float) (Mth.lerp(partialTick, this.zo, this.z) - camPos.z());
 
-        NoiseSphereRenderManager.addSphere(px, py, pz, currentRadius, this.color, alpha, uOffset, vOffset);
+        Effects.NOISE_SPHERE.addSphere(px, py, pz, currentRadius, this.color, alpha, uOffset, vOffset);
     }
 
     @Override

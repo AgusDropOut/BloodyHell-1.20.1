@@ -6,6 +6,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.Minecraft;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -15,19 +17,25 @@ import org.joml.Vector4f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RadialDistortionRenderManager {
-    private static final List<DistortionData> ACTIVE_DISTORTIONS = new ArrayList<>();
-    private static final DeferredMatrices MATRICES = new DeferredMatrices();
+public class RadialDistortionRenderManager implements DeferredRenderManager {
+    private final List<DistortionData> ACTIVE_DISTORTIONS = new ArrayList<>();
+    private final DeferredMatrices matrices = new DeferredMatrices();
 
-    public static void addDistortion(Matrix4f pose, float size, Vector3f color, float alpha, float time, Quaternionf customRotation) {
+    public void addDistortion(Matrix4f pose, float size, Vector3f color, float alpha, float time, Quaternionf customRotation) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_DISTORTIONS.isEmpty()) {
-            MATRICES.capture();
+            matrices.capture();
         }
         ACTIVE_DISTORTIONS.add(new DistortionData(pose, size, color, alpha, time, customRotation));
     }
 
-    public static void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "RadialDistortion";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (ACTIVE_DISTORTIONS.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
@@ -40,7 +48,7 @@ public class RadialDistortionRenderManager {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        MATRICES.apply();
+        matrices.apply();
 
         RenderSystem.setShader(() -> ModShaders.RADIAL_DISTORTION_SHADER);
 
@@ -90,7 +98,7 @@ public class RadialDistortionRenderManager {
             tess.end();
         }
 
-        MATRICES.restore();
+        matrices.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();

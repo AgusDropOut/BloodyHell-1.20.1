@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -15,7 +17,7 @@ import org.joml.Matrix4f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OmnitomeBookRenderManager {
+public class OmnitomeBookRenderManager implements DeferredRenderManager {
     public static final OmnitomeBookRenderManager INSTANCE = new OmnitomeBookRenderManager();
 
     private static class BookTask {
@@ -50,7 +52,13 @@ public class OmnitomeBookRenderManager {
         }
     }
 
-    public void renderAllAndClear() {
+    @Override
+    public String name() {
+        return "OmnitomeBook";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (TASKS.isEmpty()) return;
 
         RenderSystem.depthMask(true);

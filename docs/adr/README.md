@@ -17,3 +17,4 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0009 | One scene color copy per deferred pass and one shader clock |
 | 0010 | Test tooling lives in a separate source set |
 | 0011 | Rebuild the camera view with its effects when a shader pack is active |
+| 0012 | Effects are configured instances of a few generic managers |

@@ -9,6 +9,7 @@ import net.agusdropout.bloodyhell.client.render.effect.api.IBloodBlobEmitter;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.agusdropout.bloodyhell.client.render.deferred.SceneColorCopy;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -17,9 +18,15 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class BloodBlobRenderManager {
+public class BloodBlobRenderManager implements DeferredRenderManager {
 
-    public static void renderAll(FrameContext frame) {
+    @Override
+    public String name() {
+        return "BloodBlob";
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
         if (RhnullBloodEngineBlockEntity.ACTIVE_ENGINES.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();

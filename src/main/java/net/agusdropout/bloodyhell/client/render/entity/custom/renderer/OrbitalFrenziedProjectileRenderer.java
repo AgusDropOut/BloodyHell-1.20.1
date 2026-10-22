@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.entity.projectile.OrbitalFrenziedProjectile;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
-import net.agusdropout.bloodyhell.client.render.effect.TrailEffects;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -78,7 +78,7 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
 
         float alpha = 1.0F;
 
-        TrailEffects.FRENZIED.submit(
+        Effects.FRENZIED_TRAIL.submit(
                 smoothCore,
                 cameraPos,
                 entity.coreWidth,
@@ -87,7 +87,7 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
                 time
         );
 
-        TrailEffects.RADIANT.submit(
+        Effects.RADIANT_TRAIL.submit(
                 smoothOrbit1,
                 cameraPos,
                 entity.orbitWidth,
@@ -96,7 +96,7 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
                 time
         );
 
-        TrailEffects.RADIANT.submit(
+        Effects.RADIANT_TRAIL.submit(
                 smoothOrbit2,
                 cameraPos,
                 entity.orbitWidth,

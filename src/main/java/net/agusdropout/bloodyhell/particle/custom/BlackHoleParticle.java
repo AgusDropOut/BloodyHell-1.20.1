@@ -6,9 +6,9 @@ import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.UnknownPortalBlockEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;
-import net.agusdropout.bloodyhell.client.render.effect.BlackHoleRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
+import net.agusdropout.bloodyhell.client.render.effect.Effects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -117,7 +117,7 @@ public class BlackHoleParticle extends Particle {
 
     @Override
     public void render(VertexConsumer ignored, Camera camera, float partialTicks) {
-        BlackHoleRenderManager.addBlackHole(this, camera, partialTicks);
+        Effects.BLACK_HOLE.addBlackHole(this, camera, partialTicks);
     }
 
     public void doDeferredRender(Camera camera, float partialTicks, int screenTexId) {

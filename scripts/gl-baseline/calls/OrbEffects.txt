@@ -1,2 +1,0 @@
-﻿if (shader.safeGetUniform("u_Pitch") != null) {
-shader.safeGetUniform("u_Pitch").set(Minecraft.getInstance().player.getXRot());
