@@ -17,6 +17,16 @@ public final class SceneColorCopy {
         copied = false;
     }
 
+    public static void release() {
+        if (texture != -1) {
+            TextureUtil.releaseTextureId(texture);
+            texture = -1;
+        }
+        width = 0;
+        height = 0;
+        copied = false;
+    }
+
     public static int acquire(RenderTarget mainTarget) {
         if (texture == -1 || width != mainTarget.width || height != mainTarget.height) {
             if (texture != -1) {
