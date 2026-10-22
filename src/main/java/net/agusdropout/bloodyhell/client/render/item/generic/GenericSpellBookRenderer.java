@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.client.render.item.generic;
 
-import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
+import net.agusdropout.bloodyhell.client.render.item.deferred.ItemPassState;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ public class GenericSpellBookRenderer extends GeoItemRenderer<BaseSpellBookItem<
 
     @Override
     public RenderType getRenderType(BaseSpellBookItem<?> animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        if (OmnitomeRenderer.isChildMorphing) {
+        if (ItemPassState.isChildMorphing()) {
             return ModRenderTypes.getEmergeClip(texture);
         }
         return super.getRenderType(animatable, texture, bufferSource, partialTick);

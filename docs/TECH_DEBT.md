@@ -4,7 +4,6 @@ Known issues found during the review of the render managers. Not decisions: remo
 
 1. Shader time wraps every 100 s (`WRAP_MILLIS` in `ShaderTime`), causing a visible jump. The formula now lives in one place; particle age animations are still separate.
 3. `SceneColorCopy` never releases its texture on shutdown (the context goes away with the game, harmless in practice).
-6. `OmnitomeRenderer.isManagerRendering` and `isChildMorphing` are static mutable flags that are not reset if rendering throws.
 
 Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered registry (done), a shared scene-color copy (done) and a single `ShaderTime` helper (done).
 
@@ -24,5 +23,5 @@ Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered r
 Fixed with the test world: null `target` crashes in `UnknownEntityArms` and `SanguineSacrificeEntity`; `CyclopsEntity` and `BlasphemousTwinDaggersCloneEntity` attributes were never registered.
 17. The Insight task queue (`DeferredTaskQueues.INSIGHT`) leaves the depth test disabled after drawing (seen by `GlStateProbe`), and with shaders active some manager before `BloodDrop` leaves `depthMask(false)` with a changed blend func. Later managers restore them by accident. Preserved on purpose by the render refactor, fix as a separate behavior change.
 18. `glowing_crystal_glass_block` and `ancient_blood_capsule` render with the sky color under Rubidium 0.6.5 and Oculus 1.6.4 without shaders, because they need the translucent chunk layer (see ADR 0008). Retest when the pinned Rubidium or Oculus version changes. Fallback: flatten their alpha and use `cutout`.
-19. Effect data classes are nested in the remaining managers with the same shape and different names (`SphereData`, `RingData`, `BlackHoleData`, ...). The orb, billboard and trail effects already use shared records in `client/render/effect/data`; do the same for the rest.
+19. Effect data classes are nested in the remaining managers with the same shape and different names (`SphereData`, `RingData`, `BlackHoleData`, `DistortionData`, `DecalData`). The orb, billboard, trail and Omnitome effects already use shared records; do the same for the rest.
 20. The frenzied trail (`TrailEffects.FRENZIED`) draws with `LINEAR_FRENZIED_FLAME_SHADER` but sets `AnimTime` on `RADIANT_ENERGY_SHADER`, so the shader it draws with never receives the time. Preserved when the managers were merged into `TrailRenderManager` (the `timeTarget` of the effect). Decide whether it should animate and then pass the same shader for both.

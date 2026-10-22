@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
-import net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeVoidRenderManager;
+import net.agusdropout.bloodyhell.client.render.item.deferred.ItemEffects;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -31,12 +31,12 @@ public class OmnitomeVoidLayer extends GeoRenderLayer<OmnitomeItem> {
 
                 ResourceLocation texture = this.getTextureResource(animatable);
 
-                OmnitomeVoidRenderManager.INSTANCE.queueVoidBone(
-                        renderer, renderer.leftPageMatrix, renderer.leftPageNormal, lPage, texture, renderer.currentTransform, packedLight, packedOverlay, 1f, 1f, 1f, 1f
+                ItemEffects.OMNITOME_VOID.queueVoidBone(
+                        renderer::renderVoidCubesDirect, renderer.leftPageMatrix, renderer.leftPageNormal, lPage, texture, renderer.currentTransform, packedLight, packedOverlay, 1f, 1f, 1f, 1f
                 );
 
-                OmnitomeVoidRenderManager.INSTANCE.queueVoidBone(
-                        renderer, renderer.rightPageMatrix, renderer.rightPageNormal, rPage, texture, renderer.currentTransform, packedLight, packedOverlay, 1f, 1f, 1f, 1f
+                ItemEffects.OMNITOME_VOID.queueVoidBone(
+                        renderer::renderVoidCubesDirect, renderer.rightPageMatrix, renderer.rightPageNormal, rPage, texture, renderer.currentTransform, packedLight, packedOverlay, 1f, 1f, 1f, 1f
                 );
             }
         }

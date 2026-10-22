@@ -1,0 +1,6 @@
+﻿return new MatrixSnapshot(new Matrix4f(RenderSystem.getProjectionMatrix()), new Matrix4f(RenderSystem.getModelViewMatrix()));
+RenderSystem.setProjectionMatrix(projection, sorting);
+PoseStack rsStack = RenderSystem.getModelViewStack();
+RenderSystem.applyModelViewMatrix();
+RenderSystem.getModelViewStack().popPose();
+RenderSystem.applyModelViewMatrix();

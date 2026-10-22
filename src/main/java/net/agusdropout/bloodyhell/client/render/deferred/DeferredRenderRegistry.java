@@ -5,9 +5,7 @@ import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManag
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderObserver;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.agusdropout.bloodyhell.client.render.effect.Effects;
-import net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeBookRenderManager;
-import net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeClipRenderManager;
-import net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeVoidRenderManager;
+import net.agusdropout.bloodyhell.client.render.item.deferred.ItemEffects;
 import java.util.List;
 
 public final class DeferredRenderRegistry {
@@ -35,9 +33,9 @@ public final class DeferredRenderRegistry {
             Effects.GOLDEN_SORROW_ORB,
             Effects.SCARLET_CINDER_ORB,
             Effects.BLOOD_STAIN_DECAL,
-            OmnitomeBookRenderManager.INSTANCE,
-            OmnitomeClipRenderManager.INSTANCE,
-            OmnitomeVoidRenderManager.INSTANCE
+            ItemEffects.OMNITOME_BOOK,
+            ItemEffects.OMNITOME_CLIP,
+            ItemEffects.OMNITOME_VOID
     );
 
     private static DeferredRenderObserver observer;

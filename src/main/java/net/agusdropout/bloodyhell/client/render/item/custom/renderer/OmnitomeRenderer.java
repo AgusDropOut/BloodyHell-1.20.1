@@ -8,6 +8,8 @@ import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.client.render.item.layer.OmnitomeVoidLayer;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
+import net.agusdropout.bloodyhell.client.render.item.deferred.ItemEffects;
+import net.agusdropout.bloodyhell.client.render.item.deferred.ItemPassState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.joml.Matrix4f;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
@@ -26,8 +29,6 @@ import software.bernie.geckolib.util.RenderUtils;
 
 public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
 
-    public static boolean isManagerRendering = false;
-    public static boolean isChildMorphing = false;
 
     public Matrix4f leftPageMatrix = null;
     public Matrix3f leftPageNormal = null;
@@ -59,8 +60,8 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        if (!isManagerRendering && !isChildMorphing && (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND)) {
-            net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeBookRenderManager.INSTANCE.queueBook(this, stack, transformType, poseStack, packedLight, packedOverlay);
+        if (!ItemPassState.isManagerRendering() && !ItemPassState.isChildMorphing() && (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND)) {
+            ItemEffects.OMNITOME_BOOK.queueBook(this::renderByItem, stack, transformType, poseStack, packedLight, packedOverlay);
             return;
         }
 
@@ -140,7 +141,11 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
 
             float currentMorphProgress = Mth.clamp((this.virtualElapsed - CHILD_SPAWN_START) / (CHILD_SPAWN_END - CHILD_SPAWN_START), 0.0f, 1.0f);
 
-            net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeClipRenderManager.INSTANCE.queueClipBook(
+            Object customRenderer = IClientItemExtensions.of(this.renderingSpell).getCustomRenderer();
+            GeoItemRenderer<?> childRenderer = customRenderer instanceof GeoItemRenderer<?> geoRenderer ? geoRenderer : null;
+
+            ItemEffects.OMNITOME_CLIP.queueClipBook(
+                    childRenderer,
                     this.renderingSpell,
                     this.currentTransform,
                     poseStack,

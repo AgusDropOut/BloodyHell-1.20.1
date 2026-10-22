@@ -4,64 +4,47 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexSorting;
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
-import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
-import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
-import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.client.render.deferred.MatrixSnapshot;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.item.deferred.data.ClipTask;
+import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
+import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import org.joml.Matrix4f;
 import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OmnitomeClipRenderManager implements DeferredRenderManager {
-    public static final OmnitomeClipRenderManager INSTANCE = new OmnitomeClipRenderManager();
+    private final List<ClipTask> tasks = new ArrayList<>();
 
-    private static class ClipTask {
-        ItemStack stack;
-        ItemDisplayContext transform;
-        Matrix4f poseMatrix;
-        Matrix3f normalMatrix;
-        Matrix4f projectionMatrix;
-        Matrix4f modelViewMatrix;
-        int packedLight;
-        int packedOverlay;
-        float morphProgress;
-    }
-
-    private final List<ClipTask> TASKS = new ArrayList<>();
-
-    public void queueClipBook(ItemStack stack, ItemDisplayContext transform, PoseStack poseStack, int packedLight, int packedOverlay, float morphProgress) {
+    public void queueClipBook(GeoItemRenderer<?> childRenderer, ItemStack stack, ItemDisplayContext transform, PoseStack poseStack, int packedLight, int packedOverlay, float morphProgress) {
         if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseSpellBookItem<?>)) return;
 
         if (RenderPassGuard.shouldSkipDeferred(transform)) return;
-        ClipTask task = new ClipTask();
-        task.stack = stack.copy();
-        task.stack.getOrCreateTag().putBoolean("spellbook_is_open", true);
-        task.transform = transform;
-        task.poseMatrix = new Matrix4f(poseStack.last().pose());
-        task.normalMatrix = new Matrix3f(poseStack.last().normal());
-
-        task.projectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
-        task.modelViewMatrix = new Matrix4f(RenderSystem.getModelViewMatrix());
-
-        task.packedLight = packedLight;
-        task.packedOverlay = packedOverlay;
-        task.morphProgress = morphProgress;
-
-        TASKS.add(task);
+        ItemStack openStack = stack.copy();
+        openStack.getOrCreateTag().putBoolean("spellbook_is_open", true);
+        tasks.add(new ClipTask(
+                childRenderer,
+                openStack,
+                transform,
+                new Matrix4f(poseStack.last().pose()),
+                new Matrix3f(poseStack.last().normal()),
+                MatrixSnapshot.capture(),
+                packedLight,
+                packedOverlay,
+                morphProgress));
     }
 
     @Override
@@ -70,8 +53,9 @@ public class OmnitomeClipRenderManager implements DeferredRenderManager {
     }
 
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void renderAndClear(FrameContext frame) {
-        if (TASKS.isEmpty()) return;
+        if (tasks.isEmpty()) return;
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -82,47 +66,34 @@ public class OmnitomeClipRenderManager implements DeferredRenderManager {
 
         MultiBufferSource.BufferSource immediateBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
 
-        for (ClipTask task : TASKS) {
-            OmnitomeRenderer.isChildMorphing = true;
+        for (ClipTask task : tasks) {
+            ItemPassState.childPass(() -> {
+                if (ModShaders.EMERGE_CLIP_SHADER != null) {
+                    ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("TimeAnim").set(ShaderTime.seconds());
+                    ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("MorphProgress").set(task.morphProgress());
+                }
 
-            if (ModShaders.EMERGE_CLIP_SHADER != null) {
-                ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("TimeAnim").set(ShaderTime.seconds());
-                ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("MorphProgress").set(task.morphProgress);
-            }
+                task.matrices().apply(ItemPassState.sortingFor(task.transform()));
 
-            VertexSorting sorting = (task.transform == ItemDisplayContext.GUI) ?
-                    VertexSorting.ORTHOGRAPHIC_Z : VertexSorting.DISTANCE_TO_ORIGIN;
-            RenderSystem.setProjectionMatrix(task.projectionMatrix, sorting);
+                GeoItemRenderer childRenderer = task.childRenderer();
+                if (childRenderer != null) {
+                    software.bernie.geckolib.core.animatable.GeoAnimatable animatableItem = (software.bernie.geckolib.core.animatable.GeoAnimatable) task.stack().getItem();
+                    ResourceLocation childTexture = childRenderer.getGeoModel().getTextureResource(animatableItem);
 
-            PoseStack rsStack = RenderSystem.getModelViewStack();
-            rsStack.pushPose();
-            rsStack.setIdentity();
-            rsStack.mulPoseMatrix(task.modelViewMatrix);
-            RenderSystem.applyModelViewMatrix();
+                    RenderType clipRenderType = ModRenderTypes.getEmergeClip(childTexture);
+                    VertexConsumer clipBuffer = immediateBuffer.getBuffer(clipRenderType);
 
-            Object customRenderer = IClientItemExtensions.of(task.stack).getCustomRenderer();
-            if (customRenderer instanceof GeoItemRenderer) {
-                @SuppressWarnings({"rawtypes"})
-                GeoItemRenderer childRenderer = (GeoItemRenderer) customRenderer;
+                    PoseStack reconstructedPose = new PoseStack();
+                    reconstructedPose.last().pose().set(task.pose());
+                    reconstructedPose.last().normal().set(task.normal());
 
-                software.bernie.geckolib.core.animatable.GeoAnimatable animatableItem = (software.bernie.geckolib.core.animatable.GeoAnimatable) task.stack.getItem();
-                ResourceLocation childTexture = childRenderer.getGeoModel().getTextureResource(animatableItem);
+                    childRenderer.renderByItem(task.stack(), task.transform(), reconstructedPose, type -> clipBuffer, task.packedLight(), task.packedOverlay());
 
-                RenderType clipRenderType = ModRenderTypes.getEmergeClip(childTexture);
-                VertexConsumer clipBuffer = immediateBuffer.getBuffer(clipRenderType);
+                    immediateBuffer.endBatch(clipRenderType);
+                }
+            });
 
-                PoseStack reconstructedPose = new PoseStack();
-                reconstructedPose.last().pose().set(task.poseMatrix);
-                reconstructedPose.last().normal().set(task.normalMatrix);
-
-                childRenderer.renderByItem(task.stack, task.transform, reconstructedPose, type -> clipBuffer, task.packedLight, task.packedOverlay);
-
-                immediateBuffer.endBatch(clipRenderType);
-            }
-            OmnitomeRenderer.isChildMorphing = false;
-
-            rsStack.popPose();
-            RenderSystem.applyModelViewMatrix();
+            MatrixSnapshot.release();
         }
 
         RenderSystem.setProjectionMatrix(currentProj, currentSorting);
@@ -131,6 +102,6 @@ public class OmnitomeClipRenderManager implements DeferredRenderManager {
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
 
-        TASKS.clear();
+        tasks.clear();
     }
 }
