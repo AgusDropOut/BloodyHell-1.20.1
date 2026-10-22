@@ -17,11 +17,11 @@ public class ModToolTiers {
                     ModTags.Blocks.NEEDS_SANGUINITE_TOOL, () -> Ingredient.of(ModItems.SANGUINITE.get())),
             new ResourceLocation(BloodyHell.MODID, "sanguinite"), List.of(Tiers.NETHERITE), List.of());
     public static final Tier BLASPHEMITE = TierSortingRegistry.registerTier(
-            new ForgeTier(6, 3000, 9f, 7f, 28,
+            new ForgeTier(6, 1700, 9.5f, 5.5f, 26,
                     ModTags.Blocks.NEEDS_BLASPHEMITE_TOOL, () -> Ingredient.of(ModItems.BLASPHEMITE.get())),
             new ResourceLocation(BloodyHell.MODID, "blasphemite"), List.of(ModToolTiers.SANGUINITE), List.of());
     public static final Tier RHNULL = TierSortingRegistry.registerTier(
-            new ForgeTier(7, 2000, 9f, 6f, 28,
+            new ForgeTier(7, 3000, 10f, 7f, 28,
                     ModTags.Blocks.NEEDS_RHNULL_TOOL, () -> Ingredient.of(ModItems.RHNULL.get())),
             new ResourceLocation(BloodyHell.MODID, "rhnull"), List.of(ModToolTiers.BLASPHEMITE), List.of());
 

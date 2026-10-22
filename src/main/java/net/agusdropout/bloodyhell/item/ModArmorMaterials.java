@@ -16,10 +16,10 @@ public enum ModArmorMaterials implements ArmorMaterial {
             SoundEvents.ARMOR_EQUIP_GOLD, 1f, 0f, () -> Ingredient.of(ModItems.SANGUINITE.get())),
 
 
-    BLASPHEMITE("blasphemite", 26, new int[]{ 5, 7, 5, 4 }, 25,
-            SoundEvents.ARMOR_EQUIP_GOLD, 1.2f, 1f, () -> Ingredient.of(ModItems.BLASPHEMITE.get())),
-    RHNULL("rhnull", 26, new int[]{ 7, 9, 7, 6 }, 25,
-            SoundEvents.ARMOR_EQUIP_GOLD, 1.5f, 2f, () -> Ingredient.of(ModItems.RHNULL.get()));
+    BLASPHEMITE("blasphemite", 28, new int[]{ 5, 7, 5, 4 }, 26,
+            SoundEvents.ARMOR_EQUIP_GOLD, 1.5f, 0.05f, () -> Ingredient.of(ModItems.BLASPHEMITE.get())),
+    RHNULL("rhnull", 38, new int[]{ 7, 9, 7, 6 }, 28,
+            SoundEvents.ARMOR_EQUIP_GOLD, 3f, 0.1f, () -> Ingredient.of(ModItems.RHNULL.get()));
 
     private final String name;
     private final int durabilityMultiplier;
