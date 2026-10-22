@@ -2,14 +2,13 @@
 
 Known issues found during the review of the render managers. Not decisions: remove each item once fixed.
 
-1. Shader time wraps every 100 s (`% 100000`), causing a visible jump. Time comes from three sources (`Util.getMillis`, `System.currentTimeMillis` in `MiniBlobRenderManager` and `BloodStainDecalRenderManager`, and particle age) and the formula is duplicated in about 10 places.
-2. `BaseShaderRenderManager` and the orb managers restore the projection with `VertexSorting.ORTHOGRAPHIC_Z` instead of the previous sorting (the Omnitome managers do it correctly).
-3. Five managers (Blob, Orb, MiniBlob, GoldenSorrow, ScarletCinder) each copy the full main target every frame into their own texture, and never release it on shutdown.
+1. Shader time wraps every 100 s (`WRAP_MILLIS` in `ShaderTime`), causing a visible jump. The formula now lives in one place; particle age animations are still separate.
+3. `SceneColorCopy` never releases its texture on shutdown (the context goes away with the game, harmless in practice).
 4. `renderAll(event)` managers re-check `AFTER_LEVEL` although `ModRenderEvents` already filters the stage.
 5. Managers are invoked in three different styles: static `renderAllAndClear()`, `INSTANCE.renderAllAndClear()` and `renderAll(event)`.
 6. `OmnitomeRenderer.isManagerRendering` and `isChildMorphing` are static mutable flags that are not reset if rendering throws.
 
-Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered registry, a shared scene-color copy, and a single `ShaderTime` helper.
+Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered registry (done), a shared scene-color copy (done) and a single `ShaderTime` helper (done).
 
 ## Found by the test world
 

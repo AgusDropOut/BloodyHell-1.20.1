@@ -29,6 +29,8 @@ Last clean baseline: blocks=141/141, entities=75/75, itemChests=11, items=284, n
 
 Test-only code (`/bhtest`, the auto test, the shader cycle and `GlStateProbe`) lives in the `devtools` source set (`src/devtools/java`). It is added to the dev run configurations only and never to the release jar. The probe is installed through `DeferredRenderRegistry.setObserver` when `-PbhGlProbe` is set. After adding a Gradle source set, refresh the Gradle project in the IDE.
 
+Commit messages are checked by `scripts/git-hooks/commit-msg`, which rejects Claude co-authorship and generation lines. On a fresh clone run `git config core.hooksPath scripts/git-hooks` once.
+
 ## Render refactor safety net
 
 Two checks that need no mixins, used to prove that a refactor of the render managers did not change the OpenGL state calls.

@@ -14,3 +14,5 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0006 | Raymarching through a quad |
 | 0007 | Deferred manager refactor keeps the GL state calls untouched |
 | 0008 | Blocks with binary alpha render in the cutout layer |
+| 0009 | One scene color copy per deferred pass and one shader clock |
+| 0010 | Test tooling lives in a separate source set |

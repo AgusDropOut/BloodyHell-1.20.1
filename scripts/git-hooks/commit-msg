@@ -1,0 +1,7 @@
+#!/bin/sh
+if grep -Eiq 'co-authored-by:.*(claude|anthropic)|generated with.*claude|noreply@anthropic\.com' "$1"; then
+    echo "commit-msg: this project does not allow Claude co-authorship or generation lines in commit messages." >&2
+    echo "Remove them and commit again." >&2
+    exit 1
+fi
+exit 0
