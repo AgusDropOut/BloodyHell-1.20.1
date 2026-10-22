@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.devtools;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.logging.LogUtils;
+import net.agusdropout.bloodyhell.util.visuals.manager.DeferredRenderObserver;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
@@ -15,32 +16,29 @@ import java.nio.IntBuffer;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class GlStateProbe {
-    private static final boolean ENABLED = Boolean.getBoolean("bloodyhell.glprobe");
+public final class GlStateProbe implements DeferredRenderObserver {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final Set<String> SEEN = new HashSet<>();
-    private static String previous;
+    private final Set<String> seen = new HashSet<>();
+    private String previous;
 
-    private GlStateProbe() {}
-
-    public static void begin() {
-        if (!ENABLED) return;
+    @Override
+    public void begin() {
         previous = capture();
     }
 
-    public static void mark(String label) {
-        if (!ENABLED) return;
+    @Override
+    public void mark(String label) {
         String current = capture();
         if (previous != null) {
             String line = label + " | " + previous + " -> " + current;
-            if (SEEN.add(line)) {
+            if (seen.add(line)) {
                 LOGGER.info("[GLPROBE] {}", line);
             }
         }
         previous = current;
     }
 
-    private static String capture() {
+    private String capture() {
         StringBuilder sb = new StringBuilder();
         sb.append("blend=").append(GL11.glIsEnabled(GL11.GL_BLEND))
                 .append(':').append(GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB))

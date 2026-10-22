@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
-import net.agusdropout.bloodyhell.devtools.GlStateProbe;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 
 import java.util.List;
@@ -35,13 +34,20 @@ public final class DeferredRenderRegistry {
             DeferredRenderManager.of("OmnitomeVoid", e -> OmnitomeVoidRenderManager.INSTANCE.renderAllAndClear())
     );
 
+    private static DeferredRenderObserver observer;
+
     private DeferredRenderRegistry() {}
 
+    public static void setObserver(DeferredRenderObserver value) {
+        observer = value;
+    }
+
     public static void renderAll(RenderLevelStageEvent event) {
-        GlStateProbe.begin();
+        DeferredRenderObserver current = observer;
+        if (current != null) current.begin();
         for (DeferredRenderManager manager : ORDERED) {
             manager.renderAndClear(event);
-            GlStateProbe.mark(manager.name());
+            if (current != null) current.mark(manager.name());
         }
     }
 }

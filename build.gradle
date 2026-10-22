@@ -18,6 +18,13 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
+sourceSets {
+    devtools {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
@@ -80,6 +87,7 @@ minecraft {
             mods {
                 "${mod_id}" {
                     source sourceSets.main
+                    source sourceSets.devtools
                 }
             }
             property 'mixin.env.remapRefMap', 'true'
