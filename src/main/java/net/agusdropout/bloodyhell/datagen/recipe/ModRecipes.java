@@ -987,7 +987,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
                 .save(consumer, name("rhnull_tank"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINITE_CONDENSER.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINITE_CONDENSER_ITEM.get(), 1)
                 .pattern("SGS")
                 .pattern("G G")
                 .pattern("SSS")
@@ -996,7 +996,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("sanguinite_condenser"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RHNULL_CONDENSER.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.RHNULL_CONDENSER_ITEM.get(), 1)
                 .pattern("RGR")
                 .pattern("G G")
                 .pattern("RRR")

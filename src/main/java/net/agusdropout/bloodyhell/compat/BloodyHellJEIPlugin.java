@@ -84,8 +84,8 @@ public class BloodyHellJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get()), BlasphemousBloodAltarCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.MAIN_BLOOD_ALTAR.get()), BloodAltarCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.SANGUINITE_INFUSOR.get()), SanguiniteInfusorCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.SANGUINITE_CONDENSER.get()), CondenserCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.RHNULL_CONDENSER.get()), CondenserCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.SANGUINITE_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.RHNULL_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.SANGUINITE_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RHNULL_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
     }
