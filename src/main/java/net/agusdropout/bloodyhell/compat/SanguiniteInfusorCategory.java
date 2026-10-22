@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.compat;
 
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -10,7 +11,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.recipe.SanguiniteInfusorRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -27,7 +27,7 @@ public class SanguiniteInfusorCategory implements IRecipeCategory<SanguiniteInfu
 
     public SanguiniteInfusorCategory(IGuiHelper helper) {
         this.background = helper.createBlankDrawable(150, 60);
-        this.icon = helper.createDrawableIngredient(mezz.jei.api.constants.VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SANGUINITE_INFUSOR.get()));
+        this.icon = helper.createDrawableIngredient(mezz.jei.api.constants.VanillaTypes.ITEM_STACK, new ItemStack(MachineBlocks.SANGUINITE_INFUSOR.get()));
     }
 
     @Override

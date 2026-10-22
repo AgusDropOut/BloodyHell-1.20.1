@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.fluid;
 
+import net.agusdropout.bloodyhell.block.registry.FluidBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -43,7 +43,7 @@ public class ModFluids {
     public static final ForgeFlowingFluid.Properties BLOOD_PROPERTIES = new ForgeFlowingFluid.Properties(
             BLOOD_TYPE, BLOOD_SOURCE, BLOOD_FLOWING)
             .slopeFindDistance(2).levelDecreasePerBlock(2)
-            .block(ModBlocks.BLOOD_FLUID_BLOCK)
+            .block(FluidBlocks.BLOOD_FLUID_BLOCK)
             .bucket(ModItems.BLOOD_BUCKET);
 
 
@@ -68,7 +68,7 @@ public class ModFluids {
     public static final ForgeFlowingFluid.Properties CORRUPTED_BLOOD_PROPERTIES = new ForgeFlowingFluid.Properties(
             CORRUPTED_BLOOD_TYPE, CORRUPTED_BLOOD_SOURCE, CORRUPTED_BLOOD_FLOWING)
             .slopeFindDistance(3).levelDecreasePerBlock(3)
-            .block(ModBlocks.CORRUPTED_BLOOD_BLOCK)
+            .block(FluidBlocks.CORRUPTED_BLOOD_BLOCK)
             .bucket(ModItems.CORRUPTED_BLOOD_BUCKET);
 
 
@@ -95,7 +95,7 @@ public class ModFluids {
     public static final ForgeFlowingFluid.Properties VISCOUS_BLASPHEMY_PROPERTIES = new ForgeFlowingFluid.Properties(
             VISCOUS_BLASPHEMY_TYPE, VISCOUS_BLASPHEMY_SOURCE, VISCOUS_BLASPHEMY_FLOWING)
             .slopeFindDistance(2).levelDecreasePerBlock(4)
-            .block(ModBlocks.VISCOUS_BLASPHEMY_BLOCK)
+            .block(FluidBlocks.VISCOUS_BLASPHEMY_BLOCK)
             .bucket(ModItems.VISCOUS_BLASPHEMY_BUCKET);
 
 
@@ -130,7 +130,7 @@ public class ModFluids {
             VISCERAL_FLUID_TYPE, VISCERAL_BLOOD_SOURCE, VISCERAL_BLOOD_FLOWING)
             .slopeFindDistance(2)
             .levelDecreasePerBlock(2)
-            .block(ModBlocks.VISCERAL_BLOOD_BLOCK)
+            .block(FluidBlocks.VISCERAL_BLOOD_BLOCK)
             .bucket(ModItems.VISCERAL_BLOOD_BUCKET);
 
 

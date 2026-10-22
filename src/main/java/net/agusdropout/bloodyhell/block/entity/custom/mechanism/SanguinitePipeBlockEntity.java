@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.entity.custom.mechanism;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.FluidBlocks;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.AbstractPipeBlockEntity;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
@@ -41,7 +41,7 @@ public class SanguinitePipeBlockEntity extends AbstractPipeBlockEntity {
             CorruptedBloodySoulEntity soul = new CorruptedBloodySoulEntity(ModEntityTypes.CORRUPTED_BLOODY_SOUL_ENTITY.get(), level);
             soul.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
             level.addFreshEntity(soul);
-            level.setBlockAndUpdate(pos, ModBlocks.CORRUPTED_BLOOD_BLOCK.get().defaultBlockState());
+            level.setBlockAndUpdate(pos, FluidBlocks.CORRUPTED_BLOOD_BLOCK.get().defaultBlockState());
         }
     }
 

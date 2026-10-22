@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.tree.custom;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.worldgen.tree.ModTreeDecoratorTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -28,8 +28,8 @@ public class SoulTreeLeafDecorator extends TreeDecorator {
                 BlockPos downPos = pos.below();
                 BlockPos down2Pos = downPos.below();
                 if (context.isAir(downPos) && context.isAir(down2Pos)) {
-                    context.setBlock(downPos, ModBlocks.HANGING_SOUL_TREE_LEAVES.get().defaultBlockState());
-                    context.setBlock(down2Pos, ModBlocks.HANGING_SOUL_TREE_LEAVES.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER));
+                    context.setBlock(downPos, PlantBlocks.HANGING_SOUL_TREE_LEAVES.get().defaultBlockState());
+                    context.setBlock(down2Pos, PlantBlocks.HANGING_SOUL_TREE_LEAVES.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER));
                 }
             }
         }));

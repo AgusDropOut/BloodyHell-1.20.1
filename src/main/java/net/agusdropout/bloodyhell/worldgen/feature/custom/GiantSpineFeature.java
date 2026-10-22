@@ -1,7 +1,8 @@
 package net.agusdropout.bloodyhell.worldgen.feature.custom;
 
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -27,7 +28,7 @@ public class GiantSpineFeature extends Feature<NoneFeatureConfiguration> {
         // --- Check valid base terrain ---
         BlockPos ground = origin.below();
         if (!level.getBlockState(ground).is(Blocks.SAND) &&
-                !level.getBlockState(ground).is(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get())) {
+                !level.getBlockState(ground).is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get())) {
             return false;
         }
 
@@ -91,13 +92,13 @@ public class GiantSpineFeature extends Feature<NoneFeatureConfiguration> {
 
                     BlockState block;
                     if (roll < sandstoneChance) {
-                        block = ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState();
+                        block = SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState();
                     } else if (roll < sandstoneChance + erodedChance) {
-                        block = ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
+                        block = SandstoneBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
                     } else if (roll < sandstoneChance + erodedChance + crackedChance) {
-                        block = ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
+                        block = SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
                     } else {
-                        block = ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
+                        block = SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
                     }
 
                     level.setBlock(pos, block, 2);

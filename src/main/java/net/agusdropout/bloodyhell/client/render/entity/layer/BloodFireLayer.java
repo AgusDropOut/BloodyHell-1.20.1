@@ -1,9 +1,9 @@
 package net.agusdropout.bloodyhell.client.render.entity.layer;
 
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -63,7 +63,7 @@ public class BloodFireLayer<T extends LivingEntity, M extends EntityModel<T>> ex
         poseStack.scale(xScale, yScale, xScale);
 
         TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer()
-                .getBlockModel(ModBlocks.BLOOD_FIRE.get().defaultBlockState())
+                .getBlockModel(MiscBlocks.BLOOD_FIRE.get().defaultBlockState())
                 .getParticleIcon();
 
         VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));

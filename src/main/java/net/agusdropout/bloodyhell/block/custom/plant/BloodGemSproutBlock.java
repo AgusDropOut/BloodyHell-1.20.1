@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom.plant;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import net.agusdropout.bloodyhell.block.base.BaseGemSproutBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +22,7 @@ public class BloodGemSproutBlock extends BaseGemSproutBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos posBelow = pos.below();
         BlockState stateBelow = level.getBlockState(posBelow);
-        boolean isValidSoil = stateBelow.is(BlockTags.DIRT) || stateBelow.is(ModBlocks.BLOOD_GRASS.get()) || stateBelow.is(ModBlocks.BLOOD_DIRT_BLOCK.get());
+        boolean isValidSoil = stateBelow.is(BlockTags.DIRT) || stateBelow.is(PlantBlocks.BLOOD_GRASS.get()) || stateBelow.is(SoilBlocks.BLOOD_DIRT_BLOCK.get());
         return isValidSoil;
     }
 

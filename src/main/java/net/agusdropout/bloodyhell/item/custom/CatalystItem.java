@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.block.custom.ModBloodPortalBlock;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ public class CatalystItem extends Item {
                     || context.getPlayer().level().dimension() == Level.OVERWORLD) {
                 for(Direction direction : Direction.Plane.VERTICAL) {
                     BlockPos framePos = context.getClickedPos().relative(direction);
-                    if(((ModBloodPortalBlock) ModBlocks.BLOOD_PORTAL.get()).trySpawnPortal(context.getLevel(), framePos)) {
+                    if(((ModBloodPortalBlock) MiscBlocks.BLOOD_PORTAL.get()).trySpawnPortal(context.getLevel(), framePos)) {
                         context.getLevel().playSound(context.getPlayer(), framePos,
                                 SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1.0F, 1.0F);
                         return InteractionResult.CONSUME;

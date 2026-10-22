@@ -1,7 +1,15 @@
 package net.agusdropout.bloodyhell.datagen.recipe;
 
+import net.agusdropout.bloodyhell.block.registry.LightBlocks;
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.compat.FlaskFillCategory;
 import net.agusdropout.bloodyhell.datagen.*;
 import net.agusdropout.bloodyhell.datagen.recipe.builder.BlasphemousBloodAltarRecipeBuilder;
@@ -69,7 +77,7 @@ public class ModRecipes extends ModRecipesProvider {
         BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.NAMELESS_WHISPER.get())
                 .requires(ModItems.GAZE_OF_THE_UNKNOWN.get())
                 .requires(ModItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())
-                .requires(ModBlocks.BLASPHEMITE_BLOCK.get())
+                .requires(MetalBlocks.BLASPHEMITE_BLOCK.get())
                 .unlockedBy("has_gaze_of_the_unknown", has(ModItems.GAZE_OF_THE_UNKNOWN.get()))
                 .save(consumer, name("ritual_nameless_whisper"));
 
@@ -80,17 +88,17 @@ public class ModRecipes extends ModRecipesProvider {
 
         BloodAltarRecipeBuilder.ritual(ModItems.NAMELESS_ECHO_SHARD.get())
                 .requires(Items.AMETHYST_SHARD)
-                .requires(ModBlocks.SANGUINITE_BLOCK.get())
+                .requires(MetalBlocks.SANGUINITE_BLOCK.get())
                 .requires(ModItems.FILLED_BLOOD_FLASK.get())
-                .requires(ModBlocks.GLOWING_CRYSTAL.get())
-                .unlockedBy("has_glowing_crystal", has(ModBlocks.GLOWING_CRYSTAL.get()))
+                .requires(LightBlocks.GLOWING_CRYSTAL.get())
+                .unlockedBy("has_glowing_crystal", has(LightBlocks.GLOWING_CRYSTAL.get()))
                 .save(consumer, name("ritual_nameless_echo_shard"));
 
         // =================================================================
         // ALTARS CRAFTING
         // =================================================================
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLOOD_ALTAR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, MachineBlocks.BLOOD_ALTAR.get(), 1)
                 .pattern("GDG")
                 .pattern("SCS")
                 .pattern("TST")
@@ -98,44 +106,44 @@ public class ModRecipes extends ModRecipesProvider {
                 .define('G', Items.GOLD_INGOT)
                 .define('C', ModItems.CORRUPTED_BLOOD_FLASK.get())
                 .define('D', ModItems.BLOODY_SOUL_DUST.get())
-                .define('T', ModBlocks.BLOODY_STONE_TILES_BLOCK.get())
+                .define('T', StoneBlocks.BLOODY_STONE_TILES_BLOCK.get())
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("blood_altar"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MAIN_BLOOD_ALTAR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, MachineBlocks.MAIN_BLOOD_ALTAR.get(), 1)
                 .pattern("GDG")
                 .pattern("SCS")
                 .pattern("TST")
-                .define('S', ModBlocks.SANGUINITE_BLOCK.get())
+                .define('S', MetalBlocks.SANGUINITE_BLOCK.get())
                 .define('G', Items.GOLD_INGOT)
                 .define('C', ModItems.CORRUPTED_BLOOD_FLASK.get())
                 .define('D', ModItems.CHALICE_OF_THE_DAMMED.get())
-                .define('T', ModBlocks.BLOODY_STONE_TILES_BLOCK.get())
+                .define('T', StoneBlocks.BLOODY_STONE_TILES_BLOCK.get())
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("main_blood_altar"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
                 .pattern("FDF")
                 .pattern("SLS")
                 .pattern("BRB")
-                .define('S', ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .define('S', SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .define('B', ModItems.BLASPHEMITE.get())
                 .define('L', ModItems.FILLED_BLOOD_FLASK.get())
                 .define('D', ModItems.BLOODY_SOUL_DUST.get())
                 .define('F', ModItems.UNKNOWN_ENTITY_FINGER.get())
-                .define('R', ModBlocks.BLASPHEMITE_BLOCK.get())
+                .define('R', MetalBlocks.BLASPHEMITE_BLOCK.get())
                 .unlockedBy("has_blasphemite", has(ModItems.BLASPHEMITE.get()))
                 .save(consumer, name("blasphemous_blood_altar"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, MachineBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get(), 1)
                 .pattern("FCF")
                 .pattern("SLS")
                 .pattern("RRR")
-                .define('S', ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .define('S', SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .define('L', ModItems.FILLED_BLOOD_FLASK.get())
                 .define('C', ModItems.CHALICE_OF_THE_DAMMED.get())
                 .define('F', ModItems.UNKNOWN_ENTITY_FINGER.get())
-                .define('R', ModBlocks.BLASPHEMITE_BLOCK.get())
+                .define('R', MetalBlocks.BLASPHEMITE_BLOCK.get())
                 .unlockedBy("has_blasphemite", has(ModItems.BLASPHEMITE.get()))
                 .save(consumer, name("main_blasphemous_blood_altar"));
 
@@ -152,7 +160,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .save(consumer, name("ritual_find_mausoleum"));
 
         BlasphemousBloodAltarRecipeBuilder.ritual(ModItems.BLOOD_GEM_SPROUT_SEED.get())
-                .requires(ModBlocks.BLOOD_FLOWER.get())
+                .requires(PlantBlocks.BLOOD_FLOWER.get())
                 .requires(ModItems.BLOODY_SOUL_DUST.get())
                 .requires(ModItems.SANGUINITE.get())
                 .unlockedBy("has_dirty_blood_flower", has(ModItems.DIRTY_BLOOD_FLOWER.get()))
@@ -223,8 +231,8 @@ public class ModRecipes extends ModRecipesProvider {
                 .requires(Items.AMETHYST_SHARD)
                 .requires(ModItems.SANGUINITE.get())
                 .requires(ModItems.FILLED_BLOOD_FLASK.get())
-                .requires(ModBlocks.GLOWING_CRYSTAL.get())
-                .unlockedBy("has_glowing_crystal", has(ModBlocks.GLOWING_CRYSTAL.get()))
+                .requires(LightBlocks.GLOWING_CRYSTAL.get())
+                .unlockedBy("has_glowing_crystal", has(LightBlocks.GLOWING_CRYSTAL.get()))
                 .save(consumer, name("ritual_blood_echo_shard"));
 
         BloodAltarRecipeBuilder.ritual(ModItems.BLOOD_SCRATCH_SPELLBOOK.get())
@@ -319,48 +327,48 @@ public class ModRecipes extends ModRecipesProvider {
         // MATERIAL CONVERSIONS (BLOCK <-> INGOT <-> NUGGET)
         // =================================================================
 
-        generateMaterialFamily(consumer, "sanguinite", ModBlocks.SANGUINITE_BLOCK, ModItems.SANGUINITE, ModItems.SANGUINITE_NUGGET);
-        generateMaterialFamily(consumer, "rhnull", ModBlocks.RHNULL_BLOCK, ModItems.RHNULL, ModItems.RHNULL_NUGGET);
-        generateMaterialFamily(consumer, "blasphemite", ModBlocks.BLASPHEMITE_BLOCK, ModItems.BLASPHEMITE, ModItems.BLASPHEMITE_NUGGET);
+        generateMaterialFamily(consumer, "sanguinite", MetalBlocks.SANGUINITE_BLOCK, ModItems.SANGUINITE, ModItems.SANGUINITE_NUGGET);
+        generateMaterialFamily(consumer, "rhnull", MetalBlocks.RHNULL_BLOCK, ModItems.RHNULL, ModItems.RHNULL_NUGGET);
+        generateMaterialFamily(consumer, "blasphemite", MetalBlocks.BLASPHEMITE_BLOCK, ModItems.BLASPHEMITE, ModItems.BLASPHEMITE_NUGGET);
 
         // =================================================================
         // BLOCKS & DECORATIONS
         // =================================================================
 
-        makePlanks(ModBlocks.BLOOD_PLANKS, ModTags.Items.BLOOD_LOGS).save(consumer);
+        makePlanks(WoodBlocks.BLOOD_PLANKS, ModTags.Items.BLOOD_LOGS).save(consumer);
 
-        makeBricks(ModBlocks.POLISHED_BLOODY_STONE_BLOCK, ModBlocks.BLOODY_STONE_BLOCK).save(consumer);
-        makeBricks(ModBlocks.BLOODY_STONE_BRICKS, ModBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
-        makeBricks(ModBlocks.BLOODY_STONE_TILES_BLOCK, ModBlocks.BLOODY_STONE_BRICKS).save(consumer);
+        makeBricks(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK, StoneBlocks.BLOODY_STONE_BLOCK).save(consumer);
+        makeBricks(StoneBlocks.BLOODY_STONE_BRICKS, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
+        makeBricks(StoneBlocks.BLOODY_STONE_TILES_BLOCK, StoneBlocks.BLOODY_STONE_BRICKS).save(consumer);
 
-        makeStairs(ModBlocks.BLOODY_STONE_STAIRS, ModBlocks.BLOODY_STONE_BLOCK).save(consumer);
-        makeSlab(ModBlocks.BLOODY_STONE_SLAB, ModBlocks.BLOODY_STONE_BLOCK).save(consumer);
-        makeWall(ModBlocks.BLOODY_STONE_WALL, ModBlocks.BLOODY_STONE_BLOCK).save(consumer);
-        makeFence(ModBlocks.BLOODY_STONE_FENCE, ModBlocks.BLOODY_STONE_BLOCK).save(consumer);
-        makeFenceGate(ModBlocks.BLOODY_STONE_FENCE_GATE, ModBlocks.BLOODY_STONE_BLOCK).save(consumer);
+        makeStairs(StoneBlocks.BLOODY_STONE_STAIRS, StoneBlocks.BLOODY_STONE_BLOCK).save(consumer);
+        makeSlab(StoneBlocks.BLOODY_STONE_SLAB, StoneBlocks.BLOODY_STONE_BLOCK).save(consumer);
+        makeWall(StoneBlocks.BLOODY_STONE_WALL, StoneBlocks.BLOODY_STONE_BLOCK).save(consumer);
+        makeFence(StoneBlocks.BLOODY_STONE_FENCE, StoneBlocks.BLOODY_STONE_BLOCK).save(consumer);
+        makeFenceGate(StoneBlocks.BLOODY_STONE_FENCE_GATE, StoneBlocks.BLOODY_STONE_BLOCK).save(consumer);
 
-        makeStairs(ModBlocks.POLISHED_BLOODY_STONE_STAIRS, ModBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
-        makeSlab(ModBlocks.POLISHED_BLOODY_STONE_SLAB, ModBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
-        makeWall(ModBlocks.POLISHED_BLOODY_STONE_WALL, ModBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
-        makeFence(ModBlocks.POLISHED_BLOODY_STONE_FENCE, ModBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
-        makeFenceGate(ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE, ModBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
+        makeStairs(StoneBlocks.POLISHED_BLOODY_STONE_STAIRS, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
+        makeSlab(StoneBlocks.POLISHED_BLOODY_STONE_SLAB, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
+        makeWall(StoneBlocks.POLISHED_BLOODY_STONE_WALL, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
+        makeFence(StoneBlocks.POLISHED_BLOODY_STONE_FENCE, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
+        makeFenceGate(StoneBlocks.POLISHED_BLOODY_STONE_FENCE_GATE, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK).save(consumer);
 
-        makeStairs(ModBlocks.BLOODY_STONE_TILES_STAIRS, ModBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
-        makeSlab(ModBlocks.BLOODY_STONE_TILES_SLAB, ModBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
-        makeWall(ModBlocks.BLOODY_STONE_TILES_WALL, ModBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
-        makeFence(ModBlocks.BLOODY_STONE_TILES_FENCE, ModBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
-        makeFenceGate(ModBlocks.BLOODY_STONE_FENCE_TILES_GATE, ModBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
+        makeStairs(StoneBlocks.BLOODY_STONE_TILES_STAIRS, StoneBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
+        makeSlab(StoneBlocks.BLOODY_STONE_TILES_SLAB, StoneBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
+        makeWall(StoneBlocks.BLOODY_STONE_TILES_WALL, StoneBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
+        makeFence(StoneBlocks.BLOODY_STONE_TILES_FENCE, StoneBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
+        makeFenceGate(StoneBlocks.BLOODY_STONE_FENCE_TILES_GATE, StoneBlocks.BLOODY_STONE_TILES_BLOCK).save(consumer);
 
-        makeStairs(ModBlocks.BLOODY_STONE_BRICKS_STAIRS, ModBlocks.BLOODY_STONE_BRICKS).save(consumer);
-        makeSlab(ModBlocks.BLOODY_STONE_BRICKS_SLAB, ModBlocks.BLOODY_STONE_BRICKS).save(consumer);
-        makeWall(ModBlocks.BLOODY_STONE_BRICKS_WALL, ModBlocks.BLOODY_STONE_BRICKS).save(consumer);
-        makeFence(ModBlocks.BLOODY_STONE_BRICKS_FENCE, ModBlocks.BLOODY_STONE_BRICKS).save(consumer);
-        makeFenceGate(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE, ModBlocks.BLOODY_STONE_BRICKS).save(consumer);
+        makeStairs(StoneBlocks.BLOODY_STONE_BRICKS_STAIRS, StoneBlocks.BLOODY_STONE_BRICKS).save(consumer);
+        makeSlab(StoneBlocks.BLOODY_STONE_BRICKS_SLAB, StoneBlocks.BLOODY_STONE_BRICKS).save(consumer);
+        makeWall(StoneBlocks.BLOODY_STONE_BRICKS_WALL, StoneBlocks.BLOODY_STONE_BRICKS).save(consumer);
+        makeFence(StoneBlocks.BLOODY_STONE_BRICKS_FENCE, StoneBlocks.BLOODY_STONE_BRICKS).save(consumer);
+        makeFenceGate(StoneBlocks.BLOODY_STONE_FENCE_BRICKS_GATE, StoneBlocks.BLOODY_STONE_BRICKS).save(consumer);
 
-        makeStairs(ModBlocks.BLOOD_PLANKS_STAIRS, ModBlocks.BLOOD_PLANKS).save(consumer);
-        makeSlab(ModBlocks.BLOOD_PLANKS_SLAB, ModBlocks.BLOOD_PLANKS).save(consumer);
-        makeFence(ModBlocks.BLOOD_PLANKS_FENCE, ModBlocks.BLOOD_PLANKS).save(consumer);
-        makeFenceGate(ModBlocks.BLOOD_PLANKS_FENCE_GATE, ModBlocks.BLOOD_PLANKS).save(consumer);
+        makeStairs(WoodBlocks.BLOOD_PLANKS_STAIRS, WoodBlocks.BLOOD_PLANKS).save(consumer);
+        makeSlab(WoodBlocks.BLOOD_PLANKS_SLAB, WoodBlocks.BLOOD_PLANKS).save(consumer);
+        makeFence(WoodBlocks.BLOOD_PLANKS_FENCE, WoodBlocks.BLOOD_PLANKS).save(consumer);
+        makeFenceGate(WoodBlocks.BLOOD_PLANKS_FENCE_GATE, WoodBlocks.BLOOD_PLANKS).save(consumer);
 
         // =================================================================
         // TOOLS CRAFTING
@@ -459,33 +467,33 @@ public class ModRecipes extends ModRecipesProvider {
         // INGREDIENT ITEMS CRAFTING
         // =================================================================
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROOTLET_POWDER.get(), 2)
-        .requires(ModBlocks.BLOOD_PETALS.get())
-        .requires(ModBlocks.BLOOD_FLOWER.get())
+        .requires(PlantBlocks.BLOOD_PETALS.get())
+        .requires(PlantBlocks.BLOOD_FLOWER.get())
         .requires(Items.REDSTONE)
-        .unlockedBy("has_blood_flower", has(ModBlocks.BLOOD_FLOWER.get()))
+        .unlockedBy("has_blood_flower", has(PlantBlocks.BLOOD_FLOWER.get()))
         .save(consumer, name("rootlet_powder"));
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.REDSTONE, 1)
-        .requires(ModBlocks.BLOODY_STONE_BLOCK.get())
-        .requires(ModBlocks.BLOOD_GRASS.get())
-        .unlockedBy("has_bloody_stone_block", has(ModBlocks.BLOODY_STONE_BLOCK.get()))
+        .requires(StoneBlocks.BLOODY_STONE_BLOCK.get())
+        .requires(PlantBlocks.BLOOD_GRASS.get())
+        .unlockedBy("has_bloody_stone_block", has(StoneBlocks.BLOODY_STONE_BLOCK.get()))
         .save(consumer, name("redstone_from_blood_stone_and_blood_grass"));
 
         // =================================================================
         // GLOWING BLOCKS CRAFTING
         // =================================================================
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get(), 8)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get(), 8)
                 .pattern("GGG")
                 .pattern("GCG")
                 .pattern("GGG")
-                .define('C', ModBlocks.GLOWING_CRYSTAL.get().asItem())
+                .define('C', LightBlocks.GLOWING_CRYSTAL.get().asItem())
                 .define('G', Items.GLASS)
-                .unlockedBy("has_glowing_crystal", has(ModBlocks.GLOWING_CRYSTAL.get()))
+                .unlockedBy("has_glowing_crystal", has(LightBlocks.GLOWING_CRYSTAL.get()))
                 .unlockedBy("has_glass", has(Items.GLASS))
                 .save(consumer, name("glowing_crystal_glass_block"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLOOD_GLOW_STONE.get(), 8)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LightBlocks.BLOOD_GLOW_STONE.get(), 8)
                 .pattern("GGG")
                 .pattern("GCG")
                 .pattern("GGG")
@@ -495,27 +503,27 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_glowstone", has(Items.GLOWSTONE))
                 .save(consumer, name("blood_glow_stone_block"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get(), 8)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get(), 8)
                 .pattern("G")
                 .pattern("C")
                 .pattern("G")
                 .define('C', ModItems.BLOODY_SOUL_DUST.get())
-                .define('G', ModBlocks.GLOWING_CRYSTAL.get())
+                .define('G', LightBlocks.GLOWING_CRYSTAL.get())
                 .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
-                .unlockedBy("has_glowing_crystal", has(ModBlocks.GLOWING_CRYSTAL.get()))
+                .unlockedBy("has_glowing_crystal", has(LightBlocks.GLOWING_CRYSTAL.get()))
                 .save(consumer, name("blood_glowing_chains"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWING_CRYSTAL_LANTERN.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, LightBlocks.GLOWING_CRYSTAL_LANTERN.get(), 1)
                 .pattern("PPP")
                 .pattern("PGP")
                 .pattern("PPP")
-                .define('G', ModBlocks.GLOWING_CRYSTAL.get())
+                .define('G', LightBlocks.GLOWING_CRYSTAL.get())
                 .define('P', ModItems.SANGUINITE_NUGGET.get())
-                .unlockedBy("has_glowing_crystal", has(ModBlocks.GLOWING_CRYSTAL.get()))
+                .unlockedBy("has_glowing_crystal", has(LightBlocks.GLOWING_CRYSTAL.get()))
                 .unlockedBy("has_sanguinite_nugget", has(ModItems.SANGUINITE_NUGGET.get()))
                 .save(consumer, name("glowing_crystal_lantern"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SANGUINE_CRUCIBLE.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, MachineBlocks.SANGUINE_CRUCIBLE.get(), 1)
                 .pattern("GCG")
                 .pattern("GSG")
                 .pattern("GGG")
@@ -540,21 +548,21 @@ public class ModRecipes extends ModRecipesProvider {
         // STONECUTTING
         // =================================================================
 
-        bloodyStonecutting(ModBlocks.BLOODY_STONE_STAIRS.get(),2).save(consumer, name("bloody_stone_stairs_stonecutting"));
-        bloodyStonecutting(ModBlocks.BLOODY_STONE_SLAB.get(),2).save(consumer, name("bloody_stone_slab_stonecutting"));
-        bloodyStonecutting(ModBlocks.BLOODY_STONE_WALL.get(),1).save(consumer, name("bloody_stone_wall_stonecutting"));
+        bloodyStonecutting(StoneBlocks.BLOODY_STONE_STAIRS.get(),2).save(consumer, name("bloody_stone_stairs_stonecutting"));
+        bloodyStonecutting(StoneBlocks.BLOODY_STONE_SLAB.get(),2).save(consumer, name("bloody_stone_slab_stonecutting"));
+        bloodyStonecutting(StoneBlocks.BLOODY_STONE_WALL.get(),1).save(consumer, name("bloody_stone_wall_stonecutting"));
 
-        polishedBloodyStoneStonecutting(ModBlocks.POLISHED_BLOODY_STONE_STAIRS.get(),2).save(consumer, name("polished_bloody_stone_stairs_stonecutting"));
-        polishedBloodyStoneStonecutting(ModBlocks.POLISHED_BLOODY_STONE_SLAB.get(),2).save(consumer, name("polished_bloody_stone_slab_stonecutting"));
-        polishedBloodyStoneStonecutting(ModBlocks.POLISHED_BLOODY_STONE_WALL.get(),1).save(consumer, name("polished_bloody_stone_wall_stonecutting"));
+        polishedBloodyStoneStonecutting(StoneBlocks.POLISHED_BLOODY_STONE_STAIRS.get(),2).save(consumer, name("polished_bloody_stone_stairs_stonecutting"));
+        polishedBloodyStoneStonecutting(StoneBlocks.POLISHED_BLOODY_STONE_SLAB.get(),2).save(consumer, name("polished_bloody_stone_slab_stonecutting"));
+        polishedBloodyStoneStonecutting(StoneBlocks.POLISHED_BLOODY_STONE_WALL.get(),1).save(consumer, name("polished_bloody_stone_wall_stonecutting"));
 
-        bloodyStoneTilesStonecutting(ModBlocks.BLOODY_STONE_TILES_STAIRS.get(),2).save(consumer, name("bloody_stone_tiles_stairs_stonecutting"));
-        bloodyStoneTilesStonecutting(ModBlocks.BLOODY_STONE_TILES_SLAB.get(),2).save(consumer, name("bloody_stone_tiles_slab_stonecutting"));
-        bloodyStoneTilesStonecutting(ModBlocks.BLOODY_STONE_TILES_WALL.get(),1).save(consumer, name("bloody_stone_tiles_wall_stonecutting"));
+        bloodyStoneTilesStonecutting(StoneBlocks.BLOODY_STONE_TILES_STAIRS.get(),2).save(consumer, name("bloody_stone_tiles_stairs_stonecutting"));
+        bloodyStoneTilesStonecutting(StoneBlocks.BLOODY_STONE_TILES_SLAB.get(),2).save(consumer, name("bloody_stone_tiles_slab_stonecutting"));
+        bloodyStoneTilesStonecutting(StoneBlocks.BLOODY_STONE_TILES_WALL.get(),1).save(consumer, name("bloody_stone_tiles_wall_stonecutting"));
 
-        bloodyStoneBricksStonecutting(ModBlocks.BLOODY_STONE_BRICKS_STAIRS.get(),2).save(consumer, name("bloody_stone_bricks_stairs_stonecutting"));
-        bloodyStoneBricksStonecutting(ModBlocks.BLOODY_STONE_BRICKS_SLAB.get(),2).save(consumer, name("bloody_stone_bricks_slab_stonecutting"));
-        bloodyStoneBricksStonecutting(ModBlocks.BLOODY_STONE_BRICKS_WALL.get(),1).save(consumer, name("bloody_stone_bricks_wall_stonecutting"));
+        bloodyStoneBricksStonecutting(StoneBlocks.BLOODY_STONE_BRICKS_STAIRS.get(),2).save(consumer, name("bloody_stone_bricks_stairs_stonecutting"));
+        bloodyStoneBricksStonecutting(StoneBlocks.BLOODY_STONE_BRICKS_SLAB.get(),2).save(consumer, name("bloody_stone_bricks_slab_stonecutting"));
+        bloodyStoneBricksStonecutting(StoneBlocks.BLOODY_STONE_BRICKS_WALL.get(),1).save(consumer, name("bloody_stone_bricks_wall_stonecutting"));
 
 
         // =================================================================
@@ -676,61 +684,61 @@ public class ModRecipes extends ModRecipesProvider {
 
         // --- BLASPHEMOUS SANDSTONE ---
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .pattern("SS")
                 .pattern("SS")
-                .define('S', ModBlocks.BLASPHEMOUS_SAND_BLOCK.get())
-                .unlockedBy("has_blasphemous_sand", has(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get()))
+                .define('S', SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get())
+                .unlockedBy("has_blasphemous_sand", has(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get()))
                 .save(consumer, name("blasphemous_sandstone_from_sand"));
 
-        smeltingRecipe(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get(), ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get(), 0.1f)
+        smeltingRecipe(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get(), SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get(), 0.1f)
                 .save(consumer, name("smooth_blasphemous_sandstone_smelting"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get(), 4)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get(), 4)
                 .pattern("SS")
                 .pattern("SS")
-                .define('S', ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
-                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+                .define('S', SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
                 .save(consumer, name("cut_blasphemous_sandstone"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
                 .pattern("S")
                 .pattern("S")
-                .define('S', ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get())
-                .unlockedBy("has_smooth_blasphemous_sandstone_slab", has(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get()))
+                .define('S', SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get())
+                .unlockedBy("has_smooth_blasphemous_sandstone_slab", has(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get()))
                 .save(consumer, name("chiseled_blasphemous_sandstone"));
 
         // --- ESCALERAS Y LOSAS ---
-        makeStairs(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
-        makeSlab(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
+        makeStairs(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS, SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
+        makeSlab(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB, SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
 
         // --- STONECUTTING ---
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
-                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
                 .save(consumer, name("stonecutting_cut_blasphemous_sandstone"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
-                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
                 .save(consumer, name("stonecutting_chiseled_blasphemous_sandstone"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
-                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
                 .save(consumer, name("stonecutting_chiseled_detailed_blasphemous_sandstone"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get())
-                .unlockedBy("has_blasphemous_sandstone", has(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .unlockedBy("has_blasphemous_sandstone", has(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()))
                 .save(consumer, name("stonecutting_smooth_blasphemous_sandstone"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get())
-                .unlockedBy("has_smooth_blasphemous_sandstone", has(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get())
+                .unlockedBy("has_smooth_blasphemous_sandstone", has(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()))
                 .save(consumer, name("stonecutting_smooth_blasphemous_sandstone_stairs"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get(), 2)
-                .unlockedBy("has_smooth_blasphemous_sandstone", has(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), RecipeCategory.BUILDING_BLOCKS, SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get(), 2)
+                .unlockedBy("has_smooth_blasphemous_sandstone", has(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()))
                 .save(consumer, name("stonecutting_smooth_blasphemous_sandstone_slab"));
 
         // --- VASIIJA DECORADA ---
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.DECORATED_POT_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, MiscBlocks.DECORATED_POT_BLOCK.get())
                 .pattern("B B")
                 .pattern(" B ")
                 .define('B', Items.BRICK)
@@ -738,13 +746,13 @@ public class ModRecipes extends ModRecipesProvider {
                 .save(consumer, name("decorated_pot_block"));
 
         // --- STAR LAMP ---
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.STAR_LAMP_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, LightBlocks.STAR_LAMP_BLOCK.get())
                 .pattern(" S ")
                 .pattern("SLS")
                 .pattern(" S ")
-                .define('S', ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
-                .define('L', ModBlocks.GLOWING_CRYSTAL_LANTERN.get())
-                .unlockedBy("has_glowing_lantern", has(ModBlocks.GLOWING_CRYSTAL_LANTERN.get()))
+                .define('S', SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get())
+                .define('L', LightBlocks.GLOWING_CRYSTAL_LANTERN.get())
+                .unlockedBy("has_glowing_lantern", has(LightBlocks.GLOWING_CRYSTAL_LANTERN.get()))
                 .save(consumer, name("star_lamp_block"));
 
 
@@ -802,44 +810,44 @@ public class ModRecipes extends ModRecipesProvider {
         // ANCIENT BLOODY STONE BRICKS
         // =================================================================
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get(), 8)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get(), 8)
                 .pattern("PPP")
                 .pattern("PGP")
                 .pattern("PPP")
-                .define('P', ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get())
+                .define('P', StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get())
                 .define('G', Items.GOLD_INGOT)
-                .unlockedBy("has_polished_bloody_stone", has(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()))
+                .unlockedBy("has_polished_bloody_stone", has(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()))
                 .save(consumer, name("ancient_bloody_stone_bricks"));
 
-        makeStairs(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
-        makeSlab(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
-        makeWall(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
+        makeStairs(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
+        makeSlab(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
+        makeWall(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS).save(consumer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get(), 2)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get(), 2)
                 .pattern("S")
                 .pattern("S")
-                .define('S', ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get())
-                .unlockedBy("has_ancient_bloody_stone_slab", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get()))
+                .define('S', StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get())
+                .unlockedBy("has_ancient_bloody_stone_slab", has(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get()))
                 .save(consumer, name("ancient_bloody_stone_bricks_column"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get())
-                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, StoneBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
                 .save(consumer, name("stonecutting_ancient_chiseled"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get())
-                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, StoneBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
                 .save(consumer, name("stonecutting_ancient_detailed"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get(), 2)
-                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get(), 2)
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
                 .save(consumer, name("stonecutting_ancient_slab"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get())
-                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
                 .save(consumer, name("stonecutting_ancient_stairs"));
 
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
-                .unlockedBy("has_ancient_bloody_stone_bricks", has(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
+                .unlockedBy("has_ancient_bloody_stone_bricks", has(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()))
                 .save(consumer, name("stonecutting_ancient_wall"));
 
 
@@ -855,7 +863,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_bloody_soul_dust", has(ModItems.BLOODY_SOUL_DUST.get()))
                 .save(consumer, name("ancient_torch"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.ANCIENT_BLOODY_LAMP.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, LightBlocks.ANCIENT_BLOODY_LAMP.get())
                 .pattern("GGG")
                 .pattern("GTG")
                 .pattern("GGG")
@@ -875,7 +883,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .pattern("RPR")
                 .define('F', ModItems.UNKNOWN_ENTITY_FINGER.get())
                 .define('R', ModItems.RHNULL.get())
-                .define('T', ModBlocks.RHNULL_TANK.get())
+                .define('T', MachineBlocks.RHNULL_TANK.get())
                 .define('P', ModItems.RHNULL_PIPE_ITEM.get())
                 .unlockedBy("has_finger", has(ModItems.UNKNOWN_ENTITY_FINGER.get()))
                 .save(consumer, name("unknown_portal_block"));
@@ -969,7 +977,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_rhnull", has(ModItems.RHNULL.get()))
                 .save(consumer, name("rhnull_pipe"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINITE_TANK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MachineBlocks.SANGUINITE_TANK.get())
                 .pattern("SGS")
                 .pattern("G G")
                 .pattern("SGS")
@@ -978,7 +986,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("sanguinite_tank"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RHNULL_TANK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MachineBlocks.RHNULL_TANK.get())
                 .pattern("RGR")
                 .pattern("G G")
                 .pattern("RGR")
@@ -1016,25 +1024,25 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_sacrificial_dagger", has(ModItems.SACRIFICIAL_DAGGER.get()))
                 .save(consumer, name("sanguinite_blood_harvester"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINITE_INFUSOR.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MachineBlocks.SANGUINITE_INFUSOR.get())
                 .pattern("SGS")
                 .pattern("GCG")
                 .pattern("SBS")
                 .define('S', ModItems.SANGUINITE.get())
                 .define('G', Items.GOLD_INGOT)
-                .define('B', ModBlocks.SANGUINITE_BLOCK.get())
+                .define('B', MetalBlocks.SANGUINITE_BLOCK.get())
                 .define('C', ModItems.ANCIENT_GEM.get())
                 .unlockedBy("has_crucible_core", has(ModItems.SANGUINE_CRUCIBLE_CORE.get()))
                 .save(consumer, name("sanguinite_infusor"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SANGUINE_LAPIDARY.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MachineBlocks.SANGUINE_LAPIDARY.get())
                 .pattern(" D ")
                 .pattern("SPS")
                 .pattern("BBB")
                 .define('D', ModItems.GREAT_ANCIENT_GEM.get())
                 .define('S', ModItems.SANGUINITE.get())
-                .define('P', ModBlocks.POLISHED_BLOODY_STONE_SLAB.get())
-                .define('B', ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get())
+                .define('P', StoneBlocks.POLISHED_BLOODY_STONE_SLAB.get())
+                .define('B', StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get())
                 .unlockedBy("has_sanguinite", has(ModItems.SANGUINITE.get()))
                 .save(consumer, name("sanguine_lapidary"));
 

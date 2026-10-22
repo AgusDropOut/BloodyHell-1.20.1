@@ -1,12 +1,12 @@
 package net.agusdropout.bloodyhell.compat;
 
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.recipe.*;
@@ -81,12 +81,12 @@ public class BloodyHellJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get()), BlasphemousBloodAltarCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.MAIN_BLOOD_ALTAR.get()), BloodAltarCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.SANGUINITE_INFUSOR.get()), SanguiniteInfusorCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(MachineBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get()), BlasphemousBloodAltarCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(MachineBlocks.MAIN_BLOOD_ALTAR.get()), BloodAltarCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(MachineBlocks.SANGUINITE_INFUSOR.get()), SanguiniteInfusorCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModItems.SANGUINITE_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModItems.RHNULL_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.SANGUINITE_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.RHNULL_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(MachineBlocks.SANGUINITE_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(MachineBlocks.RHNULL_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
     }
 }

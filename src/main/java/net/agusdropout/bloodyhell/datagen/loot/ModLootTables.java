@@ -1,5 +1,14 @@
 package net.agusdropout.bloodyhell.datagen.loot;
 
+import net.agusdropout.bloodyhell.block.registry.LightBlocks;
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.custom.Droopvine;
 import net.agusdropout.bloodyhell.block.custom.EyeballCropBlock;
@@ -62,183 +71,183 @@ public class ModLootTables extends LootTableProvider {
 
         @Override
         protected void generate() {
-            this.dropSelf(ModBlocks.SANGUINITE_BLOCK.get());
-            this.dropSelf(ModBlocks.RHNULL_BLOCK);
-            this.dropSelf(ModBlocks.Jumpy_Block.get());
-            this.dropSelf(ModBlocks.SOUL_LAMP.get());
-            this.dropSelf(ModBlocks.SANGUINE_CRUCIBLE.get());
-            this.dropSelf(ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get());
-            this.dropSelf(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get());
-            this.dropSelf(ModBlocks.RHNULL_BLOOD_ENGINE_BLOCK.get());
-            this.dropSelf(ModBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK.get());
-            this.dropSelf(ModBlocks.BLOOD_ALTAR.get());
-            this.dropSelf(ModBlocks.MAIN_BLOOD_ALTAR.get());
-            this.dropOther(ModBlocks.SANGUINITE_CONDENSER.get(), ModItems.SANGUINITE_CONDENSER_ITEM.get());
-            this.dropOther(ModBlocks.RHNULL_CONDENSER.get(), ModItems.RHNULL_CONDENSER_ITEM.get());
-            this.dropSelf(ModBlocks.BLOOD_SAPLING.get());
-            this.dropSelf(ModBlocks.STRIPPED_BLOOD_WOOD.get());
-            this.dropSelf(ModBlocks.STRIPPED_BLOOD_LOG.get());
-            this.dropSelf(ModBlocks.BLOOD_WOOD.get());
-            this.dropSelf(ModBlocks.BLOOD_LOG.get());
-            this.dropSelf(ModBlocks.BLEEDING_BLOCK.get());
-            this.dropSelf(ModBlocks.SOUL_PLANKS.get());
-            this.dropSelf(ModBlocks.SOUL_SAPLING.get());
-            this.dropSelf(ModBlocks.STRIPPED_SOUL_WOOD.get());
-            this.dropSelf(ModBlocks.STRIPPED_SOUL_LOG.get());
-            this.dropSelf(ModBlocks.SOUL_WOOD.get());
-            this.dropSelf(ModBlocks.SOUL_LOG.get());
-            this.dropSelf(ModBlocks.HANGING_SOUL_TREE_LEAVES.get());
-            this.dropSelf(ModBlocks.EYEBALLSHELL_SNAIL_GOO.get());
-            this.dropSelf(ModBlocks.EYEBALLSHELL_SNAIL_GOO_BLOCK.get());
-            this.dropSelf(ModBlocks.BLOOD_GRASS_BLOCK.get());
-            this.dropSelf(ModBlocks.BLOOD_DIRT_BLOCK.get());
-            this.dropSelf(ModBlocks.BLOODDIRT_FARMLAND.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_BLOCK.get());
+            this.dropSelf(MetalBlocks.SANGUINITE_BLOCK.get());
+            this.dropSelf(MetalBlocks.RHNULL_BLOCK);
+            this.dropSelf(MiscBlocks.Jumpy_Block.get());
+            this.dropSelf(LightBlocks.SOUL_LAMP.get());
+            this.dropSelf(MachineBlocks.SANGUINE_CRUCIBLE.get());
+            this.dropSelf(MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR.get());
+            this.dropSelf(MachineBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get());
+            this.dropSelf(MachineBlocks.RHNULL_BLOOD_ENGINE_BLOCK.get());
+            this.dropSelf(MachineBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK.get());
+            this.dropSelf(MachineBlocks.BLOOD_ALTAR.get());
+            this.dropSelf(MachineBlocks.MAIN_BLOOD_ALTAR.get());
+            this.dropOther(MachineBlocks.SANGUINITE_CONDENSER.get(), ModItems.SANGUINITE_CONDENSER_ITEM.get());
+            this.dropOther(MachineBlocks.RHNULL_CONDENSER.get(), ModItems.RHNULL_CONDENSER_ITEM.get());
+            this.dropSelf(PlantBlocks.BLOOD_SAPLING.get());
+            this.dropSelf(WoodBlocks.STRIPPED_BLOOD_WOOD.get());
+            this.dropSelf(WoodBlocks.STRIPPED_BLOOD_LOG.get());
+            this.dropSelf(WoodBlocks.BLOOD_WOOD.get());
+            this.dropSelf(WoodBlocks.BLOOD_LOG.get());
+            this.dropSelf(MiscBlocks.BLEEDING_BLOCK.get());
+            this.dropSelf(WoodBlocks.SOUL_PLANKS.get());
+            this.dropSelf(PlantBlocks.SOUL_SAPLING.get());
+            this.dropSelf(WoodBlocks.STRIPPED_SOUL_WOOD.get());
+            this.dropSelf(WoodBlocks.STRIPPED_SOUL_LOG.get());
+            this.dropSelf(WoodBlocks.SOUL_WOOD.get());
+            this.dropSelf(WoodBlocks.SOUL_LOG.get());
+            this.dropSelf(PlantBlocks.HANGING_SOUL_TREE_LEAVES.get());
+            this.dropSelf(MiscBlocks.EYEBALLSHELL_SNAIL_GOO.get());
+            this.dropSelf(MiscBlocks.EYEBALLSHELL_SNAIL_GOO_BLOCK.get());
+            this.dropSelf(SoilBlocks.BLOOD_GRASS_BLOCK.get());
+            this.dropSelf(SoilBlocks.BLOOD_DIRT_BLOCK.get());
+            this.dropSelf(SoilBlocks.BLOODDIRT_FARMLAND.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_BLOCK.get());
 
-            this.dropOther(ModBlocks.SANGUINITE_PIPE.get(),ModItems.SANGUINITE_PIPE_ITEM.get());
-            this.dropOther(ModBlocks.RHNULL_PIPE.get(),ModItems.RHNULL_PIPE_ITEM.get());
-            this.dropSelf(ModBlocks.SANGUINITE_TANK.get());
-            this.dropSelf(ModBlocks.RHNULL_TANK.get());
-            this.dropOther(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get(),ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
-
-
-            this.createSilkTouchOrShearsDispatchTable(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), ModItems.VORACIOUS_MUSHROOM.get());
-            this.createSilkTouchOrShearsDispatchTable(ModBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), ModItems.CRIMSON_LURE_MUSHROOM.get());
-            this.dropOther(ModBlocks.UNKNOWN_PORTAL_BLOCK.get(),ModItems.UNKNOWN_PORTAL_ITEM.get());
-            this.dropSelf(ModBlocks.SANGUINITE_INFUSOR.get());
+            this.dropOther(MachineBlocks.SANGUINITE_PIPE.get(),ModItems.SANGUINITE_PIPE_ITEM.get());
+            this.dropOther(MachineBlocks.RHNULL_PIPE.get(),ModItems.RHNULL_PIPE_ITEM.get());
+            this.dropSelf(MachineBlocks.SANGUINITE_TANK.get());
+            this.dropSelf(MachineBlocks.RHNULL_TANK.get());
+            this.dropOther(MachineBlocks.SANGUINITE_BLOOD_HARVESTER.get(),ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
 
 
-
-
-
-            this.dropSelf(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get());
-            this.dropSelf(ModBlocks.POLISHED_BLOODY_STONE_SLAB.get());
-            this.dropSelf(ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get());
-            this.dropSelf(ModBlocks.POLISHED_BLOODY_STONE_FENCE.get());
-            this.dropSelf(ModBlocks.POLISHED_BLOODY_STONE_WALL.get());
-            this.dropSelf(ModBlocks.POLISHED_BLOODY_STONE_STAIRS.get());
-
-            this.dropSelf(ModBlocks.BLOODY_STONE_TILES_BLOCK.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_TILES_SLAB.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_FENCE_TILES_GATE.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_TILES_FENCE.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_TILES_WALL.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_TILES_STAIRS.get());
-
-            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get());
-            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get());
-            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get());
-            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get());
-            this.dropSelf(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get());
-            this.dropSelf(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get());
-            this.dropSelf(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get());
-            this.dropSelf(ModBlocks.ANCIENT_BLOODY_LAMP.get());
-            this.dropOther(ModBlocks.ANCIENT_TORCH_BLOCK.get(),ModItems.ANCIENT_TORCH_ITEM.get());
-            this.dropSelf(ModBlocks.ANCIENT_BLOOD_CAPSULE.get());
-            this.dropSelf(ModBlocks.SANGUINE_LAPIDARY.get());
+            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), ModItems.VORACIOUS_MUSHROOM.get());
+            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), ModItems.CRIMSON_LURE_MUSHROOM.get());
+            this.dropOther(MachineBlocks.UNKNOWN_PORTAL_BLOCK.get(),ModItems.UNKNOWN_PORTAL_ITEM.get());
+            this.dropSelf(MachineBlocks.SANGUINITE_INFUSOR.get());
 
 
 
 
-            this.dropSelf(ModBlocks.BLOODY_STONE_SLAB.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_FENCE_GATE.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_FENCE.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_WALL.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_STAIRS.get());
 
-            this.dropSelf(ModBlocks.BLOODY_STONE_BRICKS.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_BRICKS_SLAB.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_BRICKS_FENCE.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_BRICKS_WALL.get());
-            this.dropSelf(ModBlocks.BLOODY_STONE_BRICKS_STAIRS.get());
+            this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get());
+            this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_SLAB.get());
+            this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get());
+            this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_FENCE.get());
+            this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_WALL.get());
+            this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_STAIRS.get());
 
-            this.dropSelf(ModBlocks.BLOOD_PLANKS.get());
-            this.dropSelf(ModBlocks.BLOOD_PLANKS_STAIRS.get());
-            this.dropSelf(ModBlocks.BLOOD_PLANKS_SLAB.get());
-            this.dropSelf(ModBlocks.BLOOD_PLANKS_FENCE.get());
-            this.dropSelf(ModBlocks.BLOOD_PLANKS_FENCE_GATE.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_TILES_SLAB.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_FENCE_TILES_GATE.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_TILES_FENCE.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_TILES_WALL.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_TILES_STAIRS.get());
 
-
-            this.dropSelf(ModBlocks.BLOOD_LILY_BLOCK.get());
-            this.dropSelf(ModBlocks.SMALL_BLOOD_SAPLING.get());
-            this.dropSelf(ModBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get());
-            this.dropSelf(ModBlocks.GIANT_BLOOD_SAPLING.get());
-            this.dropSelf(ModBlocks.HANGING_BLOOD_TREE_LEAVES.get());
-            this.dropSelf(ModBlocks.BLOOD_GLOW_STONE.get());
-            this.dropSelf(ModBlocks.DROOPVINE.get());
-            this.dropSelf(ModBlocks.DROOPVINE_PLANT.get());
-            this.dropSelf(ModBlocks.BLOOD_SCRAPPER_PLANT.get());
-            this.dropSelf(ModBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get());
-            this.dropSelf(ModBlocks.GLOWING_CRYSTAL.get());
-            this.dropSelf(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get());
-            this.dropSelf(ModBlocks.GLOWING_CRYSTAL_LANTERN.get());
-            this.dropSelf(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get());
-            this.dropSelf(ModBlocks.BLOOD_WOOD_CHEST.get());
-            this.dropOther(ModBlocks.DROOPVINE.get(),ModItems.GLOW_FRUIT.get());
-            this.dropOther(ModBlocks.DROOPVINE_PLANT.get(),ModItems.GLOW_FRUIT.get());
-
-            this.dropSelf(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get());
-            this.dropSelf(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
-            this.dropSelf(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-            this.dropSelf(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-            this.dropSelf(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-            this.dropSelf(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-            this.dropSelf(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get());
-            this.dropSelf(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get());
-            this.dropSelf(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get());
-            this.dropSelf(ModBlocks.CINDER_BLOOM_CACTUS_CON.get());
-            this.dropSelf(ModBlocks.CINDER_BLOOM_CACTUS_CENTER.get());
-            this.dropSelf(ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get());
-            this.dropSelf(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get());
-            this.dropSelf(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get());
-            this.dropSelf(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get());
-            this.dropSelf(ModBlocks.BLASPHEMITE_BLOCK.get());
-            this.dropSelf(ModBlocks.SPIKY_GRASS.get());
-            this.dropSelf(ModBlocks.ROUNDED_GRASS.get());
-            this.dropSelf(ModBlocks.STING_FLOWER.get());
-            this.add(ModBlocks.DECORATED_POT_BLOCK.get(), createPotDrops(ModBlocks.DECORATED_POT_BLOCK.get()));
-            this.dropOther(ModBlocks.SELIORA_RESTING_BLOCK.get(),ModItems.SELIORA_RESTING_ITEM.get());
-            this.dropSelf(ModBlocks.FORBIDDEN_BOOKSHELF_BLOCK.get());
-            this.dropSelf(ModBlocks.STAR_LAMP_BLOCK.get());
-            this.add(ModBlocks.BLASPHEMITE_ORE.get(), block -> createOreDrop(ModBlocks.BLASPHEMITE_ORE.get(), ModItems.RAW_BLASPHEMITE.get()));
+            this.dropSelf(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get());
+            this.dropSelf(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get());
+            this.dropSelf(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get());
+            this.dropSelf(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get());
+            this.dropSelf(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get());
+            this.dropSelf(StoneBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get());
+            this.dropSelf(StoneBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get());
+            this.dropSelf(LightBlocks.ANCIENT_BLOODY_LAMP.get());
+            this.dropOther(LightBlocks.ANCIENT_TORCH_BLOCK.get(),ModItems.ANCIENT_TORCH_ITEM.get());
+            this.dropSelf(MiscBlocks.ANCIENT_BLOOD_CAPSULE.get());
+            this.dropSelf(MachineBlocks.SANGUINE_LAPIDARY.get());
 
 
 
-            ore(ModBlocks.SANGUINITE_ORE, ModItems.RAW_SANGUINITE);
+
+            this.dropSelf(StoneBlocks.BLOODY_STONE_SLAB.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_FENCE_GATE.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_FENCE.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_WALL.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_STAIRS.get());
+
+            this.dropSelf(StoneBlocks.BLOODY_STONE_BRICKS.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_BRICKS_SLAB.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_BRICKS_FENCE.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_BRICKS_WALL.get());
+            this.dropSelf(StoneBlocks.BLOODY_STONE_BRICKS_STAIRS.get());
+
+            this.dropSelf(WoodBlocks.BLOOD_PLANKS.get());
+            this.dropSelf(WoodBlocks.BLOOD_PLANKS_STAIRS.get());
+            this.dropSelf(WoodBlocks.BLOOD_PLANKS_SLAB.get());
+            this.dropSelf(WoodBlocks.BLOOD_PLANKS_FENCE.get());
+            this.dropSelf(WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get());
+
+
+            this.dropSelf(PlantBlocks.BLOOD_LILY_BLOCK.get());
+            this.dropSelf(PlantBlocks.SMALL_BLOOD_SAPLING.get());
+            this.dropSelf(PlantBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get());
+            this.dropSelf(PlantBlocks.GIANT_BLOOD_SAPLING.get());
+            this.dropSelf(PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get());
+            this.dropSelf(LightBlocks.BLOOD_GLOW_STONE.get());
+            this.dropSelf(PlantBlocks.DROOPVINE.get());
+            this.dropSelf(PlantBlocks.DROOPVINE_PLANT.get());
+            this.dropSelf(PlantBlocks.BLOOD_SCRAPPER_PLANT.get());
+            this.dropSelf(PlantBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get());
+            this.dropSelf(LightBlocks.GLOWING_CRYSTAL.get());
+            this.dropSelf(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get());
+            this.dropSelf(LightBlocks.GLOWING_CRYSTAL_LANTERN.get());
+            this.dropSelf(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get());
+            this.dropSelf(WoodBlocks.BLOOD_WOOD_CHEST.get());
+            this.dropOther(PlantBlocks.DROOPVINE.get(),ModItems.GLOW_FRUIT.get());
+            this.dropOther(PlantBlocks.DROOPVINE_PLANT.get(),ModItems.GLOW_FRUIT.get());
+
+            this.dropSelf(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get());
+            this.dropSelf(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
+            this.dropSelf(SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+            this.dropSelf(SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+            this.dropSelf(SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+            this.dropSelf(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+            this.dropSelf(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get());
+            this.dropSelf(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get());
+            this.dropSelf(PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get());
+            this.dropSelf(PlantBlocks.CINDER_BLOOM_CACTUS_CON.get());
+            this.dropSelf(PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get());
+            this.dropSelf(PlantBlocks.CINDER_BLOOM_CACTUS_FLOWER.get());
+            this.dropSelf(SandstoneBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get());
+            this.dropSelf(SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get());
+            this.dropSelf(SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get());
+            this.dropSelf(MetalBlocks.BLASPHEMITE_BLOCK.get());
+            this.dropSelf(PlantBlocks.SPIKY_GRASS.get());
+            this.dropSelf(PlantBlocks.ROUNDED_GRASS.get());
+            this.dropSelf(PlantBlocks.STING_FLOWER.get());
+            this.add(MiscBlocks.DECORATED_POT_BLOCK.get(), createPotDrops(MiscBlocks.DECORATED_POT_BLOCK.get()));
+            this.dropOther(MiscBlocks.SELIORA_RESTING_BLOCK.get(),ModItems.SELIORA_RESTING_ITEM.get());
+            this.dropSelf(MiscBlocks.FORBIDDEN_BOOKSHELF_BLOCK.get());
+            this.dropSelf(LightBlocks.STAR_LAMP_BLOCK.get());
+            this.add(MetalBlocks.BLASPHEMITE_ORE.get(), block -> createOreDrop(MetalBlocks.BLASPHEMITE_ORE.get(), ModItems.RAW_BLASPHEMITE.get()));
+
+
+
+            ore(MetalBlocks.SANGUINITE_ORE, ModItems.RAW_SANGUINITE);
 
 
 
 
 
             LootItemCondition.Builder lootitemcondition$builder2 = LootItemBlockStatePropertyCondition
-                    .hasBlockStateProperties(ModBlocks.EYEBALL_CROP.get())
+                    .hasBlockStateProperties(PlantBlocks.EYEBALL_CROP.get())
                     .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EyeballCropBlock.AGE, 6))
                     .or(LootItemBlockStatePropertyCondition
-                            .hasBlockStateProperties(ModBlocks.EYEBALL_CROP.get())
+                            .hasBlockStateProperties(PlantBlocks.EYEBALL_CROP.get())
                             .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EyeballCropBlock.AGE, 6)));
 
 
-            this.add(ModBlocks.EYEBALL_CROP.get(), createCropDrops(ModBlocks.EYEBALL_CROP.get(), ModItems.Eyeball.get(),
+            this.add(PlantBlocks.EYEBALL_CROP.get(), createCropDrops(PlantBlocks.EYEBALL_CROP.get(), ModItems.Eyeball.get(),
                     ModItems.Eyeball_seed.get(), lootitemcondition$builder2));
 
-            this.add(ModBlocks.BLOOD_LEAVES.get(), block ->
-                    createLeavesDrops(block, ModBlocks.BLOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
-            this.add(ModBlocks.SOUL_LEAVES.get(), block ->
-                    createLeavesDrops(block, ModBlocks.BLOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+            this.add(WoodBlocks.BLOOD_LEAVES.get(), block ->
+                    createLeavesDrops(block, PlantBlocks.BLOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+            this.add(WoodBlocks.SOUL_LEAVES.get(), block ->
+                    createLeavesDrops(block, PlantBlocks.BLOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
 
 
 
-            this.createGrassDrops(ModBlocks.BLOOD_GRASS, ModItems.Eyeball_seed.get());
+            this.createGrassDrops(PlantBlocks.BLOOD_GRASS, ModItems.Eyeball_seed.get());
 
-            this.createPlantsDrops(ModBlocks.BLOOD_PETALS, ModBlocks.BLOOD_PETALS.get().asItem());
-            this.createSilkTouchOrShearsDispatchTable(ModBlocks.LIGHT_MUSHROOM_BLOCK.get(), ModItems.GLOW_MUSHROOM.get());
-            this.createPlantsDrops(ModBlocks.SMALL_ROCKS, ModBlocks.SMALL_ROCKS.get().asItem());
-            this.createPlantsDrops(ModBlocks.BLOOD_FLOWER, ModBlocks.BLOOD_FLOWER.get().asItem());
-            this.createPlantsDrops(ModBlocks.BLOOD_BUSH, ModBlocks.BLOOD_BUSH.get().asItem());
+            this.createPlantsDrops(PlantBlocks.BLOOD_PETALS, PlantBlocks.BLOOD_PETALS.get().asItem());
+            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(), ModItems.GLOW_MUSHROOM.get());
+            this.createPlantsDrops(MiscBlocks.SMALL_ROCKS, MiscBlocks.SMALL_ROCKS.get().asItem());
+            this.createPlantsDrops(PlantBlocks.BLOOD_FLOWER, PlantBlocks.BLOOD_FLOWER.get().asItem());
+            this.createPlantsDrops(PlantBlocks.BLOOD_BUSH, PlantBlocks.BLOOD_BUSH.get().asItem());
 
 
-            this.add(ModBlocks.POTTED_BLOOD_FLOWER.get(), createPotFlowerItemTable(ModBlocks.BLOOD_FLOWER.get()));
+            this.add(PlantBlocks.POTTED_BLOOD_FLOWER.get(), createPotFlowerItemTable(PlantBlocks.BLOOD_FLOWER.get()));
         }
 
         @Override

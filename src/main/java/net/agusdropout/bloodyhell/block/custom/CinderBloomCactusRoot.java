@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -27,11 +28,11 @@ public class CinderBloomCactusRoot extends RotatedPillarBlock {
 
         // Check if the block below is valid ground or part of the cactus structure
         boolean hasValidBelow =
-                belowState.is(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get()) ||
+                belowState.is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get()) ||
                         belowState.is(Blocks.SAND) ||
-                        belowState.is(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get()) ||
-                        belowState.is(ModBlocks.CINDER_BLOOM_CACTUS_CENTER.get()) ||
-                        belowState.is(ModBlocks.CINDER_BLOOM_CACTUS_CON.get());
+                        belowState.is(PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get()) ||
+                        belowState.is(PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get()) ||
+                        belowState.is(PlantBlocks.CINDER_BLOOM_CACTUS_CON.get());
 
         // Check if there is a valid cactus part on any horizontal side
         // (Roots no longer count as valid side supports)
@@ -40,7 +41,7 @@ public class CinderBloomCactusRoot extends RotatedPillarBlock {
             BlockPos sidePos = pos.relative(dir);
             BlockState sideState = level.getBlockState(sidePos);
 
-            if (sideState.is(ModBlocks.CINDER_BLOOM_CACTUS_CENTER.get())){
+            if (sideState.is(PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get())){
                 hasValidSide = true;
                 break;
             }

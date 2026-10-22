@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.agusdropout.bloodyhell.block.base.BloodScrapperPlantLeaves;
 import net.agusdropout.bloodyhell.block.base.TallGrowingPlant;
 import net.agusdropout.bloodyhell.datagen.ModTags;
@@ -56,8 +56,8 @@ public class BloodScrapperPlantSapling extends Block implements BonemealableBloc
         if (!p_48990_.canSurvive(p_48993_, p_48994_)) {
             return Blocks.AIR.defaultBlockState();
         } else {
-            if (p_48991_ == Direction.UP && p_48992_.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get())) {
-                p_48993_.setBlock(p_48994_, ModBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState(), 2);
+            if (p_48991_ == Direction.UP && p_48992_.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get())) {
+                p_48993_.setBlock(p_48994_, PlantBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState(), 2);
             }
 
             return super.updateShape(p_48990_, p_48991_, p_48992_, p_48993_, p_48994_, p_48995_);
@@ -85,6 +85,6 @@ public class BloodScrapperPlantSapling extends Block implements BonemealableBloc
     }
 
     protected void growBamboo(Level p_48973_, BlockPos blockPos) {
-        p_48973_.setBlock(blockPos.above(), (BlockState) ModBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState().setValue(TallGrowingPlant.LEAVES, BloodScrapperPlantLeaves.SMALL), 3);
+        p_48973_.setBlock(blockPos.above(), (BlockState) PlantBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState().setValue(TallGrowingPlant.LEAVES, BloodScrapperPlantLeaves.SMALL), 3);
     }
 }

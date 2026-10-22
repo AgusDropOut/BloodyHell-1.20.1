@@ -1,7 +1,8 @@
 package net.agusdropout.bloodyhell.worldgen.feature.custom;
 
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -40,7 +41,7 @@ public class GiantRootFeature extends Feature<NoneFeatureConfiguration> {
 
             // Only spawn if base is a solid, natural block
             BlockState groundState = level.getBlockState(ground);
-            if (!(groundState.is(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get()) || groundState.is(Blocks.STONE))) {
+            if (!(groundState.is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get()) || groundState.is(Blocks.STONE))) {
                 return false;
             }
 
@@ -64,7 +65,7 @@ public class GiantRootFeature extends Feature<NoneFeatureConfiguration> {
             double baseRadius = 2.5 + random.nextDouble() * 1.0;
 
             // --- Place base support ---
-            level.setBlock(ground.above(), ModBlocks.BLASPHEMOUS_SAND_BLOCK.get().defaultBlockState(), 2);
+            level.setBlock(ground.above(), SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get().defaultBlockState(), 2);
 
             // --- Build column ---
             for (int y = 0; y <= height; y++) {
@@ -92,17 +93,17 @@ public class GiantRootFeature extends Feature<NoneFeatureConfiguration> {
 
                         BlockState block;
                         if (y < 2) {
-                            block = ModBlocks.BLASPHEMOUS_SAND_BLOCK.get().defaultBlockState(); // base
+                            block = SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get().defaultBlockState(); // base
                         } else if (y > height - 2) {
-                            block = ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState(); // near ceiling
+                            block = SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState(); // near ceiling
                         } else if (roll < ratioFromCenter) {
-                            block = ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState();
+                            block = SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState();
                         } else if (roll < 0.6f) {
-                            block = ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
+                            block = SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
                         } else if (roll < 0.85f) {
-                            block = ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
+                            block = SandstoneBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
                         } else {
-                            block = ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
+                            block = SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get().defaultBlockState();
                         }
 
                         level.setBlock(pos, block, 2);
@@ -113,7 +114,7 @@ public class GiantRootFeature extends Feature<NoneFeatureConfiguration> {
             // --- Place connection to ceiling ---
             BlockPos ceilingAttach = ceiling.below();
             if (level.getBlockState(ceilingAttach).isAir() || level.getBlockState(ceilingAttach).is(Blocks.CAVE_AIR)) {
-                level.setBlock(ceilingAttach, ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState(), 2);
+                level.setBlock(ceilingAttach, SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().defaultBlockState(), 2);
             }
 
             return true;

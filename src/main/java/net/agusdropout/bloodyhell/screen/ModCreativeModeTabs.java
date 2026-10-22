@@ -1,7 +1,15 @@
 package net.agusdropout.bloodyhell.screen;
 
+import net.agusdropout.bloodyhell.block.registry.LightBlocks;
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -25,22 +33,22 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.UNKNOWN_GUIDE_BOOK.get());
 
                         // --- Ores & Minerals ---
-                        output.accept(ModBlocks.SANGUINITE_ORE.get());
-                        output.accept(ModBlocks.Jumpy_Block.get());
-                        output.accept(ModBlocks.BLASPHEMITE_ORE.get());
+                        output.accept(MetalBlocks.SANGUINITE_ORE.get());
+                        output.accept(MiscBlocks.Jumpy_Block.get());
+                        output.accept(MetalBlocks.BLASPHEMITE_ORE.get());
 
                         // --- Base Materials ---
                         output.accept(ModItems.RAW_SANGUINITE.get());
                         output.accept(ModItems.SANGUINITE_NUGGET.get());
                         output.accept(ModItems.SANGUINITE.get());
-                        output.accept(ModBlocks.SANGUINITE_BLOCK.get());
+                        output.accept(MetalBlocks.SANGUINITE_BLOCK.get());
                         output.accept(ModItems.RHNULL_NUGGET.get());
                         output.accept(ModItems.RHNULL.get());
-                        output.accept(ModBlocks.RHNULL_BLOCK.get());
+                        output.accept(MetalBlocks.RHNULL_BLOCK.get());
                         output.accept(ModItems.RAW_BLASPHEMITE.get());
                         output.accept(ModItems.BLASPHEMITE_NUGGET.get());
                         output.accept(ModItems.BLASPHEMITE.get());
-                        output.accept(ModBlocks.BLASPHEMITE_BLOCK.get());
+                        output.accept(MetalBlocks.BLASPHEMITE_BLOCK.get());
 
                         // --- Tools & Weapons ---
                         output.accept(ModItems.SANGUINITE_SWORD.get());
@@ -142,17 +150,17 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.RHNULL_GREAT_GEM_FRAME.get());
 
                         // --- Mechanisms & Stations ---
-                        output.accept(ModBlocks.BLOOD_ALTAR.get());
-                        output.accept(ModBlocks.MAIN_BLOOD_ALTAR.get());
+                        output.accept(MachineBlocks.BLOOD_ALTAR.get());
+                        output.accept(MachineBlocks.MAIN_BLOOD_ALTAR.get());
                         output.accept(ModItems.BLASPHEMOUS_BLOOD_ALTAR_ITEM.get());
                         output.accept(ModItems.MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM.get());
-                        output.accept(ModBlocks.SANGUINE_LAPIDARY.get());
+                        output.accept(MachineBlocks.SANGUINE_LAPIDARY.get());
                         output.accept(ModItems.SANGUINITE_CONDENSER_ITEM.get());
                         output.accept(ModItems.RHNULL_CONDENSER_ITEM.get());
-                        output.accept(ModBlocks.SANGUINITE_INFUSOR.get());
+                        output.accept(MachineBlocks.SANGUINITE_INFUSOR.get());
                         output.accept(ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
-                        output.accept(ModBlocks.SANGUINITE_TANK.get());
-                        output.accept(ModBlocks.RHNULL_TANK.get());
+                        output.accept(MachineBlocks.SANGUINITE_TANK.get());
+                        output.accept(MachineBlocks.RHNULL_TANK.get());
                         output.accept(ModItems.SANGUINITE_PIPE_ITEM.get());
                         output.accept(ModItems.RHNULL_PIPE_ITEM.get());
                         output.accept(ModItems.UNKNOWN_PORTAL_ITEM.get());
@@ -200,118 +208,118 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.GLOW_FRUIT.get());
 
                         // --- Nature, Plants & Mushrooms ---
-                        output.accept(ModBlocks.BLOOD_DIRT_BLOCK.get());
-                        output.accept(ModBlocks.BLOOD_GRASS_BLOCK.get());
-                        output.accept(ModBlocks.BLOOD_SCRAPPER_PLANT.get());
-                        output.accept(ModBlocks.BLOOD_SAPLING.get());
-                        output.accept(ModBlocks.SOUL_SAPLING.get());
-                        output.accept(ModBlocks.BLOOD_LEAVES.get());
-                        output.accept(ModBlocks.SOUL_LEAVES.get());
-                        output.accept(ModBlocks.HANGING_BLOOD_TREE_LEAVES.get());
-                        output.accept(ModBlocks.HANGING_SOUL_TREE_LEAVES.get());
-                        output.accept(ModBlocks.BLOOD_LOG.get());
-                        output.accept(ModBlocks.STRIPPED_BLOOD_LOG.get());
-                        output.accept(ModBlocks.BLOOD_WOOD.get());
-                        output.accept(ModBlocks.STRIPPED_BLOOD_WOOD.get());
-                        output.accept(ModBlocks.SOUL_LOG.get());
-                        output.accept(ModBlocks.STRIPPED_SOUL_LOG.get());
-                        output.accept(ModBlocks.SOUL_WOOD.get());
-                        output.accept(ModBlocks.STRIPPED_SOUL_WOOD.get());
-                        output.accept(ModBlocks.BLOOD_FLOWER.get());
+                        output.accept(SoilBlocks.BLOOD_DIRT_BLOCK.get());
+                        output.accept(SoilBlocks.BLOOD_GRASS_BLOCK.get());
+                        output.accept(PlantBlocks.BLOOD_SCRAPPER_PLANT.get());
+                        output.accept(PlantBlocks.BLOOD_SAPLING.get());
+                        output.accept(PlantBlocks.SOUL_SAPLING.get());
+                        output.accept(WoodBlocks.BLOOD_LEAVES.get());
+                        output.accept(WoodBlocks.SOUL_LEAVES.get());
+                        output.accept(PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get());
+                        output.accept(PlantBlocks.HANGING_SOUL_TREE_LEAVES.get());
+                        output.accept(WoodBlocks.BLOOD_LOG.get());
+                        output.accept(WoodBlocks.STRIPPED_BLOOD_LOG.get());
+                        output.accept(WoodBlocks.BLOOD_WOOD.get());
+                        output.accept(WoodBlocks.STRIPPED_BLOOD_WOOD.get());
+                        output.accept(WoodBlocks.SOUL_LOG.get());
+                        output.accept(WoodBlocks.STRIPPED_SOUL_LOG.get());
+                        output.accept(WoodBlocks.SOUL_WOOD.get());
+                        output.accept(WoodBlocks.STRIPPED_SOUL_WOOD.get());
+                        output.accept(PlantBlocks.BLOOD_FLOWER.get());
                         output.accept(ModItems.DIRTY_BLOOD_FLOWER.get());
-                        output.accept(ModBlocks.BLOOD_GRASS.get());
-                        output.accept(ModBlocks.BLOOD_BUSH.get());
-                        output.accept(ModBlocks.BLOOD_PETALS.get());
+                        output.accept(PlantBlocks.BLOOD_GRASS.get());
+                        output.accept(PlantBlocks.BLOOD_BUSH.get());
+                        output.accept(PlantBlocks.BLOOD_PETALS.get());
                         output.accept(ModItems.BLOOD_LILY.get());
-                        output.accept(ModBlocks.SPIKY_GRASS.get());
-                        output.accept(ModBlocks.ROUNDED_GRASS.get());
-                        output.accept(ModBlocks.STING_FLOWER.get());
-                        output.accept(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get());
-                        output.accept(ModBlocks.CINDER_BLOOM_CACTUS_CON.get());
-                        output.accept(ModBlocks.CINDER_BLOOM_CACTUS_CENTER.get());
-                        output.accept(ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get());
+                        output.accept(PlantBlocks.SPIKY_GRASS.get());
+                        output.accept(PlantBlocks.ROUNDED_GRASS.get());
+                        output.accept(PlantBlocks.STING_FLOWER.get());
+                        output.accept(PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get());
+                        output.accept(PlantBlocks.CINDER_BLOOM_CACTUS_CON.get());
+                        output.accept(PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get());
+                        output.accept(PlantBlocks.CINDER_BLOOM_CACTUS_FLOWER.get());
 
                         output.accept(ModItems.BLOOD_GEM_SPROUT_SEED.get());
                         output.accept(ModItems.GLOW_MUSHROOM.get());
-                        output.accept(ModBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get());
+                        output.accept(PlantBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get());
                         output.accept(ModItems.VORACIOUS_MUSHROOM.get());
                         output.accept(ModItems.CRIMSON_LURE_MUSHROOM.get());
-                        output.accept(ModBlocks.VISCERAL_INFECTED_VEIN.get());
+                        output.accept(PlantBlocks.VISCERAL_INFECTED_VEIN.get());
 
                         // --- Building Blocks ---
-                        output.accept(ModBlocks.BLOOD_PLANKS.get());
-                        output.accept(ModBlocks.BLOOD_PLANKS_STAIRS.get());
-                        output.accept(ModBlocks.BLOOD_PLANKS_SLAB.get());
-                        output.accept(ModBlocks.BLOOD_PLANKS_FENCE.get());
-                        output.accept(ModBlocks.BLOOD_PLANKS_FENCE_GATE.get());
-                        output.accept(ModBlocks.SOUL_PLANKS.get());
+                        output.accept(WoodBlocks.BLOOD_PLANKS.get());
+                        output.accept(WoodBlocks.BLOOD_PLANKS_STAIRS.get());
+                        output.accept(WoodBlocks.BLOOD_PLANKS_SLAB.get());
+                        output.accept(WoodBlocks.BLOOD_PLANKS_FENCE.get());
+                        output.accept(WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get());
+                        output.accept(WoodBlocks.SOUL_PLANKS.get());
 
-                        output.accept(ModBlocks.BLOODY_STONE_BLOCK.get());
-                        output.accept(ModBlocks.BLOODY_STONE_STAIRS.get());
-                        output.accept(ModBlocks.BLOODY_STONE_SLAB.get());
-                        output.accept(ModBlocks.BLOODY_STONE_WALL.get());
-                        output.accept(ModBlocks.BLOODY_STONE_FENCE.get());
-                        output.accept(ModBlocks.BLOODY_STONE_FENCE_GATE.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_BLOCK.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_STAIRS.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_SLAB.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_WALL.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_FENCE.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_FENCE_GATE.get());
 
-                        output.accept(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get());
-                        output.accept(ModBlocks.POLISHED_BLOODY_STONE_STAIRS.get());
-                        output.accept(ModBlocks.POLISHED_BLOODY_STONE_SLAB.get());
-                        output.accept(ModBlocks.POLISHED_BLOODY_STONE_WALL.get());
-                        output.accept(ModBlocks.POLISHED_BLOODY_STONE_FENCE.get());
-                        output.accept(ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get());
+                        output.accept(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get());
+                        output.accept(StoneBlocks.POLISHED_BLOODY_STONE_STAIRS.get());
+                        output.accept(StoneBlocks.POLISHED_BLOODY_STONE_SLAB.get());
+                        output.accept(StoneBlocks.POLISHED_BLOODY_STONE_WALL.get());
+                        output.accept(StoneBlocks.POLISHED_BLOODY_STONE_FENCE.get());
+                        output.accept(StoneBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get());
 
-                        output.accept(ModBlocks.BLOODY_STONE_TILES_BLOCK.get());
-                        output.accept(ModBlocks.BLOODY_STONE_TILES_STAIRS.get());
-                        output.accept(ModBlocks.BLOODY_STONE_TILES_SLAB.get());
-                        output.accept(ModBlocks.BLOODY_STONE_TILES_WALL.get());
-                        output.accept(ModBlocks.BLOODY_STONE_TILES_FENCE.get());
-                        output.accept(ModBlocks.BLOODY_STONE_FENCE_TILES_GATE.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_TILES_STAIRS.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_TILES_SLAB.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_TILES_WALL.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_TILES_FENCE.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_FENCE_TILES_GATE.get());
 
-                        output.accept(ModBlocks.BLOODY_STONE_BRICKS.get());
-                        output.accept(ModBlocks.BLOODY_STONE_BRICKS_STAIRS.get());
-                        output.accept(ModBlocks.BLOODY_STONE_BRICKS_SLAB.get());
-                        output.accept(ModBlocks.BLOODY_STONE_BRICKS_WALL.get());
-                        output.accept(ModBlocks.BLOODY_STONE_BRICKS_FENCE.get());
-                        output.accept(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_BRICKS.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_BRICKS_STAIRS.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_BRICKS_SLAB.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_BRICKS_WALL.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_BRICKS_FENCE.get());
+                        output.accept(StoneBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get());
 
-                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get());
-                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get());
-                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get());
-                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get());
-                        output.accept(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get());
-                        output.accept(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get());
-                        output.accept(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get());
+                        output.accept(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get());
+                        output.accept(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get());
+                        output.accept(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get());
+                        output.accept(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get());
+                        output.accept(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN.get());
+                        output.accept(StoneBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get());
+                        output.accept(StoneBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get());
 
-                        output.accept(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get());
-                        output.accept(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
-                        output.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-                        output.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get());
-                        output.accept(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get());
-                        output.accept(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-                        output.accept(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-                        output.accept(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
-                        output.accept(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get());
-                        output.accept(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get());
-                        output.accept(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get());
+                        output.accept(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get());
+                        output.accept(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
+                        output.accept(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+                        output.accept(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get());
+                        output.accept(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get());
+                        output.accept(SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+                        output.accept(SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+                        output.accept(SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get());
+                        output.accept(SandstoneBlocks.ERODED_BLASPHEMOUS_SANDSTONE.get());
+                        output.accept(SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get());
+                        output.accept(SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get());
 
                         // --- Decorations & Misc Blocks ---
-                        output.accept(ModBlocks.GLOWING_CRYSTAL.get());
-                        output.accept(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get());
-                        output.accept(ModBlocks.GLOWING_CRYSTAL_LANTERN.get());
-                        output.accept(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get());
-                        output.accept(ModBlocks.SOUL_LAMP.get());
-                        output.accept(ModBlocks.BLOOD_GLOW_STONE.get());
-                        output.accept(ModBlocks.ANCIENT_BLOODY_LAMP.get());
+                        output.accept(LightBlocks.GLOWING_CRYSTAL.get());
+                        output.accept(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get());
+                        output.accept(LightBlocks.GLOWING_CRYSTAL_LANTERN.get());
+                        output.accept(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get());
+                        output.accept(LightBlocks.SOUL_LAMP.get());
+                        output.accept(LightBlocks.BLOOD_GLOW_STONE.get());
+                        output.accept(LightBlocks.ANCIENT_BLOODY_LAMP.get());
                         output.accept(ModItems.ANCIENT_TORCH_ITEM.get());
-                        output.accept(ModBlocks.ANCIENT_BLOOD_CAPSULE.get());
-                        output.accept(ModBlocks.STAR_LAMP_BLOCK.get());
-                        output.accept(ModBlocks.DECORATED_POT_BLOCK.get());
-                        output.accept(ModBlocks.FORBIDDEN_BOOKSHELF_BLOCK.get());
-                        output.accept(ModBlocks.TOMB_BLOCK.get());
-                        output.accept(ModBlocks.SMALL_ROCKS.get());
-                        output.accept(ModBlocks.BLEEDING_BLOCK.get());
-                        output.accept(ModBlocks.EYEBALLSHELL_SNAIL_GOO_BLOCK.get());
-                        output.accept(ModBlocks.EYEBALLSHELL_SNAIL_GOO.get());
+                        output.accept(MiscBlocks.ANCIENT_BLOOD_CAPSULE.get());
+                        output.accept(LightBlocks.STAR_LAMP_BLOCK.get());
+                        output.accept(MiscBlocks.DECORATED_POT_BLOCK.get());
+                        output.accept(MiscBlocks.FORBIDDEN_BOOKSHELF_BLOCK.get());
+                        output.accept(MiscBlocks.TOMB_BLOCK.get());
+                        output.accept(MiscBlocks.SMALL_ROCKS.get());
+                        output.accept(MiscBlocks.BLEEDING_BLOCK.get());
+                        output.accept(MiscBlocks.EYEBALLSHELL_SNAIL_GOO_BLOCK.get());
+                        output.accept(MiscBlocks.EYEBALLSHELL_SNAIL_GOO.get());
 
                         // --- Spawn Eggs ---
                         //output.accept(ModItems.BLOODTHIRSTYBEAST_SPAWN_EGG.get());

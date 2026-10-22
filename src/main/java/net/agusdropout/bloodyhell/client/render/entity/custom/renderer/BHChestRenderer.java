@@ -1,10 +1,10 @@
 package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.google.common.collect.ImmutableMap;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
@@ -22,7 +22,7 @@ public class BHChestRenderer <T extends ChestBlockEntity> extends ChestRenderer<
     static {
         ImmutableMap.Builder<Block, EnumMap<ChestType, Material>> builder = ImmutableMap.builder();
 
-        builder.put(ModBlocks.BLOOD_WOOD_CHEST.get(), chestMaterial("blood_wood"));
+        builder.put(WoodBlocks.BLOOD_WOOD_CHEST.get(), chestMaterial("blood_wood"));
         MATERIALS = builder.build();
     }
 

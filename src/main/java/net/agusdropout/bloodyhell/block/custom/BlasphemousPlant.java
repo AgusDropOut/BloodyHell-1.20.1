@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.BlockGetter;
@@ -15,6 +15,6 @@ public class BlasphemousPlant extends BushBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos pos) {
-        return blockState.is(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get());
+        return blockState.is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get());
     }
 }

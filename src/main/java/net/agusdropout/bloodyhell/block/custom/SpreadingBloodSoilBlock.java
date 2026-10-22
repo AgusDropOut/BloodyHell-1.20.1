@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom;
 
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import com.mojang.serialization.MapCodec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -35,14 +35,14 @@ public class SpreadingBloodSoilBlock extends SpreadingSnowyDirtBlock {
         if (!canBeGrass(state, level, pos)) {
             if (!level.isAreaLoaded(pos, 3))
                 return;
-            level.setBlockAndUpdate(pos, ModBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState());
+            level.setBlockAndUpdate(pos, SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState());
         } else {
             if (!level.isAreaLoaded(pos, 3)) return;
             BlockState blockstate = this.defaultBlockState();
 
             for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                if (level.getBlockState(blockpos).is(ModBlocks.BLOOD_DIRT_BLOCK.get()) && canPropagate(blockstate, level, blockpos)) {
+                if (level.getBlockState(blockpos).is(SoilBlocks.BLOOD_DIRT_BLOCK.get()) && canPropagate(blockstate, level, blockpos)) {
                     level.setBlockAndUpdate(blockpos, blockstate.setValue(SNOWY, level.getBlockState(blockpos.above()).is(Blocks.SNOW)));
                 }
             }

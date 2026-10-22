@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.block.entity.custom.FrenziedFireBlockEntity;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.FrenziedExplosionParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions;
@@ -112,7 +112,7 @@ public class OrbitalFrenziedProjectile extends ThrowableProjectile {
 
             BlockState currentState = this.level().getBlockState(posToSet);
             if (currentState.canBeReplaced()) {
-                this.level().setBlockAndUpdate(posToSet, ModBlocks.FRENZIED_FIRE_BLOCK.get().defaultBlockState());
+                this.level().setBlockAndUpdate(posToSet, MiscBlocks.FRENZIED_FIRE_BLOCK.get().defaultBlockState());
 
                 if (this.level().getBlockEntity(posToSet) instanceof FrenziedFireBlockEntity fireEntity) {
                     if (this.getOwner() instanceof LivingEntity owner) {

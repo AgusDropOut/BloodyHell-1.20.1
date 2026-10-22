@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.compat;
 
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -10,7 +11,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.recipe.BlasphemousBloodAltarRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -35,7 +35,7 @@ public class BlasphemousBloodAltarCategory implements IRecipeCategory<Blasphemou
 
     public BlasphemousBloodAltarCategory(IGuiHelper helper) {
         this.background = helper.createBlankDrawable(WIDTH, HEIGHT);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.BLASPHEMOUS_BLOOD_ALTAR.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR.get()));
     }
 
     @Override

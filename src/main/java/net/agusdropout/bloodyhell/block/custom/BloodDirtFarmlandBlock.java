@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +28,7 @@ public class BloodDirtFarmlandBlock extends FarmBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return !this.defaultBlockState().canSurvive(context.getLevel(), context.getClickedPos()) ? ModBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState() : super.getStateForPlacement(context);
+        return !this.defaultBlockState().canSurvive(context.getLevel(), context.getClickedPos()) ? SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState() : super.getStateForPlacement(context);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BloodDirtFarmlandBlock extends FarmBlock {
     }
 
     public static void turnToDeepsoil(@Nullable net.minecraft.world.entity.Entity entity, BlockState state, Level level, BlockPos pos) {
-        level.setBlockAndUpdate(pos, pushEntitiesUp(state, ModBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState(), level, pos));
+        level.setBlockAndUpdate(pos, pushEntitiesUp(state, SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState(), level, pos));
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(entity, state));
     }
 
@@ -85,7 +85,7 @@ public class BloodDirtFarmlandBlock extends FarmBlock {
 
             if (!level.isClientSide() && blockState.getBlock() instanceof FarmBlock) {
                 // Acciones específicas para el bloque de tierra de cultivo (FarmlandBlock)
-                BlockState newState = ModBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState(); // Nuevo estado de bloque
+                BlockState newState = SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState(); // Nuevo estado de bloque
                 level.setBlockAndUpdate(blockPos, newState); // Cambiar el bloque a "blood dirt block"
 
                 // Realizar otras acciones necesarias, como causar daño a la entidad

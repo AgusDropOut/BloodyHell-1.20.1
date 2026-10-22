@@ -1,6 +1,8 @@
 package net.agusdropout.bloodyhell.worldgen.biome.surface;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
 import net.agusdropout.bloodyhell.worldgen.biome.ModBiomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -11,13 +13,13 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 public class ModSurfaceRules {
 
     // === BLOOD BIOME BLOCKS ===
-    private static final SurfaceRules.RuleSource BLOOD_DIRT = makeStateRule(ModBlocks.BLOOD_DIRT_BLOCK.get());
-    private static final SurfaceRules.RuleSource BLOOD_GRASS = makeStateRule(ModBlocks.BLOOD_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource BLOODY_STONE = makeStateRule(ModBlocks.BLOODY_STONE_BLOCK.get());
+    private static final SurfaceRules.RuleSource BLOOD_DIRT = makeStateRule(SoilBlocks.BLOOD_DIRT_BLOCK.get());
+    private static final SurfaceRules.RuleSource BLOOD_GRASS = makeStateRule(SoilBlocks.BLOOD_GRASS_BLOCK.get());
+    private static final SurfaceRules.RuleSource BLOODY_STONE = makeStateRule(StoneBlocks.BLOODY_STONE_BLOCK.get());
 
     // === BLASPHEMOUS BIOME BLOCKS ===
-    private static final SurfaceRules.RuleSource BLASPHEMOUS_SAND = makeStateRule(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get());
-    private static final SurfaceRules.RuleSource BLASPHEMOUS_SANDSTONE = makeStateRule(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()); // placeholder
+    private static final SurfaceRules.RuleSource BLASPHEMOUS_SAND = makeStateRule(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get());
+    private static final SurfaceRules.RuleSource BLASPHEMOUS_SANDSTONE = makeStateRule(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()); // placeholder
 
     // === GENERAL RULES ===
     private static final SurfaceRules.RuleSource BEDROCK_FLOOR = SurfaceRules.ifTrue(

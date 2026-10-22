@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.feature;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.base.TallPlantBlock;
 import net.agusdropout.bloodyhell.worldgen.feature.custom.*;
 import net.minecraft.world.item.Item;
@@ -38,7 +38,7 @@ public class ModFeatures {
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> GIANT_ROOT = FEATURES.register("giant_root", () ->
             new GiantRootFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> STING_FLOWER_FEATURE = FEATURES.register("sting_flower", () ->
-            new VariableHeightPlantFeature(NoneFeatureConfiguration.CODEC,(TallPlantBlock) ModBlocks.STING_FLOWER.get()));
+            new VariableHeightPlantFeature(NoneFeatureConfiguration.CODEC,(TallPlantBlock) PlantBlocks.STING_FLOWER.get()));
 
 
     public static void register(IEventBus eventBus){

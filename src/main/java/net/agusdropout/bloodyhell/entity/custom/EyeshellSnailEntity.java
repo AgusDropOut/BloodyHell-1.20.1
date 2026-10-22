@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
@@ -80,7 +80,7 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
         if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
             return;
         }
-        BlockState blockstate = ModBlocks.EYEBALLSHELL_SNAIL_GOO.get().defaultBlockState();
+        BlockState blockstate = MiscBlocks.EYEBALLSHELL_SNAIL_GOO.get().defaultBlockState();
 
         if (this.level().isClientSide) {
             this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);

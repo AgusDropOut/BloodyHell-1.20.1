@@ -1,7 +1,15 @@
 package net.agusdropout.bloodyhell.datagen;
 
+import net.agusdropout.bloodyhell.block.registry.LightBlocks;
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.base.TallPlantBlock;
 import net.agusdropout.bloodyhell.block.custom.HangingSoulTreeLeavesBlock;
 import net.minecraft.core.Direction;
@@ -27,112 +35,112 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        simpleBlockWithItem(ModBlocks.BLOOD_FLOWER.get(), models().cross(blockTexture(ModBlocks.BLOOD_FLOWER.get()).getPath(),
-                blockTexture(ModBlocks.BLOOD_FLOWER.get())).renderType("cutout"));
-       simpleBlockWithItem(ModBlocks.BLOOD_GRASS.get(), models().cross(blockTexture(ModBlocks.BLOOD_GRASS.get()).getPath(),
-                blockTexture(ModBlocks.BLOOD_GRASS.get())).renderType("cutout"));
-        simpleBlockWithItem(ModBlocks.POTTED_BLOOD_FLOWER.get(), models().singleTexture("potted_blood_flower", new ResourceLocation("flower_pot_cross"), "plant",
-                blockTexture(ModBlocks.BLOOD_FLOWER.get())).renderType("cutout"));
-       blockWithItem(ModBlocks.BLEEDING_BLOCK);
-       getVariantBuilder(ModBlocks.HANGING_SOUL_TREE_LEAVES.get()).forAllStates(state -> {
-           String name = name(ModBlocks.HANGING_SOUL_TREE_LEAVES) + (state.getValue(HangingSoulTreeLeavesBlock.HALF) == DoubleBlockHalf.UPPER ? "_top" : "");
+        simpleBlockWithItem(PlantBlocks.BLOOD_FLOWER.get(), models().cross(blockTexture(PlantBlocks.BLOOD_FLOWER.get()).getPath(),
+                blockTexture(PlantBlocks.BLOOD_FLOWER.get())).renderType("cutout"));
+       simpleBlockWithItem(PlantBlocks.BLOOD_GRASS.get(), models().cross(blockTexture(PlantBlocks.BLOOD_GRASS.get()).getPath(),
+                blockTexture(PlantBlocks.BLOOD_GRASS.get())).renderType("cutout"));
+        simpleBlockWithItem(PlantBlocks.POTTED_BLOOD_FLOWER.get(), models().singleTexture("potted_blood_flower", new ResourceLocation("flower_pot_cross"), "plant",
+                blockTexture(PlantBlocks.BLOOD_FLOWER.get())).renderType("cutout"));
+       blockWithItem(MiscBlocks.BLEEDING_BLOCK);
+       getVariantBuilder(PlantBlocks.HANGING_SOUL_TREE_LEAVES.get()).forAllStates(state -> {
+           String name = name(PlantBlocks.HANGING_SOUL_TREE_LEAVES) + (state.getValue(HangingSoulTreeLeavesBlock.HALF) == DoubleBlockHalf.UPPER ? "_top" : "");
            return ConfiguredModel.builder().modelFile(models().cross(name, texture(name)).renderType("minecraft:cutout")).build();
        });
-        getVariantBuilder(ModBlocks.HANGING_BLOOD_TREE_LEAVES.get()).forAllStates(state -> {
-            String name = name(ModBlocks.HANGING_BLOOD_TREE_LEAVES) + (state.getValue(HangingSoulTreeLeavesBlock.HALF) == DoubleBlockHalf.UPPER ? "_top" : "");
+        getVariantBuilder(PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get()).forAllStates(state -> {
+            String name = name(PlantBlocks.HANGING_BLOOD_TREE_LEAVES) + (state.getValue(HangingSoulTreeLeavesBlock.HALF) == DoubleBlockHalf.UPPER ? "_top" : "");
             return ConfiguredModel.builder().modelFile(models().cross(name, texture(name)).renderType("minecraft:cutout")).build();
         });
-        blockWithItem(ModBlocks.BLOODY_STONE_BLOCK);
-        blockWithItem(ModBlocks.BLOODY_STONE_TILES_BLOCK);
-        blockWithItem(ModBlocks.POLISHED_BLOODY_STONE_BLOCK);
-        blockWithItem(ModBlocks.BLOOD_GLOW_STONE);
-        blockWithItem(ModBlocks.BLOODY_STONE_BRICKS);
-        blockWithItem(ModBlocks.RHNULL_BLOCK);
-        blockWithItem(ModBlocks.BLASPHEMITE_BLOCK);
+        blockWithItem(StoneBlocks.BLOODY_STONE_BLOCK);
+        blockWithItem(StoneBlocks.BLOODY_STONE_TILES_BLOCK);
+        blockWithItem(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK);
+        blockWithItem(LightBlocks.BLOOD_GLOW_STONE);
+        blockWithItem(StoneBlocks.BLOODY_STONE_BRICKS);
+        blockWithItem(MetalBlocks.RHNULL_BLOCK);
+        blockWithItem(MetalBlocks.BLASPHEMITE_BLOCK);
 
-        fanBlock(ModBlocks.BLOOD_PETALS);
+        fanBlock(PlantBlocks.BLOOD_PETALS);
 
 
 
-        blockTranslucent(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
+        blockTranslucent(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
 
-        crossBlock(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
-        crossBlock(ModBlocks.BLOOD_FIRE);
-        crossBlock(ModBlocks.FRENZIED_FIRE_BLOCK);
+        crossBlock(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
+        crossBlock(MiscBlocks.BLOOD_FIRE);
+        crossBlock(MiscBlocks.FRENZIED_FIRE_BLOCK);
 
-        veinBlock(ModBlocks.VISCERAL_INFECTED_VEIN);
+        veinBlock(PlantBlocks.VISCERAL_INFECTED_VEIN);
 
         //Bloody Stone
-        stairsBlock(((StairBlock) ModBlocks.BLOODY_STONE_STAIRS.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));
-        slabBlock(((SlabBlock) ModBlocks.BLOODY_STONE_SLAB.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));
-        fenceBlock(((FenceBlock) ModBlocks.BLOODY_STONE_FENCE.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));
-        fenceGateBlock(((FenceGateBlock) ModBlocks.BLOODY_STONE_FENCE_GATE.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));
-        wallBlock(((WallBlock) ModBlocks.BLOODY_STONE_WALL.get()), blockTexture(ModBlocks.BLOODY_STONE_BLOCK.get()));
+        stairsBlock(((StairBlock) StoneBlocks.BLOODY_STONE_STAIRS.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
+        slabBlock(((SlabBlock) StoneBlocks.BLOODY_STONE_SLAB.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
+        fenceBlock(((FenceBlock) StoneBlocks.BLOODY_STONE_FENCE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
+        fenceGateBlock(((FenceGateBlock) StoneBlocks.BLOODY_STONE_FENCE_GATE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
+        wallBlock(((WallBlock) StoneBlocks.BLOODY_STONE_WALL.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
         //Bloody Stone Tiles
-        stairsBlock(((StairBlock) ModBlocks.BLOODY_STONE_TILES_STAIRS.get()), blockTexture(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()));
-        slabBlock(((SlabBlock) ModBlocks.BLOODY_STONE_TILES_SLAB.get()), blockTexture(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()), blockTexture(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()));
-        fenceBlock(((FenceBlock) ModBlocks.BLOODY_STONE_TILES_FENCE.get()), blockTexture(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()));
-        fenceGateBlock(((FenceGateBlock) ModBlocks.BLOODY_STONE_FENCE_TILES_GATE.get()), blockTexture(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()));
-        wallBlock(((WallBlock) ModBlocks.BLOODY_STONE_TILES_WALL.get()), blockTexture(ModBlocks.BLOODY_STONE_TILES_BLOCK.get()));
+        stairsBlock(((StairBlock) StoneBlocks.BLOODY_STONE_TILES_STAIRS.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
+        slabBlock(((SlabBlock) StoneBlocks.BLOODY_STONE_TILES_SLAB.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
+        fenceBlock(((FenceBlock) StoneBlocks.BLOODY_STONE_TILES_FENCE.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
+        fenceGateBlock(((FenceGateBlock) StoneBlocks.BLOODY_STONE_FENCE_TILES_GATE.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
+        wallBlock(((WallBlock) StoneBlocks.BLOODY_STONE_TILES_WALL.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
         //Polished Bloody Stone
-        stairsBlock(((StairBlock) ModBlocks.POLISHED_BLOODY_STONE_STAIRS.get()), blockTexture(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
-        slabBlock(((SlabBlock) ModBlocks.POLISHED_BLOODY_STONE_SLAB.get()), blockTexture(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()), blockTexture(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
-        fenceBlock(((FenceBlock) ModBlocks.POLISHED_BLOODY_STONE_FENCE.get()), blockTexture(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
-        fenceGateBlock(((FenceGateBlock) ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get()), blockTexture(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
-        wallBlock(((WallBlock) ModBlocks.POLISHED_BLOODY_STONE_WALL.get()), blockTexture(ModBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
+        stairsBlock(((StairBlock) StoneBlocks.POLISHED_BLOODY_STONE_STAIRS.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
+        slabBlock(((SlabBlock) StoneBlocks.POLISHED_BLOODY_STONE_SLAB.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
+        fenceBlock(((FenceBlock) StoneBlocks.POLISHED_BLOODY_STONE_FENCE.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
+        fenceGateBlock(((FenceGateBlock) StoneBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
+        wallBlock(((WallBlock) StoneBlocks.POLISHED_BLOODY_STONE_WALL.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
         //Bloody Stone Bricks
-        stairsBlock(((StairBlock) ModBlocks.BLOODY_STONE_BRICKS_STAIRS.get()), blockTexture(ModBlocks.BLOODY_STONE_BRICKS.get()));
-        slabBlock(((SlabBlock) ModBlocks.BLOODY_STONE_BRICKS_SLAB.get()), blockTexture(ModBlocks.BLOODY_STONE_BRICKS.get()), blockTexture(ModBlocks.BLOODY_STONE_BRICKS.get()));
-        fenceBlock(((FenceBlock) ModBlocks.BLOODY_STONE_BRICKS_FENCE.get()), blockTexture(ModBlocks.BLOODY_STONE_BRICKS.get()));
-        fenceGateBlock(((FenceGateBlock) ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get()), blockTexture(ModBlocks.BLOODY_STONE_BRICKS.get()));
-        wallBlock(((WallBlock) ModBlocks.BLOODY_STONE_BRICKS_WALL.get()), blockTexture(ModBlocks.BLOODY_STONE_BRICKS.get()));
+        stairsBlock(((StairBlock) StoneBlocks.BLOODY_STONE_BRICKS_STAIRS.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
+        slabBlock(((SlabBlock) StoneBlocks.BLOODY_STONE_BRICKS_SLAB.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
+        fenceBlock(((FenceBlock) StoneBlocks.BLOODY_STONE_BRICKS_FENCE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
+        fenceGateBlock(((FenceGateBlock) StoneBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
+        wallBlock(((WallBlock) StoneBlocks.BLOODY_STONE_BRICKS_WALL.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
         //Blood Planks
-        stairsBlock(((StairBlock) ModBlocks.BLOOD_PLANKS_STAIRS.get()), blockTexture(ModBlocks.BLOOD_PLANKS.get()));
-        slabBlock(((SlabBlock) ModBlocks.BLOOD_PLANKS_SLAB.get()), blockTexture(ModBlocks.BLOOD_PLANKS.get()), blockTexture(ModBlocks.BLOOD_PLANKS.get()));
-        fenceBlock(((FenceBlock) ModBlocks.BLOOD_PLANKS_FENCE.get()), blockTexture(ModBlocks.BLOOD_PLANKS.get()));
-        fenceGateBlock(((FenceGateBlock) ModBlocks.BLOOD_PLANKS_FENCE_GATE.get()), blockTexture(ModBlocks.BLOOD_PLANKS.get()));
+        stairsBlock(((StairBlock) WoodBlocks.BLOOD_PLANKS_STAIRS.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
+        slabBlock(((SlabBlock) WoodBlocks.BLOOD_PLANKS_SLAB.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
+        fenceBlock(((FenceBlock) WoodBlocks.BLOOD_PLANKS_FENCE.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
+        fenceGateBlock(((FenceGateBlock) WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
 
         //Ancient
-        blockWithItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS);
-        stairsBlock(((StairBlock) ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
-        slabBlock(((SlabBlock) ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
-        wallBlock(((WallBlock) ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get()), blockTexture(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
-        log((ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN));
-        blockWithItem(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS);
-        blockWithItem(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS);
-        crossBlock(ModBlocks.ANCIENT_BLOODY_LAMP);
-        simpleHorizontalBlock(ModBlocks.ANCIENT_BLOOD_CAPSULE);
+        blockWithItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS);
+        stairsBlock(((StairBlock) StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get()), blockTexture(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
+        slabBlock(((SlabBlock) StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get()), blockTexture(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), blockTexture(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
+        wallBlock(((WallBlock) StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get()), blockTexture(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
+        log((StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN));
+        blockWithItem(StoneBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS);
+        blockWithItem(StoneBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS);
+        crossBlock(LightBlocks.ANCIENT_BLOODY_LAMP);
+        simpleHorizontalBlock(MiscBlocks.ANCIENT_BLOOD_CAPSULE);
 
-        wallBlockHorizontal(ModBlocks.ANCIENT_TORCH_BLOCK);
+        wallBlockHorizontal(LightBlocks.ANCIENT_TORCH_BLOCK);
 
 
         //Blasphemous Biome
-        rotatedCubeBlock(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
-        blockWithItem(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
-        blockWithItem(ModBlocks.BLASPHEMITE_ORE);
-        blockWithItem(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
-        blockWithItem(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
-        blockWithItem(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);
-        blockWithItem(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
-        stairsBlock(((StairBlock) ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get()), blockTexture(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()));
-        slabBlock(((SlabBlock) ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get()), blockTexture(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), blockTexture(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()));
-        blockWithItem(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE);
-        blockWithItem(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE);
-        blockWithItem(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE);
-        simpleBlockWithItem(ModBlocks.SPIKY_GRASS.get(), models().cross(blockTexture(ModBlocks.SPIKY_GRASS.get()).getPath(),
-                blockTexture(ModBlocks.SPIKY_GRASS.get())).renderType("cutout"));
-        simpleBlockWithItem(ModBlocks.ROUNDED_GRASS.get(), models().cross(blockTexture(ModBlocks.ROUNDED_GRASS.get()).getPath(),
-                blockTexture(ModBlocks.ROUNDED_GRASS.get())).renderType("cutout"));
-        tallPlantBlock(ModBlocks.STING_FLOWER);
+        rotatedCubeBlock(SoilBlocks.BLASPHEMOUS_SAND_BLOCK);
+        blockWithItem(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
+        blockWithItem(MetalBlocks.BLASPHEMITE_ORE);
+        blockWithItem(SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
+        blockWithItem(SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
+        blockWithItem(SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);
+        blockWithItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
+        stairsBlock(((StairBlock) SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS.get()), blockTexture(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()));
+        slabBlock(((SlabBlock) SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get()), blockTexture(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()), blockTexture(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get()));
+        blockWithItem(SandstoneBlocks.ERODED_BLASPHEMOUS_SANDSTONE);
+        blockWithItem(SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE);
+        blockWithItem(SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE);
+        simpleBlockWithItem(PlantBlocks.SPIKY_GRASS.get(), models().cross(blockTexture(PlantBlocks.SPIKY_GRASS.get()).getPath(),
+                blockTexture(PlantBlocks.SPIKY_GRASS.get())).renderType("cutout"));
+        simpleBlockWithItem(PlantBlocks.ROUNDED_GRASS.get(), models().cross(blockTexture(PlantBlocks.ROUNDED_GRASS.get()).getPath(),
+                blockTexture(PlantBlocks.ROUNDED_GRASS.get())).renderType("cutout"));
+        tallPlantBlock(PlantBlocks.STING_FLOWER);
 
-        block(ModBlocks.SANGUINITE_PIPE);
-        block(ModBlocks.RHNULL_PIPE);
-        block(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR);
-        block(ModBlocks.BLASPHEMOUS_BLOOD_ALTAR);
-        block(ModBlocks.RHNULL_BLOOD_ENGINE_BLOCK);
-        block(ModBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK);
-        block(ModBlocks.UNKNOWN_PORTAL_BLOCK);
-        block(ModBlocks.SANGUINITE_BLOOD_HARVESTER);
+        block(MachineBlocks.SANGUINITE_PIPE);
+        block(MachineBlocks.RHNULL_PIPE);
+        block(MachineBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR);
+        block(MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR);
+        block(MachineBlocks.RHNULL_BLOOD_ENGINE_BLOCK);
+        block(MachineBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK);
+        block(MachineBlocks.UNKNOWN_PORTAL_BLOCK);
+        block(MachineBlocks.SANGUINITE_BLOOD_HARVESTER);
 
 
     }

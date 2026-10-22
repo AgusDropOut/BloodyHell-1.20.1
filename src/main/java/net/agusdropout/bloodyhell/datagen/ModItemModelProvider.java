@@ -1,7 +1,15 @@
 package net.agusdropout.bloodyhell.datagen;
 
+import net.agusdropout.bloodyhell.block.registry.LightBlocks;
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -170,108 +178,108 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 
 
-        block(ModBlocks.SANGUINITE_PIPE);
-        block(ModBlocks.RHNULL_PIPE);
-        block(ModBlocks.BLASPHEMOUS_BLOOD_ALTAR);
-        block(ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR);
-        block(ModBlocks.RHNULL_BLOOD_ENGINE_BLOCK);
-        block(ModBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK);
-        block(ModBlocks.UNKNOWN_PORTAL_BLOCK);
-        block(ModBlocks.SANGUINITE_BLOOD_HARVESTER);
+        block(MachineBlocks.SANGUINITE_PIPE);
+        block(MachineBlocks.RHNULL_PIPE);
+        block(MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR);
+        block(MachineBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR);
+        block(MachineBlocks.RHNULL_BLOOD_ENGINE_BLOCK);
+        block(MachineBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK);
+        block(MachineBlocks.UNKNOWN_PORTAL_BLOCK);
+        block(MachineBlocks.SANGUINITE_BLOOD_HARVESTER);
 
-        evenSimplerBlockItem(ModBlocks.SANGUINE_CRUCIBLE);
-        evenSimplerBlockItem(ModBlocks.RHNULL_BLOCK);
-        evenSimplerBlockItem(ModBlocks.BLOODDIRT_FARMLAND);
-        evenSimplerBlockItem(ModBlocks.CRIMSON_LURE_MUSHROOM_BLOCK);
-        simpleBlockItemBlockTexture(ModBlocks.BLOOD_FLOWER);
-        simpleBlockItemBlockTexture(ModBlocks.BLOOD_GRASS);
+        evenSimplerBlockItem(MachineBlocks.SANGUINE_CRUCIBLE);
+        evenSimplerBlockItem(MetalBlocks.RHNULL_BLOCK);
+        evenSimplerBlockItem(SoilBlocks.BLOODDIRT_FARMLAND);
+        evenSimplerBlockItem(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK);
+        simpleBlockItemBlockTexture(PlantBlocks.BLOOD_FLOWER);
+        simpleBlockItemBlockTexture(PlantBlocks.BLOOD_GRASS);
 
-        simpleBlockItemBlockTexture(ModBlocks.VISCERAL_INFECTED_VEIN);
+        simpleBlockItemBlockTexture(PlantBlocks.VISCERAL_INFECTED_VEIN);
 
 
-        evenSimplerBlockItem(ModBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
-        evenSimplerBlockItem(ModBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
+        evenSimplerBlockItem(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
+        evenSimplerBlockItem(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
 
         normalItem(ModItems.BLOOD_LILY);
-        blockFlatWithItemTexture(ModBlocks.STAR_LAMP_BLOCK, "star_lamp_block");
+        blockFlatWithItemTexture(LightBlocks.STAR_LAMP_BLOCK, "star_lamp_block");
 
 
         //Bloody stone
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_BLOCK);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_BLOCK);
 
-        simpleBlockItemBlockTexture(ModBlocks.BLOOD_FIRE);
-        simpleBlockItemBlockTexture(ModBlocks.FRENZIED_FIRE_BLOCK);
-        fenceItem(ModBlocks.BLOODY_STONE_FENCE, ModBlocks.BLOODY_STONE_BLOCK);
-        wallItem(ModBlocks.BLOODY_STONE_WALL, ModBlocks.BLOODY_STONE_BLOCK);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_STAIRS);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_SLAB);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_FENCE_GATE);
+        simpleBlockItemBlockTexture(MiscBlocks.BLOOD_FIRE);
+        simpleBlockItemBlockTexture(MiscBlocks.FRENZIED_FIRE_BLOCK);
+        fenceItem(StoneBlocks.BLOODY_STONE_FENCE, StoneBlocks.BLOODY_STONE_BLOCK);
+        wallItem(StoneBlocks.BLOODY_STONE_WALL, StoneBlocks.BLOODY_STONE_BLOCK);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_STAIRS);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_SLAB);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_FENCE_GATE);
 
         //Bloody stone tiles
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_TILES_BLOCK);
-        fenceItem(ModBlocks.BLOODY_STONE_TILES_FENCE, ModBlocks.BLOODY_STONE_TILES_BLOCK);
-        wallItem(ModBlocks.BLOODY_STONE_TILES_WALL, ModBlocks.BLOODY_STONE_TILES_BLOCK);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_TILES_STAIRS);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_TILES_SLAB);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_FENCE_TILES_GATE);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_TILES_BLOCK);
+        fenceItem(StoneBlocks.BLOODY_STONE_TILES_FENCE, StoneBlocks.BLOODY_STONE_TILES_BLOCK);
+        wallItem(StoneBlocks.BLOODY_STONE_TILES_WALL, StoneBlocks.BLOODY_STONE_TILES_BLOCK);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_TILES_STAIRS);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_TILES_SLAB);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_FENCE_TILES_GATE);
 
         //Polished bloody stone
-        evenSimplerBlockItem(ModBlocks.POLISHED_BLOODY_STONE_BLOCK);
-        fenceItem(ModBlocks.POLISHED_BLOODY_STONE_FENCE, ModBlocks.POLISHED_BLOODY_STONE_BLOCK);
-        wallItem(ModBlocks.POLISHED_BLOODY_STONE_WALL, ModBlocks.POLISHED_BLOODY_STONE_BLOCK);
-        evenSimplerBlockItem(ModBlocks.POLISHED_BLOODY_STONE_STAIRS);
-        evenSimplerBlockItem(ModBlocks.POLISHED_BLOODY_STONE_SLAB);
-        evenSimplerBlockItem(ModBlocks.POLISHED_BLOODY_STONE_FENCE_GATE);
+        evenSimplerBlockItem(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK);
+        fenceItem(StoneBlocks.POLISHED_BLOODY_STONE_FENCE, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK);
+        wallItem(StoneBlocks.POLISHED_BLOODY_STONE_WALL, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK);
+        evenSimplerBlockItem(StoneBlocks.POLISHED_BLOODY_STONE_STAIRS);
+        evenSimplerBlockItem(StoneBlocks.POLISHED_BLOODY_STONE_SLAB);
+        evenSimplerBlockItem(StoneBlocks.POLISHED_BLOODY_STONE_FENCE_GATE);
 
         //Bloody Stone Bricks
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_BRICKS);
-        fenceItem(ModBlocks.BLOODY_STONE_BRICKS_FENCE, ModBlocks.BLOODY_STONE_BRICKS);
-        wallItem(ModBlocks.BLOODY_STONE_BRICKS_WALL, ModBlocks.BLOODY_STONE_BRICKS);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_BRICKS_STAIRS);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_BRICKS_SLAB);
-        evenSimplerBlockItem(ModBlocks.BLOODY_STONE_FENCE_BRICKS_GATE);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_BRICKS);
+        fenceItem(StoneBlocks.BLOODY_STONE_BRICKS_FENCE, StoneBlocks.BLOODY_STONE_BRICKS);
+        wallItem(StoneBlocks.BLOODY_STONE_BRICKS_WALL, StoneBlocks.BLOODY_STONE_BRICKS);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_BRICKS_STAIRS);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_BRICKS_SLAB);
+        evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_FENCE_BRICKS_GATE);
 
         //Blood Planks
-        fenceItem(ModBlocks.BLOOD_PLANKS_FENCE, ModBlocks.BLOOD_PLANKS);
-        evenSimplerBlockItem(ModBlocks.BLOOD_PLANKS_STAIRS);
-        evenSimplerBlockItem(ModBlocks.BLOOD_PLANKS_SLAB);
-        evenSimplerBlockItem(ModBlocks.BLOOD_PLANKS_FENCE_GATE);
+        fenceItem(WoodBlocks.BLOOD_PLANKS_FENCE, WoodBlocks.BLOOD_PLANKS);
+        evenSimplerBlockItem(WoodBlocks.BLOOD_PLANKS_STAIRS);
+        evenSimplerBlockItem(WoodBlocks.BLOOD_PLANKS_SLAB);
+        evenSimplerBlockItem(WoodBlocks.BLOOD_PLANKS_FENCE_GATE);
 
 
 
 
 
         //Ancient Bricks
-        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS);
-        wallItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL, ModBlocks.ANCIENT_BLOODY_STONE_BRICKS);
-        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS);
-        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB);
-        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN);
-        evenSimplerBlockItem(ModBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS);
-        evenSimplerBlockItem(ModBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS);
-        evenSimplerBlockItem(ModBlocks.ANCIENT_BLOODY_LAMP);
-        blockItem(ModItems.ANCIENT_TORCH_ITEM, ModBlocks.ANCIENT_TORCH_BLOCK);
+        evenSimplerBlockItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS);
+        wallItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS);
+        evenSimplerBlockItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS);
+        evenSimplerBlockItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB);
+        evenSimplerBlockItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_COLUMN);
+        evenSimplerBlockItem(StoneBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS);
+        evenSimplerBlockItem(StoneBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS);
+        evenSimplerBlockItem(LightBlocks.ANCIENT_BLOODY_LAMP);
+        blockItem(ModItems.ANCIENT_TORCH_ITEM, LightBlocks.ANCIENT_TORCH_BLOCK);
 
 
 
         //Blasphemous Biome
-        evenSimplerBlockItem(ModBlocks.BLASPHEMOUS_SAND_BLOCK);
-        evenSimplerBlockItem(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
-        evenSimplerBlockItem(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
-        evenSimplerBlockItem(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS);
-        evenSimplerBlockItem(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB);
+        evenSimplerBlockItem(SoilBlocks.BLASPHEMOUS_SAND_BLOCK);
+        evenSimplerBlockItem(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
+        evenSimplerBlockItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
+        evenSimplerBlockItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS);
+        evenSimplerBlockItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB);
         normalItem(ModItems.SELIORA_ESSENCE);
-        evenSimplerBlockItem(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
-        evenSimplerBlockItem(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
-        evenSimplerBlockItem(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);
-        evenSimplerBlockItem(ModBlocks.ERODED_BLASPHEMOUS_SANDSTONE);
-        evenSimplerBlockItem(ModBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE);
-        evenSimplerBlockItem(ModBlocks.CRACKED_BLASPHEMOUS_SANDSTONE);
-        evenSimplerBlockItem(ModBlocks.BLASPHEMITE_ORE);
-        evenSimplerBlockItem(ModBlocks.BLASPHEMITE_BLOCK);
-        simpleBlockItemBlockTexture(ModBlocks.SPIKY_GRASS);
-        simpleBlockItemBlockTexture(ModBlocks.ROUNDED_GRASS);
-        simpleBlockItemBlockTexture(ModBlocks.STING_FLOWER);
+        evenSimplerBlockItem(SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
+        evenSimplerBlockItem(SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
+        evenSimplerBlockItem(SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);
+        evenSimplerBlockItem(SandstoneBlocks.ERODED_BLASPHEMOUS_SANDSTONE);
+        evenSimplerBlockItem(SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE);
+        evenSimplerBlockItem(SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE);
+        evenSimplerBlockItem(MetalBlocks.BLASPHEMITE_ORE);
+        evenSimplerBlockItem(MetalBlocks.BLASPHEMITE_BLOCK);
+        simpleBlockItemBlockTexture(PlantBlocks.SPIKY_GRASS);
+        simpleBlockItemBlockTexture(PlantBlocks.ROUNDED_GRASS);
+        simpleBlockItemBlockTexture(PlantBlocks.STING_FLOWER);
 
 
         normalItem(ModItems.DIRTY_BLOOD_FLOWER);
@@ -294,11 +302,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         toolItem(ModItems.SANGUINITE_SHOVEL);
         toolItem(ModItems.SANGUINITE_HOE);
 
-        simpleBlockItemBlockTexture(ModBlocks.HANGING_BLOOD_TREE_LEAVES);
-        simpleBlockItemBlockTexture(ModBlocks.GLOWING_CRYSTAL);
-        simpleBlockItemBlockTexture(ModBlocks.DROOPVINE);
-        simpleBlockItemBlockTexture(ModBlocks.DROOPVINE_PLANT);
-        fanItem(ModBlocks.BLOOD_PETALS);
+        simpleBlockItemBlockTexture(PlantBlocks.HANGING_BLOOD_TREE_LEAVES);
+        simpleBlockItemBlockTexture(LightBlocks.GLOWING_CRYSTAL);
+        simpleBlockItemBlockTexture(PlantBlocks.DROOPVINE);
+        simpleBlockItemBlockTexture(PlantBlocks.DROOPVINE_PLANT);
+        fanItem(PlantBlocks.BLOOD_PETALS);
 
 
     }

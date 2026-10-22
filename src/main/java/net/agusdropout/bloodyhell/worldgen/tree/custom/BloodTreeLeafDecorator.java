@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.tree.custom;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.worldgen.tree.ModTreeDecoratorTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -25,8 +25,8 @@ public class BloodTreeLeafDecorator extends TreeDecorator {
         context.leaves().forEach((pos -> {
             if (random.nextFloat() < 0.5F) {
                 if(context.isAir(pos.below())) {
-                    context.setBlock(pos.below(), ModBlocks.HANGING_BLOOD_TREE_LEAVES.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
-                    context.setBlock(pos.below().below(), ModBlocks.HANGING_BLOOD_TREE_LEAVES.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER));
+                    context.setBlock(pos.below(), PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
+                    context.setBlock(pos.below().below(), PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER));
                 }
             }
         }));

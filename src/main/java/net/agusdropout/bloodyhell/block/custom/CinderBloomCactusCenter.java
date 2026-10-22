@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,8 +23,8 @@ public class CinderBloomCactusCenter extends Block {
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
 
-        boolean belowSupport = belowState.is(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get()) ||
-                belowState.is(ModBlocks.CINDER_BLOOM_CACTUS_CON.get());
+        boolean belowSupport = belowState.is(PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get()) ||
+                belowState.is(PlantBlocks.CINDER_BLOOM_CACTUS_CON.get());
 
 
 

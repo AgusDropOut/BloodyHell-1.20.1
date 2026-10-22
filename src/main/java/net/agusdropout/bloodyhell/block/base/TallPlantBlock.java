@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.base;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.BlockGetter;
@@ -26,6 +26,6 @@ public class TallPlantBlock extends BushBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos pos) {
-        return blockState.is(this) || blockState.is(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get());
+        return blockState.is(this) || blockState.is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get());
     }
 }

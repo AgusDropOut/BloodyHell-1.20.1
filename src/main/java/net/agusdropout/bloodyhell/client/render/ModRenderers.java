@@ -1,7 +1,9 @@
 package net.agusdropout.bloodyhell.client.render;
 
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.client.render.block.custom.renderer.*;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
@@ -344,25 +346,25 @@ public class ModRenderers {
 
     private static void registerBlockRenderLayers() {
 
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.ANCIENT_BLOOD_CAPSULE.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_PETALS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.SPIKY_GRASS.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(MachineBlocks.SANGUINITE_BLOOD_HARVESTER.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(MiscBlocks.ANCIENT_BLOOD_CAPSULE.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.BLOOD_PETALS.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.SPIKY_GRASS.get(), RenderType.translucent());
 
 
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_CRUCIBLE.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_MUSHROOM_BLOCK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.SANGUINE_LAPIDARY.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_CON.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_GEM_SPROUT.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MachineBlocks.SANGUINE_CRUCIBLE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MachineBlocks.SANGUINE_LAPIDARY.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.CINDER_BLOOM_CACTUS_CON.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.CINDER_BLOOM_CACTUS_FLOWER.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MachineBlocks.BLOOD_GEM_SPROUT.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
 
 
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLOOD_BUSH.get(), RenderType::canConsolidateConsecutiveGeometry);
+        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.BLOOD_BUSH.get(), RenderType::canConsolidateConsecutiveGeometry);
     }
 
 

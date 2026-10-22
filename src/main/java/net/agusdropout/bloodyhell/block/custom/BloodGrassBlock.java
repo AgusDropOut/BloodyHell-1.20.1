@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -56,7 +56,7 @@ public class BloodGrassBlock extends SpreadingBloodSoilBlock implements Bonemeal
 
     private static BlockState deepturfOrShimmerweed(RandomSource random) {
         if (random.nextInt(10) == 0) {
-            return ModBlocks.BLOOD_FLOWER.get().defaultBlockState();
-        } else return ModBlocks.BLOOD_GRASS.get().defaultBlockState();
+            return PlantBlocks.BLOOD_FLOWER.get().defaultBlockState();
+        } else return PlantBlocks.BLOOD_GRASS.get().defaultBlockState();
     }
 }

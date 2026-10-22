@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.tree.custom;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.base.BaseWallPlantBlock;
 import net.agusdropout.bloodyhell.worldgen.tree.ModTreeDecoratorTypes;
 import net.minecraft.core.BlockPos;
@@ -36,6 +36,6 @@ public class BloodTreeTrunkDecorator extends TreeDecorator {
     }
 
     private void placeMushroom(TreeDecorator.Context context, BlockPos pos, Direction direction) {
-        context.setBlock(pos, ModBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get().defaultBlockState().setValue(BaseWallPlantBlock.FACING, direction));
+        context.setBlock(pos, PlantBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get().defaultBlockState().setValue(BaseWallPlantBlock.FACING, direction));
     }
 }

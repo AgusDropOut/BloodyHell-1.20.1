@@ -1,7 +1,8 @@
 package net.agusdropout.bloodyhell.worldgen.dimension;
 
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.worldgen.ModBiomeModifiers;
 import net.agusdropout.bloodyhell.worldgen.biome.ModBiomes;
 import net.agusdropout.bloodyhell.worldgen.biome.surface.ModSurfaceRules;
@@ -88,7 +89,7 @@ public class ModDimensions {
 
         context.register(SOUL_DIMENSION_NOISE_GEN, new NoiseGeneratorSettings(
                 NoiseSettings.create(0, 128, 2, 2),
-                ModBlocks.BLOODY_STONE_BLOCK.get().defaultBlockState(),
+                StoneBlocks.BLOODY_STONE_BLOCK.get().defaultBlockState(),
                 Blocks.WATER.defaultBlockState(),
                 new NoiseRouter(
                         DensityFunctions.zero(), //barrier
@@ -141,11 +142,11 @@ public class ModDimensions {
                       //////bedrock floor
                       //SurfaceRules.ifTrue(SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), SurfaceRules.state(Blocks.BEDROCK.defaultBlockState())),
                       //SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.aboveBottom(110),1),SurfaceRules.state(Blocks.AIR.defaultBlockState())),
-                      //SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.aboveBottom(107),1), SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.hole()), SurfaceRules.state(ModBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState()))),
-                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, CaveSurface.FLOOR), SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(33), 0)), SurfaceRules.state(ModBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState()))),
-                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR), SurfaceRules.state(ModBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState())),
+                      //SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.aboveBottom(107),1), SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.hole()), SurfaceRules.state(SoilBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState()))),
+                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, CaveSurface.FLOOR), SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(33), 0)), SurfaceRules.state(SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState()))),
+                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR), SurfaceRules.state(SoilBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState())),
 
-                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR), SurfaceRules.state(ModBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState())),
+                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR), SurfaceRules.state(SoilBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState())),
                         ModSurfaceRules.makeRules()
 
                 ),

@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.capability.IBloodPortal;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.registry.BloodCapabilities;
@@ -298,7 +298,7 @@ public class ModBloodPortalBlock extends Block {
                         return i;
                     }
 
-                    if (blockstate.is(ModBlocks.BLOOD_PORTAL.get())) {
+                    if (blockstate.is(MiscBlocks.BLOOD_PORTAL.get())) {
                         ++this.numPortalBlocks;
                     }
                 }
@@ -308,7 +308,7 @@ public class ModBloodPortalBlock extends Block {
         }
 
         private static boolean isEmpty(BlockState state) {
-            return state.isAir() || state.is(ModBlocks.BLOOD_PORTAL.get());
+            return state.isAir() || state.is(MiscBlocks.BLOOD_PORTAL.get());
         }
 
         public boolean isValid() {
@@ -316,7 +316,7 @@ public class ModBloodPortalBlock extends Block {
         }
 
         public void createPortalBlocks() {
-            BlockState blockstate = ModBlocks.BLOOD_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, this.axis);
+            BlockState blockstate = MiscBlocks.BLOOD_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, this.axis);
             BlockPos.betweenClosed(this.bottomLeft, this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1)).forEach(pos -> this.level.setBlock(pos, blockstate, 18));
         }
 

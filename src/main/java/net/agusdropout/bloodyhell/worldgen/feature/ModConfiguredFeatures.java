@@ -1,9 +1,15 @@
 package net.agusdropout.bloodyhell.worldgen.feature;
 
+import net.agusdropout.bloodyhell.block.registry.FluidBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.custom.SmallRocks;
 import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.worldgen.feature.custom.DroopvineFeature;
@@ -79,15 +85,15 @@ public class ModConfiguredFeatures {
 
 
     public static final Supplier<List<OreConfiguration.TargetBlockState>> BLOOD_ORES = Suppliers.memoize(() -> List.of(
-            OreConfiguration.target(new TagMatchTest(ModTags.Blocks.BLOOD_ORE_REPLACEABLES), ModBlocks.SANGUINITE_ORE.get().defaultBlockState())));
+            OreConfiguration.target(new TagMatchTest(ModTags.Blocks.BLOOD_ORE_REPLACEABLES), MetalBlocks.SANGUINITE_ORE.get().defaultBlockState())));
 
     public static final Supplier<List<OreConfiguration.TargetBlockState>> BLASPHEMITE_ORES = Suppliers.memoize(() -> List.of(
-            OreConfiguration.target(new TagMatchTest(ModTags.Blocks.BLASPHEMITE_ORE_REPLACEABLES), ModBlocks.BLASPHEMITE_ORE.get().defaultBlockState())));
+            OreConfiguration.target(new TagMatchTest(ModTags.Blocks.BLASPHEMITE_ORE_REPLACEABLES), MetalBlocks.BLASPHEMITE_ORE.get().defaultBlockState())));
 
     public static final Supplier<List<OreConfiguration.TargetBlockState>> BLEEDING_BLOCK = Suppliers.memoize(() -> List.of(
-           OreConfiguration.target(new TagMatchTest(BlockTags.DIRT), ModBlocks.BLEEDING_BLOCK.get().defaultBlockState())));
+           OreConfiguration.target(new TagMatchTest(BlockTags.DIRT), MiscBlocks.BLEEDING_BLOCK.get().defaultBlockState())));
     public static final Supplier<List<OreConfiguration.TargetBlockState>> BLOOD_LIQUID = Suppliers.memoize(() -> List.of(
-            OreConfiguration.target(new TagMatchTest(BlockTags.DIRT), ModBlocks.BLOOD_FLUID_BLOCK.get().defaultBlockState())));
+            OreConfiguration.target(new TagMatchTest(BlockTags.DIRT), FluidBlocks.BLOOD_FLUID_BLOCK.get().defaultBlockState())));
 
 
 
@@ -99,48 +105,48 @@ public class ModConfiguredFeatures {
         register(context, SOUL_DIMENSION_SANGUINE_ORE_KEY, Feature.ORE, new OreConfiguration(BLOOD_ORES.get(),12));
         register(context, SOUL_DIMENSION_BLASPHEMITE_ORE_KEY, Feature.ORE, new OreConfiguration(BLASPHEMITE_ORES.get(),12));
         register(context, BLEEDING_BLOCK_KEY, Feature.ORE, new OreConfiguration(BLEEDING_BLOCK.get(),33));
-        register(context, BLOOD_LIQUID_KEY, Feature.DELTA_FEATURE, new DeltaFeatureConfiguration(ModBlocks.BLOOD_FLUID_BLOCK.get().defaultBlockState(), ModBlocks.BLOODY_STONE_BLOCK.get().defaultBlockState(), UniformInt.of(6, 8), UniformInt.of(2, 4)));
+        register(context, BLOOD_LIQUID_KEY, Feature.DELTA_FEATURE, new DeltaFeatureConfiguration(FluidBlocks.BLOOD_FLUID_BLOCK.get().defaultBlockState(), StoneBlocks.BLOODY_STONE_BLOCK.get().defaultBlockState(), UniformInt.of(6, 8), UniformInt.of(2, 4)));
 
 
         register(context,BLOOD_TREE_KEY,Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(ModBlocks.BLOOD_LOG.get()),
+                BlockStateProvider.simple(WoodBlocks.BLOOD_LOG.get()),
                 new BloodTrunkPlacer(1, 2, 2),
-                BlockStateProvider.simple(ModBlocks.BLOOD_LEAVES.get()),
+                BlockStateProvider.simple(WoodBlocks.BLOOD_LEAVES.get()),
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), 2),
-                new TwoLayersFeatureSize(1,0,2)).decorators(ImmutableList.of(BloodTreeTrunkDecorator.INSTANCE)).dirt(BlockStateProvider.simple(ModBlocks.BLOOD_DIRT_BLOCK.get())).build()
+                new TwoLayersFeatureSize(1,0,2)).decorators(ImmutableList.of(BloodTreeTrunkDecorator.INSTANCE)).dirt(BlockStateProvider.simple(SoilBlocks.BLOOD_DIRT_BLOCK.get())).build()
         );
         register(context,GIANT_BLOOD_TREE_KEY,Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(ModBlocks.BLOOD_LOG.get()),
+                BlockStateProvider.simple(WoodBlocks.BLOOD_LOG.get()),
 
                 new MegaJungleTrunkPlacer(10, 5, 5),
-                BlockStateProvider.simple(ModBlocks.BLOOD_LEAVES.get()),
+                BlockStateProvider.simple(WoodBlocks.BLOOD_LEAVES.get()),
                 new MegaJungleFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 2),
-                new TwoLayersFeatureSize(1,0,2)).decorators(ImmutableList.of(BloodTreeTrunkDecorator.INSTANCE,BloodTreeLeafDecorator.INSTANCE)).dirt(BlockStateProvider.simple(ModBlocks.BLOOD_DIRT_BLOCK.get())).build()
+                new TwoLayersFeatureSize(1,0,2)).decorators(ImmutableList.of(BloodTreeTrunkDecorator.INSTANCE,BloodTreeLeafDecorator.INSTANCE)).dirt(BlockStateProvider.simple(SoilBlocks.BLOOD_DIRT_BLOCK.get())).build()
         );
         register(context,SOUL_TREE_KEY,Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(ModBlocks.SOUL_LOG.get()),
+                BlockStateProvider.simple(WoodBlocks.SOUL_LOG.get()),
                 new SoulTrunkPlacer(1, 2, 2),
-                BlockStateProvider.simple(ModBlocks.SOUL_LEAVES.get()),
+                BlockStateProvider.simple(WoodBlocks.SOUL_LEAVES.get()),
                 new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)),
-                new TwoLayersFeatureSize(1,1,3)).decorators(ImmutableList.of(SoulTreeLeafDecorator.INSTANCE)).dirt(BlockStateProvider.simple(ModBlocks.BLOOD_DIRT_BLOCK.get())).build()
+                new TwoLayersFeatureSize(1,1,3)).decorators(ImmutableList.of(SoulTreeLeafDecorator.INSTANCE)).dirt(BlockStateProvider.simple(SoilBlocks.BLOOD_DIRT_BLOCK.get())).build()
         );
         register(context,SMALL_BLOOD_TREE_KEY,Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(ModBlocks.BLOOD_LOG.get()),
+                BlockStateProvider.simple(WoodBlocks.BLOOD_LOG.get()),
                 new SmallBloodTrunkPlacer(1, 2, 2),
-                BlockStateProvider.simple(ModBlocks.BLOOD_LEAVES.get()),
+                BlockStateProvider.simple(WoodBlocks.BLOOD_LEAVES.get()),
                 new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 1),
-                new TwoLayersFeatureSize(1,1,1)).dirt(BlockStateProvider.simple(ModBlocks.BLOOD_DIRT_BLOCK.get())).build()
+                new TwoLayersFeatureSize(1,1,1)).dirt(BlockStateProvider.simple(SoilBlocks.BLOOD_DIRT_BLOCK.get())).build()
         );
-        context.register(BLOOD_FLOWER_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(ModBlocks.BLOOD_FLOWER.get(), 64)));
-        context.register(LIGHT_MUSHROOM_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(ModBlocks.LIGHT_MUSHROOM_BLOCK.get(), 35)));
-        context.register(BLOOD_GRASS_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(ModBlocks.BLOOD_GRASS.get(), 100)));
-        context.register(SPIKY_GRASS_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(ModBlocks.SPIKY_GRASS.get(), 10)));
-        context.register(ROUNDED_GRASS_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(ModBlocks.ROUNDED_GRASS.get(), 30)));
-        context.register(BLOOD_BUSH_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(ModBlocks.BLOOD_BUSH.get(), 32)));
-        context.register(BLOOD_SMALL_ROCKS_KEY, new ConfiguredFeature<>(Feature.FLOWER, rocks(ModBlocks.SMALL_ROCKS.get(),List.of(ModBlocks.BLOODY_STONE_BLOCK.get(), ModBlocks.BLOOD_GRASS_BLOCK.get(),ModBlocks.BLOOD_DIRT_BLOCK.get()))));
-        context.register(BLOOD_PETALS_KEY, new ConfiguredFeature<>(Feature.RANDOM_PATCH, patch(ModBlocks.BLOOD_PETALS.get(), 70)));
+        context.register(BLOOD_FLOWER_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(PlantBlocks.BLOOD_FLOWER.get(), 64)));
+        context.register(LIGHT_MUSHROOM_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(), 35)));
+        context.register(BLOOD_GRASS_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(PlantBlocks.BLOOD_GRASS.get(), 100)));
+        context.register(SPIKY_GRASS_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(PlantBlocks.SPIKY_GRASS.get(), 10)));
+        context.register(ROUNDED_GRASS_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(PlantBlocks.ROUNDED_GRASS.get(), 30)));
+        context.register(BLOOD_BUSH_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(PlantBlocks.BLOOD_BUSH.get(), 32)));
+        context.register(BLOOD_SMALL_ROCKS_KEY, new ConfiguredFeature<>(Feature.FLOWER, rocks(MiscBlocks.SMALL_ROCKS.get(),List.of(StoneBlocks.BLOODY_STONE_BLOCK.get(), SoilBlocks.BLOOD_GRASS_BLOCK.get(),SoilBlocks.BLOOD_DIRT_BLOCK.get()))));
+        context.register(BLOOD_PETALS_KEY, new ConfiguredFeature<>(Feature.RANDOM_PATCH, patch(PlantBlocks.BLOOD_PETALS.get(), 70)));
         context.register(GLOWING_CRYSTAL_KEY, new ConfiguredFeature<>(ModFeatures.GLOWING_CRYSTAL.get(),NoneFeatureConfiguration.NONE));
-        context.register(BLOOD_LILY_KEY,new ConfiguredFeature<> (Feature.RANDOM_PATCH, new RandomPatchConfiguration(10, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.BLOOD_LILY_BLOCK.get()))))));
+        context.register(BLOOD_LILY_KEY,new ConfiguredFeature<> (Feature.RANDOM_PATCH, new RandomPatchConfiguration(10, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(PlantBlocks.BLOOD_LILY_BLOCK.get()))))));
         context.register(DROOPVINE_KEY, new ConfiguredFeature<>(ModFeatures.DROOPVINE.get(),NoneFeatureConfiguration.NONE));
         context.register(STONE_PILLAR_KEY, new ConfiguredFeature<>(ModFeatures.STONE_PILLAR.get(),NoneFeatureConfiguration.NONE));
         context.register(CINDER_CACTUS_KEY, new ConfiguredFeature<>(ModFeatures.CINDER_CACTUS.get(),NoneFeatureConfiguration.NONE));
@@ -148,7 +154,7 @@ public class ModConfiguredFeatures {
         context.register(GIANT_SPINE_KEY, new ConfiguredFeature<>(ModFeatures.GIANT_SPINE.get(),NoneFeatureConfiguration.NONE));
         context.register(GIANT_ROOT_KEY, new ConfiguredFeature<>(ModFeatures.GIANT_ROOT.get(),NoneFeatureConfiguration.NONE));
         context.register(STING_FLOWER_KEY, new ConfiguredFeature<>(ModFeatures.STING_FLOWER_FEATURE.get(),NoneFeatureConfiguration.NONE));
-        context.register(BLOOD_SCRAPPER_PLANT_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(ModBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get(), 5)));
+        context.register(BLOOD_SCRAPPER_PLANT_KEY, new ConfiguredFeature<>(Feature.FLOWER, patch(PlantBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get(), 5)));
 
 }
 

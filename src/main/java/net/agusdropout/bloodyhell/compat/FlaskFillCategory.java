@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.compat;
 
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -11,7 +12,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.recipe.CondenserRecipe;
 import net.agusdropout.bloodyhell.recipe.FlaskFillRecipe;
 import net.minecraft.client.Minecraft;
@@ -30,7 +30,7 @@ public class FlaskFillCategory implements IRecipeCategory<FlaskFillRecipe> {
 
     public FlaskFillCategory(IGuiHelper helper) {
         this.background = helper.createBlankDrawable(120, 36);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SANGUINITE_TANK.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(MachineBlocks.SANGUINITE_TANK.get()));
         this.slotDrawable = helper.getSlotDrawable();
     }
 

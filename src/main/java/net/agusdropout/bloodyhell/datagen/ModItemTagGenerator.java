@@ -1,8 +1,13 @@
 package net.agusdropout.bloodyhell.datagen;
 
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import com.eliotlash.mclib.math.functions.classic.Mod;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -23,18 +28,18 @@ public class ModItemTagGenerator extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         this.tag(ItemTags.LOGS_THAT_BURN)
-                .add(ModBlocks.BLOOD_LOG.get().asItem())
-                .add(ModBlocks.BLOOD_WOOD.get().asItem())
-                .add(ModBlocks.STRIPPED_BLOOD_LOG.get().asItem())
-                .add(ModBlocks.STRIPPED_BLOOD_WOOD.get().asItem())
-                .add(ModBlocks.SOUL_LOG.get().asItem())
-                .add(ModBlocks.SOUL_WOOD.get().asItem())
-                .add(ModBlocks.STRIPPED_SOUL_LOG.get().asItem())
-                .add(ModBlocks.STRIPPED_SOUL_WOOD.get().asItem());
+                .add(WoodBlocks.BLOOD_LOG.get().asItem())
+                .add(WoodBlocks.BLOOD_WOOD.get().asItem())
+                .add(WoodBlocks.STRIPPED_BLOOD_LOG.get().asItem())
+                .add(WoodBlocks.STRIPPED_BLOOD_WOOD.get().asItem())
+                .add(WoodBlocks.SOUL_LOG.get().asItem())
+                .add(WoodBlocks.SOUL_WOOD.get().asItem())
+                .add(WoodBlocks.STRIPPED_SOUL_LOG.get().asItem())
+                .add(WoodBlocks.STRIPPED_SOUL_WOOD.get().asItem());
 
         this.tag(ItemTags.PLANKS)
-                .add(ModBlocks.SOUL_PLANKS.get().asItem())
-                .add(ModBlocks.BLOOD_PLANKS.get().asItem());
+                .add(WoodBlocks.SOUL_PLANKS.get().asItem())
+                .add(WoodBlocks.BLOOD_PLANKS.get().asItem());
 
         this.tag(ItemTags.ARROWS)
                 .add(ModItems.BLOOD_ARROW.get());
@@ -65,14 +70,14 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.BLASPHEMITE_HOE.get());
 
         this.tag(ItemTags.STONE_CRAFTING_MATERIALS)
-                .add(ModBlocks.BLOODY_STONE_BLOCK.get().asItem());
+                .add(StoneBlocks.BLOODY_STONE_BLOCK.get().asItem());
 
         this.tag(ItemTags.STONE_TOOL_MATERIALS)
-                .add(ModBlocks.BLOODY_STONE_BLOCK.get().asItem());
+                .add(StoneBlocks.BLOODY_STONE_BLOCK.get().asItem());
 
         this.tag(ModTags.Items.BLOOD_LOGS)
-                .add(ModBlocks.STRIPPED_BLOOD_LOG.get().asItem())
-                .add(ModBlocks.BLOOD_LOG.get().asItem());
+                .add(WoodBlocks.STRIPPED_BLOOD_LOG.get().asItem())
+                .add(WoodBlocks.BLOOD_LOG.get().asItem());
 
         this.tag(ModTags.Items.CRIMSONVEIL_CONSUMER)
                 .add(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
@@ -126,15 +131,15 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.BLOOD_BOW.get())
                 .add(ModItems.BLOOD_SCYTHE.get())
                 .add(ModItems.BLOOD_ARROW.get())
-                .add(ModBlocks.SANGUINITE_BLOCK.get().asItem())
-                .add(ModBlocks.SANGUINITE_ORE.get().asItem())
+                .add(MetalBlocks.SANGUINITE_BLOCK.get().asItem())
+                .add(MetalBlocks.SANGUINITE_ORE.get().asItem())
                 .add(ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get())
                 .add(ModItems.SANGUINITE_PIPE_ITEM.get())
-                .add(ModBlocks.SANGUINITE_TANK.get().asItem())
-                .add(ModBlocks.SANGUINITE_INFUSOR.get().asItem())
+                .add(MachineBlocks.SANGUINITE_TANK.get().asItem())
+                .add(MachineBlocks.SANGUINITE_INFUSOR.get().asItem())
                 .add(ModItems.SANGUINITE_CONDENSER_ITEM.get())
-                .add(ModBlocks.SANGUINE_LAPIDARY.get().asItem())
-                .add(ModBlocks.SANGUINE_CRUCIBLE.get().asItem())
+                .add(MachineBlocks.SANGUINE_LAPIDARY.get().asItem())
+                .add(MachineBlocks.SANGUINE_CRUCIBLE.get().asItem())
                 .add(ModItems.SANGUINITE_GEM_FRAME.get())
                 .add(ModItems.SANGUINITE_GREAT_GEM_FRAME.get())
                 .add(ModItems.ANCIENT_GEM.get())
@@ -148,7 +153,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ModTags.Items.RHNULL_TIER_ITEMS)
                 .add(ModItems.RHNULL.get())
                 .add(ModItems.RHNULL_NUGGET.get())
-                .add(ModBlocks.RHNULL_BLOCK.get().asItem())
+                .add(MetalBlocks.RHNULL_BLOCK.get().asItem())
                 .add(ModItems.RHNULL_SWORD.get())
                 .add(ModItems.RHNULL_PICKAXE.get())
                 .add(ModItems.RHNULL_AXE.get())
@@ -160,7 +165,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.RHNULL_BOOTS.get())
                 .add(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
                 .add(ModItems.RHNULL_PIPE_ITEM.get())
-                .add(ModBlocks.RHNULL_TANK.get().asItem())
+                .add(MachineBlocks.RHNULL_TANK.get().asItem())
                 .add(ModItems.RHNULL_CONDENSER_ITEM.get())
                 .add(ModItems.RHNULL_GEM_FRAME.get())
                 .add(ModItems.RHNULL_GREAT_GEM_FRAME.get())
@@ -175,9 +180,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ModTags.Items.BLASPHEMOUS_TIER_ITEMS)
                 .add(ModItems.BLASPHEMITE.get())
                 .add(ModItems.RAW_BLASPHEMITE.get())
-                .add(ModBlocks.BLASPHEMITE_ORE.get().asItem())
+                .add(MetalBlocks.BLASPHEMITE_ORE.get().asItem())
                 .add(ModItems.BLASPHEMITE_NUGGET.get())
-                .add(ModBlocks.BLASPHEMITE_BLOCK.get().asItem())
+                .add(MetalBlocks.BLASPHEMITE_BLOCK.get().asItem())
                 .add(ModItems.BLASPHEMITE_SWORD.get())
                 .add(ModItems.BLASPHEMITE_PICKAXE.get())
                 .add(ModItems.BLASPHEMITE_AXE.get())
@@ -199,12 +204,12 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.VISCOUS_BLASPHEMY_BUCKET.get())
                 .add(ModItems.BLASPHEMOUS_BLOOD_ALTAR_ITEM.get())
                 .add(ModItems.MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM.get())
-                .add(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get().asItem())
-                .add(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
-                .add(ModBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
-                .add(ModBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
-                .add(ModBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
-                .add(ModBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem());
+                .add(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get().asItem())
+                .add(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
+                .add(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
+                .add(SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
+                .add(SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
+                .add(SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem());
 
 
         // =================================================================

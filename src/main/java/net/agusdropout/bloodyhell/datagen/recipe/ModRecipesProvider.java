@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.datagen.recipe;
 
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.datagen.recipe.builder.SanguiniteInfusorRecipeBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -387,35 +387,35 @@ public abstract class ModRecipesProvider extends RecipeProvider {
     }
 
     public SingleItemRecipeBuilder bloodyStonecutting(ItemLike result) {
-        return stonecutting(ModBlocks.BLOODY_STONE_BLOCK, result);
+        return stonecutting(StoneBlocks.BLOODY_STONE_BLOCK, result);
     }
 
     public SingleItemRecipeBuilder bloodyStonecutting(ItemLike result, int resultAmount) {
-        return stonecutting(ModBlocks.BLOODY_STONE_BLOCK, result, resultAmount);
+        return stonecutting(StoneBlocks.BLOODY_STONE_BLOCK, result, resultAmount);
     }
 
     public SingleItemRecipeBuilder bloodyStoneBricksStonecutting(ItemLike result) {
-        return stonecutting(ModBlocks.BLOODY_STONE_BRICKS, result);
+        return stonecutting(StoneBlocks.BLOODY_STONE_BRICKS, result);
     }
 
     public SingleItemRecipeBuilder bloodyStoneBricksStonecutting(ItemLike result, int resultAmount) {
-        return stonecutting(ModBlocks.BLOODY_STONE_BRICKS, result, resultAmount);
+        return stonecutting(StoneBlocks.BLOODY_STONE_BRICKS, result, resultAmount);
     }
 
     public SingleItemRecipeBuilder bloodyStoneTilesStonecutting(ItemLike result) {
-        return stonecutting(ModBlocks.BLOODY_STONE_TILES_BLOCK, result);
+        return stonecutting(StoneBlocks.BLOODY_STONE_TILES_BLOCK, result);
     }
 
     public SingleItemRecipeBuilder bloodyStoneTilesStonecutting(ItemLike result, int resultAmount) {
-        return stonecutting(ModBlocks.BLOODY_STONE_TILES_BLOCK, result, resultAmount);
+        return stonecutting(StoneBlocks.BLOODY_STONE_TILES_BLOCK, result, resultAmount);
     }
 
     public SingleItemRecipeBuilder polishedBloodyStoneStonecutting(ItemLike result) {
-        return stonecutting(ModBlocks.POLISHED_BLOODY_STONE_BLOCK, result);
+        return stonecutting(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK, result);
     }
 
     public SingleItemRecipeBuilder polishedBloodyStoneStonecutting(ItemLike result, int resultAmount) {
-        return stonecutting(ModBlocks.POLISHED_BLOODY_STONE_BLOCK, result, resultAmount);
+        return stonecutting(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK, result, resultAmount);
     }
 
 }

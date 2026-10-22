@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import net.agusdropout.bloodyhell.block.base.BaseWallPlantBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,9 +25,9 @@ public class CinderBloomCactusCon extends BaseWallPlantBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         List<Block> validSupports = List.of(
-                ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get(),
-                ModBlocks.CINDER_BLOOM_CACTUS_CENTER.get(),
-                ModBlocks.CINDER_BLOOM_CACTUS_CON.get()
+                PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get(),
+                PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get(),
+                PlantBlocks.CINDER_BLOOM_CACTUS_CON.get()
         );
 
 
@@ -48,11 +49,11 @@ public class CinderBloomCactusCon extends BaseWallPlantBlock {
     public boolean isSupport(LevelReader world, BlockPos pos, BlockState blockState, Direction direction) {
 
         List<Block> validSupports = List.of(
-                ModBlocks.BLASPHEMOUS_SAND_BLOCK.get(),
+                SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get(),
                 Blocks.SAND,
-                ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get(),
-                ModBlocks.CINDER_BLOOM_CACTUS_CENTER.get(),
-                ModBlocks.CINDER_BLOOM_CACTUS_CON.get()
+                PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get(),
+                PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get(),
+                PlantBlocks.CINDER_BLOOM_CACTUS_CON.get()
         );
 
         return validSupports.contains(blockState.getBlock());

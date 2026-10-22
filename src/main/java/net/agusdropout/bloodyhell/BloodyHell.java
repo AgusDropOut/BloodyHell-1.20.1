@@ -1,5 +1,7 @@
 package net.agusdropout.bloodyhell;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import com.mojang.logging.LogUtils;
 
 import net.agusdropout.bloodyhell.client.render.block.custom.renderer.BlasphemousBloodAltarRenderer;
@@ -182,7 +184,7 @@ BloodyHell
                     Monster::checkAnyLightMonsterSpawnRules);
 
 
-            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.BLOOD_FLOWER.getId(),ModBlocks.POTTED_BLOOD_FLOWER);
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(PlantBlocks.BLOOD_FLOWER.getId(),PlantBlocks.POTTED_BLOOD_FLOWER);
             ModMessages.register();
 
             MinecraftForge.EVENT_BUS.addListener(this::onPlayerInteract);
@@ -204,9 +206,9 @@ BloodyHell
         Block block = state.getBlock();
 
         ItemStack heldItem = player.getMainHandItem();
-        if (heldItem.getItem() instanceof HoeItem && (block == ModBlocks.BLOOD_GRASS_BLOCK.get() || block == ModBlocks.BLOOD_DIRT_BLOCK.get())) {
+        if (heldItem.getItem() instanceof HoeItem && (block == SoilBlocks.BLOOD_GRASS_BLOCK.get() || block == SoilBlocks.BLOOD_DIRT_BLOCK.get())) {
             player.swing(InteractionHand.MAIN_HAND);
-            level.setBlockAndUpdate(pos, ModBlocks.BLOODDIRT_FARMLAND.get().defaultBlockState());
+            level.setBlockAndUpdate(pos, SoilBlocks.BLOODDIRT_FARMLAND.get().defaultBlockState());
             heldItem.hurtAndBreak(1, player, (playerEntity) -> playerEntity.broadcastBreakEvent(playerEntity.getUsedItemHand()));
             event.setCanceled(true);
         }

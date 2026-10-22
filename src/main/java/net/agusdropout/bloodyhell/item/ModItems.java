@@ -1,7 +1,10 @@
 package net.agusdropout.bloodyhell.item;
 
+import net.agusdropout.bloodyhell.block.registry.LightBlocks;
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.custom.*;
@@ -111,13 +114,13 @@ public class ModItems {
             () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.BOOTS, new Item.Properties()));
 
     //Food Items
-    public static final RegistryObject<Item> GLOW_MUSHROOM = ITEMS.register("glow_mushroom", () -> new BlockItem( ModBlocks.LIGHT_MUSHROOM_BLOCK.get(),new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3)
+    public static final RegistryObject<Item> GLOW_MUSHROOM = ITEMS.register("glow_mushroom", () -> new BlockItem( PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(),new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3)
             .effect(
                     () -> new MobEffectInstance(MobEffects.GLOWING,200,0),1)
             .effect(
                     () -> new MobEffectInstance(MobEffects.CONFUSION,200,0),1
             ).build())));
-    public static final RegistryObject<Item> GLOW_FRUIT = ITEMS.register("glow_fruit", () -> new BlockItem( ModBlocks.DROOPVINE.get(),new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3)
+    public static final RegistryObject<Item> GLOW_FRUIT = ITEMS.register("glow_fruit", () -> new BlockItem( PlantBlocks.DROOPVINE.get(),new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3)
             .effect(
                     () -> new MobEffectInstance(MobEffects.GLOWING,200,0),1)
             .effect(
@@ -214,12 +217,12 @@ public class ModItems {
     public static final RegistryObject<Item> AVENTURINE_BLOOD_GEM = ITEMS.register("aventurine_blood_gem", () -> new BasePowerGemItem(
             new Item.Properties().stacksTo(1)));
 
-    public static final RegistryObject<Item> BLOOD_GEM_SPROUT_SEED = ITEMS.register("blood_gem_sprout_seed", () -> new ItemNameBlockItem(ModBlocks.BLOOD_GEM_SPROUT.get(),
+    public static final RegistryObject<Item> BLOOD_GEM_SPROUT_SEED = ITEMS.register("blood_gem_sprout_seed", () -> new ItemNameBlockItem(MachineBlocks.BLOOD_GEM_SPROUT.get(),
             new Item.Properties()));
 
-    public static final RegistryObject<Item> VORACIOUS_MUSHROOM = ITEMS.register("voracious_mushroom_item", () -> new BlockItem(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(),
+    public static final RegistryObject<Item> VORACIOUS_MUSHROOM = ITEMS.register("voracious_mushroom_item", () -> new BlockItem(PlantBlocks.VORACIOUS_MUSHROOM_BLOCK.get(),
             new Item.Properties()));
-    public static final RegistryObject<Item> CRIMSON_LURE_MUSHROOM = ITEMS.register("crimson_lure_mushroom_item", () -> new BlockItem(ModBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(),
+    public static final RegistryObject<Item> CRIMSON_LURE_MUSHROOM = ITEMS.register("crimson_lure_mushroom_item", () -> new BlockItem(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(),
             new Item.Properties()));
 
     public static final RegistryObject<Item> RELIQUARY = ITEMS.register("reliquary", () -> new ReliquaryItem(
@@ -249,7 +252,7 @@ public class ModItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLOODY_SOUL_DUST = ITEMS.register("bloody_soul_dust", () -> new Item(
             new Item.Properties()));
-    public static final RegistryObject<Item> Eyeball_seed = ITEMS.register("eyeball_seed", () -> new ItemNameBlockItem(ModBlocks.EYEBALL_CROP.get(),
+    public static final RegistryObject<Item> Eyeball_seed = ITEMS.register("eyeball_seed", () -> new ItemNameBlockItem(PlantBlocks.EYEBALL_CROP.get(),
             new Item.Properties()));
     public static final RegistryObject<Item> MATERIALIZED_SOUL = ITEMS.register("materialized_soul", () -> new CatalystItem());
     public static final RegistryObject<Item> CHALICE_OF_THE_DAMMED = ITEMS.register("chalice_of_the_dammed", () -> new CatalystItem());
@@ -260,24 +263,24 @@ public class ModItems {
     public static final RegistryObject<Item> DIRTY_BLOOD_FLOWER = ITEMS.register("dirty_blood_flower", () -> new Item(
             new Item.Properties()));
     public static final RegistryObject<Item> BLOOD_LILY = ITEMS.register("blood_lily", () -> new PlaceOnWaterBlockItem(
-            ModBlocks.BLOOD_LILY_BLOCK.get(),new Item.Properties()));
+            PlantBlocks.BLOOD_LILY_BLOCK.get(),new Item.Properties()));
 
     //Ingredient Items
     public static final RegistryObject<Item> ROOTLET_POWDER = ITEMS.register("rootlet_powder", () ->
             new Item( new Item.Properties()));
 
     // Animated Items
-    public static final RegistryObject<Item> BLASPHEMOUS_BLOOD_ALTAR_ITEM = registerGeckoBlockItem("blasphemous_blood_altar_item", ModBlocks.BLASPHEMOUS_BLOOD_ALTAR, "blasphemous_blood_altar", true);
-    public static final RegistryObject<Item> MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM = registerGeckoBlockItem("main_blasphemous_blood_altar_item", ModBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR, "main_blasphemous_blood_altar", true);
-    public static final RegistryObject<Item> RHNULL_BLOOD_ENGINE_ITEM = registerGeckoBlockItem("rhnull_blood_engine_item", ModBlocks.RHNULL_BLOOD_ENGINE_BLOCK, "rhnull_blood_engine_block", false);
-    public static final RegistryObject<Item> RHNULL_BLOOD_ENGINE_PILLAR_ITEM = registerGeckoBlockItem("rhnull_blood_engine_pillar_item", ModBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK, "rhnull_blood_engine_pillar_block", false);
-    public static final RegistryObject<Item> SANGUINITE_PIPE_ITEM = registerGeckoBlockItem("sanguinite_pipe_item", ModBlocks.SANGUINITE_PIPE, "sanguinite_pipe", false);
-    public static final RegistryObject<Item> RHNULL_PIPE_ITEM = registerGeckoBlockItem("rhnull_pipe_item", ModBlocks.RHNULL_PIPE, "rhnull_pipe", false);
-    public static final RegistryObject<Item> SANGUINITE_BLOOD_HARVESTER_ITEM = registerGeckoBlockItem("sanguinite_blood_harvester_item", ModBlocks.SANGUINITE_BLOOD_HARVESTER, "sanguinite_blood_harvester", false);
-    public static final RegistryObject<Item> SANGUINITE_CONDENSER_ITEM = registerGeckoBlockItem("sanguinite_condenser_item", ModBlocks.SANGUINITE_CONDENSER, "sanguinite_condenser", false);
-    public static final RegistryObject<Item> RHNULL_CONDENSER_ITEM = registerGeckoBlockItem("rhnull_condenser_item", ModBlocks.RHNULL_CONDENSER, "rhnull_condenser", false);
-    public static final RegistryObject<Item> UNKNOWN_PORTAL_ITEM = registerGeckoBlockItem("unknown_portal_item", ModBlocks.UNKNOWN_PORTAL_BLOCK, "unknown_portal_block", true);
-    public static final RegistryObject<Item> SELIORA_RESTING_ITEM = registerGeckoBlockItem("seliora_resting_item", ModBlocks.SELIORA_RESTING_BLOCK, "seliora_resting_block", "seliora_resting_block_texture", false);
+    public static final RegistryObject<Item> BLASPHEMOUS_BLOOD_ALTAR_ITEM = registerGeckoBlockItem("blasphemous_blood_altar_item", MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR, "blasphemous_blood_altar", true);
+    public static final RegistryObject<Item> MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM = registerGeckoBlockItem("main_blasphemous_blood_altar_item", MachineBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR, "main_blasphemous_blood_altar", true);
+    public static final RegistryObject<Item> RHNULL_BLOOD_ENGINE_ITEM = registerGeckoBlockItem("rhnull_blood_engine_item", MachineBlocks.RHNULL_BLOOD_ENGINE_BLOCK, "rhnull_blood_engine_block", false);
+    public static final RegistryObject<Item> RHNULL_BLOOD_ENGINE_PILLAR_ITEM = registerGeckoBlockItem("rhnull_blood_engine_pillar_item", MachineBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK, "rhnull_blood_engine_pillar_block", false);
+    public static final RegistryObject<Item> SANGUINITE_PIPE_ITEM = registerGeckoBlockItem("sanguinite_pipe_item", MachineBlocks.SANGUINITE_PIPE, "sanguinite_pipe", false);
+    public static final RegistryObject<Item> RHNULL_PIPE_ITEM = registerGeckoBlockItem("rhnull_pipe_item", MachineBlocks.RHNULL_PIPE, "rhnull_pipe", false);
+    public static final RegistryObject<Item> SANGUINITE_BLOOD_HARVESTER_ITEM = registerGeckoBlockItem("sanguinite_blood_harvester_item", MachineBlocks.SANGUINITE_BLOOD_HARVESTER, "sanguinite_blood_harvester", false);
+    public static final RegistryObject<Item> SANGUINITE_CONDENSER_ITEM = registerGeckoBlockItem("sanguinite_condenser_item", MachineBlocks.SANGUINITE_CONDENSER, "sanguinite_condenser", false);
+    public static final RegistryObject<Item> RHNULL_CONDENSER_ITEM = registerGeckoBlockItem("rhnull_condenser_item", MachineBlocks.RHNULL_CONDENSER, "rhnull_condenser", false);
+    public static final RegistryObject<Item> UNKNOWN_PORTAL_ITEM = registerGeckoBlockItem("unknown_portal_item", MachineBlocks.UNKNOWN_PORTAL_BLOCK, "unknown_portal_block", true);
+    public static final RegistryObject<Item> SELIORA_RESTING_ITEM = registerGeckoBlockItem("seliora_resting_item", MiscBlocks.SELIORA_RESTING_BLOCK, "seliora_resting_block", "seliora_resting_block_texture", false);
 
     //Flasks
     public static final RegistryObject<Item> BLOOD_FLASK = ITEMS.register("blood_flask", () -> new BloodFlaskItem(
@@ -324,7 +327,7 @@ public class ModItems {
 
     //Ancient
     public static final RegistryObject<Item> ANCIENT_TORCH_ITEM = ITEMS.register("ancient_torch",
-            () -> new AncientTorchItem(ModBlocks.ANCIENT_TORCH_BLOCK.get(), new Item.Properties()));
+            () -> new AncientTorchItem(LightBlocks.ANCIENT_TORCH_BLOCK.get(), new Item.Properties()));
 
 
     //Spell Books

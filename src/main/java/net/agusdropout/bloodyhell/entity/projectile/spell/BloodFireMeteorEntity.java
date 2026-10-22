@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.projectile.spell;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.block.entity.custom.BloodFireBlockEntity;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
@@ -232,7 +232,7 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
                 if (random.nextBoolean()) {
                     BlockPos target = center.offset(x, 0, z);
                     if (this.level().getBlockState(target).isAir() && !this.level().getBlockState(target.below()).isAir()) {
-                        this.level().setBlockAndUpdate(target, ModBlocks.BLOOD_FIRE.get().defaultBlockState());
+                        this.level().setBlockAndUpdate(target, MiscBlocks.BLOOD_FIRE.get().defaultBlockState());
 
                         BlockEntity be = this.level().getBlockEntity(target);
                         if (be instanceof BloodFireBlockEntity fireBe && this.getOwner() instanceof LivingEntity owner) {

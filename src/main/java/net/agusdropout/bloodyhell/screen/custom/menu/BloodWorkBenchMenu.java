@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.screen.custom.menu;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import net.agusdropout.bloodyhell.block.entity.custom.BloodWorkbenchBlockEntity;
 import net.agusdropout.bloodyhell.screen.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -117,7 +117,7 @@ public class BloodWorkBenchMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, ModBlocks.SANGUINE_CRUCIBLE.get());
+                player, MachineBlocks.SANGUINE_CRUCIBLE.get());
     }
 
     private void addPlayerInventory(Inventory playerinventory) {

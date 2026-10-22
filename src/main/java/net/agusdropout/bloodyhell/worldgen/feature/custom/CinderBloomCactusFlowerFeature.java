@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.feature.custom;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.base.BaseWallPlantBlock;
 import net.agusdropout.bloodyhell.block.custom.CinderBloomCactusFlower;
 import net.agusdropout.bloodyhell.block.custom.CinderBloomCactusRoot;
@@ -31,8 +31,8 @@ public class CinderBloomCactusFlowerFeature extends Feature<NoneFeatureConfigura
             return false;
         }
 
-        Block cactusBlock = ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get();
-        BlockState flowerState = ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get().defaultBlockState();
+        Block cactusBlock = PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get();
+        BlockState flowerState = PlantBlocks.CINDER_BLOOM_CACTUS_FLOWER.get().defaultBlockState();
 
         for (Direction dir : Direction.Plane.HORIZONTAL) {
             BlockPos adjacentPos = pos.relative(dir);

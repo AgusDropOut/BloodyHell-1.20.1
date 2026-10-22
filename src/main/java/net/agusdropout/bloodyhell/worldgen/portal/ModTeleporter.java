@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.portal;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.block.custom.ModBloodPortalBlock;
 import net.agusdropout.bloodyhell.util.ModPOIs;
 import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
@@ -124,7 +125,7 @@ public class ModTeleporter implements ITeleporter {
             for (int i3 = -1; i3 < 2; ++i3) {
                 for (int j3 = 0; j3 < 2; ++j3) {
                     for (int k3 = -1; k3 < 3; ++k3) {
-                        BlockState blockstate1 = k3 < 0 ? ModBlocks.SANGUINITE_BLOCK.get().defaultBlockState() : Blocks.AIR.defaultBlockState();
+                        BlockState blockstate1 = k3 < 0 ? MetalBlocks.SANGUINITE_BLOCK.get().defaultBlockState() : Blocks.AIR.defaultBlockState();
                         blockpos$mutableblockpos.setWithOffset(blockpos, j3 * direction.getStepX() + i3 * direction1.getStepX(), k3, j3 * direction.getStepZ() + i3 * direction1.getStepZ());
                         this.level.setBlockAndUpdate(blockpos$mutableblockpos, blockstate1);
                     }
@@ -136,13 +137,13 @@ public class ModTeleporter implements ITeleporter {
             for (int j2 = -1; j2 < 4; ++j2) {
                 if (l1 == -1 || l1 == 2 || j2 == -1 || j2 == 3) {
                     blockpos$mutableblockpos.setWithOffset(blockpos, l1 * direction.getStepX(), j2, l1 * direction.getStepZ());
-                    this.level.setBlock(blockpos$mutableblockpos, ModBlocks.SANGUINITE_BLOCK.get().defaultBlockState(), 3);
+                    this.level.setBlock(blockpos$mutableblockpos, MetalBlocks.SANGUINITE_BLOCK.get().defaultBlockState(), 3);
                 }
             }
         }
 
 
-        BlockState blockstate = ModBlocks.BLOOD_PORTAL.get().defaultBlockState().setValue(ModBloodPortalBlock.AXIS, axis);
+        BlockState blockstate = MiscBlocks.BLOOD_PORTAL.get().defaultBlockState().setValue(ModBloodPortalBlock.AXIS, axis);
 
 
         this.level.getPoiManager().add(blockpos, ModPOIs.BLOOD_PORTAL.getHolder().get());
@@ -221,7 +222,7 @@ public class ModTeleporter implements ITeleporter {
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
                 mutablePos.set(pos.getX() + x, pos.getY(), pos.getZ() + z);
-                if (this.level.getBlockState(mutablePos).getBlock() == ModBlocks.BLOOD_PORTAL.get()) {
+                if (this.level.getBlockState(mutablePos).getBlock() == MiscBlocks.BLOOD_PORTAL.get()) {
                     return Optional.of(new BlockUtil.FoundRectangle(mutablePos.immutable(), 2, 3));
                 }
             }

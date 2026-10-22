@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.feature.custom;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.base.BloodScrapperPlantLeaves;
 import net.agusdropout.bloodyhell.block.base.TallGrowingPlant;
 import net.minecraft.core.BlockPos;
@@ -36,7 +36,7 @@ public class BloodScrapperPlantFeature extends Feature<ProbabilityFeatureConfigu
         BlockPos.MutableBlockPos $$6 = $$2.mutable();
         BlockPos.MutableBlockPos $$7 = $$2.mutable();
         if ($$3.isEmptyBlock($$6)) {
-            if (ModBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState().canSurvive($$3, $$6)) {
+            if (PlantBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState().canSurvive($$3, $$6)) {
                 int $$8 = $$4.nextInt(12) + 5;
                 int $$9;
                 if ($$4.nextFloat() < $$5.probability) {
@@ -75,7 +75,7 @@ public class BloodScrapperPlantFeature extends Feature<ProbabilityFeatureConfigu
     }
 
     static {
-        BLOOD_TRUNK = (BlockState)((BlockState)((BlockState)ModBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState().setValue(TallGrowingPlant.AGE, 1)).setValue(TallGrowingPlant.LEAVES, BloodScrapperPlantLeaves.NONE)).setValue(TallGrowingPlant.STAGE, 0);
+        BLOOD_TRUNK = (BlockState)((BlockState)((BlockState)PlantBlocks.BLOOD_SCRAPPER_PLANT.get().defaultBlockState().setValue(TallGrowingPlant.AGE, 1)).setValue(TallGrowingPlant.LEAVES, BloodScrapperPlantLeaves.NONE)).setValue(TallGrowingPlant.STAGE, 0);
         BLOOD_FINALE_LARGE = (BlockState)((BlockState)BLOOD_TRUNK.setValue(TallGrowingPlant.LEAVES, BloodScrapperPlantLeaves.LARGE)).setValue(TallGrowingPlant.STAGE, 1);
         BLOOD_TOP_LARGE = (BlockState)BLOOD_TRUNK.setValue(TallGrowingPlant.LEAVES, BloodScrapperPlantLeaves.LARGE);
         BLOOD_TOP_SMALL = (BlockState)BLOOD_TRUNK.setValue(TallGrowingPlant.LEAVES, BloodScrapperPlantLeaves.SMALL);

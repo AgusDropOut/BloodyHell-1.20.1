@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import com.mojang.serialization.MapCodec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,7 +38,7 @@ public class DroopvinePlantBlock extends GrowingPlantBodyBlock implements Droopv
 
     @Override
     protected GrowingPlantHeadBlock getHeadBlock() {
-        return (GrowingPlantHeadBlock) ModBlocks.DROOPVINE.get();
+        return (GrowingPlantHeadBlock) PlantBlocks.DROOPVINE.get();
     }
 
     @Override

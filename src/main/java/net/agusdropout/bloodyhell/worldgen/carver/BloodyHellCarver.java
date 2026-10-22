@@ -1,8 +1,9 @@
 package net.agusdropout.bloodyhell.worldgen.carver;
 
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -92,7 +93,7 @@ public class BloodyHellCarver extends CaveWorldCarver {
     @Override
     protected boolean carveBlock(CarvingContext context, CaveCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, CarvingMask carvingMask, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface) {
         BlockState chunkState = chunk.getBlockState(pos);
-        if (chunkState.is(ModBlocks.BLOODY_STONE_BLOCK.get())) {
+        if (chunkState.is(StoneBlocks.BLOODY_STONE_BLOCK.get())) {
             reachedSurface.setTrue();
         }
 
@@ -110,7 +111,7 @@ public class BloodyHellCarver extends CaveWorldCarver {
 
                 if (reachedSurface.isTrue()) {
                     checkPos.setWithOffset(pos, Direction.DOWN);
-                    if (chunk.getBlockState(checkPos).is(ModBlocks.BLOOD_GRASS_BLOCK.get())) {
+                    if (chunk.getBlockState(checkPos).is(SoilBlocks.BLOOD_GRASS_BLOCK.get())) {
                         context.topMaterial(biomeAccessor, chunk, checkPos, !carveState.getFluidState().isEmpty()).ifPresent((state) -> {
                             chunk.setBlockState(checkPos, state, false);
                             if (!state.getFluidState().isEmpty()) {

@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.base;
 
-import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -88,14 +88,14 @@ public class TallGrowingPlant extends Block implements BonemealableBlock, IPlant
         } else {
             BlockState blockstate = p_261764_.getLevel().getBlockState(p_261764_.getClickedPos().below());
             if (blockstate.is(ModTags.Blocks.BLOOD_SCRAPPER_PLANT_PLACEABLE_ON)) {
-                if (blockstate.is(ModBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get())) {
+                if (blockstate.is(PlantBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get())) {
                     return (BlockState)this.defaultBlockState().setValue(AGE, 0);
-                } else if (blockstate.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get())) {
+                } else if (blockstate.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get())) {
                     int i = (Integer)blockstate.getValue(AGE) > 0 ? 1 : 0;
                     return (BlockState)this.defaultBlockState().setValue(AGE, i);
                 } else {
                     BlockState blockstate1 = p_261764_.getLevel().getBlockState(p_261764_.getClickedPos().above());
-                    return blockstate1.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get()) ? (BlockState)this.defaultBlockState().setValue(AGE, (Integer)blockstate1.getValue(AGE)) : ModBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get().defaultBlockState();
+                    return blockstate1.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get()) ? (BlockState)this.defaultBlockState().setValue(AGE, (Integer)blockstate1.getValue(AGE)) : PlantBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get().defaultBlockState();
                 }
             } else {
                 return null;
@@ -134,7 +134,7 @@ public class TallGrowingPlant extends Block implements BonemealableBlock, IPlant
             p_261956_.scheduleTick(p_261876_, this, 1);
         }
 
-        if (p_261512_ == Direction.UP && p_262167_.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get()) && (Integer)p_262167_.getValue(AGE) > (Integer)p_261476_.getValue(AGE)) {
+        if (p_261512_ == Direction.UP && p_262167_.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get()) && (Integer)p_262167_.getValue(AGE) > (Integer)p_261476_.getValue(AGE)) {
             p_261956_.setBlock(p_261876_, (BlockState)p_261476_.cycle(AGE), 2);
         }
 
@@ -181,10 +181,10 @@ public class TallGrowingPlant extends Block implements BonemealableBlock, IPlant
         BlockState blockstate1 = p_262076_.getBlockState(blockpos);
         BloodScrapperPlantLeaves bloodbambooleaves = BloodScrapperPlantLeaves.NONE;
         if (p_261759_ >= 1) {
-            if (blockstate.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get()) && blockstate.getValue(LEAVES) != BloodScrapperPlantLeaves.NONE) {
-                if (blockstate.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get()) && blockstate.getValue(LEAVES) != BloodScrapperPlantLeaves.NONE) {
+            if (blockstate.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get()) && blockstate.getValue(LEAVES) != BloodScrapperPlantLeaves.NONE) {
+                if (blockstate.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get()) && blockstate.getValue(LEAVES) != BloodScrapperPlantLeaves.NONE) {
                     bloodbambooleaves = BloodScrapperPlantLeaves.LARGE;
-                    if (blockstate1.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get())) {
+                    if (blockstate1.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get())) {
                         p_262076_.setBlock(p_262109_.below(), (BlockState)blockstate.setValue(LEAVES, BloodScrapperPlantLeaves.SMALL), 3);
                         p_262076_.setBlock(blockpos, (BlockState)blockstate1.setValue(LEAVES, BloodScrapperPlantLeaves.NONE), 3);
                     }
@@ -194,14 +194,14 @@ public class TallGrowingPlant extends Block implements BonemealableBlock, IPlant
             }
         }
 
-        int i = (Integer)p_261855_.getValue(AGE) != 1 && !blockstate1.is(ModBlocks.BLOOD_SCRAPPER_PLANT.get()) ? 0 : 1;
+        int i = (Integer)p_261855_.getValue(AGE) != 1 && !blockstate1.is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get()) ? 0 : 1;
         int j = (p_261759_ < 11 || !(p_261633_.nextFloat() < 0.25F)) && p_261759_ != 15 ? 0 : 1;
         p_262076_.setBlock(p_262109_.above(), (BlockState)((BlockState)((BlockState)this.defaultBlockState().setValue(AGE, i)).setValue(LEAVES, bloodbambooleaves)).setValue(STAGE, j), 3);
     }
 
     protected int getHeightAboveUpToMax(BlockGetter p_261541_, BlockPos p_261593_) {
         int i;
-        for(i = 0; i < 16 && p_261541_.getBlockState(p_261593_.above(i + 1)).is(ModBlocks.BLOOD_SCRAPPER_PLANT.get()); ++i) {
+        for(i = 0; i < 16 && p_261541_.getBlockState(p_261593_.above(i + 1)).is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get()); ++i) {
         }
 
         return i;
@@ -209,7 +209,7 @@ public class TallGrowingPlant extends Block implements BonemealableBlock, IPlant
 
     protected int getHeightBelowUpToMax(BlockGetter p_261927_, BlockPos p_261481_) {
         int i;
-        for(i = 0; i < 16 && p_261927_.getBlockState(p_261481_.below(i + 1)).is(ModBlocks.BLOOD_SCRAPPER_PLANT.get()); ++i) {
+        for(i = 0; i < 16 && p_261927_.getBlockState(p_261481_.below(i + 1)).is(PlantBlocks.BLOOD_SCRAPPER_PLANT.get()); ++i) {
         }
 
         return i;

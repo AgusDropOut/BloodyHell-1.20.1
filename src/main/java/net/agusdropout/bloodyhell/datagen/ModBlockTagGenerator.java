@@ -1,5 +1,11 @@
 package net.agusdropout.bloodyhell.datagen;
 
+import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
+import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
+import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.BlockToolRules;
@@ -32,70 +38,70 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.Blocks.BLOOD_SCRAPPER_PLANT_PLACEABLE_ON).add(
-                ModBlocks.BLOOD_DIRT_BLOCK.get(),
-                Blocks.DIRT,ModBlocks.BLOOD_SCRAPPER_PLANT.get(),
-                ModBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get(),
-                ModBlocks.BLOOD_GRASS_BLOCK.get());
+                SoilBlocks.BLOOD_DIRT_BLOCK.get(),
+                Blocks.DIRT,PlantBlocks.BLOOD_SCRAPPER_PLANT.get(),
+                PlantBlocks.BLOOD_SCRAPPER_PLANT_SAPLING.get(),
+                SoilBlocks.BLOOD_GRASS_BLOCK.get());
 
         addToolRules();
 
         this.tag(BlockTags.DIRT)
-                .add(ModBlocks.BLOOD_GRASS_BLOCK.get())
-                .add(ModBlocks.BLOOD_DIRT_BLOCK.get());
+                .add(SoilBlocks.BLOOD_GRASS_BLOCK.get())
+                .add(SoilBlocks.BLOOD_DIRT_BLOCK.get());
 
         this.tag(BlockTags.LOGS_THAT_BURN)
-                .add(ModBlocks.BLOOD_LOG.get())
-                .add(ModBlocks.BLOOD_WOOD.get())
-                .add(ModBlocks.STRIPPED_BLOOD_LOG.get())
-                .add(ModBlocks.STRIPPED_BLOOD_WOOD.get())
-                .add(ModBlocks.SOUL_LOG.get())
-                .add(ModBlocks.SOUL_WOOD.get())
-                .add(ModBlocks.STRIPPED_SOUL_LOG.get())
+                .add(WoodBlocks.BLOOD_LOG.get())
+                .add(WoodBlocks.BLOOD_WOOD.get())
+                .add(WoodBlocks.STRIPPED_BLOOD_LOG.get())
+                .add(WoodBlocks.STRIPPED_BLOOD_WOOD.get())
+                .add(WoodBlocks.SOUL_LOG.get())
+                .add(WoodBlocks.SOUL_WOOD.get())
+                .add(WoodBlocks.STRIPPED_SOUL_LOG.get())
 
-                .add(ModBlocks.BLOOD_PLANKS.get())
-                .add(ModBlocks.BLOOD_PLANKS_STAIRS.get())
-                .add(ModBlocks.BLOOD_PLANKS_SLAB.get())
-                .add(ModBlocks.BLOOD_PLANKS_FENCE.get())
-                .add(ModBlocks.BLOOD_PLANKS_FENCE_GATE.get())
+                .add(WoodBlocks.BLOOD_PLANKS.get())
+                .add(WoodBlocks.BLOOD_PLANKS_STAIRS.get())
+                .add(WoodBlocks.BLOOD_PLANKS_SLAB.get())
+                .add(WoodBlocks.BLOOD_PLANKS_FENCE.get())
+                .add(WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get())
 
-                .add(ModBlocks.STRIPPED_SOUL_WOOD.get());
+                .add(WoodBlocks.STRIPPED_SOUL_WOOD.get());
 
         this.tag(ModTags.Blocks.BLOOD_ORE_REPLACEABLES)
-                .add(ModBlocks.BLOODY_STONE_BLOCK.get());
+                .add(StoneBlocks.BLOODY_STONE_BLOCK.get());
 
         this.tag(ModTags.Blocks.BLASPHEMITE_ORE_REPLACEABLES)
-                .add(ModBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
+                .add(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
 
 
 
 
         this.tag(BlockTags.LEAVES)
-                .add(ModBlocks.BLOOD_LEAVES.get())
-                .add(ModBlocks.SOUL_LEAVES.get())
-                .add(ModBlocks.HANGING_BLOOD_TREE_LEAVES.get())
-                .add(ModBlocks.LIGHT_MUSHROOM_BLOCK.get())
-                .add(ModBlocks.BLOOD_GRASS.get())
-                .add(ModBlocks.SPIKY_GRASS.get())
-                .add(ModBlocks.ROUNDED_GRASS.get())
-                .add(ModBlocks.BLOOD_PETALS.get())
-                .add(ModBlocks.SMALL_ROCKS.get())
-                .add(ModBlocks.BLOOD_FLOWER.get());
+                .add(WoodBlocks.BLOOD_LEAVES.get())
+                .add(WoodBlocks.SOUL_LEAVES.get())
+                .add(PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get())
+                .add(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get())
+                .add(PlantBlocks.BLOOD_GRASS.get())
+                .add(PlantBlocks.SPIKY_GRASS.get())
+                .add(PlantBlocks.ROUNDED_GRASS.get())
+                .add(PlantBlocks.BLOOD_PETALS.get())
+                .add(MiscBlocks.SMALL_ROCKS.get())
+                .add(PlantBlocks.BLOOD_FLOWER.get());
 
         this.tag(BlockTags.PLANKS)
-                .add(ModBlocks.BLOOD_PLANKS.get())
-                .add(ModBlocks.SOUL_PLANKS.get());
+                .add(WoodBlocks.BLOOD_PLANKS.get())
+                .add(WoodBlocks.SOUL_PLANKS.get());
         this.tag(BlockTags.FENCES)
-                .add(ModBlocks.BLOOD_PLANKS_FENCE.get())
-                .add(ModBlocks.BLOODY_STONE_TILES_FENCE.get())
-                .add(ModBlocks.POLISHED_BLOODY_STONE_FENCE.get())
-                .add(ModBlocks.BLOODY_STONE_FENCE.get());
+                .add(WoodBlocks.BLOOD_PLANKS_FENCE.get())
+                .add(StoneBlocks.BLOODY_STONE_TILES_FENCE.get())
+                .add(StoneBlocks.POLISHED_BLOODY_STONE_FENCE.get())
+                .add(StoneBlocks.BLOODY_STONE_FENCE.get());
         this.tag(BlockTags.FENCE_GATES)
-                .add(ModBlocks.BLOOD_PLANKS_FENCE_GATE.get());
+                .add(WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get());
         this.tag(BlockTags.WALLS)
-                .add(ModBlocks.BLOODY_STONE_TILES_WALL.get())
-                .add(ModBlocks.POLISHED_BLOODY_STONE_WALL.get())
-                .add(ModBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
-                .add(ModBlocks.BLOODY_STONE_WALL.get());
+                .add(StoneBlocks.BLOODY_STONE_TILES_WALL.get())
+                .add(StoneBlocks.POLISHED_BLOODY_STONE_WALL.get())
+                .add(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL.get())
+                .add(StoneBlocks.BLOODY_STONE_WALL.get());
 
 
 

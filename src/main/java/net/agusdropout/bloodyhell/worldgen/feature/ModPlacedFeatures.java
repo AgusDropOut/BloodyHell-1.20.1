@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.worldgen.feature;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -68,13 +68,13 @@ public class ModPlacedFeatures {
                 commonOrePlacement(24, // VeinsPerChunk
                         HeightRangePlacement.uniform(VerticalAnchor.absolute(55), VerticalAnchor.absolute(112))));
         register(context,BLOOD_TREE_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.BLOOD_TREE_KEY),
-                VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2), ModBlocks.BLOOD_SAPLING.get()));
+                VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2), PlantBlocks.BLOOD_SAPLING.get()));
         register(context,GIANT_BLOOD_TREE_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.GIANT_BLOOD_TREE_KEY),
-                VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2), ModBlocks.GIANT_BLOOD_SAPLING.get()));
+                VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2), PlantBlocks.GIANT_BLOOD_SAPLING.get()));
         register(context,SMALL_BLOOD_TREE_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.SMALL_BLOOD_TREE_KEY),
-                VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2), ModBlocks.SMALL_BLOOD_SAPLING.get()));
+                VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2), PlantBlocks.SMALL_BLOOD_SAPLING.get()));
         register(context,SOUL_TREE_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.SOUL_TREE_KEY),
-                VegetationPlacements.treePlacement(PlacementUtils.countExtra(1,0.1f,1), ModBlocks.SOUL_SAPLING.get()));
+                VegetationPlacements.treePlacement(PlacementUtils.countExtra(1,0.1f,1), PlantBlocks.SOUL_SAPLING.get()));
         register(context, BLOOD_SMALL_ROCKS_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.BLOOD_SMALL_ROCKS_KEY),patch(50));
         register(context, BLOOD_FLOWER_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.BLOOD_FLOWER_KEY),patch(64));
         register(context, LIGHT_MUSHROOM_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.LIGHT_MUSHROOM_KEY),patch(35));

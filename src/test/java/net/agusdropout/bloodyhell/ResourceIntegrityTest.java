@@ -149,13 +149,19 @@ class ResourceIntegrityTest {
 
     @Test
     void everyBlockHasAToolRule() throws IOException {
-        String blocksSource = Files.readString(JAVA.resolve("net/agusdropout/bloodyhell/block/ModBlocks.java"), StandardCharsets.UTF_8);
+        StringBuilder registrySources = new StringBuilder();
+        try (Stream<Path> groups = Files.list(JAVA.resolve("net/agusdropout/bloodyhell/block/registry"))) {
+            for (Path group : groups.collect(Collectors.toList())) {
+                registrySources.append(Files.readString(group, StandardCharsets.UTF_8)).append('\n');
+            }
+        }
+        String blocksSource = registrySources.toString();
         String rulesSource = Files.readString(JAVA.resolve("net/agusdropout/bloodyhell/block/BlockToolRules.java"), StandardCharsets.UTF_8);
         Pattern constant = Pattern.compile("public static final RegistryObject<[^>]*>\\s+(\\w+)\\s*=\\s*(?:registerBlock|BLOCKS\\.register|registerBlockWithoutBlockItem)\\(");
         Matcher m = constant.matcher(blocksSource);
         List<String> problems = new ArrayList<>();
         while (m.find()) {
-            if (!Pattern.compile("ModBlocks\\." + m.group(1) + "\\b").matcher(rulesSource).find()) {
+            if (!Pattern.compile("\\w+Blocks\\." + m.group(1) + "\\b").matcher(rulesSource).find()) {
                 problems.add("block without tool rule: " + m.group(1));
             }
         }

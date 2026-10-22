@@ -1,7 +1,8 @@
 package net.agusdropout.bloodyhell.worldgen.feature.custom;
 
+import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
+import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import com.mojang.serialization.Codec;
-import net.agusdropout.bloodyhell.block.ModBlocks;
 import net.agusdropout.bloodyhell.block.base.BaseWallPlantBlock;
 import net.agusdropout.bloodyhell.block.custom.CinderBloomCactusRoot;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ public class CinderBloomCactusFeature extends Feature<NoneFeatureConfiguration> 
         // Check if the ground is valid (sand or custom sand)
         BlockPos ground = origin.below();
         if (!level.getBlockState(ground).is(Blocks.SAND) &&
-                !level.getBlockState(ground).is(ModBlocks.BLASPHEMOUS_SAND_BLOCK.get())) {
+                !level.getBlockState(ground).is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get())) {
             return false;
         }
 
@@ -53,7 +54,7 @@ public class CinderBloomCactusFeature extends Feature<NoneFeatureConfiguration> 
 
         // Place the top center block
         BlockPos topPos = origin.above(height);
-        level.setBlock(topPos, ModBlocks.CINDER_BLOOM_CACTUS_CENTER.get().defaultBlockState(), 2);
+        level.setBlock(topPos, PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get().defaultBlockState(), 2);
         maybePlaceFlowersAround(level, topPos, random);
 
         // Generate horizontal arms
@@ -66,7 +67,7 @@ public class CinderBloomCactusFeature extends Feature<NoneFeatureConfiguration> 
 
     // Place a root block and check for flowers around it
     private void placeRoot(WorldGenLevel level, BlockPos pos, RandomSource random) {
-        level.setBlock(pos, ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get().defaultBlockState(), 2);
+        level.setBlock(pos, PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get().defaultBlockState(), 2);
         maybePlaceFlowersAround(level, pos, random);
     }
 
@@ -78,7 +79,7 @@ public class CinderBloomCactusFeature extends Feature<NoneFeatureConfiguration> 
                 if (level.getBlockState(flowerPos).isAir()) {
                     level.setBlock(
                             flowerPos,
-                            ModBlocks.CINDER_BLOOM_CACTUS_FLOWER.get()
+                            PlantBlocks.CINDER_BLOOM_CACTUS_FLOWER.get()
                                     .defaultBlockState()
                                     .setValue(BaseWallPlantBlock.FACING, dir),
                             3
@@ -95,7 +96,7 @@ public class CinderBloomCactusFeature extends Feature<NoneFeatureConfiguration> 
             if (!level.getBlockState(armBase).isAir()) return;
 
             // Place root block for arm base
-            level.setBlock(armBase, ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get()
+            level.setBlock(armBase, PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get()
                     .defaultBlockState()
                     .setValue(CinderBloomCactusRoot.AXIS, dir.getAxis()), 2);
             maybePlaceFlowersAround(level, armBase, random);
@@ -103,7 +104,7 @@ public class CinderBloomCactusFeature extends Feature<NoneFeatureConfiguration> 
             // Place tip of arm
             BlockPos tipPos = armBase.relative(dir);
             if (level.getBlockState(tipPos).isAir()) {
-                level.setBlock(tipPos, ModBlocks.CINDER_BLOOM_CACTUS_CON.get()
+                level.setBlock(tipPos, PlantBlocks.CINDER_BLOOM_CACTUS_CON.get()
                         .defaultBlockState()
                         .setValue(BaseWallPlantBlock.FACING, dir), 2);
                 maybePlaceFlowersAround(level, tipPos, random);
@@ -114,7 +115,7 @@ public class CinderBloomCactusFeature extends Feature<NoneFeatureConfiguration> 
                     BlockPos segmentPos = tipPos.above(y);
                     if (!level.getBlockState(segmentPos).isAir()) break;
 
-                    level.setBlock(segmentPos, ModBlocks.CINDER_BLOOM_CACTUS_ROOT.get()
+                    level.setBlock(segmentPos, PlantBlocks.CINDER_BLOOM_CACTUS_ROOT.get()
                             .defaultBlockState()
                             .setValue(CinderBloomCactusRoot.AXIS, Direction.Axis.Y), 2);
                     maybePlaceFlowersAround(level, segmentPos, random);
