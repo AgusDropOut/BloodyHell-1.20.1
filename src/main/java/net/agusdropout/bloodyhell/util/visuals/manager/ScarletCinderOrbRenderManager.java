@@ -8,7 +8,6 @@ import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -19,8 +18,7 @@ import java.util.List;
 public class ScarletCinderOrbRenderManager {
     private static final List<OrbData> ACTIVE_ORBS = new ArrayList<>();
 
-    public static void renderAll(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
+    public static void renderAll(FrameContext frame) {
         if (ACTIVE_ORBS.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
@@ -46,7 +44,7 @@ public class ScarletCinderOrbRenderManager {
 
         RenderSystem.setShader(() -> shader);
 
-        Matrix4f worldProjMat = new Matrix4f(event.getProjectionMatrix());
+        Matrix4f worldProjMat = new Matrix4f(frame.projectionMatrix());
         Matrix4f worldInvProjMat = new Matrix4f(worldProjMat).invert();
 
         if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);

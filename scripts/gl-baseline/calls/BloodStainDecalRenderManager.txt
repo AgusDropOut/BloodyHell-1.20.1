@@ -10,7 +10,7 @@ shader.safeGetUniform("Time").set(ShaderTime.seconds());
 if (shader.safeGetUniform("Intensity") != null) {
 shader.safeGetUniform("Intensity").set(1.0f);
 if (shader.safeGetUniform("RealProjMat") != null) {
-shader.safeGetUniform("RealProjMat").set(event.getProjectionMatrix());
+shader.safeGetUniform("RealProjMat").set(frame.projectionMatrix());
 RenderSystem.setShader(() -> shader);
 RenderSystem.depthMask(true);
 RenderSystem.disableBlend();

@@ -9,7 +9,6 @@ import net.agusdropout.bloodyhell.util.visuals.ViewEffects;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.Direction;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4f;
 import com.mojang.math.Axis;
 
@@ -24,10 +23,10 @@ public class BloodStainDecalRenderManager {
         ACTIVE_DECALS.put(id, new DecalData(id, x, y, z, face, rot, size, r, g, b, a));
     }
 
-    public static void renderAllAndClear(RenderLevelStageEvent event) {
+    public static void renderAllAndClear(FrameContext frame) {
         if (ACTIVE_DECALS.isEmpty()) return;
 
-        Camera camera = event.getCamera();
+        Camera camera = frame.camera();
         double camX = camera.getPosition().x;
         double camY = camera.getPosition().y;
         double camZ = camera.getPosition().z;
@@ -50,7 +49,7 @@ public class BloodStainDecalRenderManager {
                 shader.safeGetUniform("Intensity").set(1.0f);
             }
             if (shader.safeGetUniform("RealProjMat") != null) {
-                shader.safeGetUniform("RealProjMat").set(event.getProjectionMatrix());
+                shader.safeGetUniform("RealProjMat").set(frame.projectionMatrix());
             }
 
             RenderSystem.setShader(() -> shader);

@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 
 import java.util.List;
 
@@ -42,12 +41,12 @@ public final class DeferredRenderRegistry {
         observer = value;
     }
 
-    public static void renderAll(RenderLevelStageEvent event) {
+    public static void renderAll(FrameContext frame) {
         SceneColorCopy.invalidate();
         DeferredRenderObserver current = observer;
         if (current != null) current.begin();
         for (DeferredRenderManager manager : ORDERED) {
-            manager.renderAndClear(event);
+            manager.renderAndClear(frame);
             if (current != null) current.mark(manager.name());
         }
     }

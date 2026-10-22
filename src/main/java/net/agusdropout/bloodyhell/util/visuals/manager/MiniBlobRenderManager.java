@@ -10,7 +10,6 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -27,12 +26,11 @@ public class MiniBlobRenderManager {
         ACTIVE_MINI_BLOBS.add(blob);
     }
 
-    public static void renderAll(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
+    public static void renderAll(FrameContext frame) {
         if (ACTIVE_MINI_BLOBS.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
-        Camera camera = event.getCamera();
+        Camera camera = frame.camera();
         ShaderInstance shader = ModShaders.MINI_BLOOD_BLOB_SHADER;
 
         if (shader == null) {
@@ -55,7 +53,7 @@ public class MiniBlobRenderManager {
         RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
         RenderSystem.setShader(() -> shader);
 
-        Matrix4f projMat = new Matrix4f(event.getProjectionMatrix());
+        Matrix4f projMat = new Matrix4f(frame.projectionMatrix());
         Matrix4f invProjMat = new Matrix4f(projMat).invert();
 
         PoseStack cleanStack = new PoseStack();

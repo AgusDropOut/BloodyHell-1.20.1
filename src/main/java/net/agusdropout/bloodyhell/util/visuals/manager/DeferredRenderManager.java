@@ -1,15 +1,13 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-
 import java.util.function.Consumer;
 
 public interface DeferredRenderManager {
     String name();
 
-    void renderAndClear(RenderLevelStageEvent event);
+    void renderAndClear(FrameContext frame);
 
-    static DeferredRenderManager of(String name, Consumer<RenderLevelStageEvent> action) {
+    static DeferredRenderManager of(String name, Consumer<FrameContext> action) {
         return new DeferredRenderManager() {
             @Override
             public String name() {
@@ -17,8 +15,8 @@ public interface DeferredRenderManager {
             }
 
             @Override
-            public void renderAndClear(RenderLevelStageEvent event) {
-                action.accept(event);
+            public void renderAndClear(FrameContext frame) {
+                action.accept(frame);
             }
         };
     }

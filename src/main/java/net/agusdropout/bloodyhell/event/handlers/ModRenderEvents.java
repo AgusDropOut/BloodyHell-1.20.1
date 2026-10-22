@@ -16,7 +16,7 @@ public class ModRenderEvents {
 
 
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
-            DeferredRenderRegistry.renderAll(event);
+            DeferredRenderRegistry.renderAll(new FrameContext(event.getCamera(), event.getPoseStack(), event.getProjectionMatrix(), event.getPartialTick()));
 
 
 
