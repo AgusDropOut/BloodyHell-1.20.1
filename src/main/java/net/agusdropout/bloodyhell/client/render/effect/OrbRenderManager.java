@@ -1,15 +1,22 @@
 package net.agusdropout.bloodyhell.client.render.effect;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexSorting;
+import net.agusdropout.bloodyhell.client.render.deferred.SceneColorCopy;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.effect.api.OrbEffect;
+import net.agusdropout.bloodyhell.client.render.effect.data.OrbData;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
-import net.agusdropout.bloodyhell.client.render.deferred.SceneColorCopy;
-import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -17,19 +24,35 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScarletCinderOrbRenderManager {
-    private static final List<OrbData> ACTIVE_ORBS = new ArrayList<>();
+public class OrbRenderManager implements DeferredRenderManager {
+    private final OrbEffect effect;
+    private final List<OrbData> activeOrbs = new ArrayList<>();
 
-    public static void renderAll(FrameContext frame) {
-        if (ACTIVE_ORBS.isEmpty()) return;
+    public OrbRenderManager(OrbEffect effect) {
+        this.effect = effect;
+    }
+
+    @Override
+    public String name() {
+        return effect.name();
+    }
+
+    public void submit(Matrix4f pose, Matrix4f projection, Matrix3f rotation, ItemDisplayContext transform) {
+        if (RenderPassGuard.shouldSkipDeferred(transform)) return;
+        activeOrbs.add(new OrbData(pose, projection, rotation));
+    }
+
+    @Override
+    public void renderAndClear(FrameContext frame) {
+        if (activeOrbs.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
         RenderTarget mainTarget = mc.getMainRenderTarget();
 
-        ShaderInstance shader = ModShaders.SCARLET_CINDER_ORB_SHADER;
+        ShaderInstance shader = effect.shader().get();
 
         if (shader == null) {
-            ACTIVE_ORBS.clear();
+            activeOrbs.clear();
             return;
         }
 
@@ -55,23 +78,23 @@ public class ScarletCinderOrbRenderManager {
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-        float size = 1.5f;
+        float size = effect.quadSize();
 
-        for (OrbData data : ACTIVE_ORBS) {
-            RenderSystem.setProjectionMatrix(data.projection, VertexSorting.DISTANCE_TO_ORIGIN);
-            if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(data.projection);
+        for (OrbData data : activeOrbs) {
+            RenderSystem.setProjectionMatrix(data.projection(), VertexSorting.DISTANCE_TO_ORIGIN);
+            if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(data.projection());
 
-            Vector3f center = new Vector3f(data.pose.m30() , data.pose.m31(), data.pose.m32() );
+            Vector3f center = new Vector3f(data.pose().m30(), data.pose().m31(), data.pose().m32());
 
             if(shader.safeGetUniform("u_OrbViewPos") != null) {
                 shader.safeGetUniform("u_OrbViewPos").set(center.x(), center.y(), center.z());
             }
 
             if(shader.safeGetUniform("u_OrbRotation") != null) {
-                shader.safeGetUniform("u_OrbRotation").set(data.rotation);
+                shader.safeGetUniform("u_OrbRotation").set(data.rotation());
             }
 
-            if(shader.safeGetUniform("u_Pitch") != null) shader.safeGetUniform("u_Pitch").set(mc.player.getXRot());
+            effect.perOrbUniforms().accept(shader);
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
             buffer.vertex(center.x() - size, center.y() - size, center.z()).endVertex();
@@ -89,23 +112,6 @@ public class ScarletCinderOrbRenderManager {
         RenderSystem.defaultBlendFunc();
         RenderSystem.colorMask(true, true, true, true);
 
-        ACTIVE_ORBS.clear();
-    }
-
-    public static void addOrbData(Matrix4f pose, Matrix4f projection, Matrix3f rotation, net.minecraft.world.item.ItemDisplayContext transform) {
-        if (RenderPassGuard.shouldSkipDeferred(transform)) return;
-        ACTIVE_ORBS.add(new OrbData(pose, projection, rotation));
-    }
-
-    private static class OrbData {
-        Matrix4f pose;
-        Matrix4f projection;
-        Matrix3f rotation;
-
-        OrbData(Matrix4f pose, Matrix4f projection, Matrix3f rotation) {
-            this.pose = pose;
-            this.projection = projection;
-            this.rotation = rotation;
-        }
+        activeOrbs.clear();
     }
 }

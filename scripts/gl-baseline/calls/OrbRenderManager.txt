@@ -8,13 +8,12 @@ RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
 RenderSystem.setShader(() -> shader);
 if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);
 if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
-RenderSystem.setProjectionMatrix(data.projection, VertexSorting.DISTANCE_TO_ORIGIN);
-if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(data.projection);
+RenderSystem.setProjectionMatrix(data.projection(), VertexSorting.DISTANCE_TO_ORIGIN);
+if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(data.projection());
 if(shader.safeGetUniform("u_OrbViewPos") != null) {
 shader.safeGetUniform("u_OrbViewPos").set(center.x(), center.y(), center.z());
 if(shader.safeGetUniform("u_OrbRotation") != null) {
-shader.safeGetUniform("u_OrbRotation").set(data.rotation);
-if(shader.safeGetUniform("u_Pitch") != null) shader.safeGetUniform("u_Pitch").set(mc.player.getXRot());
+shader.safeGetUniform("u_OrbRotation").set(data.rotation());
 RenderSystem.setProjectionMatrix(worldProjMat, VertexSorting.ORTHOGRAPHIC_Z);
 RenderSystem.enableDepthTest();
 RenderSystem.depthMask(true);

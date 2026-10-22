@@ -7,20 +7,18 @@ import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.agusdropout.bloodyhell.client.render.effect.BlackHoleEntityRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.BlackHoleRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.BloodBlobRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.OrbEffects;
 import net.agusdropout.bloodyhell.client.render.effect.BloodDropRenderManager;
-import net.agusdropout.bloodyhell.client.render.effect.BloodOrbRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.BloodStainDecalRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.FrenziedExplosionRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.FrenziedFlameRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.FrenziedTrailRenderManager;
-import net.agusdropout.bloodyhell.client.render.effect.GoldenSorrowOrbRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.LinearFrenziedFlameRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.MagicRingRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.MiniBlobRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.NoiseSphereRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.RadialDistortionRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.RadiantEnergyRenderManager;
-import net.agusdropout.bloodyhell.client.render.effect.ScarletCinderOrbRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.SphericalShieldRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.SwirlRenderManager;
 import net.agusdropout.bloodyhell.client.render.effect.TinyBloomRenderManager;
@@ -49,10 +47,10 @@ public final class DeferredRenderRegistry {
             DeferredRenderManager.of("RadiantEnergy", e -> RadiantEnergyRenderManager.renderAllAndClear()),
             DeferredRenderManager.of("FrenziedExplosion", e -> FrenziedExplosionRenderManager.renderAllAndClear()),
             DeferredRenderManager.of("BloodBlob", BloodBlobRenderManager::renderAll),
-            DeferredRenderManager.of("BloodOrb", BloodOrbRenderManager::renderAll),
+            OrbEffects.BLOOD,
             DeferredRenderManager.of("MiniBlob", MiniBlobRenderManager::renderAll),
-            DeferredRenderManager.of("GoldenSorrowOrb", GoldenSorrowOrbRenderManager::renderAll),
-            DeferredRenderManager.of("ScarletCinderOrb", ScarletCinderOrbRenderManager::renderAll),
+            OrbEffects.GOLDEN_SORROW,
+            OrbEffects.SCARLET_CINDER,
             DeferredRenderManager.of("BloodStainDecal", BloodStainDecalRenderManager::renderAllAndClear),
             DeferredRenderManager.of("OmnitomeBook", e -> OmnitomeBookRenderManager.INSTANCE.renderAllAndClear()),
             DeferredRenderManager.of("OmnitomeClip", e -> OmnitomeClipRenderManager.INSTANCE.renderAllAndClear()),
