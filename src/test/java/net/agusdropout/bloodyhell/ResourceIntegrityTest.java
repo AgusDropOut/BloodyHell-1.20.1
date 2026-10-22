@@ -148,6 +148,21 @@ class ResourceIntegrityTest {
     }
 
     @Test
+    void everyBlockHasAToolRule() throws IOException {
+        String blocksSource = Files.readString(JAVA.resolve("net/agusdropout/bloodyhell/block/ModBlocks.java"), StandardCharsets.UTF_8);
+        String rulesSource = Files.readString(JAVA.resolve("net/agusdropout/bloodyhell/block/BlockToolRules.java"), StandardCharsets.UTF_8);
+        Pattern constant = Pattern.compile("public static final RegistryObject<[^>]*>\\s+(\\w+)\\s*=\\s*(?:registerBlock|BLOCKS\\.register|registerBlockWithoutBlockItem)\\(");
+        Matcher m = constant.matcher(blocksSource);
+        List<String> problems = new ArrayList<>();
+        while (m.find()) {
+            if (!Pattern.compile("ModBlocks\\." + m.group(1) + "\\b").matcher(rulesSource).find()) {
+                problems.add("block without tool rule: " + m.group(1));
+            }
+        }
+        report("Blocks missing from BlockToolRules", problems);
+    }
+
+    @Test
     void everyItemHasAModel() {
         List<String> problems = new ArrayList<>();
         for (String item : items) {

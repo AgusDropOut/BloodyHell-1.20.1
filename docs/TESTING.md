@@ -40,7 +40,10 @@ Commit messages are checked by `scripts/git-hooks/commit-msg`, which rejects Cla
 - a block or item has no lang entry, or a lang key is duplicated;
 - a model parent or texture, a blockstate model, a particle texture, a shader source or a sound file does not exist;
 - Java code points to a missing mod resource through `MODID, "textures/..."` style literals;
-- a loot table or recipe references an item that is not registered.
+- a loot table or recipe references an item that is not registered;
+- a registered block is missing from `BlockToolRules`.
+
+The test world adds the runtime half of the block check: `BlockAudit` logs `[BHTEST] block audit violation` (an ERROR line, so the script fails) when the resolved tags or the tool requirement of a block disagree with its rule in `BlockToolRules`.
 
 Registered names come from `ITEMS.register`, `BLOCKS.register`, `registerBlock` and `registerBlockWithoutBlockItem`, so a new registration helper needs a new pattern in the test. Accepted gaps go in `src/test/resources/known-resource-gaps.txt` (the exact failure line, with a `#` comment saying why); the test run prints entries that no longer fail.
 
