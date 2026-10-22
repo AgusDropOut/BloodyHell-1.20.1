@@ -117,7 +117,7 @@ public class BlackHoleParticle extends Particle {
 
     @Override
     public void render(VertexConsumer ignored, Camera camera, float partialTicks) {
-        Effects.BLACK_HOLE.addBlackHole(this, camera, partialTicks);
+        Effects.BLACK_HOLE.addBlackHole(this::doDeferredRender, camera, partialTicks);
     }
 
     public void doDeferredRender(Camera camera, float partialTicks, int screenTexId) {

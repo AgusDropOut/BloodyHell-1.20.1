@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MiniBlobParticleOptions;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.client.render.effect.api.IBloodBlobEmitter;
+import net.agusdropout.bloodyhell.client.render.effect.api.BloodBlobEmitters;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -38,12 +39,8 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implements IBloodBlobEmitter {
-
-    public static final Set<IBloodBlobEmitter> ACTIVE_ENGINES = new HashSet<>();
 
     public static final BlockPos[] PILLAR_OFFSETS = {
             new BlockPos(1, 0, 1),
@@ -611,12 +608,12 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
     @Override
     public void onLoad() {
         super.onLoad();
-        if (level != null && level.isClientSide) ACTIVE_ENGINES.add(this);
+        if (level != null && level.isClientSide) BloodBlobEmitters.register(this);
     }
 
     @Override
     public void setRemoved() {
         super.setRemoved();
-        if (level != null && level.isClientSide) ACTIVE_ENGINES.remove(this);
+        if (level != null && level.isClientSide) BloodBlobEmitters.unregister(this);
     }
 }

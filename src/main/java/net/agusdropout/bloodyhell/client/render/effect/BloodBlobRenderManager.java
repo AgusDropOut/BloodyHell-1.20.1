@@ -3,13 +3,13 @@ package net.agusdropout.bloodyhell.client.render.effect;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEngineBlockEntity;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.effect.api.IBloodBlobEmitter;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.agusdropout.bloodyhell.client.render.deferred.SceneColorCopy;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.api.BloodBlobEmitters;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -27,7 +27,7 @@ public class BloodBlobRenderManager implements DeferredRenderManager {
 
     @Override
     public void renderAndClear(FrameContext frame) {
-        if (RhnullBloodEngineBlockEntity.ACTIVE_ENGINES.isEmpty()) return;
+        if (BloodBlobEmitters.active().isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
         Camera camera = frame.camera();
@@ -90,7 +90,7 @@ public class BloodBlobRenderManager implements DeferredRenderManager {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder buffer = tesselator.getBuilder();
 
-        for (IBloodBlobEmitter emitter : RhnullBloodEngineBlockEntity.ACTIVE_ENGINES) {
+        for (IBloodBlobEmitter emitter : BloodBlobEmitters.active()) {
             if (!emitter.isActive()) continue;
 
             Vector3f absCenter = emitter.getBlobCenter();

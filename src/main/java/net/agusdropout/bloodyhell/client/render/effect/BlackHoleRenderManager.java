@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.client.render.effect;
 
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.agusdropout.bloodyhell.particle.custom.BlackHoleParticle;
+import net.agusdropout.bloodyhell.client.render.effect.api.ScreenSampledDraw;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
@@ -16,12 +16,12 @@ public class BlackHoleRenderManager implements DeferredRenderManager {
     private final List<BlackHoleRenderData> ACTIVE_BLACK_HOLES = new ArrayList<>();
     private final DeferredMatrices matrices = new DeferredMatrices();
 
-    public void addBlackHole(BlackHoleParticle particle, Camera camera, float partialTicks) {
+    public void addBlackHole(ScreenSampledDraw draw, Camera camera, float partialTicks) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_BLACK_HOLES.isEmpty()) {
             matrices.capture();
         }
-        ACTIVE_BLACK_HOLES.add(new BlackHoleRenderData(particle, camera, partialTicks));
+        ACTIVE_BLACK_HOLES.add(new BlackHoleRenderData(draw, camera, partialTicks));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BlackHoleRenderManager implements DeferredRenderManager {
         RenderSystem.enableDepthTest();
 
         for (BlackHoleRenderData data : ACTIVE_BLACK_HOLES) {
-            data.particle.doDeferredRender(data.camera, data.partialTicks, screenTexId);
+            data.draw.draw(data.camera, data.partialTicks, screenTexId);
         }
 
         matrices.restore();
@@ -58,12 +58,12 @@ public class BlackHoleRenderManager implements DeferredRenderManager {
     }
 
     private static class BlackHoleRenderData {
-        BlackHoleParticle particle;
+        ScreenSampledDraw draw;
         Camera camera;
         float partialTicks;
 
-        BlackHoleRenderData(BlackHoleParticle particle, Camera camera, float partialTicks) {
-            this.particle = particle;
+        BlackHoleRenderData(ScreenSampledDraw draw, Camera camera, float partialTicks) {
+            this.draw = draw;
             this.camera = camera;
             this.partialTicks = partialTicks;
         }
