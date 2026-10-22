@@ -59,10 +59,36 @@ Two checks that need no mixins, used to prove that a refactor of the render mana
 - `GlStateProbe` (enabled with `-PbhGlProbe`, or `scripts/run-testworld.ps1 -GlProbe`) reads the real GL state with `glGet` before and after every manager in `ModRenderEvents` and logs each distinct transition as `[GLPROBE]`. `scripts/glprobe.ps1 -Name vanilla -Save` stores the transitions of the last run as a baseline, `scripts/glprobe.ps1 -Name vanilla` compares the last run against it: a transition that is not in the baseline fails, a baseline transition that was not seen only reports scene coverage. `-Merge` adds the transitions of the last run to the baseline, use it when a legitimate new case shows up. Take one baseline without shaders and one with a shader pack (`-Shaders`, then select the pack), always on the unmodified code.
 - The probe only sees managers that had queued work during the run, and it checks the state at the boundary of each manager (leaks and wrong restores), not the calls in the middle. The static check covers the middle.
 
-## Manual checklist (not automatable)
-- [ ] Omnitome in first person and in the GUI.
-- [ ] Raymarching: blood blob, blood/golden/scarlet orbs.
-- [ ] Blood stain decals.
-- [ ] Shadow pass with Iris (no duplicated draws).
-- [ ] Translucent blocks (glowing crystal glass, ancient blood capsule) with Oculus and shaders disabled: known to look wrong, see ADR 0008.
+## Manual checklist (needs a person)
+What the automatic checks cannot see. Tick an item only after looking at it in game; untick it when a change touches that area.
+
+Plants and drops
+- [ ] Blood Lily: placed on water it floats like a lily pad and emits light; breaking it drops the lily itself.
+- [ ] Spiky grass and rounded grass: shears drop the grass, the bare hand drops nothing.
+- [ ] Blood grass: shears drop the grass, the bare hand sometimes drops an eyeball seed.
+- [ ] Small rocks: a pickaxe drops them; the hand does not.
+
+Tools and tiers
+- [ ] Machines (condensers, harvester, infusor, lapidary, engine, pillar, altars, Unknown Portal) drop their item with an iron pickaxe and nothing with the hand.
+- [ ] Blasphemite ore and block need a sanguinite tool (a netherite pickaxe fails); the Rhnull block needs a blasphemite tool.
+- [ ] Tool and armor feel: sanguinite, blasphemite and rhnull are in that order; blasphemite and rhnull armor no longer make you immune to knockback.
+
+World and systems
+- [ ] The Chalice of the Damned lights a portal frame; the portal teleports both ways.
+- [ ] Rhnull end to end: harvester fills blood and visceral blood, the infusor turns sanguinite into rhnull.
+- [ ] Viscous blasphemy comes out of the Unknown Portal machine and fills a flask.
+- [ ] The Offspring of the Unknown flees under 30% health.
+- [ ] Subtitles on: veinraver, seliora, offspring and the machines show readable names, never a key like `subtitles.bloodyhell.x`.
+
+Visuals
+- [ ] Item displays calibrated by Mitemi in the GUI: altars, engine, pillar, condensers, pipes, harvester, portal.
+- [ ] The Seliora resting block item in the hand and in the GUI (the display is a copy of the portal one and needs calibration).
+- [ ] Omnitome closed and open, in the hand and in the GUI: the closed cover hides the pages.
+- [ ] Staff orbs on the ground; frenzied trails do not show through walls.
+- [ ] No jump of the shader effects after 100 seconds of play.
+
+Compatibility
+- [ ] New world, with and without Rubidium and Oculus, with a shader pack (BSL and Complementary).
+- [ ] A dedicated server starts and a client joins it.
+- [ ] Save and reload with the Unknown Entity Arms active (their target persists).
 - [x] Walk the entity grid and check every model, texture and animation looks right (with and without a shader pack).
