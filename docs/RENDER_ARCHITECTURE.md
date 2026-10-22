@@ -74,7 +74,19 @@ classDiagram
 Two families:
 
 - **Queued managers** extend `QueuedRenderManager<T>`. They share one lifecycle (below) and only write their own `draw`.
-- **Direct managers** implement `DeferredRenderManager` themselves because their matrix or scene handling does not fit the shared lifecycle (the orbs use a projection per orb, the blobs read the event matrices, the decal keys its queue by id, Omnitome swaps matrices per task).
+- **Direct managers** implement `DeferredRenderManager` themselves. They are listed here with the reason, and whether the reason is a real blocker or only something the base class does not support yet.
+
+| Manager | Why it is not queued | Real blocker? |
+|---|---|---|
+| `BloodBlobRenderManager` | It has no queue. It draws from `BloodBlobEmitters` every frame. | Yes |
+| `BloodStainDecalRenderManager` | Its queue is a map keyed by id, so submitting the same id replaces the decal. | Yes, queue shape |
+| `OrbRenderManager` | Each orb carries its own projection and the manager restores the event projection itself. The guard also depends on the item display context. | No: the base has no mode without captured matrices and only knows the guard without a context |
+| `MiniBlobRenderManager` | It reads the event projection and camera and captures no matrices. It has no shadow pass guard on purpose. | No: same missing mode in the base |
+| `OmnitomeBook`, `OmnitomeClip`, `OmnitomeVoid` | Matrices are captured per task (`MatrixSnapshot`) and the guard depends on the item display context. | No: same two gaps |
+
+If the base grew an option to skip the matrix capture and an overridable guard, the orbs, the mini blob and the Omnitome managers could extend it too. That has not been done because it adds branches to the base for few users.
+
+Known leftover: `OrbRenderManager` still gives the event projection back with a hardcoded `VertexSorting.ORTHOGRAPHIC_Z`, while `DeferredMatrices` and the Omnitome managers restore the previous sorting.
 
 ## Where the instances and their configuration live
 
