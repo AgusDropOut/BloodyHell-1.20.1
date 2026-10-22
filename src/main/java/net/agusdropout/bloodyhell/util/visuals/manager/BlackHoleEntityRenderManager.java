@@ -14,14 +14,12 @@ import java.util.List;
 
 public class BlackHoleEntityRenderManager {
     private static final List<BlackHoleData> ACTIVE_BLACK_HOLES = new ArrayList<>();
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
 
     public static void addBlackHole(Matrix4f pose, float radius, float time, float alpha, int color) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_BLACK_HOLES.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
+            MATRICES.capture();
         }
         ACTIVE_BLACK_HOLES.add(new BlackHoleData(new Matrix4f(pose), radius, time, alpha, color));
     }
@@ -34,14 +32,7 @@ public class BlackHoleEntityRenderManager {
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
+        MATRICES.apply();
 
         ShaderInstance shader = ModShaders.BLACK_HOLE_SHADER;
         if (shader != null) {
@@ -70,9 +61,7 @@ public class BlackHoleEntityRenderManager {
             }
         }
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        MATRICES.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableCull();
