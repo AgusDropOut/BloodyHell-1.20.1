@@ -26,3 +26,4 @@ Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered r
 
 Fixed with the test world: null `target` crashes in `UnknownEntityArms` and `SanguineSacrificeEntity`; `CyclopsEntity` and `BlasphemousTwinDaggersCloneEntity` attributes were never registered.
 17. The Insight task queue (`DeferredTaskQueues.INSIGHT`) leaves the depth test disabled after drawing (seen by `GlStateProbe`), and with shaders active some manager before `BloodDrop` leaves `depthMask(false)` with a changed blend func. Later managers restore them by accident. Preserved on purpose by the render refactor, fix as a separate behavior change.
+18. `glowing_crystal_glass_block` and `ancient_blood_capsule` render with the sky color under Rubidium 0.6.5 and Oculus 1.6.4 without shaders, because they need the translucent chunk layer (see ADR 0008). Retest when the pinned Rubidium or Oculus version changes. Fallback: flatten their alpha and use `cutout`.

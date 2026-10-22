@@ -13,3 +13,4 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0005 | Shader animation time does not use the game time |
 | 0006 | Raymarching through a quad |
 | 0007 | Deferred manager refactor keeps the GL state calls untouched |
+| 0008 | Blocks with binary alpha render in the cutout layer |
