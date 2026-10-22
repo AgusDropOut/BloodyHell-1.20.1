@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
@@ -17,6 +18,7 @@ public class FrenziedTrailRenderManager {
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void addTrail(List<Vec3> history, Vec3 cameraPos, float width, float r, float g, float b, float alpha, float time) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (history.size() < 2) return;
 
         if (ACTIVE_TRAILS.isEmpty()) {

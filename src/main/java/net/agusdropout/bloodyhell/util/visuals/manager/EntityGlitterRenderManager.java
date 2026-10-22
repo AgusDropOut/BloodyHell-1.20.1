@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
@@ -14,6 +15,7 @@ public class EntityGlitterRenderManager {
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void queueGlitterRender(Runnable task) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (GLITTER_TASKS.isEmpty()) {
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());

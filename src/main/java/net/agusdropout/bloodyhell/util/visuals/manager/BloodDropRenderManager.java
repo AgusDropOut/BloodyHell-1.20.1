@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -19,6 +20,7 @@ public class BloodDropRenderManager extends BaseShaderRenderManager<BloodDropRen
     public static final BloodDropRenderManager INSTANCE = new BloodDropRenderManager();
 
     public static void addDrop(Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         INSTANCE.addParticle(new BloodData(pose, size, r, g, b, alpha, time));
     }
 

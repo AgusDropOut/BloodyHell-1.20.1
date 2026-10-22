@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
@@ -16,6 +17,7 @@ public class FrenziedExplosionRenderManager {
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void addExplosion(Matrix4f pose, float size, float lifeProgress, float time) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_EXPLOSIONS.isEmpty()) {
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());

@@ -36,6 +36,10 @@ public final class RenderPassGuard {
     }
 
 
+    public static boolean shouldSkipDeferred() {
+        return shouldSkipDeferred(ItemDisplayContext.NONE);
+    }
+
     public static boolean shouldSkipDeferred(ItemDisplayContext transform) {
         if (isShadowPass()) return true;
 

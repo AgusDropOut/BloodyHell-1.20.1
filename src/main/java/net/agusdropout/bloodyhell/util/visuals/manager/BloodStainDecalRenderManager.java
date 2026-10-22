@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
@@ -17,6 +18,7 @@ public class BloodStainDecalRenderManager {
     private static final Map<Integer, DecalData> ACTIVE_DECALS = new ConcurrentHashMap<>();
 
     public static void addDecal(int id, double x, double y, double z, Direction face, float rot, float size, float r, float g, float b, float a) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         ACTIVE_DECALS.put(id, new DecalData(id, x, y, z, face, rot, size, r, g, b, a));
     }
 

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import org.joml.Matrix4f;
 
 import java.util.Queue;
@@ -16,6 +17,7 @@ public class SphericalShieldRenderManager {
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void queueRender(Runnable renderTask) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (RENDER_QUEUE.isEmpty()) {
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());

@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.BloodyHell;
@@ -23,6 +24,7 @@ public class NoiseSphereRenderManager {
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void addSphere(float px, float py, float pz, float radius, Vector3f color, float alpha, float uOffset, float vOffset) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_SPHERES.isEmpty()) {
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());

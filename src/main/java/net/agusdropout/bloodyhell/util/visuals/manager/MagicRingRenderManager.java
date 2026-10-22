@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.BloodyHell;
@@ -22,6 +23,7 @@ public class MagicRingRenderManager {
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void addRing(float px, float py, float pz, float radius, float ringHeight, float time, float r, float g, float b, float alpha) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_RINGS.isEmpty()) {
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());

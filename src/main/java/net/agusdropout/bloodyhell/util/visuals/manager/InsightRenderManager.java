@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
 import org.joml.Matrix4f;
@@ -14,6 +15,7 @@ public class InsightRenderManager {
     private static final Matrix4f savedModelView = new Matrix4f();
 
     public static void queueInsightRender(Runnable task) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         if (INSIGHT_TASKS.isEmpty()) {
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());

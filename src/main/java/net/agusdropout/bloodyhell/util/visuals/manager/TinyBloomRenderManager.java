@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -15,6 +16,7 @@ public class TinyBloomRenderManager extends BaseShaderRenderManager<TinyBloomRen
     public static final TinyBloomRenderManager INSTANCE = new TinyBloomRenderManager();
 
     public static void addBloom(Matrix4f pose, float size, float r, float g, float b, float alpha) {
+        if (RenderPassGuard.shouldSkipDeferred()) return;
         INSTANCE.addParticle(new BloomData(pose, size, r, g, b, alpha));
     }
 
