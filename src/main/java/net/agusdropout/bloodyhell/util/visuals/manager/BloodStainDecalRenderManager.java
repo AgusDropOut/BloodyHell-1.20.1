@@ -59,8 +59,7 @@ public class BloodStainDecalRenderManager {
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
 
             PoseStack poseStack = new PoseStack();
-            poseStack.mulPose(Axis.XP.rotationDegrees(camera.getXRot()));
-            poseStack.mulPose(Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
+            poseStack.mulPoseMatrix(event.getPoseStack().last().pose());
 
             for (DecalData data : ACTIVE_DECALS.values()) {
                 poseStack.pushPose();
