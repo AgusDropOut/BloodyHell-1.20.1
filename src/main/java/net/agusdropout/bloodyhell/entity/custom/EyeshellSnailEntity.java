@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.item.registry.FoodItems;
 import net.agusdropout.bloodyhell.block.registry.MiscBlocks;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -168,7 +168,7 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
        int i = 1 + this.random.nextInt(3);
 
         for(int j = 0; j < i; ++j) {
-            ItemEntity itementity = this.spawnAtLocation(ModItems.Eyeball.get(), 1);
+            ItemEntity itementity = this.spawnAtLocation(FoodItems.Eyeball.get(), 1);
             if (itementity != null) {
                 itementity.setDeltaMovement(itementity.getDeltaMovement().add((double)((this.random.nextFloat() - this.random.nextFloat()) * 0.1F), (double)(this.random.nextFloat() * 0.05F), (double)((this.random.nextFloat() - this.random.nextFloat()) * 0.1F)));
             }
@@ -209,7 +209,7 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
 
             java.util.List<ItemStack> items = new java.util.ArrayList<>();
             for (int j = 0; j < i; ++j) {
-                items.add(new ItemStack(ModItems.Eyeball.get()));
+                items.add(new ItemStack(FoodItems.Eyeball.get()));
             }
             return items;
         }

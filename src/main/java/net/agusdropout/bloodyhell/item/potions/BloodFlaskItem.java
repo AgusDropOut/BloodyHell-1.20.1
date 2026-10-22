@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.potions;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.datagen.ModTags;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -55,13 +55,13 @@ public class BloodFlaskItem extends Item {
                 if (level.getFluidState($$8).is(ModTags.Fluids.BLOODY_LIQUID)) {
                     level.playSound(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
                     level.gameEvent(player, GameEvent.FLUID_PICKUP, $$8);
-                    player.setItemInHand(interactionHand, new ItemStack(ModItems.FILLED_BLOOD_FLASK.get()));
+                    player.setItemInHand(interactionHand, new ItemStack(FlaskItems.FILLED_BLOOD_FLASK.get()));
                     return InteractionResult.sidedSuccess(level.isClientSide());
                 }
                 if (level.getFluidState($$8).is(ModTags.Fluids.RHNULL_LIQUID)) {
                     level.playSound(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
                     level.gameEvent(player, GameEvent.FLUID_PICKUP, $$8);
-                    player.setItemInHand(interactionHand, new ItemStack(ModItems.FILLED_RHNULL_BLOOD_FLASK.get()));
+                    player.setItemInHand(interactionHand, new ItemStack(FlaskItems.FILLED_RHNULL_BLOOD_FLASK.get()));
                     return InteractionResult.sidedSuccess(level.isClientSide());
                 }
             }

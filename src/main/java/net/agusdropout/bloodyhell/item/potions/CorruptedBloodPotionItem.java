@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.potions;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -51,11 +51,11 @@ public class CorruptedBloodPotionItem extends PotionItem {
 
         if ($$3 == null || !$$3.getAbilities().instabuild) {
             if (p_42984_.isEmpty()) {
-                return new ItemStack(ModItems.BLOOD_FLASK.get());
+                return new ItemStack(FlaskItems.BLOOD_FLASK.get());
             }
 
             if ($$3 != null) {
-                $$3.getInventory().add(new ItemStack(ModItems.BLOOD_FLASK.get()));
+                $$3.getInventory().add(new ItemStack(FlaskItems.BLOOD_FLASK.get()));
             }
         }
         p_42986_.gameEvent(GameEvent.DRINK);

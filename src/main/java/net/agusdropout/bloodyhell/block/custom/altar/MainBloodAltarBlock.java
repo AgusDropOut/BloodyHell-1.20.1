@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.block.custom.altar;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.block.base.AbstractMainAltarBlock;
 import net.agusdropout.bloodyhell.block.entity.custom.altar.MainBloodAltarBlockEntity;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.recipe.BloodAltarRecipe;
 import net.agusdropout.bloodyhell.util.VanillaPacketDispatcher;
@@ -125,7 +125,7 @@ public class MainBloodAltarBlock extends AbstractMainAltarBlock {
         if (interactionHand == InteractionHand.MAIN_HAND) {
             ItemStack heldItem = player.getMainHandItem();
 
-            if (altar.hasResultItem() && !heldItem.is(ModItems.CORRUPTED_BLOOD_FLASK.get())) {
+            if (altar.hasResultItem() && !heldItem.is(FlaskItems.CORRUPTED_BLOOD_FLASK.get())) {
                 if (!level.isClientSide()) {
                     ItemStack result = altar.getResultItem();
                     if (!player.getInventory().add(result)) {
@@ -142,12 +142,12 @@ public class MainBloodAltarBlock extends AbstractMainAltarBlock {
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }
 
-            if (heldItem.is(ModItems.CORRUPTED_BLOOD_FLASK.get())) {
+            if (heldItem.is(FlaskItems.CORRUPTED_BLOOD_FLASK.get())) {
                 if (!level.isClientSide()) {
                     altar.setActive(true);
                     if (!player.isCreative()) {
                         heldItem.shrink(1);
-                        ItemStack emptyFlask = new ItemStack(ModItems.BLOOD_FLASK.get());
+                        ItemStack emptyFlask = new ItemStack(FlaskItems.BLOOD_FLASK.get());
                         if (heldItem.isEmpty()) {
                             player.setItemInHand(InteractionHand.MAIN_HAND, emptyFlask);
                         } else if (!player.getInventory().add(emptyFlask)) {

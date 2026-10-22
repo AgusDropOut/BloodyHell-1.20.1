@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.datagen;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -87,7 +87,7 @@ public abstract class ModBlockLootTableProvider extends BlockLootSubProvider {
                         // Total de peso: 25 + 35 + 40 = 100 (para que sea fácil calcular %)
 
                         // A. Blasphemite Nugget (Subido a 25%)
-                        .add(LootItem.lootTableItem(ModItems.BLASPHEMITE_NUGGET.get())
+                        .add(LootItem.lootTableItem(BlasphemiteItems.BLASPHEMITE_NUGGET.get())
                                 .setWeight(25) // Antes era 10
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
                                 .when(HAS_SILK_TOUCH.invert())

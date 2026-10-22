@@ -1,10 +1,10 @@
 package net.agusdropout.bloodyhell.client.overlay;
 
+import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.data.ClientInsightData;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +26,7 @@ public class InsightHudOverlay {
     public static boolean shouldDisplayBar() {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        if (!(player == null) && player.getItemInHand(InteractionHand.MAIN_HAND).is(ModItems.HERETIC_SACRIFICIAL_DAGGER.get())) {
+        if (!(player == null) && player.getItemInHand(InteractionHand.MAIN_HAND).is(WeaponItems.HERETIC_SACRIFICIAL_DAGGER.get())) {
             return true;
         } else {
             return false;

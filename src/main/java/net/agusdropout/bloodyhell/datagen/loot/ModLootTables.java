@@ -1,5 +1,11 @@
 package net.agusdropout.bloodyhell.datagen.loot;
 
+import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
+import net.agusdropout.bloodyhell.item.registry.DropItems;
+import net.agusdropout.bloodyhell.item.registry.FoodItems;
+import net.agusdropout.bloodyhell.item.registry.MiscItems;
+import net.agusdropout.bloodyhell.item.registry.PlaceableItems;
+import net.agusdropout.bloodyhell.item.registry.SanguiniteItems;
 import net.agusdropout.bloodyhell.block.registry.LightBlocks;
 import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
@@ -14,7 +20,6 @@ import net.agusdropout.bloodyhell.block.custom.Droopvine;
 import net.agusdropout.bloodyhell.block.custom.EyeballCropBlock;
 import net.agusdropout.bloodyhell.datagen.ModBlockLootTableProvider;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -82,8 +87,8 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(MachineBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK.get());
             this.dropSelf(MachineBlocks.BLOOD_ALTAR.get());
             this.dropSelf(MachineBlocks.MAIN_BLOOD_ALTAR.get());
-            this.dropOther(MachineBlocks.SANGUINITE_CONDENSER.get(), ModItems.SANGUINITE_CONDENSER_ITEM.get());
-            this.dropOther(MachineBlocks.RHNULL_CONDENSER.get(), ModItems.RHNULL_CONDENSER_ITEM.get());
+            this.dropOther(MachineBlocks.SANGUINITE_CONDENSER.get(), PlaceableItems.SANGUINITE_CONDENSER_ITEM.get());
+            this.dropOther(MachineBlocks.RHNULL_CONDENSER.get(), PlaceableItems.RHNULL_CONDENSER_ITEM.get());
             this.dropSelf(PlantBlocks.BLOOD_SAPLING.get());
             this.dropSelf(WoodBlocks.STRIPPED_BLOOD_WOOD.get());
             this.dropSelf(WoodBlocks.STRIPPED_BLOOD_LOG.get());
@@ -104,16 +109,16 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(SoilBlocks.BLOODDIRT_FARMLAND.get());
             this.dropSelf(StoneBlocks.BLOODY_STONE_BLOCK.get());
 
-            this.dropOther(MachineBlocks.SANGUINITE_PIPE.get(),ModItems.SANGUINITE_PIPE_ITEM.get());
-            this.dropOther(MachineBlocks.RHNULL_PIPE.get(),ModItems.RHNULL_PIPE_ITEM.get());
+            this.dropOther(MachineBlocks.SANGUINITE_PIPE.get(),PlaceableItems.SANGUINITE_PIPE_ITEM.get());
+            this.dropOther(MachineBlocks.RHNULL_PIPE.get(),PlaceableItems.RHNULL_PIPE_ITEM.get());
             this.dropSelf(MachineBlocks.SANGUINITE_TANK.get());
             this.dropSelf(MachineBlocks.RHNULL_TANK.get());
-            this.dropOther(MachineBlocks.SANGUINITE_BLOOD_HARVESTER.get(),ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
+            this.dropOther(MachineBlocks.SANGUINITE_BLOOD_HARVESTER.get(),PlaceableItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
 
 
-            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), ModItems.VORACIOUS_MUSHROOM.get());
-            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), ModItems.CRIMSON_LURE_MUSHROOM.get());
-            this.dropOther(MachineBlocks.UNKNOWN_PORTAL_BLOCK.get(),ModItems.UNKNOWN_PORTAL_ITEM.get());
+            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), PlaceableItems.VORACIOUS_MUSHROOM.get());
+            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), PlaceableItems.CRIMSON_LURE_MUSHROOM.get());
+            this.dropOther(MachineBlocks.UNKNOWN_PORTAL_BLOCK.get(),PlaceableItems.UNKNOWN_PORTAL_ITEM.get());
             this.dropSelf(MachineBlocks.SANGUINITE_INFUSOR.get());
 
 
@@ -142,7 +147,7 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(StoneBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS.get());
             this.dropSelf(StoneBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS.get());
             this.dropSelf(LightBlocks.ANCIENT_BLOODY_LAMP.get());
-            this.dropOther(LightBlocks.ANCIENT_TORCH_BLOCK.get(),ModItems.ANCIENT_TORCH_ITEM.get());
+            this.dropOther(LightBlocks.ANCIENT_TORCH_BLOCK.get(),PlaceableItems.ANCIENT_TORCH_ITEM.get());
             this.dropSelf(MiscBlocks.ANCIENT_BLOOD_CAPSULE.get());
             this.dropSelf(MachineBlocks.SANGUINE_LAPIDARY.get());
 
@@ -184,8 +189,8 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(LightBlocks.GLOWING_CRYSTAL_LANTERN.get());
             this.dropSelf(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK.get());
             this.dropSelf(WoodBlocks.BLOOD_WOOD_CHEST.get());
-            this.dropOther(PlantBlocks.DROOPVINE.get(),ModItems.GLOW_FRUIT.get());
-            this.dropOther(PlantBlocks.DROOPVINE_PLANT.get(),ModItems.GLOW_FRUIT.get());
+            this.dropOther(PlantBlocks.DROOPVINE.get(),FoodItems.GLOW_FRUIT.get());
+            this.dropOther(PlantBlocks.DROOPVINE_PLANT.get(),FoodItems.GLOW_FRUIT.get());
 
             this.dropSelf(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get());
             this.dropSelf(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
@@ -207,14 +212,14 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(PlantBlocks.ROUNDED_GRASS.get());
             this.dropSelf(PlantBlocks.STING_FLOWER.get());
             this.add(MiscBlocks.DECORATED_POT_BLOCK.get(), createPotDrops(MiscBlocks.DECORATED_POT_BLOCK.get()));
-            this.dropOther(MiscBlocks.SELIORA_RESTING_BLOCK.get(),ModItems.SELIORA_RESTING_ITEM.get());
+            this.dropOther(MiscBlocks.SELIORA_RESTING_BLOCK.get(),PlaceableItems.SELIORA_RESTING_ITEM.get());
             this.dropSelf(MiscBlocks.FORBIDDEN_BOOKSHELF_BLOCK.get());
             this.dropSelf(LightBlocks.STAR_LAMP_BLOCK.get());
-            this.add(MetalBlocks.BLASPHEMITE_ORE.get(), block -> createOreDrop(MetalBlocks.BLASPHEMITE_ORE.get(), ModItems.RAW_BLASPHEMITE.get()));
+            this.add(MetalBlocks.BLASPHEMITE_ORE.get(), block -> createOreDrop(MetalBlocks.BLASPHEMITE_ORE.get(), BlasphemiteItems.RAW_BLASPHEMITE.get()));
 
 
 
-            ore(MetalBlocks.SANGUINITE_ORE, ModItems.RAW_SANGUINITE);
+            ore(MetalBlocks.SANGUINITE_ORE, SanguiniteItems.RAW_SANGUINITE);
 
 
 
@@ -228,8 +233,8 @@ public class ModLootTables extends LootTableProvider {
                             .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EyeballCropBlock.AGE, 6)));
 
 
-            this.add(PlantBlocks.EYEBALL_CROP.get(), createCropDrops(PlantBlocks.EYEBALL_CROP.get(), ModItems.Eyeball.get(),
-                    ModItems.Eyeball_seed.get(), lootitemcondition$builder2));
+            this.add(PlantBlocks.EYEBALL_CROP.get(), createCropDrops(PlantBlocks.EYEBALL_CROP.get(), FoodItems.Eyeball.get(),
+                    PlaceableItems.Eyeball_seed.get(), lootitemcondition$builder2));
 
             this.add(WoodBlocks.BLOOD_LEAVES.get(), block ->
                     createLeavesDrops(block, PlantBlocks.BLOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
@@ -238,10 +243,10 @@ public class ModLootTables extends LootTableProvider {
 
 
 
-            this.createGrassDrops(PlantBlocks.BLOOD_GRASS, ModItems.Eyeball_seed.get());
+            this.createGrassDrops(PlantBlocks.BLOOD_GRASS, PlaceableItems.Eyeball_seed.get());
 
             this.createPlantsDrops(PlantBlocks.BLOOD_PETALS, PlantBlocks.BLOOD_PETALS.get().asItem());
-            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(), ModItems.GLOW_MUSHROOM.get());
+            this.createSilkTouchOrShearsDispatchTable(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(), FoodItems.GLOW_MUSHROOM.get());
             this.createPlantsDrops(MiscBlocks.SMALL_ROCKS, MiscBlocks.SMALL_ROCKS.get().asItem());
             this.createPlantsDrops(PlantBlocks.BLOOD_FLOWER, PlantBlocks.BLOOD_FLOWER.get().asItem());
             this.createPlantsDrops(PlantBlocks.BLOOD_BUSH, PlantBlocks.BLOOD_BUSH.get().asItem());
@@ -257,7 +262,7 @@ public class ModLootTables extends LootTableProvider {
     }
 
     private static LootTable.Builder droopvine(Block block) {
-        return LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GLOW_FRUIT.get())).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Droopvine.GLOWY, true))));
+        return LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.GLOW_FRUIT.get())).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Droopvine.GLOWY, true))));
     }
     public static class Entities extends EntityLootSubProvider {
 
@@ -273,11 +278,11 @@ public class ModLootTables extends LootTableProvider {
 
             this.add(ModEntityTypes.SELIORA.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.SELIORA_ESSENCE.get()))));
+                            .add(LootItem.lootTableItem(DropItems.SELIORA_ESSENCE.get()))));
 
             this.add(ModEntityTypes.RITEKEEPER.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(4))
-                            .add(LootItem.lootTableItem(ModItems.RITEKEEPER_HEART.get()))));
+                            .add(LootItem.lootTableItem(DropItems.RITEKEEPER_HEART.get()))));
 
             this.add(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
@@ -285,19 +290,19 @@ public class ModLootTables extends LootTableProvider {
             // --- HOSTILE MONSTERS ---
             this.add(ModEntityTypes.BLOODTHIRSTYBEAST.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.AUREAL_REVENANT_DAGGER.get())
+                            .add(LootItem.lootTableItem(DropItems.AUREAL_REVENANT_DAGGER.get())
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
             this.add(ModEntityTypes.OMEN_GAZER_ENTITY.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.AUREAL_REVENANT_DAGGER.get())
+                            .add(LootItem.lootTableItem(DropItems.AUREAL_REVENANT_DAGGER.get())
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
             this.add(ModEntityTypes.VEINRAVER_ENTITY.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.VEINREAVER_HORN.get())
+                            .add(LootItem.lootTableItem(DropItems.VEINREAVER_HORN.get())
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
@@ -309,7 +314,7 @@ public class ModLootTables extends LootTableProvider {
 
             this.add(ModEntityTypes.ONI.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.SANGUINE_CRUCIBLE_CORE.get())
+                            .add(LootItem.lootTableItem(MiscItems.SANGUINE_CRUCIBLE_CORE.get())
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
@@ -318,34 +323,34 @@ public class ModLootTables extends LootTableProvider {
 
             this.add(ModEntityTypes.CINDER_ACOLYTE.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
+                            .add(LootItem.lootTableItem(DropItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
                                     .when(LootItemRandomChanceCondition.randomChance(0.45F))
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
             this.add(ModEntityTypes.FAILED_REMNANT.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ModItems.FAILED_REMNANT_ASHES.get())
+                            .add(LootItem.lootTableItem(DropItems.FAILED_REMNANT_ASHES.get())
                                     .when(LootItemRandomChanceCondition.randomChance(0.45F))
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
             // --- PASSIVE & NEUTRAL CREATURES ---
             this.add(ModEntityTypes.BLOODPIG.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOREHOG_RAW_STEAK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))))
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.GOREHOG_RAW_STEAK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))))
                     .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.BLOOD_SEEKER.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.VEINREAVER_HORN.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DropItems.VEINREAVER_HORN.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.CRIMSON_RAVEN.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
-                            .add(LootItem.lootTableItem(ModItems.SCARLET_RAW_CHICKEN.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))
-                            .add(LootItem.lootTableItem(ModItems.SCARLET_FEATHER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
+                            .add(LootItem.lootTableItem(FoodItems.SCARLET_RAW_CHICKEN.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))
+                            .add(LootItem.lootTableItem(DropItems.SCARLET_FEATHER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.EYESHELL_SNAIL.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.CRIMSON_SHELL.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DropItems.CRIMSON_SHELL.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.SCARLETSPECKLED_FISH.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.CRIMSON_SHELL.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DropItems.CRIMSON_SHELL.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
 
             this.add(ModEntityTypes.BLOODY_SOUL_ENTITY.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));

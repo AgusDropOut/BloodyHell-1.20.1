@@ -1,9 +1,9 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
+import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ShockwaveParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -383,7 +383,7 @@ public class BlasphemousImpalerEntity extends AbstractArrow {
         }
     }
 
-    @Override protected ItemStack getPickupItem() { return new ItemStack(ModItems.BLASPHEMOUS_IMPALER.get()); }
+    @Override protected ItemStack getPickupItem() { return new ItemStack(WeaponItems.BLASPHEMOUS_IMPALER.get()); }
     @Override protected SoundEvent getDefaultHitGroundSoundEvent() { return SoundEvents.TRIDENT_HIT_GROUND; }
 
     @Override public void addAdditionalSaveData(CompoundTag tag) {

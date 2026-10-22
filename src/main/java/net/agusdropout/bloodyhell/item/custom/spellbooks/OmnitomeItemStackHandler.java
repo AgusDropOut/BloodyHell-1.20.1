@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.ReliquaryItems;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -48,7 +48,7 @@ public class OmnitomeItemStackHandler extends ItemStackHandler {
             return stack.getItem() instanceof BaseSpellBookItem<?>;
         }
         if (slot == UPGRADE_SLOT) {
-            return stack.is(ModItems.ANCIENT_OCULAR_LENSE.get()) || stack.is(ModItems.BLASPHEMOUS_OCULAR_LENSE.get());
+            return stack.is(ReliquaryItems.ANCIENT_OCULAR_LENSE.get()) || stack.is(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get());
         }
         return true;
     }

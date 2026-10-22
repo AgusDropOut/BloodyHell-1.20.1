@@ -1,5 +1,8 @@
 package net.agusdropout.bloodyhell.event;
 
+import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
+import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
+import net.agusdropout.bloodyhell.item.registry.RhnullItems;
 import com.mojang.blaze3d.vertex.*;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
@@ -17,7 +20,6 @@ import net.agusdropout.bloodyhell.entity.custom.CyclopsEntity;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.event.handlers.EntityLayerHandler;
 import net.agusdropout.bloodyhell.event.handlers.RitualAmbienceHandler;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.client.render.item.layer.OffhandDaggerLayer;
 import net.agusdropout.bloodyhell.item.custom.base.IComboWeapon;
 import net.agusdropout.bloodyhell.particle.ModParticles;
@@ -148,29 +150,29 @@ public class ClientEvents {
                     if (event.getRenderer() instanceof PlayerRenderer playerRenderer) {
                         PlayerModel<?> model = playerRenderer.getModel();
 
-                        if (player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLASPHEMITE_CHESTPLATE.get()) ||
-                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.BLOOD_CHESTPLATE.get()) ||
-                                player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.RHNULL_CHESTPLATE.get())) {
+                        if (player.getItemBySlot(EquipmentSlot.CHEST).is(BlasphemiteItems.BLASPHEMITE_CHESTPLATE.get()) ||
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(BloodGearItems.BLOOD_CHESTPLATE.get()) ||
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(RhnullItems.RHNULL_CHESTPLATE.get())) {
 
                             model.jacket.visible = false;
                             model.leftSleeve.visible = false;
                             model.rightSleeve.visible = false;
                         }
 
-                        if (player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLASPHEMITE_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.BLOOD_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLASPHEMITE_BOOTS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.BLOOD_BOOTS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.RHNULL_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.RHNULL_BOOTS.get())) {
+                        if (player.getItemBySlot(EquipmentSlot.LEGS).is(BlasphemiteItems.BLASPHEMITE_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.LEGS).is(BloodGearItems.BLOOD_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(BlasphemiteItems.BLASPHEMITE_BOOTS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(BloodGearItems.BLOOD_BOOTS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.LEGS).is(RhnullItems.RHNULL_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(RhnullItems.RHNULL_BOOTS.get())) {
 
                             model.leftPants.visible = false;
                             model.rightPants.visible = false;
                         }
 
-                        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLASPHEMITE_HELMET.get()) ||
-                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.BLOOD_HELMET.get()) ||
-                                player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.RHNULL_HELMET.get())) {
+                        if (player.getItemBySlot(EquipmentSlot.HEAD).is(BlasphemiteItems.BLASPHEMITE_HELMET.get()) ||
+                                player.getItemBySlot(EquipmentSlot.HEAD).is(BloodGearItems.BLOOD_HELMET.get()) ||
+                                player.getItemBySlot(EquipmentSlot.HEAD).is(RhnullItems.RHNULL_HELMET.get())) {
 
                             model.hat.visible = false;
                             model.head.visible = false;

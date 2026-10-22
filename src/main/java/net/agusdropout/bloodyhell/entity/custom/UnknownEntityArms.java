@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -134,7 +134,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
                 return;
             }
             if (!this.target.isAlive() && lifeTicks == 1) {
-                    ItemStack dropItem = new ItemStack(ModItems.UNKNOWN_ENTITY_FINGER.get(), 1);
+                    ItemStack dropItem = new ItemStack(WeaponItems.UNKNOWN_ENTITY_FINGER.get(), 1);
                     ItemEntity itemEntity = new ItemEntity(level(), this.getX(), this.getY() + 0.5, this.getZ(), dropItem);
                     level().addFreshEntity(itemEntity);
                     itemEntity.setPickUpDelay(40);

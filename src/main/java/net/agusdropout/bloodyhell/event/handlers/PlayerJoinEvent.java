@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
+import net.agusdropout.bloodyhell.item.registry.MiscItems;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.config.ModCommonConfig;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +27,7 @@ public class PlayerJoinEvent {
                     playerData.putBoolean(GIVEN_BOOK_TAG, true);
                     persistentData.put(Player.PERSISTED_NBT_TAG, playerData);
 
-                    player.getInventory().add(new ItemStack(ModItems.UNKNOWN_GUIDE_BOOK.get()));
+                    player.getInventory().add(new ItemStack(MiscItems.UNKNOWN_GUIDE_BOOK.get()));
                 }
             }
         }

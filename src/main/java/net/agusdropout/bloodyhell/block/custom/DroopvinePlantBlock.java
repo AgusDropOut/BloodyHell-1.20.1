@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.block.custom;
 
+import net.agusdropout.bloodyhell.item.registry.FoodItems;
 import net.agusdropout.bloodyhell.block.registry.PlantBlocks;
 import com.mojang.serialization.MapCodec;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -48,7 +48,7 @@ public class DroopvinePlantBlock extends GrowingPlantBodyBlock implements Droopv
 
 
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return new ItemStack(ModItems.GLOW_FRUIT.get());
+        return new ItemStack(FoodItems.GLOW_FRUIT.get());
     }
 
     @Override

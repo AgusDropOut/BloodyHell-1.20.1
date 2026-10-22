@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.entity.custom.SanguineSacrificeEntity;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -44,13 +44,13 @@ public class SacrificialDagger extends SwordItem {
         if (hand == InteractionHand.MAIN_HAND && !player.getCooldowns().isOnCooldown(this)) {
             ItemStack offhandItem = player.getItemInHand(InteractionHand.OFF_HAND);
 
-            if (offhandItem.getItem() == ModItems.BLOOD_FLASK.get()) {
+            if (offhandItem.getItem() == FlaskItems.BLOOD_FLASK.get()) {
                 if (!level.isClientSide) {
                     player.hurt(level.damageSources().magic(), 4.0F);
 
                     offhandItem.shrink(1);
 
-                    ItemStack boundFlask = new ItemStack(ModItems.BOUND_BLOOD_FLASK.get());
+                    ItemStack boundFlask = new ItemStack(FlaskItems.BOUND_BLOOD_FLASK.get());
                     CompoundTag nbt = boundFlask.getOrCreateTag();
                     nbt.putUUID("BloodOwnerUUID", player.getUUID());
                     nbt.putString("BloodOwnerName", player.getScoreboardName());

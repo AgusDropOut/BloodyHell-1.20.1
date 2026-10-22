@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.block.custom;
 
+import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -64,7 +64,7 @@ public class BloodCapsuleBlock extends Block {
                 // 2. 25% Chance to drop the Finger (Only if mob didn't spawn)
                 else if (chance < 0.50f) {
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(),
-                            new ItemStack(ModItems.UNKNOWN_ENTITY_FINGER.get()));
+                            new ItemStack(WeaponItems.UNKNOWN_ENTITY_FINGER.get()));
                 }
 
                 // Remaining 50%: Normal behavior (just breaks, drops block loot if configured)

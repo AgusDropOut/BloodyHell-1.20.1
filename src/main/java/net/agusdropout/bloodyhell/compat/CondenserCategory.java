@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.compat;
 
+import net.agusdropout.bloodyhell.item.registry.PlaceableItems;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -11,7 +12,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.recipe.CondenserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -30,7 +30,7 @@ public class CondenserCategory implements IRecipeCategory<CondenserRecipe> {
 
     public CondenserCategory(IGuiHelper helper) {
         this.background = helper.createBlankDrawable(120, 36);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.SANGUINITE_CONDENSER_ITEM.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(PlaceableItems.SANGUINITE_CONDENSER_ITEM.get()));
         this.slotDrawable = helper.getSlotDrawable();
 
         // Extracts the standard filled arrow from the native vanilla furnace texture

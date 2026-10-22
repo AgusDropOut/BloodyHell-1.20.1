@@ -1,10 +1,10 @@
 package net.agusdropout.bloodyhell.block.base;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGemSproutBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.plant.BloodGemSproutBlockEntity;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.custom.base.GemType;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -71,7 +71,7 @@ public abstract class BaseGemSproutBlock  extends BaseEntityBlock {
                     level.playSound(null, pos, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f);
                     return InteractionResult.SUCCESS;
                 } else {
-                    if(player.getItemInHand(InteractionHand.MAIN_HAND).is(ModItems.FILLED_BLOOD_FLASK.get())){
+                    if(player.getItemInHand(InteractionHand.MAIN_HAND).is(FlaskItems.FILLED_BLOOD_FLASK.get())){
                         ItemStack flask = player.getItemInHand(InteractionHand.MAIN_HAND);
                         if(!player.isCreative()) {
                             flask.shrink(1);

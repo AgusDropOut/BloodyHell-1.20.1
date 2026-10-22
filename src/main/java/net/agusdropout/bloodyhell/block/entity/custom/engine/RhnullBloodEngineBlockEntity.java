@@ -1,9 +1,9 @@
 package net.agusdropout.bloodyhell.block.entity.custom.engine;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.base.BaseGeckoBlockEntity;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MiniBlobParticleOptions;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.agusdropout.bloodyhell.client.render.effect.api.IBloodBlobEmitter;
@@ -106,7 +106,7 @@ public class RhnullBloodEngineBlockEntity extends BaseGeckoBlockEntity implement
 
         if (stack.isEmpty()) return;
 
-        if (stack.getItem() == ModItems.BOUND_BLOOD_FLASK.get()) {
+        if (stack.getItem() == FlaskItems.BOUND_BLOOD_FLASK.get()) {
             CompoundTag nbt = stack.getTag();
             if (nbt != null) {
                 if (nbt.contains("FallenAllyData")) {

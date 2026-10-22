@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.screen.custom.menu;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.ReliquaryItems;
 import net.agusdropout.bloodyhell.item.custom.reliquary.RuneType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,9 +30,9 @@ public class ReliquaryRuneSlot extends SlotItemHandler {
     private int getUpgradeTier(ItemStack stack) {
         if (stack.isEmpty()) return 0;
         Item item = stack.getItem();
-        if (item.equals(ModItems.ANCIENT_OCULAR_LENSE.get())) {
+        if (item.equals(ReliquaryItems.ANCIENT_OCULAR_LENSE.get())) {
             return 1;
-        } else if (item.equals(ModItems.BLASPHEMOUS_OCULAR_LENSE.get())) {
+        } else if (item.equals(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get())) {
             return 2;
         }
         return 0;

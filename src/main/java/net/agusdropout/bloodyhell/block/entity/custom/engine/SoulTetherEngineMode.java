@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.entity.custom.engine;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions;
@@ -29,7 +29,7 @@ public class SoulTetherEngineMode implements IEngineMode {
     @Override
     public boolean canProcess(RhnullBloodEngineBlockEntity engine) {
         ItemStack coreItem = engine.getRenderStack();
-        if (coreItem.getItem() != ModItems.BOUND_BLOOD_FLASK.get()) return false;
+        if (coreItem.getItem() != FlaskItems.BOUND_BLOOD_FLASK.get()) return false;
 
         CompoundTag nbt = coreItem.getTag();
 

@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.screen.custom.menu;
 
+import net.agusdropout.bloodyhell.item.registry.ReliquaryItems;
 import net.agusdropout.bloodyhell.capability.insight.PlayerInsight;
 import net.agusdropout.bloodyhell.client.data.ClientInsightData;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.screen.ModMenuTypes;
 import net.agusdropout.bloodyhell.screen.base.BasePlayerInventoryMenu;
 import net.minecraft.network.FriendlyByteBuf;
@@ -50,7 +50,7 @@ public class ReliquaryMenu extends BasePlayerInventoryMenu {
             this.addSlot(new SlotItemHandler(handler, 12, 145, 37) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack upgradeStack) {
-                    return upgradeStack.is(ModItems.ANCIENT_OCULAR_LENSE.get()) || upgradeStack.is(ModItems.BLASPHEMOUS_OCULAR_LENSE.get());
+                    return upgradeStack.is(ReliquaryItems.ANCIENT_OCULAR_LENSE.get()) || upgradeStack.is(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get());
                 }
 
                 @Override
@@ -72,8 +72,8 @@ public class ReliquaryMenu extends BasePlayerInventoryMenu {
 
                     ItemStack cursorStack = ReliquaryMenu.this.getCarried();
                     int incomingTier = 0;
-                    if (cursorStack.is(ModItems.ANCIENT_OCULAR_LENSE.get())) incomingTier = 1;
-                    else if (cursorStack.is(ModItems.BLASPHEMOUS_OCULAR_LENSE.get())) incomingTier = 2;
+                    if (cursorStack.is(ReliquaryItems.ANCIENT_OCULAR_LENSE.get())) incomingTier = 1;
+                    else if (cursorStack.is(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get())) incomingTier = 2;
 
                     return incomingTier >= maxRequiredTier;
                 }
@@ -94,9 +94,9 @@ public class ReliquaryMenu extends BasePlayerInventoryMenu {
         this.itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             ItemStack upgradeStack = handler.getStackInSlot(12);
 
-            if (upgradeStack.is(ModItems.ANCIENT_OCULAR_LENSE.get())) {
+            if (upgradeStack.is(ReliquaryItems.ANCIENT_OCULAR_LENSE.get())) {
                 tier.set(1);
-            } else if (upgradeStack.is(ModItems.BLASPHEMOUS_OCULAR_LENSE.get())) {
+            } else if (upgradeStack.is(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get())) {
                 tier.set(2);
             }
         });

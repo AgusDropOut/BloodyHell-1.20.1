@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.util;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 public class ModItemProperties {
 
         public static void addCustomItemProperties() {
-            makeBow(ModItems.BLOOD_BOW.get());
+            makeBow(BloodGearItems.BLOOD_BOW.get());
         }
 
         private static void makeBow(Item item) {

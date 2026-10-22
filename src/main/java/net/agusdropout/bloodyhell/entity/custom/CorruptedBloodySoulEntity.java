@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.sounds.SoundEvent;
@@ -127,8 +127,8 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
     // --- INTERACTION (Capture in bottle) ---
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if(player.getMainHandItem().getItem() == ModItems.BLOOD_FLASK.get()) {
-            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.CORRUPTED_BLOOD_FLASK.get()));
+        if(player.getMainHandItem().getItem() == FlaskItems.BLOOD_FLASK.get()) {
+            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(FlaskItems.CORRUPTED_BLOOD_FLASK.get()));
             this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.BOTTLE_FILL, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F, false);
             this.discard();
             return InteractionResult.sidedSuccess(this.level().isClientSide);

@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
 import com.google.common.collect.Sets;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +33,7 @@ public class BloodArrowEntity extends AbstractArrow {
 
     @Override
     protected ItemStack getPickupItem() {
-        return new ItemStack(ModItems.BLOOD_ARROW.get());
+        return new ItemStack(BloodGearItems.BLOOD_ARROW.get());
     }
 
 

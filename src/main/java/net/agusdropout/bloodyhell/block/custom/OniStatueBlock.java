@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.block.custom;
 
+import net.agusdropout.bloodyhell.item.registry.MiscItems;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.OniEntity;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.DimensionTypes;
@@ -33,7 +33,7 @@ public class OniStatueBlock extends Block {
     }
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1, 1, true);
-        if(!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND && player.getMainHandItem().is(ModItems.CRIMSON_IDOL_COIN.get())){
+        if(!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND && player.getMainHandItem().is(MiscItems.CRIMSON_IDOL_COIN.get())){
             OniEntity oni = new OniEntity(ModEntityTypes.ONI.get(), level);
             level.addFreshEntity(oni);
             oni.moveTo(blockPos.getX(), blockPos.getY(), blockPos.getZ());

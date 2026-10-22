@@ -1,5 +1,19 @@
 package net.agusdropout.bloodyhell.datagen;
 
+import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
+import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
+import net.agusdropout.bloodyhell.item.registry.BucketItems;
+import net.agusdropout.bloodyhell.item.registry.DropItems;
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
+import net.agusdropout.bloodyhell.item.registry.FoodItems;
+import net.agusdropout.bloodyhell.item.registry.GemItems;
+import net.agusdropout.bloodyhell.item.registry.MiscItems;
+import net.agusdropout.bloodyhell.item.registry.PlaceableItems;
+import net.agusdropout.bloodyhell.item.registry.ReliquaryItems;
+import net.agusdropout.bloodyhell.item.registry.RhnullItems;
+import net.agusdropout.bloodyhell.item.registry.SanguiniteItems;
+import net.agusdropout.bloodyhell.item.registry.SpawnEggItems;
+import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import net.agusdropout.bloodyhell.block.registry.LightBlocks;
 import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
@@ -10,7 +24,6 @@ import net.agusdropout.bloodyhell.block.registry.SoilBlocks;
 import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
 import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -49,132 +62,132 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         // Guide book
-        normalItem(ModItems.UNKNOWN_GUIDE_BOOK);
+        normalItem(MiscItems.UNKNOWN_GUIDE_BOOK);
 
         //Sanguinite Items
-        toolItem(ModItems.SANGUINITE_SWORD);
-        toolItem(ModItems.SANGUINITE_PICKAXE);
-        toolItem(ModItems.SANGUINITE_AXE);
-        toolItem(ModItems.SANGUINITE_SHOVEL);
-        toolItem(ModItems.SANGUINITE_HOE);
-        normalItem(ModItems.BLOOD_HELMET);
-        normalItem(ModItems.BLOOD_CHESTPLATE);
-        normalItem(ModItems.BLOOD_LEGGINGS);
-        normalItem(ModItems.BLOOD_BOOTS);
-        normalItem(ModItems.SANGUINITE);
-        normalItem(ModItems.SANGUINITE_NUGGET);
-        normalItem(ModItems.RAW_SANGUINITE);
+        toolItem(SanguiniteItems.SANGUINITE_SWORD);
+        toolItem(SanguiniteItems.SANGUINITE_PICKAXE);
+        toolItem(SanguiniteItems.SANGUINITE_AXE);
+        toolItem(SanguiniteItems.SANGUINITE_SHOVEL);
+        toolItem(SanguiniteItems.SANGUINITE_HOE);
+        normalItem(BloodGearItems.BLOOD_HELMET);
+        normalItem(BloodGearItems.BLOOD_CHESTPLATE);
+        normalItem(BloodGearItems.BLOOD_LEGGINGS);
+        normalItem(BloodGearItems.BLOOD_BOOTS);
+        normalItem(SanguiniteItems.SANGUINITE);
+        normalItem(SanguiniteItems.SANGUINITE_NUGGET);
+        normalItem(SanguiniteItems.RAW_SANGUINITE);
 
-        normalItem(ModItems.PURE_BLOOD_GEM);
-        normalItem(ModItems.AVENTURINE_BLOOD_GEM);
-        normalItem(ModItems.CITRINE_BLOOD_GEM);
-        normalItem(ModItems.TANZARINE_BLOOD_GEM);
+        normalItem(GemItems.PURE_BLOOD_GEM);
+        normalItem(GemItems.AVENTURINE_BLOOD_GEM);
+        normalItem(GemItems.CITRINE_BLOOD_GEM);
+        normalItem(GemItems.TANZARINE_BLOOD_GEM);
 
 
         //Bucket
-        normalItem(ModItems.BLOOD_BUCKET);
-        normalItem(ModItems.CORRUPTED_BLOOD_BUCKET);
-        normalItem(ModItems.VISCOUS_BLASPHEMY_BUCKET);
-        normalItem(ModItems.VISCERAL_BLOOD_BUCKET);
+        normalItem(BucketItems.BLOOD_BUCKET);
+        normalItem(BucketItems.CORRUPTED_BLOOD_BUCKET);
+        normalItem(BucketItems.VISCOUS_BLASPHEMY_BUCKET);
+        normalItem(BucketItems.VISCERAL_BLOOD_BUCKET);
         //Rhnull Items
-        toolItem(ModItems.RHNULL_SWORD);
-        toolItem(ModItems.RHNULL_PICKAXE);
-        toolItem(ModItems.RHNULL_AXE);
-        toolItem(ModItems.RHNULL_SHOVEL);
-        toolItem(ModItems.RHNULL_HOE);
-        normalItem(ModItems.RHNULL);
-        normalItem(ModItems.RHNULL_NUGGET);
-        normalItem(ModItems.RHNULL_HELMET);
-        normalItem(ModItems.RHNULL_CHESTPLATE);
-        normalItem(ModItems.RHNULL_LEGGINGS);
-        normalItem(ModItems.RHNULL_BOOTS);
+        toolItem(RhnullItems.RHNULL_SWORD);
+        toolItem(RhnullItems.RHNULL_PICKAXE);
+        toolItem(RhnullItems.RHNULL_AXE);
+        toolItem(RhnullItems.RHNULL_SHOVEL);
+        toolItem(RhnullItems.RHNULL_HOE);
+        normalItem(RhnullItems.RHNULL);
+        normalItem(RhnullItems.RHNULL_NUGGET);
+        normalItem(RhnullItems.RHNULL_HELMET);
+        normalItem(RhnullItems.RHNULL_CHESTPLATE);
+        normalItem(RhnullItems.RHNULL_LEGGINGS);
+        normalItem(RhnullItems.RHNULL_BOOTS);
 
         //Mobs Drops
-        normalItem(ModItems.AUREAL_REVENANT_DAGGER);
-        normalItem(ModItems.VEINREAVER_HORN);
-        normalItem(ModItems.CRIMSON_SHELL);
-        normalItem(ModItems.SCARLET_FEATHER);
-        normalItem(ModItems.RITEKEEPER_HEART);
-        normalItem(ModItems.FAILED_REMNANT_ASHES);
-        normalItem(ModItems.CINDER_ACOLYTE_FAINTED_EMBER);
+        normalItem(DropItems.AUREAL_REVENANT_DAGGER);
+        normalItem(DropItems.VEINREAVER_HORN);
+        normalItem(DropItems.CRIMSON_SHELL);
+        normalItem(DropItems.SCARLET_FEATHER);
+        normalItem(DropItems.RITEKEEPER_HEART);
+        normalItem(DropItems.FAILED_REMNANT_ASHES);
+        normalItem(DropItems.CINDER_ACOLYTE_FAINTED_EMBER);
 
         //Mobs spawn eggs
-        egg(ModItems.VEINRAVER_ENTITY_SPAWN_EGG);
-        egg(ModItems.OFFSPRING_OF_THE_UNKNOWN_SPAWN_EGG);
-        egg(ModItems.BLASPHEMOUS_MALFORMATION_SPAWN_EGG);
-        egg(ModItems.SELIORA_SPAWN_EGG);
-        egg(ModItems.HORNED_WORM_SPAWN_EGG);
-        egg(ModItems.VEIL_STALKER_SPAWN_EGG);
-        egg(ModItems.CYCLOPS_ENTITY_SPAWN_EGG);
-        egg(ModItems.GRAVE_WALKER_SPAWN_EGG);
-        egg(ModItems.CINDER_ACOLYTE_SPAWN_EGG);
-        egg(ModItems.FAILED_REMNANT_SPAWN_EGG);
+        egg(SpawnEggItems.VEINRAVER_ENTITY_SPAWN_EGG);
+        egg(SpawnEggItems.OFFSPRING_OF_THE_UNKNOWN_SPAWN_EGG);
+        egg(SpawnEggItems.BLASPHEMOUS_MALFORMATION_SPAWN_EGG);
+        egg(SpawnEggItems.SELIORA_SPAWN_EGG);
+        egg(SpawnEggItems.HORNED_WORM_SPAWN_EGG);
+        egg(SpawnEggItems.VEIL_STALKER_SPAWN_EGG);
+        egg(SpawnEggItems.CYCLOPS_ENTITY_SPAWN_EGG);
+        egg(SpawnEggItems.GRAVE_WALKER_SPAWN_EGG);
+        egg(SpawnEggItems.CINDER_ACOLYTE_SPAWN_EGG);
+        egg(SpawnEggItems.FAILED_REMNANT_SPAWN_EGG);
 
         //Food Items
-        normalItem(ModItems.GOREHOG_RAW_STEAK);
-        normalItem(ModItems.GOREHOG_COOKED_STEAK);
-        normalItem(ModItems.SCARLET_RAW_CHICKEN);
-        normalItem(ModItems.SCARLET_COOKED_CHICKEN);
-        normalItem(ModItems.GLOW_FRUIT);
-        normalItem(ModItems.GLOW_MUSHROOM);
+        normalItem(FoodItems.GOREHOG_RAW_STEAK);
+        normalItem(FoodItems.GOREHOG_COOKED_STEAK);
+        normalItem(FoodItems.SCARLET_RAW_CHICKEN);
+        normalItem(FoodItems.SCARLET_COOKED_CHICKEN);
+        normalItem(FoodItems.GLOW_FRUIT);
+        normalItem(FoodItems.GLOW_MUSHROOM);
 
 
         //Misc Items
-        normalItem(ModItems.CHALICE_OF_THE_DAMMED);
-        normalItem(ModItems.CRIMSON_IDOL_COIN);
-        normalItem(ModItems.SANGUINE_CRUCIBLE_CORE);
-        normalItem(ModItems.VORACIOUS_MUSHROOM);
-        normalItem(ModItems.CRIMSON_LURE_MUSHROOM);
-        normalItem(ModItems.BLOOD_GEM_SPROUT_SEED);
+        normalItem(MiscItems.CHALICE_OF_THE_DAMMED);
+        normalItem(MiscItems.CRIMSON_IDOL_COIN);
+        normalItem(MiscItems.SANGUINE_CRUCIBLE_CORE);
+        normalItem(PlaceableItems.VORACIOUS_MUSHROOM);
+        normalItem(PlaceableItems.CRIMSON_LURE_MUSHROOM);
+        normalItem(PlaceableItems.BLOOD_GEM_SPROUT_SEED);
 
         //Ingredient Items
-        normalItem(ModItems.ROOTLET_POWDER);
+        normalItem(MiscItems.ROOTLET_POWDER);
 
         //Potions
-        normalItem(ModItems.BLOOD_FLASK);
-        normalItem(ModItems.CORRUPTED_BLOOD_FLASK);
-        normalItem(ModItems.FILLED_BLOOD_FLASK);
-        normalItem(ModItems.FILLED_RHNULL_BLOOD_FLASK);
-        normalItem(ModItems.FILLED_VISCOUS_BLASPHEMY_FLASK);
-        normalItem(ModItems.BOUND_BLOOD_FLASK);
+        normalItem(FlaskItems.BLOOD_FLASK);
+        normalItem(FlaskItems.CORRUPTED_BLOOD_FLASK);
+        normalItem(FlaskItems.FILLED_BLOOD_FLASK);
+        normalItem(FlaskItems.FILLED_RHNULL_BLOOD_FLASK);
+        normalItem(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK);
+        normalItem(FlaskItems.BOUND_BLOOD_FLASK);
 
         //Dagger
-        toolItem(ModItems.SACRIFICIAL_DAGGER);
-        toolItem(ModItems.HERETIC_SACRIFICIAL_DAGGER);
+        toolItem(WeaponItems.SACRIFICIAL_DAGGER);
+        toolItem(WeaponItems.HERETIC_SACRIFICIAL_DAGGER);
 
         //Unknown entity items
-        normalItem(ModItems.UNKNOWN_ENTITY_FINGER);
+        normalItem(WeaponItems.UNKNOWN_ENTITY_FINGER);
 
-        normalItem(ModItems.GAZE_OF_THE_UNKNOWN);
-        normalItem(ModItems.NAMELESS_WHISPER);
-        normalItem(ModItems.BLOOD_ECHO_SHARD);
-        normalItem(ModItems.NAMELESS_ECHO_SHARD);
+        normalItem(MiscItems.GAZE_OF_THE_UNKNOWN);
+        normalItem(MiscItems.NAMELESS_WHISPER);
+        normalItem(DropItems.BLOOD_ECHO_SHARD);
+        normalItem(DropItems.NAMELESS_ECHO_SHARD);
 
         //Crimson Veil Items
-        normalItem(ModItems.AMULET_OF_ANCESTRAL_BLOOD);
-        normalItem(ModItems.SANGUINITE_GEM_FRAME);
-        normalItem(ModItems.SANGUINITE_GREAT_GEM_FRAME);
-        normalItem(ModItems.RHNULL_GEM_FRAME);
-        normalItem(ModItems.RHNULL_GREAT_GEM_FRAME);
-        normalItem(ModItems.ANCIENT_GEM);
-        normalItem(ModItems.ANCIENT_RHNULL_GEM);
-        normalItem(ModItems.ANCIENT_BLASPHEMOUS_GEM);
-        normalItem(ModItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD);
-        normalItem(ModItems.GREAT_ANCIENT_GEM);
-        normalItem(ModItems.GREAT_ANCIENT_BLASPHEMOUS_GEM);
-        normalItem(ModItems.GREAT_ANCIENT_RHNULL_GEM);
-        normalItem(ModItems.CRIMSON_WARD_RING);
-        normalItem(ModItems.BLASPHEMOUS_RING);
+        normalItem(GemItems.AMULET_OF_ANCESTRAL_BLOOD);
+        normalItem(GemItems.SANGUINITE_GEM_FRAME);
+        normalItem(GemItems.SANGUINITE_GREAT_GEM_FRAME);
+        normalItem(GemItems.RHNULL_GEM_FRAME);
+        normalItem(GemItems.RHNULL_GREAT_GEM_FRAME);
+        normalItem(GemItems.ANCIENT_GEM);
+        normalItem(GemItems.ANCIENT_RHNULL_GEM);
+        normalItem(GemItems.ANCIENT_BLASPHEMOUS_GEM);
+        normalItem(GemItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD);
+        normalItem(GemItems.GREAT_ANCIENT_GEM);
+        normalItem(GemItems.GREAT_ANCIENT_BLASPHEMOUS_GEM);
+        normalItem(GemItems.GREAT_ANCIENT_RHNULL_GEM);
+        normalItem(GemItems.CRIMSON_WARD_RING);
+        normalItem(GemItems.BLASPHEMOUS_RING);
 
         //Reliquary Items
-        normalItem(ModItems.ANCIENT_OCULAR_LENSE);
-        normalItem(ModItems.BLASPHEMOUS_OCULAR_LENSE);
-        normalItem(ModItems.MARK_OF_THE_RESTLESS_SLUMBER);
-        normalItem(ModItems.RUNE_OF_THE_RAVENOUS_GAZE);
-        normalItem(ModItems.OMEN_OF_THE_CRUSHING_TOLL);
-        normalItem(ModItems.SEAL_OF_THE_HOLLOW_BULWARK);
+        normalItem(ReliquaryItems.ANCIENT_OCULAR_LENSE);
+        normalItem(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE);
+        normalItem(ReliquaryItems.MARK_OF_THE_RESTLESS_SLUMBER);
+        normalItem(ReliquaryItems.RUNE_OF_THE_RAVENOUS_GAZE);
+        normalItem(ReliquaryItems.OMEN_OF_THE_CRUSHING_TOLL);
+        normalItem(ReliquaryItems.SEAL_OF_THE_HOLLOW_BULWARK);
 
-        normalItem(ModItems.BLASPHEMOUS_EYE);
+        normalItem(BlasphemiteItems.BLASPHEMOUS_EYE);
 
 
 
@@ -200,7 +213,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
         evenSimplerBlockItem(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
 
-        normalItem(ModItems.BLOOD_LILY);
+        normalItem(PlaceableItems.BLOOD_LILY);
         blockFlatWithItemTexture(LightBlocks.STAR_LAMP_BLOCK, "star_lamp_block");
 
 
@@ -258,7 +271,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(StoneBlocks.ANCIENT_CHISELED_BLOODY_STONE_BRICKS);
         evenSimplerBlockItem(StoneBlocks.ANCIENT_DETAILED_BLOODY_STONE_BRICKS);
         evenSimplerBlockItem(LightBlocks.ANCIENT_BLOODY_LAMP);
-        blockItem(ModItems.ANCIENT_TORCH_ITEM, LightBlocks.ANCIENT_TORCH_BLOCK);
+        blockItem(PlaceableItems.ANCIENT_TORCH_ITEM, LightBlocks.ANCIENT_TORCH_BLOCK);
 
 
 
@@ -268,7 +281,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS);
         evenSimplerBlockItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB);
-        normalItem(ModItems.SELIORA_ESSENCE);
+        normalItem(DropItems.SELIORA_ESSENCE);
         evenSimplerBlockItem(SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK);
@@ -282,25 +295,25 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(PlantBlocks.STING_FLOWER);
 
 
-        normalItem(ModItems.DIRTY_BLOOD_FLOWER);
-        normalItem(ModItems.BLOOD_ARROW);
-        normalItem(ModItems.BLASPHEMITE);
-        normalItem(ModItems.BLASPHEMITE_NUGGET);
-        normalItem(ModItems.RAW_BLASPHEMITE);
-        normalItem(ModItems.BLASPHEMITE_BOOTS);
-        normalItem(ModItems.BLASPHEMITE_LEGGINGS);
-        normalItem(ModItems.BLASPHEMITE_CHESTPLATE);
-        normalItem(ModItems.BLASPHEMITE_HELMET);
-        toolItem(ModItems.BLASPHEMITE_SWORD);
-        toolItem(ModItems.BLASPHEMITE_SHOVEL);
-        toolItem(ModItems.BLASPHEMITE_HOE);
-        toolItem(ModItems.BLASPHEMITE_AXE);
-        toolItem(ModItems.BLASPHEMITE_PICKAXE);
+        normalItem(MiscItems.DIRTY_BLOOD_FLOWER);
+        normalItem(BloodGearItems.BLOOD_ARROW);
+        normalItem(BlasphemiteItems.BLASPHEMITE);
+        normalItem(BlasphemiteItems.BLASPHEMITE_NUGGET);
+        normalItem(BlasphemiteItems.RAW_BLASPHEMITE);
+        normalItem(BlasphemiteItems.BLASPHEMITE_BOOTS);
+        normalItem(BlasphemiteItems.BLASPHEMITE_LEGGINGS);
+        normalItem(BlasphemiteItems.BLASPHEMITE_CHESTPLATE);
+        normalItem(BlasphemiteItems.BLASPHEMITE_HELMET);
+        toolItem(BlasphemiteItems.BLASPHEMITE_SWORD);
+        toolItem(BlasphemiteItems.BLASPHEMITE_SHOVEL);
+        toolItem(BlasphemiteItems.BLASPHEMITE_HOE);
+        toolItem(BlasphemiteItems.BLASPHEMITE_AXE);
+        toolItem(BlasphemiteItems.BLASPHEMITE_PICKAXE);
 
-        toolItem(ModItems.SANGUINITE_PICKAXE);
-        toolItem(ModItems.SANGUINITE_AXE);
-        toolItem(ModItems.SANGUINITE_SHOVEL);
-        toolItem(ModItems.SANGUINITE_HOE);
+        toolItem(SanguiniteItems.SANGUINITE_PICKAXE);
+        toolItem(SanguiniteItems.SANGUINITE_AXE);
+        toolItem(SanguiniteItems.SANGUINITE_SHOVEL);
+        toolItem(SanguiniteItems.SANGUINITE_HOE);
 
         simpleBlockItemBlockTexture(PlantBlocks.HANGING_BLOOD_TREE_LEAVES);
         simpleBlockItemBlockTexture(LightBlocks.GLOWING_CRYSTAL);

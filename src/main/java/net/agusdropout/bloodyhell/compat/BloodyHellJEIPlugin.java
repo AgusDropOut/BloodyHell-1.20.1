@@ -1,5 +1,7 @@
 package net.agusdropout.bloodyhell.compat;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
+import net.agusdropout.bloodyhell.item.registry.PlaceableItems;
 import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -8,7 +10,6 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.recipe.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -59,18 +60,18 @@ public class BloodyHellJEIPlugin implements IModPlugin {
         List<FlaskFillRecipe> flaskRecipes = List.of(
                 new FlaskFillRecipe(
                         new FluidStack(ModFluids.BLOOD_SOURCE.get(), 1000),
-                        new ItemStack(ModItems.BLOOD_FLASK.get()),
-                        new ItemStack(ModItems.FILLED_BLOOD_FLASK.get())
+                        new ItemStack(FlaskItems.BLOOD_FLASK.get()),
+                        new ItemStack(FlaskItems.FILLED_BLOOD_FLASK.get())
                 ),
                 new FlaskFillRecipe(
                         new FluidStack(ModFluids.CORRUPTED_BLOOD_SOURCE.get(), 1000),
-                        new ItemStack(ModItems.BLOOD_FLASK.get()),
-                        new ItemStack(ModItems.CORRUPTED_BLOOD_FLASK.get())
+                        new ItemStack(FlaskItems.BLOOD_FLASK.get()),
+                        new ItemStack(FlaskItems.CORRUPTED_BLOOD_FLASK.get())
                 ),
                 new FlaskFillRecipe(
                         new FluidStack(ModFluids.VISCOUS_BLASPHEMY_SOURCE.get(), 1000),
-                        new ItemStack(ModItems.BLOOD_FLASK.get()),
-                        new ItemStack(ModItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get())
+                        new ItemStack(FlaskItems.BLOOD_FLASK.get()),
+                        new ItemStack(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get())
                 )
         );
 
@@ -84,8 +85,8 @@ public class BloodyHellJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(MachineBlocks.MAIN_BLASPHEMOUS_BLOOD_ALTAR.get()), BlasphemousBloodAltarCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(MachineBlocks.MAIN_BLOOD_ALTAR.get()), BloodAltarCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(MachineBlocks.SANGUINITE_INFUSOR.get()), SanguiniteInfusorCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModItems.SANGUINITE_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModItems.RHNULL_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(PlaceableItems.SANGUINITE_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(PlaceableItems.RHNULL_CONDENSER_ITEM.get()), CondenserCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(MachineBlocks.SANGUINITE_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(MachineBlocks.RHNULL_TANK.get()), FlaskFillCategory.RECIPE_TYPE);
     }

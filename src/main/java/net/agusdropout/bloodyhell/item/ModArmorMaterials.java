@@ -1,5 +1,8 @@
 package net.agusdropout.bloodyhell.item;
 
+import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
+import net.agusdropout.bloodyhell.item.registry.RhnullItems;
+import net.agusdropout.bloodyhell.item.registry.SanguiniteItems;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -13,13 +16,13 @@ public enum ModArmorMaterials implements ArmorMaterial {
 
 
     BLOOD("sanguinite", 26, new int[]{ 5, 7, 5, 4 }, 25,
-            SoundEvents.ARMOR_EQUIP_GOLD, 1f, 0f, () -> Ingredient.of(ModItems.SANGUINITE.get())),
+            SoundEvents.ARMOR_EQUIP_GOLD, 1f, 0f, () -> Ingredient.of(SanguiniteItems.SANGUINITE.get())),
 
 
     BLASPHEMITE("blasphemite", 28, new int[]{ 5, 7, 5, 4 }, 26,
-            SoundEvents.ARMOR_EQUIP_GOLD, 1.5f, 0.05f, () -> Ingredient.of(ModItems.BLASPHEMITE.get())),
+            SoundEvents.ARMOR_EQUIP_GOLD, 1.5f, 0.05f, () -> Ingredient.of(BlasphemiteItems.BLASPHEMITE.get())),
     RHNULL("rhnull", 38, new int[]{ 7, 9, 7, 6 }, 28,
-            SoundEvents.ARMOR_EQUIP_GOLD, 3f, 0.1f, () -> Ingredient.of(ModItems.RHNULL.get()));
+            SoundEvents.ARMOR_EQUIP_GOLD, 3f, 0.1f, () -> Ingredient.of(RhnullItems.RHNULL.get()));
 
     private final String name;
     private final int durabilityMultiplier;

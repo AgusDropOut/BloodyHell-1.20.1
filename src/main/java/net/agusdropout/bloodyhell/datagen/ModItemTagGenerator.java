@@ -1,5 +1,17 @@
 package net.agusdropout.bloodyhell.datagen;
 
+import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
+import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
+import net.agusdropout.bloodyhell.item.registry.BucketItems;
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
+import net.agusdropout.bloodyhell.item.registry.GemItems;
+import net.agusdropout.bloodyhell.item.registry.PlaceableItems;
+import net.agusdropout.bloodyhell.item.registry.ReliquaryItems;
+import net.agusdropout.bloodyhell.item.registry.RhnullItems;
+import net.agusdropout.bloodyhell.item.registry.SanguiniteItems;
+import net.agusdropout.bloodyhell.item.registry.SpellBookItems;
+import net.agusdropout.bloodyhell.item.registry.StaffItems;
+import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import net.agusdropout.bloodyhell.block.registry.MetalBlocks;
 import net.agusdropout.bloodyhell.block.registry.SandstoneBlocks;
@@ -8,7 +20,6 @@ import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
 import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import com.eliotlash.mclib.math.functions.classic.Mod;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -42,32 +53,32 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(WoodBlocks.BLOOD_PLANKS.get().asItem());
 
         this.tag(ItemTags.ARROWS)
-                .add(ModItems.BLOOD_ARROW.get());
+                .add(BloodGearItems.BLOOD_ARROW.get());
 
         this.tag(ItemTags.SWORDS)
-                .add(ModItems.SANGUINITE_SWORD.get())
-                .add(ModItems.RHNULL_SWORD.get())
-                .add(ModItems.BLASPHEMITE_SWORD.get());
+                .add(SanguiniteItems.SANGUINITE_SWORD.get())
+                .add(RhnullItems.RHNULL_SWORD.get())
+                .add(BlasphemiteItems.BLASPHEMITE_SWORD.get());
 
         this.tag(ItemTags.AXES)
-                .add(ModItems.SANGUINITE_AXE.get())
-                .add(ModItems.RHNULL_AXE.get())
-                .add(ModItems.BLASPHEMITE_AXE.get());
+                .add(SanguiniteItems.SANGUINITE_AXE.get())
+                .add(RhnullItems.RHNULL_AXE.get())
+                .add(BlasphemiteItems.BLASPHEMITE_AXE.get());
 
         this.tag(ItemTags.PICKAXES)
-                .add(ModItems.SANGUINITE_PICKAXE.get())
-                .add(ModItems.RHNULL_PICKAXE.get())
-                .add(ModItems.BLASPHEMITE_PICKAXE.get());
+                .add(SanguiniteItems.SANGUINITE_PICKAXE.get())
+                .add(RhnullItems.RHNULL_PICKAXE.get())
+                .add(BlasphemiteItems.BLASPHEMITE_PICKAXE.get());
 
         this.tag(ItemTags.SHOVELS)
-                .add(ModItems.SANGUINITE_SHOVEL.get())
-                .add(ModItems.RHNULL_SHOVEL.get())
-                .add(ModItems.BLASPHEMITE_SHOVEL.get());
+                .add(SanguiniteItems.SANGUINITE_SHOVEL.get())
+                .add(RhnullItems.RHNULL_SHOVEL.get())
+                .add(BlasphemiteItems.BLASPHEMITE_SHOVEL.get());
 
         this.tag(ItemTags.HOES)
-                .add(ModItems.SANGUINITE_HOE.get())
-                .add(ModItems.RHNULL_HOE.get())
-                .add(ModItems.BLASPHEMITE_HOE.get());
+                .add(SanguiniteItems.SANGUINITE_HOE.get())
+                .add(RhnullItems.RHNULL_HOE.get())
+                .add(BlasphemiteItems.BLASPHEMITE_HOE.get());
 
         this.tag(ItemTags.STONE_CRAFTING_MATERIALS)
                 .add(StoneBlocks.BLOODY_STONE_BLOCK.get().asItem());
@@ -80,34 +91,34 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(WoodBlocks.BLOOD_LOG.get().asItem());
 
         this.tag(ModTags.Items.CRIMSONVEIL_CONSUMER)
-                .add(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
-                .add(ModItems.BLOOD_SPHERE_SPELLBOOK.get())
-                .add(ModItems.BLOOD_NOVA_SPELLBOOK.get())
-                .add(ModItems.BLOOD_SCRATCH_SPELLBOOK.get())
-                .add(ModItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
-                .add(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
-                .add(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
-                .add(ModItems.RHNULL_IMPALERS_SPELLBOOK.get())
-                .add(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
-                .add(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
-                .add(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get())
-                .add(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
-                .add(ModItems.BLASPHEMOUS_IMPALER.get())
-                .add(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
-                .add(ModItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get())
-                .add(ModItems.STAFF_OF_THE_GOLDEN_SORROW.get())
-                .add(ModItems.STAFF_OF_SCARLET_CINDER.get())
-                .add(ModItems.THE_OMNITOME.get());
+                .add(SpellBookItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_SPHERE_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_NOVA_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_IMPALERS_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_ORB_EMITTER_SPELLBOOK.get())
+                .add(WeaponItems.BLASPHEMOUS_TWIN_DAGGERS.get())
+                .add(WeaponItems.BLASPHEMOUS_IMPALER.get())
+                .add(WeaponItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
+                .add(StaffItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get())
+                .add(StaffItems.STAFF_OF_THE_GOLDEN_SORROW.get())
+                .add(StaffItems.STAFF_OF_SCARLET_CINDER.get())
+                .add(SpellBookItems.THE_OMNITOME.get());
 
         this.tag(ModTags.Items.RELIQUARY_UPGRADE_ITEM)
-                .add(ModItems.ANCIENT_OCULAR_LENSE.get())
-                .add(ModItems.BLASPHEMOUS_OCULAR_LENSE.get());
+                .add(ReliquaryItems.ANCIENT_OCULAR_LENSE.get())
+                .add(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get());
 
         this.tag(ModTags.Items.RELIQUARY_RUNE_ITEM)
-                .add(ModItems.MARK_OF_THE_RESTLESS_SLUMBER.get())
-                .add(ModItems.RUNE_OF_THE_RAVENOUS_GAZE.get())
-                .add(ModItems.SEAL_OF_THE_HOLLOW_BULWARK.get())
-                .add(ModItems.OMEN_OF_THE_CRUSHING_TOLL.get());
+                .add(ReliquaryItems.MARK_OF_THE_RESTLESS_SLUMBER.get())
+                .add(ReliquaryItems.RUNE_OF_THE_RAVENOUS_GAZE.get())
+                .add(ReliquaryItems.SEAL_OF_THE_HOLLOW_BULWARK.get())
+                .add(ReliquaryItems.OMEN_OF_THE_CRUSHING_TOLL.get());
 
 
         // =================================================================
@@ -116,94 +127,94 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         // 1. Sanguinite Tier
         this.tag(ModTags.Items.SANGUINITE_TIER_ITEMS)
-                .add(ModItems.SANGUINITE.get())
-                .add(ModItems.RAW_SANGUINITE.get())
-                .add(ModItems.SANGUINITE_NUGGET.get())
-                .add(ModItems.SANGUINITE_SWORD.get())
-                .add(ModItems.SANGUINITE_PICKAXE.get())
-                .add(ModItems.SANGUINITE_AXE.get())
-                .add(ModItems.SANGUINITE_SHOVEL.get())
-                .add(ModItems.SANGUINITE_HOE.get())
-                .add(ModItems.BLOOD_HELMET.get())
-                .add(ModItems.BLOOD_CHESTPLATE.get())
-                .add(ModItems.BLOOD_LEGGINGS.get())
-                .add(ModItems.BLOOD_BOOTS.get())
-                .add(ModItems.BLOOD_BOW.get())
-                .add(ModItems.BLOOD_SCYTHE.get())
-                .add(ModItems.BLOOD_ARROW.get())
+                .add(SanguiniteItems.SANGUINITE.get())
+                .add(SanguiniteItems.RAW_SANGUINITE.get())
+                .add(SanguiniteItems.SANGUINITE_NUGGET.get())
+                .add(SanguiniteItems.SANGUINITE_SWORD.get())
+                .add(SanguiniteItems.SANGUINITE_PICKAXE.get())
+                .add(SanguiniteItems.SANGUINITE_AXE.get())
+                .add(SanguiniteItems.SANGUINITE_SHOVEL.get())
+                .add(SanguiniteItems.SANGUINITE_HOE.get())
+                .add(BloodGearItems.BLOOD_HELMET.get())
+                .add(BloodGearItems.BLOOD_CHESTPLATE.get())
+                .add(BloodGearItems.BLOOD_LEGGINGS.get())
+                .add(BloodGearItems.BLOOD_BOOTS.get())
+                .add(BloodGearItems.BLOOD_BOW.get())
+                .add(BloodGearItems.BLOOD_SCYTHE.get())
+                .add(BloodGearItems.BLOOD_ARROW.get())
                 .add(MetalBlocks.SANGUINITE_BLOCK.get().asItem())
                 .add(MetalBlocks.SANGUINITE_ORE.get().asItem())
-                .add(ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get())
-                .add(ModItems.SANGUINITE_PIPE_ITEM.get())
+                .add(PlaceableItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get())
+                .add(PlaceableItems.SANGUINITE_PIPE_ITEM.get())
                 .add(MachineBlocks.SANGUINITE_TANK.get().asItem())
                 .add(MachineBlocks.SANGUINITE_INFUSOR.get().asItem())
-                .add(ModItems.SANGUINITE_CONDENSER_ITEM.get())
+                .add(PlaceableItems.SANGUINITE_CONDENSER_ITEM.get())
                 .add(MachineBlocks.SANGUINE_LAPIDARY.get().asItem())
                 .add(MachineBlocks.SANGUINE_CRUCIBLE.get().asItem())
-                .add(ModItems.SANGUINITE_GEM_FRAME.get())
-                .add(ModItems.SANGUINITE_GREAT_GEM_FRAME.get())
-                .add(ModItems.ANCIENT_GEM.get())
-                .add(ModItems.GREAT_ANCIENT_GEM.get())
-                .add(ModItems.PURE_BLOOD_GEM.get())
-                .add(ModItems.CITRINE_BLOOD_GEM.get())
-                .add(ModItems.TANZARINE_BLOOD_GEM.get())
-                .add(ModItems.AVENTURINE_BLOOD_GEM.get());
+                .add(GemItems.SANGUINITE_GEM_FRAME.get())
+                .add(GemItems.SANGUINITE_GREAT_GEM_FRAME.get())
+                .add(GemItems.ANCIENT_GEM.get())
+                .add(GemItems.GREAT_ANCIENT_GEM.get())
+                .add(GemItems.PURE_BLOOD_GEM.get())
+                .add(GemItems.CITRINE_BLOOD_GEM.get())
+                .add(GemItems.TANZARINE_BLOOD_GEM.get())
+                .add(GemItems.AVENTURINE_BLOOD_GEM.get());
 
         // 2. Rhnull Tier
         this.tag(ModTags.Items.RHNULL_TIER_ITEMS)
-                .add(ModItems.RHNULL.get())
-                .add(ModItems.RHNULL_NUGGET.get())
+                .add(RhnullItems.RHNULL.get())
+                .add(RhnullItems.RHNULL_NUGGET.get())
                 .add(MetalBlocks.RHNULL_BLOCK.get().asItem())
-                .add(ModItems.RHNULL_SWORD.get())
-                .add(ModItems.RHNULL_PICKAXE.get())
-                .add(ModItems.RHNULL_AXE.get())
-                .add(ModItems.RHNULL_SHOVEL.get())
-                .add(ModItems.RHNULL_HOE.get())
-                .add(ModItems.RHNULL_HELMET.get())
-                .add(ModItems.RHNULL_CHESTPLATE.get())
-                .add(ModItems.RHNULL_LEGGINGS.get())
-                .add(ModItems.RHNULL_BOOTS.get())
-                .add(ModItems.FILLED_RHNULL_BLOOD_FLASK.get())
-                .add(ModItems.RHNULL_PIPE_ITEM.get())
+                .add(RhnullItems.RHNULL_SWORD.get())
+                .add(RhnullItems.RHNULL_PICKAXE.get())
+                .add(RhnullItems.RHNULL_AXE.get())
+                .add(RhnullItems.RHNULL_SHOVEL.get())
+                .add(RhnullItems.RHNULL_HOE.get())
+                .add(RhnullItems.RHNULL_HELMET.get())
+                .add(RhnullItems.RHNULL_CHESTPLATE.get())
+                .add(RhnullItems.RHNULL_LEGGINGS.get())
+                .add(RhnullItems.RHNULL_BOOTS.get())
+                .add(FlaskItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .add(PlaceableItems.RHNULL_PIPE_ITEM.get())
                 .add(MachineBlocks.RHNULL_TANK.get().asItem())
-                .add(ModItems.RHNULL_CONDENSER_ITEM.get())
-                .add(ModItems.RHNULL_GEM_FRAME.get())
-                .add(ModItems.RHNULL_GREAT_GEM_FRAME.get())
-                .add(ModItems.ANCIENT_RHNULL_GEM.get())
-                .add(ModItems.GREAT_ANCIENT_RHNULL_GEM.get())
-                .add(ModItems.RHNULL_IMPALERS_SPELLBOOK.get())
-                .add(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
-                .add(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
-                .add(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
+                .add(PlaceableItems.RHNULL_CONDENSER_ITEM.get())
+                .add(GemItems.RHNULL_GEM_FRAME.get())
+                .add(GemItems.RHNULL_GREAT_GEM_FRAME.get())
+                .add(GemItems.ANCIENT_RHNULL_GEM.get())
+                .add(GemItems.GREAT_ANCIENT_RHNULL_GEM.get())
+                .add(SpellBookItems.RHNULL_IMPALERS_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
 
         // 3. Blasphemous Tier
         this.tag(ModTags.Items.BLASPHEMOUS_TIER_ITEMS)
-                .add(ModItems.BLASPHEMITE.get())
-                .add(ModItems.RAW_BLASPHEMITE.get())
+                .add(BlasphemiteItems.BLASPHEMITE.get())
+                .add(BlasphemiteItems.RAW_BLASPHEMITE.get())
                 .add(MetalBlocks.BLASPHEMITE_ORE.get().asItem())
-                .add(ModItems.BLASPHEMITE_NUGGET.get())
+                .add(BlasphemiteItems.BLASPHEMITE_NUGGET.get())
                 .add(MetalBlocks.BLASPHEMITE_BLOCK.get().asItem())
-                .add(ModItems.BLASPHEMITE_SWORD.get())
-                .add(ModItems.BLASPHEMITE_PICKAXE.get())
-                .add(ModItems.BLASPHEMITE_AXE.get())
-                .add(ModItems.BLASPHEMITE_SHOVEL.get())
-                .add(ModItems.BLASPHEMITE_HOE.get())
-                .add(ModItems.BLASPHEMITE_HELMET.get())
-                .add(ModItems.BLASPHEMITE_CHESTPLATE.get())
-                .add(ModItems.BLASPHEMITE_LEGGINGS.get())
-                .add(ModItems.BLASPHEMITE_BOOTS.get())
-                .add(ModItems.BLASPHEMOUS_TWIN_DAGGERS.get())
-                .add(ModItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
-                .add(ModItems.BLASPHEMOUS_IMPALER.get())
-                .add(ModItems.BLASPHEMOUS_RING.get())
-                .add(ModItems.BLASPHEMOUS_EYE.get())
-                .add(ModItems.BLASPHEMOUS_OCULAR_LENSE.get())
-                .add(ModItems.ANCIENT_BLASPHEMOUS_GEM.get())
-                .add(ModItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())
-                .add(ModItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get())
-                .add(ModItems.VISCOUS_BLASPHEMY_BUCKET.get())
-                .add(ModItems.BLASPHEMOUS_BLOOD_ALTAR_ITEM.get())
-                .add(ModItems.MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM.get())
+                .add(BlasphemiteItems.BLASPHEMITE_SWORD.get())
+                .add(BlasphemiteItems.BLASPHEMITE_PICKAXE.get())
+                .add(BlasphemiteItems.BLASPHEMITE_AXE.get())
+                .add(BlasphemiteItems.BLASPHEMITE_SHOVEL.get())
+                .add(BlasphemiteItems.BLASPHEMITE_HOE.get())
+                .add(BlasphemiteItems.BLASPHEMITE_HELMET.get())
+                .add(BlasphemiteItems.BLASPHEMITE_CHESTPLATE.get())
+                .add(BlasphemiteItems.BLASPHEMITE_LEGGINGS.get())
+                .add(BlasphemiteItems.BLASPHEMITE_BOOTS.get())
+                .add(WeaponItems.BLASPHEMOUS_TWIN_DAGGERS.get())
+                .add(WeaponItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
+                .add(WeaponItems.BLASPHEMOUS_IMPALER.get())
+                .add(GemItems.BLASPHEMOUS_RING.get())
+                .add(BlasphemiteItems.BLASPHEMOUS_EYE.get())
+                .add(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get())
+                .add(GemItems.ANCIENT_BLASPHEMOUS_GEM.get())
+                .add(GemItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())
+                .add(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get())
+                .add(BucketItems.VISCOUS_BLASPHEMY_BUCKET.get())
+                .add(PlaceableItems.BLASPHEMOUS_BLOOD_ALTAR_ITEM.get())
+                .add(PlaceableItems.MAIN_BLASPHEMOUS_BLOOD_ALTAR_ITEM.get())
                 .add(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get().asItem())
                 .add(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
                 .add(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
@@ -217,27 +228,27 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         // =================================================================
 
         this.tag(ModTags.Items.GEM_FRAMES)
-                .add(ModItems.SANGUINITE_GEM_FRAME.get())
-                .add(ModItems.SANGUINITE_GREAT_GEM_FRAME.get())
-                .add(ModItems.RHNULL_GREAT_GEM_FRAME.get())
-                .add(ModItems.RHNULL_GEM_FRAME.get());
+                .add(GemItems.SANGUINITE_GEM_FRAME.get())
+                .add(GemItems.SANGUINITE_GREAT_GEM_FRAME.get())
+                .add(GemItems.RHNULL_GREAT_GEM_FRAME.get())
+                .add(GemItems.RHNULL_GEM_FRAME.get());
 
         this.tag(ModTags.Items.CRIMSONVEIL_PASSIVE_RECHARGER)
-                .add(ModItems.AMULET_OF_ANCESTRAL_BLOOD.get())
-                .add(ModItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD.get());
+                .add(GemItems.AMULET_OF_ANCESTRAL_BLOOD.get())
+                .add(GemItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD.get());
 
         this.tag(ModTags.Items.SPELLBOOKS)
-                .add(ModItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
-                .add(ModItems.BLOOD_SPHERE_SPELLBOOK.get())
-                .add(ModItems.BLOOD_NOVA_SPELLBOOK.get())
-                .add(ModItems.BLOOD_SCRATCH_SPELLBOOK.get())
-                .add(ModItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
-                .add(ModItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
-                .add(ModItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
-                .add(ModItems.RHNULL_IMPALERS_SPELLBOOK.get())
-                .add(ModItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
-                .add(ModItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
-                .add(ModItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
+                .add(SpellBookItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_SPHERE_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_NOVA_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
+                .add(SpellBookItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_IMPALERS_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
+                .add(SpellBookItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
     }
 
 }

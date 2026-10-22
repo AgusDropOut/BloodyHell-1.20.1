@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.item.potions;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonVeil;
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -50,11 +50,11 @@ public class BloodPotionItem extends PotionItem {
 
         if (player == null || !player.getAbilities().instabuild) {
             if (stack.isEmpty()) {
-                return new ItemStack(ModItems.BLOOD_FLASK.get());
+                return new ItemStack(FlaskItems.BLOOD_FLASK.get());
             }
 
             if (player != null) {
-                player.getInventory().add(new ItemStack(ModItems.BLOOD_FLASK.get()));
+                player.getInventory().add(new ItemStack(FlaskItems.BLOOD_FLASK.get()));
             }
         }
 

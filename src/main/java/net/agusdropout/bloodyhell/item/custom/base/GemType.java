@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.GemItems;
+import net.agusdropout.bloodyhell.item.registry.SanguiniteItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -17,10 +18,10 @@ public enum GemType {
 
 
     EMPTY("empty", 0xFFFFFF, Items.AIR, null, ""),
-    PURE("pure_blood_gem", 0xFF2222, ModItems.SANGUINITE.get(), ModItems.PURE_BLOOD_GEM.get(), "damage"),
-    AVENTURINE("aventurine_blood_gem", 0x0088ff, Items.LAPIS_LAZULI, ModItems.AVENTURINE_BLOOD_GEM.get(), "size"),
-    CITRINE("citrine_blood_gem", 0xffb700, Items.GOLD_NUGGET, ModItems.CITRINE_BLOOD_GEM.get(), "quantity"),
-    TANZARINE("tanzarine_blood_gem", 0xa600ff, Items.AMETHYST_SHARD, ModItems.TANZARINE_BLOOD_GEM.get(), "duration");
+    PURE("pure_blood_gem", 0xFF2222, SanguiniteItems.SANGUINITE.get(), GemItems.PURE_BLOOD_GEM.get(), "damage"),
+    AVENTURINE("aventurine_blood_gem", 0x0088ff, Items.LAPIS_LAZULI, GemItems.AVENTURINE_BLOOD_GEM.get(), "size"),
+    CITRINE("citrine_blood_gem", 0xffb700, Items.GOLD_NUGGET, GemItems.CITRINE_BLOOD_GEM.get(), "quantity"),
+    TANZARINE("tanzarine_blood_gem", 0xa600ff, Items.AMETHYST_SHARD, GemItems.TANZARINE_BLOOD_GEM.get(), "duration");
 
 
     /* Universal Bonus Types */

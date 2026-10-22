@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.effect;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.GemItems;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +18,7 @@ public class BleedingEffect extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if(entity instanceof Player player){
-            if(player.getInventory().contains(ModItems.CRIMSON_WARD_RING.get().getDefaultInstance())){
+            if(player.getInventory().contains(GemItems.CRIMSON_WARD_RING.get().getDefaultInstance())){
                 return;
             }
         }

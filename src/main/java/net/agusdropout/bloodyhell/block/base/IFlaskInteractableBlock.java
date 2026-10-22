@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.block.base;
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -33,7 +33,7 @@ public interface IFlaskInteractableBlock {
     }
 
     default InteractionResult tryFillFlask(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        if (stack.is(ModItems.BLOOD_FLASK.get())) {
+        if (stack.is(FlaskItems.BLOOD_FLASK.get())) {
             if (!level.isClientSide) {
                 BlockEntity be = level.getBlockEntity(pos);
                 if (be != null) {
@@ -77,7 +77,7 @@ public interface IFlaskInteractableBlock {
                         if (simulatedFill == FLASK_CAPACITY) {
                             fluidHandler.fill(fluidStackToInsert, IFluidHandler.FluidAction.EXECUTE);
 
-                            ItemStack emptyFlask = new ItemStack(ModItems.BLOOD_FLASK.get());
+                            ItemStack emptyFlask = new ItemStack(FlaskItems.BLOOD_FLASK.get());
                             stack.shrink(1);
                             if (stack.isEmpty()) {
                                 player.setItemInHand(hand, emptyFlask);
@@ -98,11 +98,11 @@ public interface IFlaskInteractableBlock {
     default ItemStack getFlaskForFluid(Fluid fluid) {
 
         if (fluid == ModFluids.BLOOD_SOURCE.get()) {
-            return new ItemStack(ModItems.FILLED_BLOOD_FLASK.get());
+            return new ItemStack(FlaskItems.FILLED_BLOOD_FLASK.get());
         } else if (fluid == ModFluids.CORRUPTED_BLOOD_SOURCE.get()) {
-            return new ItemStack(ModItems.CORRUPTED_BLOOD_FLASK.get());
+            return new ItemStack(FlaskItems.CORRUPTED_BLOOD_FLASK.get());
         } else if (fluid == ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()) {
-            return new ItemStack(ModItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get());
+            return new ItemStack(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get());
         }
 
         return ItemStack.EMPTY;
@@ -112,11 +112,11 @@ public interface IFlaskInteractableBlock {
 
     default FluidStack getFluidStackFromFlask(ItemStack stack) {
 
-        if (stack.is(ModItems.FILLED_BLOOD_FLASK.get())) {
+        if (stack.is(FlaskItems.FILLED_BLOOD_FLASK.get())) {
             return new FluidStack(ModFluids.BLOOD_SOURCE.get(), FLASK_CAPACITY);
-        } else if (stack.is(ModItems.CORRUPTED_BLOOD_FLASK.get())) {
+        } else if (stack.is(FlaskItems.CORRUPTED_BLOOD_FLASK.get())) {
             return new FluidStack(ModFluids.CORRUPTED_BLOOD_SOURCE.get(), FLASK_CAPACITY);
-        } else  if (stack.is(ModItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get())) {
+        } else  if (stack.is(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get())) {
             return new FluidStack(ModFluids.VISCOUS_BLASPHEMY_SOURCE.get(), FLASK_CAPACITY);
         }
 

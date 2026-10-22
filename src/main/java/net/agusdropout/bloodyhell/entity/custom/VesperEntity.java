@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.item.registry.MiscItems;
 import net.agusdropout.bloodyhell.config.ModCommonConfig;
 import net.agusdropout.bloodyhell.entity.ai.goals.VesperAttackGoal;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.screen.custom.menu.VesperMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -125,7 +125,7 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
             for (Player player : players) {
                 lazyItemHandler.getStackInSlot(0).shrink(reqCount1);
                 lazyItemHandler.getStackInSlot(1).shrink(reqCount2);
-                player.getInventory().add(ModItems.CHALICE_OF_THE_DAMMED.get().getDefaultInstance());
+                player.getInventory().add(MiscItems.CHALICE_OF_THE_DAMMED.get().getDefaultInstance());
             }
         }
     }

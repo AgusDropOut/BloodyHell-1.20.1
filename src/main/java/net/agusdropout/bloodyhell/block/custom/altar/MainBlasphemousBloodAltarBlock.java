@@ -1,11 +1,11 @@
 package net.agusdropout.bloodyhell.block.custom.altar;
 
 
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.block.base.AbstractMainAltarBlock;
 import net.agusdropout.bloodyhell.block.entity.custom.altar.MainBlasphemousBloodAltarBlockEntity;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.TentacleEntity;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.ChillFallingParticleOptions;
 import net.agusdropout.bloodyhell.recipe.BlasphemousBloodAltarRecipe;
@@ -100,7 +100,7 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
 
         if (interactionHand == InteractionHand.MAIN_HAND) {
             ItemStack heldItem = player.getMainHandItem();
-            if (heldItem.is(ModItems.FILLED_BLOOD_FLASK.get())) {
+            if (heldItem.is(FlaskItems.FILLED_BLOOD_FLASK.get())) {
                 return getInteractionResult(blockState, level, blockPos, player, altar, heldItem);
             } else if (altar.isActive() && isAltarSetupReady(level, blockPos, BlasphemousBloodAltarBlock.class)) {
                 return getRitualInteractionResult(blockState, level, blockPos, player, altar);
@@ -164,7 +164,7 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
             altar.setActive(true);
             if (!player.isCreative()) {
                 heldItem.shrink(1);
-                ItemStack emptyFlask = new ItemStack(ModItems.BLOOD_FLASK.get());
+                ItemStack emptyFlask = new ItemStack(FlaskItems.BLOOD_FLASK.get());
                 if (heldItem.isEmpty()) {
                     player.setItemInHand(InteractionHand.MAIN_HAND, emptyFlask);
                 } else if (!player.getInventory().add(emptyFlask)) {

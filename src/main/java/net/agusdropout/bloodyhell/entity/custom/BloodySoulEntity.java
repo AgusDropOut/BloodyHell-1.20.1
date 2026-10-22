@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -102,11 +102,11 @@ public class BloodySoulEntity extends Animal implements GeoEntity {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
 
-        if(itemInHand.getItem() == ModItems.BLOOD_FLASK.get()) {
+        if(itemInHand.getItem() == FlaskItems.BLOOD_FLASK.get()) {
             if (!this.level().isClientSide) {
 
                 if (this.getPersistentData().contains("FallenAllyType")) {
-                    ItemStack soulFlask = new ItemStack(ModItems.BOUND_BLOOD_FLASK.get());
+                    ItemStack soulFlask = new ItemStack(FlaskItems.BOUND_BLOOD_FLASK.get());
                     CompoundTag nbt = soulFlask.getOrCreateTag();
 
 
@@ -124,7 +124,7 @@ public class BloodySoulEntity extends Animal implements GeoEntity {
                 } else {
                     // Si era un alma genérica sin datos de aliado, te da sangre normal
                     itemInHand.shrink(1);
-                    ItemStack genericFlask = new ItemStack(ModItems.FILLED_BLOOD_FLASK.get());
+                    ItemStack genericFlask = new ItemStack(FlaskItems.FILLED_BLOOD_FLASK.get());
                     if (!player.getInventory().add(genericFlask)) {
                         player.drop(genericFlask, false);
                     }

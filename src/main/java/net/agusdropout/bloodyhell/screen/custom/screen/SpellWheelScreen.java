@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.screen.custom.screen;
 
+import net.agusdropout.bloodyhell.item.registry.ReliquaryItems;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -8,7 +9,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonVeil;
 import net.agusdropout.bloodyhell.client.data.ClientCrimsonVeilData;
 import net.agusdropout.bloodyhell.event.handlers.ClientInputHandler;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItemStackHandler;
@@ -66,9 +66,9 @@ public class SpellWheelScreen extends Screen {
             }
 
             ItemStack upgradeStack = handler.getStackInSlot(OmnitomeItemStackHandler.UPGRADE_SLOT);
-            if (upgradeStack.is(ModItems.ANCIENT_OCULAR_LENSE.get())) {
+            if (upgradeStack.is(ReliquaryItems.ANCIENT_OCULAR_LENSE.get())) {
                 this.currentTier = 1;
-            } else if (upgradeStack.is(ModItems.BLASPHEMOUS_OCULAR_LENSE.get())) {
+            } else if (upgradeStack.is(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get())) {
                 this.currentTier = 2;
             } else {
                 this.currentTier = 0;

@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.block.base;
 
+import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import net.agusdropout.bloodyhell.block.entity.base.IFluidFilterable;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,7 +23,7 @@ public interface IFilterableBlock {
         ItemStack stack = player.getItemInHand(hand);
 
         // Check for Sacrificial Dagger
-        if (stack.is(ModItems.SACRIFICIAL_DAGGER.get())) {
+        if (stack.is(WeaponItems.SACRIFICIAL_DAGGER.get())) {
             if (!level.isClientSide) {
                 BlockEntity be = level.getBlockEntity(pos);
                 // Interact with the Block Entity abstraction we made earlier

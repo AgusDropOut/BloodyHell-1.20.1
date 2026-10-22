@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.block.custom;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.FoodItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,7 +19,7 @@ public interface Droopvine {
 
     static InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos) {
         if (pState.getValue(GLOWY)) {
-            Block.popResource(pLevel, pPos, new ItemStack(ModItems.GLOW_FRUIT.get(), 1));
+            Block.popResource(pLevel, pPos, new ItemStack(FoodItems.GLOW_FRUIT.get(), 1));
             float pitch = Mth.randomBetween(pLevel.random, 0.8F, 1.2F);
             pLevel.playSound(null, pPos, SoundEvents.CAVE_VINES_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, pitch);
             pLevel.setBlock(pPos, pState.setValue(GLOWY, Boolean.FALSE), 2);

@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
+import net.agusdropout.bloodyhell.item.registry.PlaceableItems;
 import com.google.common.collect.Sets;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -48,7 +48,7 @@ import java.util.Set;
 
 public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnimal {
     private static final Item POISONOUS_FOOD = Items.COOKIE;
-    private static final Set<Item> TAME_FOOD = Sets.newHashSet(ModItems.Eyeball_seed.get());
+    private static final Set<Item> TAME_FOOD = Sets.newHashSet(PlaceableItems.Eyeball_seed.get());
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public float flap;
     public float flapSpeed;

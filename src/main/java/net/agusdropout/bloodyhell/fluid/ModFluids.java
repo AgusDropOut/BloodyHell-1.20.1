@@ -1,8 +1,8 @@
 package net.agusdropout.bloodyhell.fluid;
 
+import net.agusdropout.bloodyhell.item.registry.BucketItems;
 import net.agusdropout.bloodyhell.block.registry.FluidBlocks;
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -44,7 +44,7 @@ public class ModFluids {
             BLOOD_TYPE, BLOOD_SOURCE, BLOOD_FLOWING)
             .slopeFindDistance(2).levelDecreasePerBlock(2)
             .block(FluidBlocks.BLOOD_FLUID_BLOCK)
-            .bucket(ModItems.BLOOD_BUCKET);
+            .bucket(BucketItems.BLOOD_BUCKET);
 
 
     // ========================================================================
@@ -69,7 +69,7 @@ public class ModFluids {
             CORRUPTED_BLOOD_TYPE, CORRUPTED_BLOOD_SOURCE, CORRUPTED_BLOOD_FLOWING)
             .slopeFindDistance(3).levelDecreasePerBlock(3)
             .block(FluidBlocks.CORRUPTED_BLOOD_BLOCK)
-            .bucket(ModItems.CORRUPTED_BLOOD_BUCKET);
+            .bucket(BucketItems.CORRUPTED_BLOOD_BUCKET);
 
 
     // ========================================================================
@@ -96,7 +96,7 @@ public class ModFluids {
             VISCOUS_BLASPHEMY_TYPE, VISCOUS_BLASPHEMY_SOURCE, VISCOUS_BLASPHEMY_FLOWING)
             .slopeFindDistance(2).levelDecreasePerBlock(4)
             .block(FluidBlocks.VISCOUS_BLASPHEMY_BLOCK)
-            .bucket(ModItems.VISCOUS_BLASPHEMY_BUCKET);
+            .bucket(BucketItems.VISCOUS_BLASPHEMY_BUCKET);
 
 
     // ========================================================================
@@ -131,7 +131,7 @@ public class ModFluids {
             .slopeFindDistance(2)
             .levelDecreasePerBlock(2)
             .block(FluidBlocks.VISCERAL_BLOOD_BLOCK)
-            .bucket(ModItems.VISCERAL_BLOOD_BUCKET);
+            .bucket(BucketItems.VISCERAL_BLOOD_BUCKET);
 
 
     // --- HELPER REGISTRY METHOD ---

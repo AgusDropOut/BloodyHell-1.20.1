@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.effect;
 
+import net.agusdropout.bloodyhell.item.registry.GemItems;
 import net.agusdropout.bloodyhell.datagen.ModTags;
-import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -28,7 +28,7 @@ public class VisceralEffect extends MobEffect {
             return;
         }
         if (entity instanceof Player player) {
-            if (player.getInventory().contains(ModItems.BLASPHEMOUS_RING.get().getDefaultInstance())) {
+            if (player.getInventory().contains(GemItems.BLASPHEMOUS_RING.get().getDefaultInstance())) {
                 return;
             }
         }

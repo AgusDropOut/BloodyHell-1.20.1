@@ -1,6 +1,9 @@
 package net.agusdropout.bloodyhell.block.entity.custom.engine;
 
-import net.agusdropout.bloodyhell.item.ModItems;
+import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
+import net.agusdropout.bloodyhell.item.registry.DropItems;
+import net.agusdropout.bloodyhell.item.registry.FlaskItems;
+import net.agusdropout.bloodyhell.item.registry.GemItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -27,7 +30,7 @@ public class ResurrectionEngineMode implements IEngineMode {
     @Override
     public boolean canProcess(RhnullBloodEngineBlockEntity engine) {
         ItemStack coreItem = engine.getRenderStack();
-        if (coreItem.getItem() != ModItems.BOUND_BLOOD_FLASK.get()) return false;
+        if (coreItem.getItem() != FlaskItems.BOUND_BLOOD_FLASK.get()) return false;
 
         CompoundTag nbt = coreItem.getTag();
         if (nbt == null || !nbt.contains("FallenAllyData")) return false;
@@ -132,19 +135,19 @@ public class ResurrectionEngineMode implements IEngineMode {
         for (ItemStack item : modifiers) {
             if (item.isEmpty()) continue;
 
-            if (item.is(Items.MAGMA_BLOCK) || item.is(ModItems.BLASPHEMOUS_EYE.get())) {
+            if (item.is(Items.MAGMA_BLOCK) || item.is(BlasphemiteItems.BLASPHEMOUS_EYE.get())) {
                 forgeData.putBoolean("BlasphemousFireResist", true);
             }
-            else if (item.is(Items.RABBIT_FOOT) || item.is(ModItems.SCARLET_FEATHER.get())) {
+            else if (item.is(Items.RABBIT_FOOT) || item.is(DropItems.SCARLET_FEATHER.get())) {
                 forgeData.putBoolean("BlasphemousSpeed", true);
             }
-            else if (item.is(ModItems.VEINREAVER_HORN.get())) {
+            else if (item.is(DropItems.VEINREAVER_HORN.get())) {
                 forgeData.putBoolean("BlasphemousStrength", true);
             }
-            else if (item.is(ModItems.PURE_BLOOD_GEM.get())) {
+            else if (item.is(GemItems.PURE_BLOOD_GEM.get())) {
                 forgeData.putBoolean("BlasphemousRegen", true);
             }
-            else if (item.is(ModItems.CRIMSON_SHELL.get())) {
+            else if (item.is(DropItems.CRIMSON_SHELL.get())) {
                 forgeData.putBoolean("BlasphemousResistance", true);
             }
         }
