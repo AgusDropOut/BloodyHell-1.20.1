@@ -190,6 +190,14 @@ flowchart TD
 - The Omnitome managers draw a GeckoLib model through `ModRenderTypes.getOmnitomeVoid` and `getEmergeClip`, deferred with one `MatrixSnapshot` per task.
 - A `RenderType` has no `equals`, so `ModRenderTypes` creates each one once per texture with `Util.memoize`. Do the same for any new render type that takes a texture, or the `BufferSource` ends a batch on every call.
 
+## When things are drawn
+
+Order inside one frame of `GameRenderer.renderLevel`: the level, then the `AFTER_LEVEL` stage (the deferred pass), then the first person hand, and the GUI after all of that.
+
+- Anything submitted while the level or the entities render is drawn in the same frame, at `AFTER_LEVEL`.
+- The hand and the GUI render after `AFTER_LEVEL`. What they submit is drawn at the next frame's `AFTER_LEVEL`, one frame late and before the GUI of that frame is drawn over it.
+- That is why the hand book is replayed by `OmnitomeBookRenderManager` inside the pass (the void manager runs after it in the registry order), and why anything that only a deferred manager draws can disappear in the GUI (TECH_DEBT 29).
+
 ## Shader packs
 
 - With a shader pack Iris moves the view bobbing, the hurt tilt and the nausea spin out of the projection and into the model view. A manager that rebuilds the view from the camera rotation must use `ViewEffects.applyCameraView` (ADR 0011).
