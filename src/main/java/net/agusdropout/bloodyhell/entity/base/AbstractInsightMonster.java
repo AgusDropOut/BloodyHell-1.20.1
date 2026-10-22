@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.entity.base;
 
-import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.util.capability.InsightHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -52,13 +51,6 @@ public abstract class AbstractInsightMonster extends Monster implements InsightE
             return false;
         }
         return super.canAttack(target);
-    }
-
-    protected boolean hasSufficientClientInsight() {
-        if (this.level().isClientSide) {
-            return ClientInsightData.getPlayerInsight() >= this.getMinimumInsight();
-        }
-        return true;
     }
 
     @Override

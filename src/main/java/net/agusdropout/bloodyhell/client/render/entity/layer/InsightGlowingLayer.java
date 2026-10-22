@@ -29,7 +29,7 @@ public class InsightGlowingLayer<T extends LivingEntity & GeoAnimatable & Insigh
     public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
 
 
-        if (ClientInsightData.getPlayerInsight() < animatable.getMinimumInsight()) {
+        if (!ClientInsightData.canSee(animatable)) {
             return;
         }
 

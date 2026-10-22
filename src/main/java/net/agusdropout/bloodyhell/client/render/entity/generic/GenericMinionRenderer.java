@@ -20,7 +20,7 @@ public class GenericMinionRenderer<T extends AbstractMinionEntity> extends Abstr
 
 
     protected void spawnLocatorParticles(T entity) {
-        if (entity.getRandom().nextFloat() > 0.005f || ClientInsightData.getPlayerInsight() < entity.getMinimumInsight()) {
+        if (entity.getRandom().nextFloat() > 0.005f || !ClientInsightData.canSee(entity)) {
             return;
         }
 

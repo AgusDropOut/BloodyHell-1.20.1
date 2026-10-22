@@ -42,7 +42,7 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        if (Minecraft.getInstance().screen != null || ClientInsightData.getPlayerInsight() >= animatable.getMinimumInsight()) {
+        if (Minecraft.getInstance().screen != null || ClientInsightData.canSee(animatable)) {
             return super.getRenderType(animatable, texture, bufferSource, partialTick);
         }
 
@@ -51,9 +51,7 @@ public abstract class InsightCreatureRenderer<T extends LivingEntity & GeoAnimat
 
     @Override
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        float playerInsight = ClientInsightData.getPlayerInsight();
-
-        if (Minecraft.getInstance().screen != null || playerInsight >= entity.getMinimumInsight()) {
+        if (Minecraft.getInstance().screen != null || ClientInsightData.canSee(entity)) {
             super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
             return;
         }

@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.entity.minions.base;
 
-import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.base.InsightEntity;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
@@ -209,13 +208,6 @@ public abstract class AbstractMinionEntity extends Monster implements GeoEntity,
     }
 
     public abstract String getMinionId();
-
-    protected boolean hasSufficientClientInsight() {
-        if (this.level().isClientSide) {
-            return ClientInsightData.getPlayerInsight() >= this.getMinimumInsight();
-        }
-        return true;
-    }
 
     @Override
     public void playAmbientSound() {

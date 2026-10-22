@@ -30,7 +30,7 @@ public class CrawlingDelusionRenderer extends InsightCreatureRenderer<CrawlingDe
 
     @Override
     public RenderType getRenderType(CrawlingDelusionEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        if (ClientInsightData.getPlayerInsight() >= animatable.getMinimumInsight()) {
+        if (ClientInsightData.canSee(animatable)) {
             return RenderType.entityTranslucent(texture);
         }
         return super.getRenderType(animatable, texture, bufferSource, partialTick);
@@ -47,7 +47,7 @@ public class CrawlingDelusionRenderer extends InsightCreatureRenderer<CrawlingDe
     }
 
     private void spawnLocatorParticles(CrawlingDelusionEntity entity) {
-        if (ClientInsightData.getPlayerInsight() < entity.getMinimumInsight()) {
+        if (!ClientInsightData.canSee(entity)) {
             return;
         }
 

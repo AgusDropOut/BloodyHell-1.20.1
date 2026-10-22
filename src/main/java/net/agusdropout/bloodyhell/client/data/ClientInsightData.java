@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.client.data;
 
 import net.agusdropout.bloodyhell.capability.insight.PlayerInsight;
+import net.agusdropout.bloodyhell.entity.base.InsightEntity;
 
 public class ClientInsightData {
     private static int playerInsight = 0;
@@ -12,5 +13,8 @@ public class ClientInsightData {
     }
     public static int getPlayerInsight() {
         return playerInsight;
+    }
+    public static boolean canSee(InsightEntity entity) {
+        return playerInsight >= entity.getMinimumInsight();
     }
 }
