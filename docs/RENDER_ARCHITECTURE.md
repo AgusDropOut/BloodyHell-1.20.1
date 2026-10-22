@@ -188,7 +188,7 @@ flowchart TD
 - Billboards, trails, orbs, rings, spheres and the black holes are the first branch.
 - Insight entities are the second branch twice: `getRenderType` returns `ModRenderTypes.getInsightDistortion` and `render` queues the whole model draw in `DeferredTaskQueues.INSIGHT` so it happens at the end of the pipeline.
 - The Omnitome managers draw a GeckoLib model through `ModRenderTypes.getOmnitomeVoid` and `getEmergeClip`, deferred with one `MatrixSnapshot` per task.
-- A `RenderType` has no `equals`, so create it once per texture and reuse it (TECH_DEBT 22).
+- A `RenderType` has no `equals`, so `ModRenderTypes` creates each one once per texture with `Util.memoize`. Do the same for any new render type that takes a texture, or the `BufferSource` ends a batch on every call.
 
 ## Shader packs
 
