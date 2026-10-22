@@ -17,7 +17,6 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import net.agusdropout.bloodyhell.client.render.entity.layer.BloodFireGeoLayer;
 
-import javax.annotation.Nullable;
 
 public class SelioraRenderer extends GeoEntityRenderer<SelioraEntity> {
 
@@ -45,11 +44,6 @@ public class SelioraRenderer extends GeoEntityRenderer<SelioraEntity> {
         } else {
             return new ResourceLocation(BloodyHell.MODID, "textures/entity/seliora_second_phase.png");
         }
-    }
-
-    @Override
-    public RenderType getRenderType(SelioraEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return super.getRenderType(animatable, texture, bufferSource, partialTick);
     }
 
     @Override

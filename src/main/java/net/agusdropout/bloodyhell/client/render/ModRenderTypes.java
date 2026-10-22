@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -17,7 +16,6 @@ public class ModRenderTypes extends RenderType {
     private ModRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload, Runnable setupState, Runnable clearState) {
         super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);
     }
-
 
 
     private static final Function<ResourceLocation, RenderType> INSIGHT_DISTORTION = Util.memoize(texture -> {
@@ -36,26 +34,6 @@ public class ModRenderTypes extends RenderType {
     public static RenderType getInsightDistortion(ResourceLocation texture) {
         return INSIGHT_DISTORTION.apply(texture);
     }
-
-
-    public static RenderType getRaymarchedBlob() {
-        RenderType.CompositeState state = RenderType.CompositeState.builder()
-                .setShaderState(new RenderStateShard.ShaderStateShard(() -> {
-                    if (ModShaders.BLOOD_BLOB_SHADER != null) {
-                        if (ModShaders.BLOOD_BLOB_SHADER.safeGetUniform("u_Time") != null) {
-                            ModShaders.BLOOD_BLOB_SHADER.safeGetUniform("u_Time").set(ShaderTime.seconds());
-                        }
-                    }
-                    return ModShaders.BLOOD_BLOB_SHADER;
-                }))
-                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                .setCullState(NO_CULL)
-                .setWriteMaskState(COLOR_WRITE)
-                .createCompositeState(false);
-
-        return create("bloodyhell_raymarched_blob", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, true, state);
-    }
-
 
 
     private static final Function<ResourceLocation, RenderType> OMNITOME_VOID = Util.memoize(texture -> {
