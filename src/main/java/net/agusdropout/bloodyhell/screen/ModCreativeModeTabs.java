@@ -49,7 +49,6 @@ public class ModCreativeModeTabs {
 
                         // --- Ores & Minerals ---
                         output.accept(MetalBlocks.SANGUINITE_ORE.get());
-                        output.accept(MiscBlocks.JUMPY_BLOCK.get());
                         output.accept(MetalBlocks.BLASPHEMITE_ORE.get());
 
                         // --- Base Materials ---
@@ -117,7 +116,6 @@ public class ModCreativeModeTabs {
                         output.accept(GemItems.BLASPHEMOUS_RING.get());
                         output.accept(MiscItems.CHALICE_OF_THE_DAMMED.get());
                         output.accept(MiscItems.CRIMSON_IDOL_COIN.get());
-                        output.accept(MiscItems.EIGHT_BALL.get());
                         output.accept(DropItems.BLOOD_ECHO_SHARD.get());
                         output.accept(DropItems.NAMELESS_ECHO_SHARD.get());
 

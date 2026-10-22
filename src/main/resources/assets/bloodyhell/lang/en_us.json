@@ -97,7 +97,6 @@
   "item.bloodyhell.materialized_soul": "Materialized Soul",
   "item.bloodyhell.chalice_of_the_dammed": "Chalice of the Damned",
   "item.bloodyhell.crimson_idol_coin": "Crimson Idol Coin",
-  "item.bloodyhell.eight_ball": "Eight Ball",
   "item.bloodyhell.amulet_of_ancestral_blood": "Amulet of Ancestral Blood",
   "item.bloodyhell.great_amulet_of_ancestral_blood": "Great Amulet of Ancestral Blood",
   "item.bloodyhell.crimson_ward_ring": "Crimson Ward Ring",
@@ -241,7 +240,6 @@
   "block.bloodyhell.chiseled_detailed_blasphemous_sandstone_block": "Chiseled Detailed Blasphemous Sandstone",
   "block.bloodyhell.bleeding_block": "Bleeding Block",
   "block.bloodyhell.small_rocks": "Blood Small Rocks",
-  "block.bloodyhell.jumpy_block": "Jumpy Block",
 
   "_comment": "=== BLOCKS: WOOD ===",
   "block.bloodyhell.blood_log": "Blood Log",

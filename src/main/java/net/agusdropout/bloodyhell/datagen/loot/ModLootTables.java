@@ -78,7 +78,6 @@ public class ModLootTables extends LootTableProvider {
         protected void generate() {
             this.dropSelf(MetalBlocks.SANGUINITE_BLOCK.get());
             this.dropSelf(MetalBlocks.RHNULL_BLOCK);
-            this.dropSelf(MiscBlocks.JUMPY_BLOCK.get());
             this.dropSelf(LightBlocks.SOUL_LAMP.get());
             this.dropSelf(MachineBlocks.SANGUINE_CRUCIBLE.get());
             this.dropSelf(MachineBlocks.BLASPHEMOUS_BLOOD_ALTAR.get());

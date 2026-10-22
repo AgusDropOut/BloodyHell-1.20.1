@@ -8,8 +8,6 @@ import net.minecraftforge.registries.RegistryObject;
 import static net.agusdropout.bloodyhell.item.ModItems.*;
 
 public final class MiscItems {
-    public static final RegistryObject<Item> EIGHT_BALL = ITEMS.register("eight_ball", () -> new EightBallItem(
-            new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLOODY_SOUL_DUST = ITEMS.register("bloody_soul_dust", () -> new Item(
             new Item.Properties()));
     public static final RegistryObject<Item> MATERIALIZED_SOUL = ITEMS.register("materialized_soul", () -> new CatalystItem());

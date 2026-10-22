@@ -31,7 +31,6 @@ import net.agusdropout.bloodyhell.fluid.ModFluidTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.painting.ModPaintings;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.custom.CylinderParticle;
 import net.agusdropout.bloodyhell.potion.ModPotions;
@@ -110,7 +109,6 @@ BloodyHell
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModSounds.register(modEventBus);
-        ModPaintings.register(modEventBus);
         ModParticles.register(modEventBus);
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
