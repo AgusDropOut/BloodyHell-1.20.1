@@ -99,12 +99,12 @@ public class ModLootTables extends LootTableProvider {
             this.dropOther(ModBlocks.RHNULL_PIPE.get(),ModItems.RHNULL_PIPE_ITEM.get());
             this.dropSelf(ModBlocks.SANGUINITE_TANK.get());
             this.dropSelf(ModBlocks.RHNULL_TANK.get());
-            this.dropSelf(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get());
+            this.dropOther(ModBlocks.SANGUINITE_BLOOD_HARVESTER.get(),ModItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
 
 
             this.createSilkTouchOrShearsDispatchTable(ModBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), ModItems.VORACIOUS_MUSHROOM.get());
             this.createSilkTouchOrShearsDispatchTable(ModBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), ModItems.CRIMSON_LURE_MUSHROOM.get());
-            this.dropSelf(ModBlocks.UNKNOWN_PORTAL_BLOCK);
+            this.dropOther(ModBlocks.UNKNOWN_PORTAL_BLOCK.get(),ModItems.UNKNOWN_PORTAL_ITEM.get());
             this.dropSelf(ModBlocks.SANGUINITE_INFUSOR.get());
 
 
