@@ -1,6 +1,6 @@
 # 0007. Deferred manager refactor keeps the GL state calls untouched
 
-Status: Proposed
+Status: Accepted
 
 ## Context
 Around 26 managers repeat the queue, the shadow pass guard and the matrix capture, and each one carries OpenGL state calls that were tuned by trial and error. Minecraft will move to Vulkan, and the mod may be ported to other loaders.
@@ -14,3 +14,6 @@ Around 26 managers repeat the queue, the shadow pass guard and the matrix captur
 
 ## Consequences
 The call order in `ModRenderEvents` stays the registry order (see 0002).
+
+## Outcome
+Phase 2 is done for every manager with a single matrix capture (`DeferredMatrices`). `BloodOrb`, `GoldenSorrowOrb`, `ScarletCinderOrb` and the three Omnitome managers keep their per-task matrix code, which does not fit that helper. The shared scene color copy and the single shader clock were done afterwards as behavior changes, see 0009.
