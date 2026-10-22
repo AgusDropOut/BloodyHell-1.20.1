@@ -355,4 +355,80 @@ class ResourceIntegrityTest {
             for (JsonElement child : element.getAsJsonArray()) collectItemIds(child, into);
         }
     }
+
+    private static String source(String relative) throws IOException {
+        return Files.readString(JAVA.resolve("net/agusdropout/bloodyhell/" + relative), StandardCharsets.UTF_8);
+    }
+
+    private static Set<String> langKeys() throws IOException {
+        Set<String> keys = new HashSet<>();
+        for (Path lang : files(ASSET_ROOTS, "lang", ".json")) {
+            keys.addAll(json(lang).getAsJsonObject().keySet());
+        }
+        return keys;
+    }
+
+    @Test
+    void everyEntityHasLangARendererAndAttributes() throws IOException {
+        String types = source("entity/ModEntityTypes.java");
+        String renderers = source("client/render/ModRenderers.java");
+        String events = source("event/ModEvents.java");
+        Set<String> keys = langKeys();
+        Pattern entity = Pattern.compile("RegistryObject<EntityType<[^>]*>>\\s+(\\w+)\\s*=\\s*ENTITY_TYPES\\.register\\(\\s*\"([a-z0-9_]+)\"(.*?);", Pattern.DOTALL);
+        Matcher m = entity.matcher(types);
+        List<String> problems = new ArrayList<>();
+        while (m.find()) {
+            String constant = m.group(1);
+            String id = m.group(2);
+            String definition = m.group(3);
+            Pattern used = Pattern.compile("\\b" + constant + "\\b");
+            if (!keys.contains("entity." + MODID + "." + id)) problems.add("entity without lang: " + id);
+            if (!used.matcher(renderers).find()) problems.add("entity without renderer: " + id);
+            boolean living = definition.matches("(?s).*MobCategory\\.(MONSTER|CREATURE|AMBIENT|WATER_CREATURE|WATER_AMBIENT|UNDERGROUND_WATER_CREATURE|AXOLOTLS).*");
+            if (living && !used.matcher(events).find()) problems.add("living entity without attributes: " + id);
+        }
+        report("Entities with missing registration pieces", problems);
+    }
+
+    @Test
+    void everySoundEventIsDeclaredAndSubtitled() throws IOException {
+        String sounds = source("sound/ModSounds.java");
+        Set<String> keys = langKeys();
+        JsonObject declared = json(ASSET_ROOTS.get(0).resolve("sounds.json")).getAsJsonObject();
+        Matcher m = Pattern.compile("registerSoundEvents\\(\\s*\"([a-z0-9_.]+)\"\\)").matcher(sounds);
+        List<String> problems = new ArrayList<>();
+        while (m.find()) {
+            String id = m.group(1);
+            if (!declared.has(id)) {
+                problems.add("sound not in sounds.json: " + id);
+                continue;
+            }
+            JsonElement subtitle = declared.getAsJsonObject(id).get("subtitle");
+            if (subtitle != null && !keys.contains(subtitle.getAsString())) problems.add("sound subtitle without lang: " + id + " -> " + subtitle.getAsString());
+        }
+        for (String key : declared.keySet()) {
+            if (!sounds.contains("\"" + key + "\"")) problems.add("sounds.json entry without a registered event: " + key);
+        }
+        report("Sound events with missing pieces", problems);
+    }
+
+    @Test
+    void everyParticleHasAProviderAndItsDefinition() throws IOException {
+        String particles = source("particle/ModParticles.java");
+        String client = source("event/ClientEvents.java");
+        Matcher m = Pattern.compile("RegistryObject<[^>]*>\\s+(\\w+)\\s*=\\s*PARTICLE_TYPES\\.register\\(\\s*\"([a-z0-9_]+)\"").matcher(particles);
+        List<String> problems = new ArrayList<>();
+        while (m.find()) {
+            String constant = m.group(1);
+            String id = m.group(2);
+            Pattern provider = Pattern.compile("(registerSpriteSet|registerSpecial)\\(\\s*ModParticles\\." + constant + "\\b");
+            Matcher p = provider.matcher(client);
+            if (!p.find()) {
+                problems.add("particle without provider: " + id);
+            } else if (p.group(1).equals("registerSpriteSet") && !assetExists("particles/" + id + ".json")) {
+                problems.add("particle definition missing: " + id);
+            }
+        }
+        report("Particles with missing pieces", problems);
+    }
 }

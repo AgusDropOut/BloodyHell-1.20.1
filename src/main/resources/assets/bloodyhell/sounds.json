@@ -1,249 +1,249 @@
 {
   "grawl_drown": {
-    "subtitle": "sounds.bloodyhell.grawl_drown",
+    "subtitle": "subtitles.bloodyhell.grawl_drown",
     "sounds": [
       "bloodyhell:grawl_drown"
     ]
   },
     "grawl_hurt": {
-        "subtitle": "sounds.bloodyhell.grawl_hurt",
+        "subtitle": "subtitles.bloodyhell.grawl_hurt",
         "sounds": [
         "bloodyhell:grawl_hurt"
         ]
     },
     "grawl_attack": {
-        "subtitle": "sounds.bloodyhell.grawl_attack",
+        "subtitle": "subtitles.bloodyhell.grawl_attack",
         "sounds": [
         "bloodyhell:grawl_attack"
         ]
     },
     "grawl_death": {
-        "subtitle": "sounds.bloodyhell.grawl_death",
+        "subtitle": "subtitles.bloodyhell.grawl_death",
         "sounds": [
         "bloodyhell:grawl_death"
         ]
     },
     "visceral_explosion": {
-      "subtitle": "sounds.bloodyhell.visceral_explosion",
+      "subtitle": "subtitles.bloodyhell.visceral_explosion",
       "sounds": [
         "bloodyhell:visceral_explosion"
       ]
     },
     "veinraver_ambient": {
-      "subtitle": "sounds.bloodyhell.veinraver_ambient",
+      "subtitle": "subtitles.bloodyhell.veinraver_ambient",
       "sounds": [
         "bloodyhell:veinraver_ambient"
       ]
     },
     "veinraver_hurt": {
-      "subtitle": "sounds.bloodyhell.veinraver_hurt",
+      "subtitle": "subtitles.bloodyhell.veinraver_hurt",
       "sounds": [
         "bloodyhell:veinraver_hurt"
       ]
     },
     "veinraver_attack": {
-      "subtitle": "sounds.bloodyhell.veinraver_attack",
+      "subtitle": "subtitles.bloodyhell.veinraver_attack",
       "sounds": [
         "bloodyhell:veinraver_attack"
       ]
     },
     "veinraver_death": {
-      "subtitle": "sounds.bloodyhell.veinraver_death",
+      "subtitle": "subtitles.bloodyhell.veinraver_death",
       "sounds": [
         "bloodyhell:veinraver_death"
       ]
     },
     "veinraver_slam": {
-      "subtitle": "sounds.bloodyhell.veinraver_slam",
+      "subtitle": "subtitles.bloodyhell.veinraver_slam",
       "sounds": [
         "bloodyhell:veinraver_slam"
       ]
     },
     "veinraver_slash": {
-      "subtitle": "sounds.bloodyhell.veinraver_slash",
+      "subtitle": "subtitles.bloodyhell.veinraver_slash",
       "sounds": [
         "bloodyhell:veinraver_slash"
       ]
     },
     "veinraver_step": {
-      "subtitle": "sounds.bloodyhell.veinraver_step",
+      "subtitle": "subtitles.bloodyhell.veinraver_step",
       "sounds": [
         "bloodyhell:veinraver_step"
       ]
     },
     "offspring_hurt": {
-      "subtitle": "sounds.bloodyhell.offspring_hurt",
+      "subtitle": "subtitles.bloodyhell.offspring_hurt",
       "sounds": [
         "bloodyhell:offspring_hurt"
       ]
     },
     "offspring_attack": {
-      "subtitle": "sounds.bloodyhell.offspring_attack",
+      "subtitle": "subtitles.bloodyhell.offspring_attack",
       "sounds": [
         "bloodyhell:offspring_attack"
       ]
     },
     "offspring_step": {
-      "subtitle": "sounds.bloodyhell.offspring_step",
+      "subtitle": "subtitles.bloodyhell.offspring_step",
       "sounds": [
         "bloodyhell:offspring_step"
       ]
     },
     "starfall_ambient_sound": {
-      "subtitle": "sounds.bloodyhell.starfall_ambient_sound",
+      "subtitle": "subtitles.bloodyhell.starfall_ambient_sound",
       "sounds": [
       "bloodyhell:starfall_ambient_sound"
       ]
     },
     "starfall_explosion_sound": {
-      "subtitle": "sounds.bloodyhell.starfall_explosion_sound",
+      "subtitle": "subtitles.bloodyhell.starfall_explosion_sound",
       "sounds": [
       "bloodyhell:starfall_explosion_sound"
     ]
   },
   "whirldind_flying_sound": {
-    "subtitle": "sounds.bloodyhell.whirldind_flying_sound",
+    "subtitle": "subtitles.bloodyhell.whirldind_flying_sound",
     "sounds": [
       "bloodyhell:whirldind_flying_sound"
     ]
   },
   "whirldind_cut_sound": {
-    "subtitle": "sounds.bloodyhell.whirldind_cut_sound",
+    "subtitle": "subtitles.bloodyhell.whirldind_cut_sound",
     "sounds": [
       "bloodyhell:whirldind_cut_sound"
     ]
   },
   "seliora_hurt1_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_hurt1_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_hurt1_sound",
     "sounds": [
       "bloodyhell:seliora_hurt1_sound"
     ]
   },
   "seliora_hurt2_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_hurt2_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_hurt2_sound",
     "sounds": [
       "bloodyhell:seliora_hurt2_sound"
     ]
   },
   "seliora_lullaby_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_lullaby_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_lullaby_sound",
     "sounds": [
       "bloodyhell:seliora_lullaby_sound"
     ]
   },
   "seliora_second_phase_ambient_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_second_phase_ambient_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_second_phase_ambient_sound",
     "sounds": [
       "bloodyhell:seliora_second_phase_ambient_sound"
     ]
   },
   "seliora_charge_attack_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_charge_attack_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_charge_attack_sound",
     "sounds": [
       "bloodyhell:seliora_charge_attack_sound"
     ]
   },
   "seliora_jump_attack_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_jump_attack_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_jump_attack_sound",
     "sounds": [
       "bloodyhell:seliora_jump_attack_sound"
     ]
   },
   "seliora_ambient_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_ambient_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_ambient_sound",
     "sounds": [
       "bloodyhell:seliora_ambient_sound"
     ]
   },
   "neck_snap_sound": {
-    "subtitle": "sounds.bloodyhell.neck_snap_sound",
+    "subtitle": "subtitles.bloodyhell.neck_snap_sound",
     "sounds": [
       "bloodyhell:neck_snap_sound"
     ]
   },
   "seliora_throw_sound": {
-    "subtitle": "sounds.bloodyhell.seliora_throw_sound",
+    "subtitle": "subtitles.bloodyhell.seliora_throw_sound",
     "sounds": [
       "bloodyhell:seliora_throw_sound"
     ]
   },
   "song3": {
-    "subtitle": "sounds.bloodyhell.song3",
+    "subtitle": "subtitles.bloodyhell.song3",
     "sounds": [
       "bloodyhell:song3"
     ]
   },
   "horned_worm_burrowed": {
-    "subtitle": "sounds.bloodyhell.horned_worm_burrowed",
+    "subtitle": "subtitles.bloodyhell.horned_worm_burrowed",
     "sounds": [
       "bloodyhell:horned_worm_burrowed"
     ]
   },
   "dagger_attack_1": {
-    "subtitle": "sounds.bloodyhell.dagger_attack_1",
+    "subtitle": "subtitles.bloodyhell.dagger_attack_1",
     "sounds": [
       "bloodyhell:dagger_attack_1"
     ]
   },
   "dagger_attack_2": {
-    "subtitle": "sounds.bloodyhell.dagger_attack_2",
+    "subtitle": "subtitles.bloodyhell.dagger_attack_2",
     "sounds": [
       "bloodyhell:dagger_attack_2"
     ]
   },
   "dagger_attack_3": {
-    "subtitle": "sounds.bloodyhell.dagger_attack_3",
+    "subtitle": "subtitles.bloodyhell.dagger_attack_3",
     "sounds": [
       "bloodyhell:dagger_attack_3"
     ]
   },
   "creepy_bell": {
-    "subtitle": "sounds.bloodyhell.creepy_bell",
+    "subtitle": "subtitles.bloodyhell.creepy_bell",
     "sounds": [
       "bloodyhell:creepy_bell"
     ]
   },
     "offspring_ambient": {
-      "subtitle": "sounds.bloodyhell.offspring_ambient",
+      "subtitle": "subtitles.bloodyhell.offspring_ambient",
       "sounds": [
         "bloodyhell:offspring_ambient"
       ]
     },
   "failed_son_of_the_unknown_ambience": {
-    "subtitle": "bloodyhell.subtitle.failed_son_of_the_unknown_ambience",
+    "subtitle": "subtitles.bloodyhell.failed_son_of_the_unknown_ambience",
     "sounds": [
       "bloodyhell:failed_son_of_the_unknown_ambience"
     ]
   },
   "failed_son_of_the_unknown_step": {
-    "subtitle": "bloodyhell.subtitle.failed_son_of_the_unknown_step",
+    "subtitle": "subtitles.bloodyhell.failed_son_of_the_unknown_step",
     "sounds": [
       "bloodyhell:failed_son_of_the_unknown_foot1",
       "bloodyhell:failed_son_of_the_unknown_foot2"
     ]
   },
   "weeping_ocular_wing": {
-    "subtitle": "bloodyhell.subtitle.weeping_ocular_wing",
+    "subtitle": "subtitles.bloodyhell.weeping_ocular_wing",
     "sounds": [
       "bloodyhell:weeping_ocular_wing"
     ]
   },
   "weeping_tear_shoot": {
-    "subtitle": "bloodyhell.subtitle.weeping_tear_shoot",
+    "subtitle": "subtitles.bloodyhell.weeping_tear_shoot",
     "sounds": [
       "bloodyhell:weeping_tear_shoot"
     ]
   },
   "hostile_arm_scream": {
     "category": "hostile",
-    "subtitle": "bloodyhell.subtitle.hostile_arm_scream",
+    "subtitle": "subtitles.bloodyhell.hostile_arm_scream",
     "sounds": [
       "bloodyhell:hostile_arm_scream"
     ]
   },
   "unknown_lantern_heartbeat": {
     "category": "hostile",
-    "subtitle": "subtitle.bloodyhell.unknown_lantern_heartbeat",
+    "subtitle": "subtitles.bloodyhell.unknown_lantern_heartbeat",
     "sounds": [
       {
         "name": "bloodyhell:heartbeat",
@@ -254,7 +254,7 @@
   },
   "unknown_lantern_ambient_1": {
     "category": "hostile",
-    "subtitle": "subtitle.bloodyhell.unknown_lantern_ambient",
+    "subtitle": "subtitles.bloodyhell.unknown_lantern_ambient_1",
     "sounds": [
       {
         "name": "bloodyhell:unknown_lantern_ambient_1",
@@ -265,7 +265,7 @@
   },
   "unknown_lantern_ambient_2": {
     "category": "hostile",
-    "subtitle": "subtitle.bloodyhell.unknown_lantern_ambient",
+    "subtitle": "subtitles.bloodyhell.unknown_lantern_ambient_2",
     "sounds": [
       {
         "name": "bloodyhell:unknown_lantern_ambient_2",
@@ -276,7 +276,7 @@
   },
   "unknown_lantern_gaze": {
     "category": "hostile",
-    "subtitle": "bloodyhell.subtitle.unknown_lantern_gaze",
+    "subtitle": "subtitles.bloodyhell.unknown_lantern_gaze",
     "sounds": [
       {
         "name": "bloodyhell:unknown_lantern_gaze",
