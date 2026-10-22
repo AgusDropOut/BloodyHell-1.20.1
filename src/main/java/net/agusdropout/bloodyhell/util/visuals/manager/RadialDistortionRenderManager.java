@@ -16,14 +16,12 @@ import java.util.List;
 
 public class RadialDistortionRenderManager {
     private static final List<DistortionData> ACTIVE_DISTORTIONS = new ArrayList<>();
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
 
     public static void addDistortion(Matrix4f pose, float size, Vector3f color, float alpha, float time, Quaternionf customRotation) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_DISTORTIONS.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
+            MATRICES.capture();
         }
         ACTIVE_DISTORTIONS.add(new DistortionData(pose, size, color, alpha, time, customRotation));
     }
@@ -41,14 +39,7 @@ public class RadialDistortionRenderManager {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
+        MATRICES.apply();
 
         RenderSystem.setShader(() -> ModShaders.RADIAL_DISTORTION_SHADER);
 
@@ -98,9 +89,7 @@ public class RadialDistortionRenderManager {
             tess.end();
         }
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        MATRICES.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
