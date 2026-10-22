@@ -27,7 +27,6 @@ import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.CrawlingD
 import net.agusdropout.bloodyhell.client.render.entity.custom.renderer.EchoOfTheNamelessRenderer;
 import net.agusdropout.bloodyhell.fluid.ModFluidTypes;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
-import net.agusdropout.bloodyhell.item.ModCreativeModeTab;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.painting.ModPaintings;
@@ -103,7 +102,6 @@ BloodyHell
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.addListener(this::portalTick);
-        ModCreativeModeTab.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ModClientConfigs.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ModCommonConfig.SPEC);
         GeckoLib.initialize();

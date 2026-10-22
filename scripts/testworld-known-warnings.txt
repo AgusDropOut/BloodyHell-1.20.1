@@ -1,9 +1,8 @@
 Unable to load model: 'bloodyhell:[a-z_]+#inventory'
 Missing textures in model bloodyhell:staff_of_scarlet_cinder#inventory
-Unknown recipe category
 Unsupported geometry json version for model bloodyhell:geo/
-Shader (bloodyhell:|rendertype_entity_translucent_emissive).* could not find
-Item Group has no display items
+Shader rendertype_entity_translucent_emissive could not find
+Item Group has no display items and no search tab display items.*Operator Utilities
 Realms
 ModFileParser/LOADING
 VanillaPackResourcesBuilder
