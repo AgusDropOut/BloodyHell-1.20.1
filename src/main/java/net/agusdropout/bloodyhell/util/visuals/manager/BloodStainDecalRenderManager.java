@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.Direction;
@@ -42,7 +43,7 @@ public class BloodStainDecalRenderManager {
         ShaderInstance shader = ModShaders.BLOOD_STAIN_SHADER;
         if (shader != null) {
             if (shader.safeGetUniform("Time") != null) {
-                shader.safeGetUniform("Time").set((float) (System.currentTimeMillis() % 100000L) / 1000.0f);
+                shader.safeGetUniform("Time").set(ShaderTime.seconds());
             }
             if (shader.safeGetUniform("Intensity") != null) {
                 shader.safeGetUniform("Intensity").set(1.0f);

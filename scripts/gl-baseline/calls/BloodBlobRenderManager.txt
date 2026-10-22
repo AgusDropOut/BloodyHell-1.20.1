@@ -12,7 +12,7 @@ if(shader.safeGetUniform("u_VanillaModelViewMat") != null) shader.safeGetUniform
 if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(projMat);
 if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(invProjMat);
 if(shader.safeGetUniform("u_BobbingOffset") != null) shader.safeGetUniform("u_BobbingOffset").set(bobOffsetVec.x(), bobOffsetVec.y(), bobOffsetVec.z());
-if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(Util.getMillis() % 100000L) / 1000.0f);
+if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
 if(shader.safeGetUniform("relativeBlobCenter") != null) {
 shader.safeGetUniform("relativeBlobCenter").set(relX, relY, relZ);
 if(shader.safeGetUniform("bloodBaseColor") != null) shader.safeGetUniform("bloodBaseColor").set(baseColor.x(), baseColor.y(), baseColor.z());

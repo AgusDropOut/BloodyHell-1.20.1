@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.LinearFrenziedFlameParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.manager.LinearFrenziedFlameRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -59,7 +60,7 @@ public class LinearFrenziedFlameParticle extends Particle {
 
         poseStack.mulPose(camera.rotation());
 
-        float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
+        float time = ShaderTime.seconds();
 
         LinearFrenziedFlameRenderManager.addFlame(
                 poseStack.last().pose(),

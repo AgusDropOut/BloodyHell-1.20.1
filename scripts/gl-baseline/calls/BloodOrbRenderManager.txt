@@ -7,7 +7,7 @@ RenderSystem.setShaderTexture(0, copiedColorTexture);
 RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
 RenderSystem.setShader(() -> shader);
 if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);
-if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(Util.getMillis() % 100000L) / 1000.0f);
+if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
 RenderSystem.setProjectionMatrix(data.projection, VertexSorting.DISTANCE_TO_ORIGIN);
 if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(data.projection);
 if(shader.safeGetUniform("u_OrbViewPos") != null) {

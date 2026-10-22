@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.util.visuals.manager.RadiantEnergyRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -64,7 +65,7 @@ public class RadiantEnergyParticle extends Particle {
     public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         if (this.history.size() < 2) return;
 
-        float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
+        float time = ShaderTime.seconds();
         Vec3 cameraPos = camera.getPosition();
 
         float lifeFade = 1.0F - ((float)this.age / (float)this.lifetime);

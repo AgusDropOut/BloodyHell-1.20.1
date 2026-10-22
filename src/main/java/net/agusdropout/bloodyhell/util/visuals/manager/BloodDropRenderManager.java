@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import org.joml.Matrix4f;
@@ -93,7 +94,7 @@ public class BloodDropRenderManager extends BaseShaderRenderManager<BloodDropRen
                 { 0.5f, -0.5f}
         };
 
-        float globalTime = (float)(net.minecraft.Util.getMillis() % 100000L) / 1000.0f;
+        float globalTime = ShaderTime.seconds();
         if (ModShaders.BLOOD_DROP_SHADER.getUniform("AnimTime") != null) {
             ModShaders.BLOOD_DROP_SHADER.getUniform("AnimTime").set(globalTime);
         }

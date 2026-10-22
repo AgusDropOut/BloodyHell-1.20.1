@@ -9,6 +9,7 @@ import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRen
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -77,7 +78,7 @@ public class OmnitomeClipRenderManager {
             OmnitomeRenderer.isChildMorphing = true;
 
             if (ModShaders.EMERGE_CLIP_SHADER != null) {
-                ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("TimeAnim").set((float) (net.minecraft.Util.getMillis() % 100000L) / 1000.0f);
+                ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("TimeAnim").set(ShaderTime.seconds());
                 ModShaders.EMERGE_CLIP_SHADER.safeGetUniform("MorphProgress").set(task.morphProgress);
             }
 

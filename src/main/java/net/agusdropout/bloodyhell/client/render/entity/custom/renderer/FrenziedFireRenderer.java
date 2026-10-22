@@ -5,6 +5,7 @@ import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.entity.effects.FrenziedFireEntity;
 import net.agusdropout.bloodyhell.util.visuals.manager.LinearFrenziedFlameRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -23,7 +24,7 @@ public class FrenziedFireRenderer extends EntityRenderer<FrenziedFireEntity> {
 
         poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 
-        float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
+        float time = ShaderTime.seconds();
         float progress = entity.getLifeProgress();
 
         float scale = Mth.sin(progress * (float) Math.PI) * 1.5F;

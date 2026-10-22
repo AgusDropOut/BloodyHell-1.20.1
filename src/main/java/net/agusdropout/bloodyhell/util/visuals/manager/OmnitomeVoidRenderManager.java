@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -74,7 +75,7 @@ public class OmnitomeVoidRenderManager {
 
         for (VoidTask task : TASKS) {
             if (ModShaders.OMNITOME_VOID_SHADER != null) {
-                ModShaders.OMNITOME_VOID_SHADER.safeGetUniform("TimeAnim").set((float) (net.minecraft.Util.getMillis() % 100000L) / 1000.0f);
+                ModShaders.OMNITOME_VOID_SHADER.safeGetUniform("TimeAnim").set(ShaderTime.seconds());
             }
 
             VertexSorting sorting = (task.transform == ItemDisplayContext.GUI) ?

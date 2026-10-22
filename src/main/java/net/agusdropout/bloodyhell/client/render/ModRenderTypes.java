@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.minecraft.Util;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +36,7 @@ public class ModRenderTypes extends RenderType {
                 .setShaderState(new RenderStateShard.ShaderStateShard(() -> {
                     if (ModShaders.BLOOD_BLOB_SHADER != null) {
                         if (ModShaders.BLOOD_BLOB_SHADER.safeGetUniform("u_Time") != null) {
-                            ModShaders.BLOOD_BLOB_SHADER.safeGetUniform("u_Time").set((float) (Util.getMillis() % 100000L) / 1000.0f);
+                            ModShaders.BLOOD_BLOB_SHADER.safeGetUniform("u_Time").set(ShaderTime.seconds());
                         }
                     }
                     return ModShaders.BLOOD_BLOB_SHADER;

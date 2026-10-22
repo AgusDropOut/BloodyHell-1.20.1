@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.block.entity.custom.engine.RhnullBloodEngineBlockEntity;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.types.IBloodBlobEmitter;
-import net.minecraft.Util;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -78,7 +78,7 @@ public class BloodBlobRenderManager {
         if(shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(projMat);
         if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(invProjMat);
         if(shader.safeGetUniform("u_BobbingOffset") != null) shader.safeGetUniform("u_BobbingOffset").set(bobOffsetVec.x(), bobOffsetVec.y(), bobOffsetVec.z());
-        if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(Util.getMillis() % 100000L) / 1000.0f);
+        if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
 
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder buffer = tesselator.getBuilder();

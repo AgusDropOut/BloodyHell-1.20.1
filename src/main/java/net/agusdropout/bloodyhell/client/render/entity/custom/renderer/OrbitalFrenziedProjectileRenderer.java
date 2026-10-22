@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.entity.projectile.OrbitalFrenziedProjectile;
 import net.agusdropout.bloodyhell.util.visuals.manager.FrenziedTrailRenderManager;
 import net.agusdropout.bloodyhell.util.visuals.manager.RadiantEnergyRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -35,7 +36,7 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
     public void render(OrbitalFrenziedProjectile entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (entity.historyCore.isEmpty()) return;
 
-        float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
+        float time = ShaderTime.seconds();
         Vec3 cameraPos = this.entityRenderDispatcher.camera.getPosition();
 
         double lerpX = Mth.lerp(partialTicks, entity.xo, entity.getX());

@@ -10,7 +10,7 @@ RenderSystem.setShader(() -> shader);
 if (shader.safeGetUniform("u_CleanInvViewMat") != null) shader.safeGetUniform("u_CleanInvViewMat").set(cleanInvViewMat);
 if (shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(projMat);
 if (shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(invProjMat);
-if (shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(System.currentTimeMillis() % 100000L) / 1000.0f);
+if (shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
 RenderSystem.enableDepthTest();
 RenderSystem.depthMask(true);
 RenderSystem.enableCull();

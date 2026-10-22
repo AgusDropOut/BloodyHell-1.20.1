@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
-import net.minecraft.Util;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -49,7 +49,7 @@ public class GoldenSorrowOrbRenderManager {
         Matrix4f worldInvProjMat = new Matrix4f(worldProjMat).invert();
 
         if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);
-        if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(Util.getMillis() % 100000L) / 1000.0f);
+        if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
 
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.types.MiniBlob;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -65,7 +66,7 @@ public class MiniBlobRenderManager {
         if (shader.safeGetUniform("u_CleanInvViewMat") != null) shader.safeGetUniform("u_CleanInvViewMat").set(cleanInvViewMat);
         if (shader.safeGetUniform("u_ProjMat") != null) shader.safeGetUniform("u_ProjMat").set(projMat);
         if (shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(invProjMat);
-        if (shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set((float)(System.currentTimeMillis() % 100000L) / 1000.0f);
+        if (shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
 
         Vec3 camPos = camera.getPosition();
         List<MiniBlob> visibleBlobs = new ArrayList<>();

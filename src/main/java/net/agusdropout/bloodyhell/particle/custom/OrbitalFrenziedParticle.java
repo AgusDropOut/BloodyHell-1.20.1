@@ -5,6 +5,7 @@ import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOpti
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.agusdropout.bloodyhell.util.visuals.manager.FrenziedTrailRenderManager;
 import net.agusdropout.bloodyhell.util.visuals.manager.RadiantEnergyRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -122,7 +123,7 @@ public class OrbitalFrenziedParticle extends Particle {
     public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         if (this.historyCore.size() < 2) return;
 
-        float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
+        float time = ShaderTime.seconds();
         Vec3 cameraPos = camera.getPosition();
         float lifeFade = 1.0F - ((float)this.age / (float)this.lifetime);
 

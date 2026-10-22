@@ -15,7 +15,7 @@ import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItemStackHandle
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.SelectOmnitomeSlotC2SPacket;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.minecraft.Util;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -191,7 +191,7 @@ public class SpellWheelScreen extends Screen {
         RenderSystem.setShader(() -> ModShaders.SPELL_WHEEL_BG_SHADER);
         RenderSystem.setShaderTexture(0, SLOT_TEX);
 
-        float time = (float) (Util.getMillis() % 100000L) / 1000.0f;
+        float time = ShaderTime.seconds();
         if (ModShaders.SPELL_WHEEL_BG_SHADER.safeGetUniform("TimeAnim") != null) {
             ModShaders.SPELL_WHEEL_BG_SHADER.safeGetUniform("TimeAnim").set(time);
         }
@@ -229,7 +229,7 @@ public class SpellWheelScreen extends Screen {
         RenderSystem.defaultBlendFunc();
 
         if (ModShaders.CRIMSON_VEIL_GUI_SHADER.safeGetUniform("TimeAnim") != null) {
-            float time = (float) (Util.getMillis() % 100000L) / 1000.0f;
+            float time = ShaderTime.seconds();
             ModShaders.CRIMSON_VEIL_GUI_SHADER.safeGetUniform("TimeAnim").set(time);
         }
 

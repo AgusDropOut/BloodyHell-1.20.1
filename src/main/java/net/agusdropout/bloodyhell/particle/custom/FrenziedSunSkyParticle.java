@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.client.data.ClientInsightData;
 import net.agusdropout.bloodyhell.util.visuals.manager.FrenziedFlameRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -63,7 +64,7 @@ public class FrenziedSunSkyParticle extends Particle {
         poseStack.translate(0.0D, -100.0D, 0.0D);
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
 
-        float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
+        float time = ShaderTime.seconds();
         float rCol = 1.0F;
         float gCol = 0.8F;
         float bCol = 0.2F;

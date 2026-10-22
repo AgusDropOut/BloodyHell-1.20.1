@@ -16,6 +16,7 @@ import net.agusdropout.bloodyhell.entity.unknown.custom.EchoOfTheNamelessEntity;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.agusdropout.bloodyhell.util.visuals.manager.SphericalShieldRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.joml.Matrix4f;
@@ -63,7 +64,7 @@ public class EchoOfTheNamelessRenderer extends InsightCreatureRenderer<EchoOfThe
             if (ModShaders.SHAPE_UNKNOWN_FIRE_SHADER != null) {
                 Uniform timeUniform = ModShaders.SHAPE_UNKNOWN_FIRE_SHADER.getUniform("AnimTime");
                 if (timeUniform != null) {
-                    timeUniform.set((System.currentTimeMillis() % 100000L) / 1000.0F);
+                    timeUniform.set(ShaderTime.seconds());
                 }
             }
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);

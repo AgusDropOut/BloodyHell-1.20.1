@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.FrenziedExplosionParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.manager.FrenziedExplosionRenderManager;
+import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -54,7 +55,7 @@ public class FrenziedExplosionParticle extends Particle {
         poseStack.mulPose(camera.rotation());
         //poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180.0F));
 
-        float time = (System.currentTimeMillis() % 100000L) / 1000.0F;
+        float time = ShaderTime.seconds();
         float lifeProgress = 1.0F - ((float)this.age / (float)this.lifetime);
 
         FrenziedExplosionRenderManager.addExplosion(
