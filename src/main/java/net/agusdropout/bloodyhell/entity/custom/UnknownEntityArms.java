@@ -38,6 +38,8 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     @Nullable
     private LivingEntity target;
+    @Nullable
+    private UUID targetUUID;
     private boolean emergePhase = true;
     private boolean retractPhase = false;
     private boolean idlePhase = false;
@@ -63,6 +65,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
         this(ModEntityTypes.UNKNOWN_ENTITY_ARMS.get(), level);
         this.damage = damage;
         this.target = target;
+        this.targetUUID = target == null ? null : target.getUUID();
         this.setYRot(g * 57.295776f);
         this.setPos(d, e, f);
         level().playLocalSound(d, e, f, SoundEvents.AMETHYST_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, random.nextFloat() * 0.2f + 0.85f, false);
@@ -73,6 +76,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
         this.damage = damage;
         this.setYRot(g * 57.295776f);
         this.target = target;
+        this.targetUUID = target == null ? null : target.getUUID();
         this.setPos(d, e, f);
     }
 
@@ -124,6 +128,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
 
         if (!level().isClientSide()) {
 
+            this.resolveTarget();
             if(target == null){
                 this.discard();
                 return;
@@ -205,8 +210,19 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
         return super.hurt(damageSource, f);
     }
 
+    private void resolveTarget() {
+        if (this.target == null && this.targetUUID != null && this.level() instanceof ServerLevel serverLevel) {
+            if (serverLevel.getEntity(this.targetUUID) instanceof LivingEntity living) {
+                this.target = living;
+            }
+        }
+    }
+
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
+        if (compoundTag.hasUUID("target")) {
+            this.targetUUID = compoundTag.getUUID("target");
+        }
         if (compoundTag.contains("emerge_phase")) {
             this.entityData.set(EMERGE_PHASE, compoundTag.getBoolean("emerge_phase"));
         }
@@ -226,6 +242,9 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compoundTag) {
+        if (this.targetUUID != null) {
+            compoundTag.putUUID("target", this.targetUUID);
+        }
         compoundTag.putBoolean("emerge_phase", this.entityData.get(EMERGE_PHASE));
         compoundTag.putBoolean("retract_phase", this.entityData.get(RETRACT_PHASE));
         compoundTag.putBoolean("idle_phase", this.entityData.get(IDLE_PHASE));
