@@ -412,7 +412,7 @@ public class ModBlocks {
             BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB = registerBlock("smooth_blasphemous_sandstone_slab", () -> new SlabBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SELIORA_RESTING_BLOCK = registerBlock("seliora_resting_block", () -> new SelioraRestingBlock(
+    public static final RegistryObject<Block> SELIORA_RESTING_BLOCK = registerBlockWithoutBlockItem("seliora_resting_block", () -> new SelioraRestingBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().strength(2000f)));
     public static final RegistryObject<Block> STAR_LAMP_BLOCK = registerBlock("star_lamp_block", () -> new StarLampBlock(
             BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state)->15).noOcclusion()));

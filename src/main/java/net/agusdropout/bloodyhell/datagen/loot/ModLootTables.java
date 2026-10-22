@@ -198,7 +198,7 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(ModBlocks.ROUNDED_GRASS.get());
             this.dropSelf(ModBlocks.STING_FLOWER.get());
             this.add(ModBlocks.DECORATED_POT_BLOCK.get(), createPotDrops(ModBlocks.DECORATED_POT_BLOCK.get()));
-            this.dropSelf(ModBlocks.SELIORA_RESTING_BLOCK.get());
+            this.dropOther(ModBlocks.SELIORA_RESTING_BLOCK.get(),ModItems.SELIORA_RESTING_ITEM.get());
             this.dropSelf(ModBlocks.FORBIDDEN_BOOKSHELF_BLOCK.get());
             this.dropSelf(ModBlocks.STAR_LAMP_BLOCK.get());
             this.add(ModBlocks.BLASPHEMITE_ORE.get(), block -> createOreDrop(ModBlocks.BLASPHEMITE_ORE.get(), ModItems.RAW_BLASPHEMITE.get()));

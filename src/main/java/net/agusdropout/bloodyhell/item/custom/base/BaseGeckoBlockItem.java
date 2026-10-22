@@ -63,4 +63,8 @@ public abstract class BaseGeckoBlockItem extends BlockItem implements GeoItem {
 
 
     public abstract String getId();
+
+    public String getTextureName() {
+        return getId();
+    }
 }

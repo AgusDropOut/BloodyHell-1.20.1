@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.item.custom.*;
 
 
 import net.agusdropout.bloodyhell.item.custom.OnlyAppendHoverText.*;
+import net.agusdropout.bloodyhell.item.custom.SelioraRestingItem;
 import net.agusdropout.bloodyhell.item.custom.altar.BlasphemousBloodAltarItem;
 import net.agusdropout.bloodyhell.item.custom.altar.MainBlasphemousBloodAltarItem;
 import net.agusdropout.bloodyhell.item.custom.base.BasePowerGemItem;
@@ -281,6 +282,8 @@ public class ModItems {
             () -> new RhnullCondenserItem(ModBlocks.RHNULL_CONDENSER.get(), new Item.Properties()));
     public static final RegistryObject<Item> UNKNOWN_PORTAL_ITEM = ITEMS.register("unknown_portal_item",
             () -> new UnknownPortalItem(ModBlocks.UNKNOWN_PORTAL_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SELIORA_RESTING_ITEM = ITEMS.register("seliora_resting_item",
+            () -> new SelioraRestingItem(ModBlocks.SELIORA_RESTING_BLOCK.get(), new Item.Properties()));
 
     //Flasks
     public static final RegistryObject<Item> BLOOD_FLASK = ITEMS.register("blood_flask", () -> new BloodFlaskItem(

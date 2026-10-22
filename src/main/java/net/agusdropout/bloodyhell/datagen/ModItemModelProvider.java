@@ -181,6 +181,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         evenSimplerBlockItem(ModBlocks.SANGUINE_CRUCIBLE);
         evenSimplerBlockItem(ModBlocks.RHNULL_BLOCK);
+        evenSimplerBlockItem(ModBlocks.BLOODDIRT_FARMLAND);
+        evenSimplerBlockItem(ModBlocks.CRIMSON_LURE_MUSHROOM_BLOCK);
         simpleBlockItemBlockTexture(ModBlocks.BLOOD_FLOWER);
         simpleBlockItemBlockTexture(ModBlocks.BLOOD_GRASS);
 

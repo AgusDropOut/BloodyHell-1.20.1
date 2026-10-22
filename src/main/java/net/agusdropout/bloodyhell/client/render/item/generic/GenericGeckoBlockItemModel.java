@@ -13,7 +13,7 @@ public class GenericGeckoBlockItemModel extends GeoModel<BaseGeckoBlockItem> {
 
     @Override
     public ResourceLocation getTextureResource (BaseGeckoBlockItem animatable){
-        return new ResourceLocation(BloodyHell.MODID, "textures/block/" +animatable.getId()+".png");
+        return new ResourceLocation(BloodyHell.MODID, "textures/block/" +animatable.getTextureName()+".png");
     }
 
     @Override

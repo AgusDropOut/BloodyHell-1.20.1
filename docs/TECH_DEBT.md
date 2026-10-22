@@ -8,7 +8,6 @@ Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered r
 
 ## Found by the test world
 
-8. Three blocks still have an automatic `BlockItem` without an `#inventory` model: `blooddirt_farmland` and `seliora_resting_block` (their loot tables drop themselves, so the item is real but invisible in the inventory) and `crimson_lure_mushroom_block` (silk touch drops it). Give them item models in `ModItemModelProvider`, or point their drops at a real item. The other eight blocks that had a dead automatic item now use `registerBlockWithoutBlockItem`.
 
 Fixed with the test world: null `target` crashes in `UnknownEntityArms` and `SanguineSacrificeEntity`; `CyclopsEntity` and `BlasphemousTwinDaggersCloneEntity` attributes were never registered.
 18. Known limitation, not ours: `glowing_crystal_glass_block` and `ancient_blood_capsule` render with the sky color under Rubidium 0.6.5 and Oculus 1.6.4 without shaders, because they need the translucent chunk layer and Rubidium draws it wrong (see ADR 0008). Retest when the pinned Rubidium or Oculus version changes. Fallback if it ever matters: flatten their alpha and use `cutout`.
