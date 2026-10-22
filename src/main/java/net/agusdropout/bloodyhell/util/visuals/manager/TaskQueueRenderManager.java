@@ -1,30 +1,30 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
-import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;
+import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityGlitterRenderManager {
-    private static final List<Runnable> GLITTER_TASKS = new ArrayList<>();
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+public class TaskQueueRenderManager {
+    private final List<Runnable> tasks = new ArrayList<>();
+    private final Matrix4f savedProjection = new Matrix4f();
+    private final Matrix4f savedModelView = new Matrix4f();
 
-    public static void queueGlitterRender(Runnable task) {
+    public void queue(Runnable task) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
-        if (GLITTER_TASKS.isEmpty()) {
+        if (tasks.isEmpty()) {
             savedProjection.set(RenderSystem.getProjectionMatrix());
             savedModelView.set(RenderSystem.getModelViewMatrix());
         }
-        GLITTER_TASKS.add(task);
+        tasks.add(task);
     }
 
-    public static void renderAllAndClear() {
-        if (GLITTER_TASKS.isEmpty()) return;
+    public void renderAndClear() {
+        if (tasks.isEmpty()) return;
 
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(false);
@@ -41,7 +41,7 @@ public class EntityGlitterRenderManager {
         rsStack.mulPoseMatrix(savedModelView);
         RenderSystem.applyModelViewMatrix();
 
-        for (Runnable task : GLITTER_TASKS) {
+        for (Runnable task : tasks) {
             task.run();
         }
 
@@ -53,6 +53,6 @@ public class EntityGlitterRenderManager {
         RenderSystem.disableBlend();
         RenderSystem.enableCull();
 
-        GLITTER_TASKS.clear();
+        tasks.clear();
     }
 }

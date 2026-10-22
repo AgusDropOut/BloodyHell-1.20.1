@@ -1,5 +1,7 @@
 param(
-    [switch]$Snapshot
+    [switch]$Snapshot,
+    [string]$Accept,
+    [string]$Retire
 )
 
 $root = Split-Path -Parent $PSScriptRoot
@@ -15,6 +17,20 @@ function Get-Calls($file, [bool]$skipScaffolding) {
         $lines = $lines | Where-Object { $_ -notmatch $scaffoldingPattern }
     }
     return @($lines)
+}
+
+if ($Retire) {
+    Remove-Item (Join-Path $baselineDir ($Retire + ".txt")) -ErrorAction Stop
+    Write-Host "Retired baseline for $Retire"
+    exit 0
+}
+
+if ($Accept) {
+    New-Item -ItemType Directory -Force $baselineDir | Out-Null
+    $calls = Get-Calls (Join-Path $managerDir ($Accept + ".java")) $false
+    Set-Content -Path (Join-Path $baselineDir ($Accept + ".txt")) -Value $calls -Encoding utf8
+    Write-Host "Accepted baseline for $Accept"
+    exit 0
 }
 
 if ($Snapshot) {

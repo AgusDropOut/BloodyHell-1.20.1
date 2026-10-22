@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullPainThroneEntity;
-import net.agusdropout.bloodyhell.util.visuals.manager.EntityGlitterRenderManager;
+import net.agusdropout.bloodyhell.util.visuals.manager.DeferredTaskQueues;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -44,7 +44,7 @@ public class RhnullPainThroneRenderer extends EntityRenderer<RhnullPainThroneEnt
         Matrix4f capturedPose = new Matrix4f(poseStack.last().pose());
         Matrix3f capturedNormal = new Matrix3f(poseStack.last().normal());
 
-        EntityGlitterRenderManager.queueGlitterRender(() -> {
+        DeferredTaskQueues.ENTITY_GLITTER.queue(() -> {
             PoseStack taskStack = new PoseStack();
             taskStack.last().pose().set(capturedPose);
             taskStack.last().normal().set(capturedNormal);
