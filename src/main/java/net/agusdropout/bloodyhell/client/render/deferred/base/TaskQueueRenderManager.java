@@ -17,6 +17,7 @@ public class TaskQueueRenderManager extends QueuedRenderManager<Runnable> {
             },
             () -> {
                 RenderSystem.depthMask(true);
+                RenderSystem.enableDepthTest();
                 RenderSystem.disableBlend();
                 RenderSystem.enableCull();
             });

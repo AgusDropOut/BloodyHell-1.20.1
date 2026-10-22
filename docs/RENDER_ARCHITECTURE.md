@@ -205,6 +205,14 @@ Order inside one frame of `GameRenderer.renderLevel`: the level, then the `AFTER
 - `event.getPoseStack()` at `AFTER_LEVEL` is the projection, not a view.
 - Without a pack `ViewEffects` only applies the camera rotation, so vanilla and Iris without a pack behave as before.
 
+## GL state hygiene
+
+Managers run one after another in the same GL state, and a manager that has nothing queued returns without touching it, so a state left behind by one manager reaches whichever manager has work next.
+
+- Set every piece of state an effect depends on in its `EffectState`, including the depth test. Do not rely on the state a previous manager left.
+- Anything drawn through a `RenderType` ends with the depth test disabled, because vanilla turns it off when it clears the depth state of the render type and expects the next render type to turn it on again. The Insight queue and the Omnitome managers draw this way, so their `EffectState` or the code after them must turn it back on. The Insight queue did not, and the frenzied trails showed through walls whenever an Insight entity was visible (`TaskQueueRenderManager.DEFAULT_STATE` now restores it).
+- `scripts/glprobe.ps1` shows these leaks: a manager whose exit state differs from its entry state is leaving something behind.
+
 ## Adding an effect
 
 - **Another billboard, trail or orb:** one entry in `Effects` (a descriptor and its shader supplier), one line in `DeferredRenderRegistry.ORDERED` at the position it must draw, then submit with `Effects.NAME.submit(...)`. If it needs a new GL state, add an `EffectState` to `EffectStates`.
