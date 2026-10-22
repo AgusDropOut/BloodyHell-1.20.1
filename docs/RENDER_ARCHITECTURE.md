@@ -197,7 +197,7 @@ Order inside one frame of `GameRenderer.renderLevel`: the level, then the `AFTER
 - Anything submitted while the level or the entities render is drawn in the same frame, at `AFTER_LEVEL`.
 - The hand and the GUI render after `AFTER_LEVEL`. What they submit is drawn at the next frame's `AFTER_LEVEL`, one frame late and before the GUI of that frame is drawn over it.
 - The effects that raymarch around an item (the staff orbs) work in view space and assume the hand: the pose of the item includes its display scale (1 in the hand, 0.6 on the ground, a few pixels in the GUI). `OrbRenderManager` takes that scale from the rotation, scales the quad with it and gives the shader a rotation divided by the scale squared, so the sphere follows the item. The shader inverts the matrix with `transpose`, which is only right for a pure rotation. In the hand the scale is 1 and nothing changes. The GUI is not supported (TECH_DEBT 30).
-- That is why the hand book is replayed by `OmnitomeBookRenderManager` inside the pass (the void manager runs after it in the registry order), and why anything that only a deferred manager draws can disappear in the GUI (TECH_DEBT 29).
+- That is why the hand book is replayed by `OmnitomeBookRenderManager` inside the pass (the void manager runs after it in the registry order), and why anything that only a deferred manager draws would disappear in the GUI. `OmnitomeVoidLayer` therefore draws its pages immediately, through `ModRenderTypes.getOmnitomeVoid`, when the context is the GUI, and queues them in every other context.
 
 ## Shader packs
 
