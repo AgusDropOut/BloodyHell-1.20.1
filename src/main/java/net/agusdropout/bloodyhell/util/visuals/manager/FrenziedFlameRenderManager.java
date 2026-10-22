@@ -14,14 +14,12 @@ import java.util.List;
 public class FrenziedFlameRenderManager {
     private static final List<FlameData> ACTIVE_FLAMES = new ArrayList<>();
 
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
 
     public static void addFlame(Matrix4f pose, float size, float r, float g, float b, float alpha, float time) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (ACTIVE_FLAMES.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
+            MATRICES.capture();
         }
         ACTIVE_FLAMES.add(new FlameData(pose, size, r, g, b, alpha, time));
     }
@@ -39,14 +37,7 @@ public class FrenziedFlameRenderManager {
                 com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
         );
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
+        MATRICES.apply();
 
         RenderSystem.setShader(() -> ModShaders.FRENZIED_FLAME_SHADER);
 
@@ -85,9 +76,7 @@ public class FrenziedFlameRenderManager {
             tess.end();
         }
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        MATRICES.restore();
 
         RenderSystem.depthMask(true);
        // RenderSystem.enableDepthTest();
