@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.util.visuals.manager;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,10 +21,6 @@ public class MiniBlobRenderManager {
     private static final int MAX_BLOBS_PER_CLUSTER = 8;
     private static final double MERGE_RADIUS = 1.5;
     private static final List<MiniBlob> ACTIVE_MINI_BLOBS = new ArrayList<>();
-
-    private static int copiedColorTexture = -1;
-    private static int lastWidth = 0;
-    private static int lastHeight = 0;
 
     public static void addMiniBlob(MiniBlob blob) {
         ACTIVE_MINI_BLOBS.add(blob);
@@ -47,21 +41,7 @@ public class MiniBlobRenderManager {
 
         RenderTarget mainTarget = mc.getMainRenderTarget();
 
-        if (copiedColorTexture == -1 || lastWidth != mainTarget.width || lastHeight != mainTarget.height) {
-            if (copiedColorTexture != -1) {
-                TextureUtil.releaseTextureId(copiedColorTexture);
-            }
-            copiedColorTexture = TextureUtil.generateTextureId();
-            lastWidth = mainTarget.width;
-            lastHeight = mainTarget.height;
-
-            RenderSystem.bindTexture(copiedColorTexture);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        }
-
-        RenderSystem.bindTexture(copiedColorTexture);
-        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, mainTarget.width, mainTarget.height, 0);
+        int copiedColorTexture = SceneColorCopy.acquire(mainTarget);
 
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
