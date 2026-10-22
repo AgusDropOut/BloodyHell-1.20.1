@@ -52,13 +52,13 @@ public final class Effects {
             new TrailEffect("RadiantEnergy", () -> ModShaders.RADIANT_ENERGY_SHADER, () -> ModShaders.RADIANT_ENERGY_SHADER, EffectStates.PREMULTIPLIED_NO_DEPTH_TEST));
 
     public static final OrbRenderManager BLOOD_ORB = new OrbRenderManager(
-            OrbEffect.of("BloodOrb", () -> ModShaders.BLOOD_ORB_SHADER, 0.5f));
+            OrbEffect.of("BloodOrb", () -> ModShaders.BLOOD_ORB_SHADER, 0.5f, EffectStates.ORB));
 
     public static final OrbRenderManager GOLDEN_SORROW_ORB = new OrbRenderManager(
-            OrbEffect.of("GoldenSorrowOrb", () -> ModShaders.GOLDEN_SORROW_ORB_SHADER, 0.8f));
+            OrbEffect.of("GoldenSorrowOrb", () -> ModShaders.GOLDEN_SORROW_ORB_SHADER, 0.8f, EffectStates.ORB));
 
     public static final OrbRenderManager SCARLET_CINDER_ORB = new OrbRenderManager(
-            OrbEffect.of("ScarletCinderOrb", () -> ModShaders.SCARLET_CINDER_ORB_SHADER, 1.5f)
+            OrbEffect.of("ScarletCinderOrb", () -> ModShaders.SCARLET_CINDER_ORB_SHADER, 1.5f, EffectStates.ORB)
                     .withPerOrbUniforms(shader -> {
                         AbstractUniform pitch = shader.safeGetUniform("u_Pitch");
                         if (pitch != null) {

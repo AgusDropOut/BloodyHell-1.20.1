@@ -96,6 +96,7 @@ flowchart LR
     OE --> OM
     ES --> BE
     ES --> TE
+    ES --> OE
 
     EF["Effects (creates every effect)"]
     BM --> EF

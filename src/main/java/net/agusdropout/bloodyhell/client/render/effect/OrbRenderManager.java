@@ -58,11 +58,7 @@ public class OrbRenderManager implements DeferredRenderManager {
 
         int copiedColorTexture = SceneColorCopy.acquire(mainTarget);
 
-        RenderSystem.disableCull();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.disableDepthTest();
-        RenderSystem.depthMask(false);
+        effect.state().begin().run();
 
         RenderSystem.setShaderTexture(0, copiedColorTexture);
         RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
@@ -105,12 +101,7 @@ public class OrbRenderManager implements DeferredRenderManager {
         }
 
         RenderSystem.setProjectionMatrix(worldProjMat, VertexSorting.ORTHOGRAPHIC_Z);
-        RenderSystem.enableDepthTest();
-        RenderSystem.depthMask(true);
-        RenderSystem.enableCull();
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.colorMask(true, true, true, true);
+        effect.state().end().run();
 
         activeOrbs.clear();
     }

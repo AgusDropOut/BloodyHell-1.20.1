@@ -1,9 +1,4 @@
-﻿RenderSystem.disableCull();
-RenderSystem.enableBlend();
-RenderSystem.defaultBlendFunc();
-RenderSystem.disableDepthTest();
-RenderSystem.depthMask(false);
-RenderSystem.setShaderTexture(0, copiedColorTexture);
+﻿RenderSystem.setShaderTexture(0, copiedColorTexture);
 RenderSystem.setShaderTexture(1, mainTarget.getDepthTextureId());
 RenderSystem.setShader(() -> shader);
 if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);
@@ -15,9 +10,3 @@ shader.safeGetUniform("u_OrbViewPos").set(center.x(), center.y(), center.z());
 if(shader.safeGetUniform("u_OrbRotation") != null) {
 shader.safeGetUniform("u_OrbRotation").set(data.rotation());
 RenderSystem.setProjectionMatrix(worldProjMat, VertexSorting.ORTHOGRAPHIC_Z);
-RenderSystem.enableDepthTest();
-RenderSystem.depthMask(true);
-RenderSystem.enableCull();
-RenderSystem.disableBlend();
-RenderSystem.defaultBlendFunc();
-RenderSystem.colorMask(true, true, true, true);

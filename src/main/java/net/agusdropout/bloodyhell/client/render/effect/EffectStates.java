@@ -66,6 +66,23 @@ public final class EffectStates {
                 RenderSystem.disableBlend();
             });
 
+    public static final EffectState ORB = new EffectState(
+            () -> {
+                RenderSystem.disableCull();
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+                RenderSystem.disableDepthTest();
+                RenderSystem.depthMask(false);
+            },
+            () -> {
+                RenderSystem.enableDepthTest();
+                RenderSystem.depthMask(true);
+                RenderSystem.enableCull();
+                RenderSystem.disableBlend();
+                RenderSystem.defaultBlendFunc();
+                RenderSystem.colorMask(true, true, true, true);
+            });
+
     public static final EffectState BLACK_HOLE_ENTITY = new EffectState(
             () -> {
                 RenderSystem.enableBlend();
