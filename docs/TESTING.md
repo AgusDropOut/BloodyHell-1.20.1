@@ -31,6 +31,17 @@ Test-only code (`/bhtest`, the auto test, the shader cycle and `GlStateProbe`) l
 
 Commit messages are checked by `scripts/git-hooks/commit-msg`, which rejects Claude co-authorship and generation lines. On a fresh clone run `git config core.hooksPath scripts/git-hooks` once.
 
+## Static resource test
+
+`make test` (`./gradlew test`) runs `ResourceIntegrityTest`, plain JUnit with no Minecraft classes. It reads the Java sources and the resources (`src/main` and `src/generated`) and fails when:
+- a registered block has no blockstate or a registered item has no model;
+- a block or item has no lang entry, or a lang key is duplicated;
+- a model parent or texture, a blockstate model, a particle texture, a shader source or a sound file does not exist;
+- Java code points to a missing mod resource through `MODID, "textures/..."` style literals;
+- a loot table or recipe references an item that is not registered.
+
+Registered names come from `ITEMS.register`, `BLOCKS.register`, `registerBlock` and `registerBlockWithoutBlockItem`, so a new registration helper needs a new pattern in the test. Accepted gaps go in `src/test/resources/known-resource-gaps.txt` (the exact failure line, with a `#` comment saying why); the test run prints entries that no longer fail.
+
 ## Render refactor safety net
 
 Two checks that need no mixins, used to prove that a refactor of the render managers did not change the OpenGL state calls.

@@ -1,0 +1,3 @@
+# Accepted gaps found by ResourceIntegrityTest. One exact failure line per entry; a line that no longer fails is reported by the test run.
+# SpecialSlashRenderer asks for a blank texture that the render type never samples.
+resource literal missing: textures/entity/blank.png (in net/agusdropout/bloodyhell/client/render/entity/custom/renderer/SpecialSlashRenderer.java)

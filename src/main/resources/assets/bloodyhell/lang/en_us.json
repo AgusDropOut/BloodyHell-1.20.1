@@ -144,6 +144,10 @@
   "item.bloodyhell.rhnull_pipe_item": "Rhnull Pipe",
   "item.bloodyhell.sanguinite_blood_harvester_item": "Sanguinite Blood Harvester",
   "item.bloodyhell.unknown_portal_item": "Unknown Portal",
+  "item.bloodyhell.rhnull_blood_engine_item": "Rhnull Blood Engine",
+  "item.bloodyhell.rhnull_blood_engine_pillar_item": "Rhnull Blood Engine Pillar",
+  "item.bloodyhell.sanguinite_condenser_item": "Sanguinite Condenser",
+  "item.bloodyhell.rhnull_condenser_item": "Rhnull Condenser",
   "item.bloodyhell.seliora_resting_item": "Seliora Resting Block",
   "item.bloodyhell.blasphemous_blood_altar_item": "Blasphemous Blood Altar",
   "item.bloodyhell.main_blasphemous_blood_altar_item": "Main Blasphemous Blood Altar",
@@ -331,6 +335,7 @@
   "block.bloodyhell.rhnull_condenser": "Rhnull Condenser",
   "block.bloodyhell.sanguine_lapidary": "Sanguine Lapidary",
   "block.bloodyhell.rhnull_blood_engine_block": "Rhnull Blood Engine",
+  "block.bloodyhell.frenzied_fire_block": "Frenzied Fire",
   "block.bloodyhell.rhnull_blood_engine_pillar_block": "Rhnull Blood Engine Pillar",
 
   "_comment": "=== ENTITIES ===",

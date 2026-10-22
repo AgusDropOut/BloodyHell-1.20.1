@@ -136,6 +136,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    mavenCentral()
     maven {
         // Forge
         name = 'MinecraftForge'
@@ -188,6 +189,9 @@ dependencies {
 
     implementation fg.deobf("curse.maven:patchouli-306770:7731017")
 
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+
     if (project.hasProperty('bhShaders')) {
         runtimeOnly fg.deobf("curse.maven:rubidium-574856:${rubidium_file_id}")
         runtimeOnly fg.deobf("curse.maven:oculus-581495:${oculus_file_id}")
@@ -236,4 +240,12 @@ tasks.named('jar', Jar).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'failed'
+        exceptionFormat 'full'
+    }
 }

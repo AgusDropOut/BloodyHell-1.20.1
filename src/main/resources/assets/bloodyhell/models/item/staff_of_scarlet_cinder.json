@@ -63,6 +63,6 @@
     }
   },
   "textures": {
-    "particle": "bloodyhell:item/staff_of_the_scarlet_cinder"
+    "particle": "bloodyhell:item/staff_of_scarlet_cinder"
   }
 }

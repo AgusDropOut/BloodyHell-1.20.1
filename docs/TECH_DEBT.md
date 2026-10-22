@@ -2,7 +2,6 @@
 
 Known issues found during the review of the render managers. Not decisions: remove each item once fixed.
 
-3. `SceneColorCopy` never releases its texture on shutdown (the context goes away with the game, harmless in practice).
 
 Refactor ideas: one `DeferredRenderManager` interface with an explicit ordered registry (done), a shared scene-color copy (done) and a single `ShaderTime` helper (done).
 

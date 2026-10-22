@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "bloodyhell:block/blood_glow_stone_top",
-    "side": "bloodyhell:block/blood_glow_stone"
-  }
-}
