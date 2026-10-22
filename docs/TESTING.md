@@ -46,6 +46,8 @@ Commit messages are checked by `scripts/git-hooks/commit-msg`, which rejects Cla
 - a registered sound event is not in `sounds.json`, a `sounds.json` entry has no event, or a subtitle has no lang entry (subtitle keys are `subtitles.bloodyhell.<sound id>`);
 - a registered particle has no provider in `ClientEvents`, or a sprite particle has no `particles/<id>.json`.
 
+The test world also runs a harvest matrix (`BlockAudit.checkHarvest`) on every block with a loot table, using the real tags, tiers and loot tables of the running game: with the minimum tool of the rule the block must drop something; with a tool of the same kind one level below, or with the bare hand, it must drop nothing when the rule has a tier; and a block with no tool must drop something with the hand, shears or silk touch. Blocks whose drops are random (leaves) or that cannot be harvested on purpose are exempt in `HARVEST_EXEMPT`. A failure is logged as `[BHTEST] block audit violation`.
+
 The test world adds the runtime half of the block check: `BlockAudit` logs `[BHTEST] block audit violation` (an ERROR line, so the script fails) when the resolved tags or the tool requirement of a block disagree with its rule in `BlockToolRules`.
 
 Registered names come from `ITEMS.register`, `BLOCKS.register`, `registerBlock` and `registerBlockWithoutBlockItem`, so a new registration helper needs a new pattern in the test. Accepted gaps go in `src/test/resources/known-resource-gaps.txt` (the exact failure line, with a `#` comment saying why); the test run prints entries that no longer fail.
