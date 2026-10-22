@@ -3,7 +3,6 @@ package net.agusdropout.bloodyhell.util.visuals.manager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.TextureUtil;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.minecraft.Util;
@@ -12,17 +11,12 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BloodOrbRenderManager {
     private static final List<OrbData> ACTIVE_ORBS = new ArrayList<>();
-
-    private static int copiedColorTexture = -1;
-    private static int lastWidth = 0;
-    private static int lastHeight = 0;
 
     public static void renderAll(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
@@ -37,21 +31,7 @@ public class BloodOrbRenderManager {
             return;
         }
 
-        if (copiedColorTexture == -1 || lastWidth != mainTarget.width || lastHeight != mainTarget.height) {
-            if (copiedColorTexture != -1) {
-                TextureUtil.releaseTextureId(copiedColorTexture);
-            }
-            copiedColorTexture = TextureUtil.generateTextureId();
-            lastWidth = mainTarget.width;
-            lastHeight = mainTarget.height;
-
-            RenderSystem.bindTexture(copiedColorTexture);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        }
-
-        RenderSystem.bindTexture(copiedColorTexture);
-        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 0, 0, mainTarget.width, mainTarget.height, 0);
+        int copiedColorTexture = SceneColorCopy.acquire(mainTarget);
 
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
