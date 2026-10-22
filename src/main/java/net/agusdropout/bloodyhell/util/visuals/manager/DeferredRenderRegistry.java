@@ -43,6 +43,7 @@ public final class DeferredRenderRegistry {
     }
 
     public static void renderAll(RenderLevelStageEvent event) {
+        SceneColorCopy.invalidate();
         DeferredRenderObserver current = observer;
         if (current != null) current.begin();
         for (DeferredRenderManager manager : ORDERED) {
