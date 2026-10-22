@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicalRingParticleOptions;
-import net.agusdropout.bloodyhell.util.visuals.manager.MagicRingRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.MagicRingRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;

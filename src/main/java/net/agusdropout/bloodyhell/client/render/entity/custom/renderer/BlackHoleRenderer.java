@@ -4,8 +4,8 @@ import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.entity.effects.BlackHoleEntity;
-import net.agusdropout.bloodyhell.util.visuals.manager.BlackHoleEntityRenderManager;
-import net.agusdropout.bloodyhell.util.visuals.manager.BlackHoleRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.BlackHoleEntityRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.BlackHoleRenderManager;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

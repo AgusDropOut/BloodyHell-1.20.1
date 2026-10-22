@@ -9,7 +9,7 @@ import net.agusdropout.bloodyhell.entity.base.InsightEntity;
 import net.agusdropout.bloodyhell.client.render.entity.layer.InsightGlowingLayer;
 import net.agusdropout.bloodyhell.client.render.ModRenderTypes;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
-import net.agusdropout.bloodyhell.util.visuals.manager.DeferredTaskQueues;
+import net.agusdropout.bloodyhell.client.render.deferred.DeferredTaskQueues;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

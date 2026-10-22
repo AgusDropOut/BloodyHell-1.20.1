@@ -5,7 +5,16 @@ param(
 )
 
 $root = Split-Path -Parent $PSScriptRoot
-$managerDir = Join-Path $root "src\main\java\net\agusdropout\bloodyhell\util\visuals\manager"
+$renderDir = Join-Path $root "src\main\java\net\agusdropout\bloodyhell\client\render"
+$managerDirs = @("effect", "deferred", "item\deferred") | ForEach-Object { Join-Path $renderDir $_ }
+
+function Find-Source($name) {
+    foreach ($dir in $managerDirs) {
+        $found = Get-ChildItem $dir -Recurse -Filter ($name + ".java") -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($found) { return $found.FullName }
+    }
+    return Join-Path $renderDir ($name + ".java")
+}
 $baselineDir = Join-Path $PSScriptRoot "gl-baseline\calls"
 
 $callPattern = 'RenderSystem\.|GlStateManager\.|\bGL\d+C?\.|getUniform\(|bindTexture|blendFunc'
@@ -27,7 +36,7 @@ if ($Retire) {
 
 if ($Accept) {
     New-Item -ItemType Directory -Force $baselineDir | Out-Null
-    $calls = Get-Calls (Join-Path $managerDir ($Accept + ".java")) $false
+    $calls = Get-Calls (Find-Source $Accept) $false
     Set-Content -Path (Join-Path $baselineDir ($Accept + ".txt")) -Value $calls -Encoding utf8
     Write-Host "Accepted baseline for $Accept"
     exit 0
@@ -35,7 +44,7 @@ if ($Accept) {
 
 if ($Snapshot) {
     New-Item -ItemType Directory -Force $baselineDir | Out-Null
-    Get-ChildItem $managerDir -Filter *.java | ForEach-Object {
+    $managerDirs | ForEach-Object { Get-ChildItem $_ -Recurse -Filter *.java } | ForEach-Object {
         $calls = Get-Calls $_.FullName $false
         Set-Content -Path (Join-Path $baselineDir ($_.BaseName + ".txt")) -Value $calls -Encoding utf8
     }
@@ -46,7 +55,7 @@ if ($Snapshot) {
 $failed = 0
 Get-ChildItem $baselineDir -Filter *.txt | ForEach-Object {
     $name = $_.BaseName
-    $source = Join-Path $managerDir ($name + ".java")
+    $source = Find-Source $name
     $expected = @(Get-Content $_.FullName | Where-Object { $_ -notmatch $scaffoldingPattern })
     if (-not (Test-Path $source)) {
         Write-Host "MISSING  $name (source file no longer exists; update the baseline if it was moved on purpose)"

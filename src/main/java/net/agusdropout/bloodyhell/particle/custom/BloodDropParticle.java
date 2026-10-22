@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BloodDropParticleOption;
-import net.agusdropout.bloodyhell.util.visuals.manager.BloodDropRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.BloodDropRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;

@@ -60,7 +60,7 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
         if (!isManagerRendering && !isChildMorphing && (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND)) {
-            net.agusdropout.bloodyhell.util.visuals.manager.OmnitomeBookRenderManager.INSTANCE.queueBook(this, stack, transformType, poseStack, packedLight, packedOverlay);
+            net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeBookRenderManager.INSTANCE.queueBook(this, stack, transformType, poseStack, packedLight, packedOverlay);
             return;
         }
 
@@ -140,7 +140,7 @@ public class OmnitomeRenderer extends GeoItemRenderer<OmnitomeItem> {
 
             float currentMorphProgress = Mth.clamp((this.virtualElapsed - CHILD_SPAWN_START) / (CHILD_SPAWN_END - CHILD_SPAWN_START), 0.0f, 1.0f);
 
-            net.agusdropout.bloodyhell.util.visuals.manager.OmnitomeClipRenderManager.INSTANCE.queueClipBook(
+            net.agusdropout.bloodyhell.client.render.item.deferred.OmnitomeClipRenderManager.INSTANCE.queueClipBook(
                     this.renderingSpell,
                     this.currentTransform,
                     poseStack,

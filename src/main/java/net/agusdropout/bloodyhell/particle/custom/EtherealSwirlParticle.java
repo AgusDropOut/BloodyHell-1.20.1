@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.EtherealSwirlOptions;
-import net.agusdropout.bloodyhell.util.visuals.manager.SwirlRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.SwirlRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;

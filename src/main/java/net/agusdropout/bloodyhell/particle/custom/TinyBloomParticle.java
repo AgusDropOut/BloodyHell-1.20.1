@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions;
-import net.agusdropout.bloodyhell.util.visuals.manager.TinyBloomRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.TinyBloomRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;

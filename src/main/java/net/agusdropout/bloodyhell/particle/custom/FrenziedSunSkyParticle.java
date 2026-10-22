@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.client.data.ClientInsightData;
-import net.agusdropout.bloodyhell.util.visuals.manager.FrenziedFlameRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.FrenziedFlameRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

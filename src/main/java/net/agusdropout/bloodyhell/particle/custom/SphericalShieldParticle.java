@@ -11,7 +11,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SphericalShieldParticleOptions;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
-import net.agusdropout.bloodyhell.util.visuals.manager.SphericalShieldRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.SphericalShieldRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;

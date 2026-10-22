@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.kosmx.playerAnim.core.util.Vec3f;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TinyBloomParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
-import net.agusdropout.bloodyhell.util.visuals.manager.FrenziedTrailRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.FrenziedTrailRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;

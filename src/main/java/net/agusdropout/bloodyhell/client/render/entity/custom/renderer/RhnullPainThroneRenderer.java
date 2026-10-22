@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullPainThroneEntity;
-import net.agusdropout.bloodyhell.util.visuals.manager.DeferredTaskQueues;
+import net.agusdropout.bloodyhell.client.render.deferred.DeferredTaskQueues;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

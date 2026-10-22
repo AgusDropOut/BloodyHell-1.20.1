@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.UnknownPortalBlockEntity;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.BlackHoleParticleOptions;
-import net.agusdropout.bloodyhell.util.visuals.manager.BlackHoleRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.BlackHoleRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.minecraft.client.Camera;

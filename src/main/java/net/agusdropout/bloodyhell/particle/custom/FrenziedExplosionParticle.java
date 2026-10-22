@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.FrenziedExplosionParticleOptions;
-import net.agusdropout.bloodyhell.util.visuals.manager.FrenziedExplosionRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.FrenziedExplosionRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;

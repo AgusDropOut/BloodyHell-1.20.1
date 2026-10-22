@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.devtools;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.logging.LogUtils;
-import net.agusdropout.bloodyhell.util.visuals.manager.DeferredRenderObserver;
+import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderObserver;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;

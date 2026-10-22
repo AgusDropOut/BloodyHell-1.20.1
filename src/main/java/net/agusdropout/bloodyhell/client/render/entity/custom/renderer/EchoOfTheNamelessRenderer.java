@@ -15,7 +15,7 @@ import net.agusdropout.bloodyhell.client.render.entity.layer.EchoGlowLayer;
 import net.agusdropout.bloodyhell.entity.unknown.custom.EchoOfTheNamelessEntity;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
-import net.agusdropout.bloodyhell.util.visuals.manager.SphericalShieldRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.SphericalShieldRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

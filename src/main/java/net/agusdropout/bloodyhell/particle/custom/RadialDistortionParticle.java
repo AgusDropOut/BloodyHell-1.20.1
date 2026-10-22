@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.RadialDistortionParticleOptions;
-import net.agusdropout.bloodyhell.util.visuals.manager.RadialDistortionRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.RadialDistortionRenderManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;

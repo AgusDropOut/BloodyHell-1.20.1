@@ -6,7 +6,7 @@ import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.ModItems;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MiniBlobParticleOptions;
 import net.agusdropout.bloodyhell.sound.ModSounds;
-import net.agusdropout.bloodyhell.util.visuals.types.IBloodBlobEmitter;
+import net.agusdropout.bloodyhell.client.render.effect.api.IBloodBlobEmitter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

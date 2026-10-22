@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.devtools;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.util.visuals.manager.DeferredRenderRegistry;
+import net.agusdropout.bloodyhell.client.render.deferred.DeferredRenderRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

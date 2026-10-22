@@ -2,7 +2,8 @@ package net.agusdropout.bloodyhell.event.handlers;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
-import net.agusdropout.bloodyhell.util.visuals.manager.*;
+import net.agusdropout.bloodyhell.client.render.deferred.DeferredRenderRegistry;
+import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

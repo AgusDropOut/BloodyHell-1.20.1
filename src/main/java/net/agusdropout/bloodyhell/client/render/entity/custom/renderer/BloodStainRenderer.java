@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.client.render.entity.custom.renderer;
 import net.agusdropout.bloodyhell.client.render.entity.custom.model.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.agusdropout.bloodyhell.util.visuals.manager.BloodStainDecalRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.BloodStainDecalRenderManager;
 import net.agusdropout.bloodyhell.entity.effects.BloodStainEntity;
 
 import net.minecraft.client.renderer.MultiBufferSource;

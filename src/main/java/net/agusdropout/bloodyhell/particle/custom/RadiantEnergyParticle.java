@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.agusdropout.bloodyhell.util.visuals.manager.RadiantEnergyRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.RadiantEnergyRenderManager;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
