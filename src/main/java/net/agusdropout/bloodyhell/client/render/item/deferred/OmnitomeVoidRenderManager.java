@@ -76,6 +76,7 @@ public class OmnitomeVoidRenderManager implements DeferredRenderManager {
         }
 
         RenderSystem.setProjectionMatrix(currentProj, currentSorting);
+        RenderSystem.enableDepthTest();
         tasks.clear();
     }
 }

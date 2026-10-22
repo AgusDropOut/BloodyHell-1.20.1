@@ -44,7 +44,6 @@ public class ModRenderTypes extends RenderType {
                 .setCullState(CULL)
                 .setLightmapState(LIGHTMAP)
                 .setOverlayState(OVERLAY)
-                .setDepthTestState(NO_DEPTH_TEST)
                 .createCompositeState(true);
 
         return create("bloodyhell_omnitome_void", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, state);
