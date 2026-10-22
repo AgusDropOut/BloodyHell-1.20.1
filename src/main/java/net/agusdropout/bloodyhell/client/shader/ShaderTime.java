@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.client.shader;
 import net.minecraft.Util;
 
 public final class ShaderTime {
-    private static final long WRAP_MILLIS = 100000L;
+    private static final long WRAP_MILLIS = 3600000L;
 
     private ShaderTime() {}
 
