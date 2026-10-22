@@ -26,14 +26,11 @@ public class BlasphemousSpearEntity extends Entity implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    // ANIMACIONES
     private static final RawAnimation ANIM_RISE = RawAnimation.begin().thenPlay("rise");
     private static final RawAnimation ANIM_IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation ANIM_RETRACT = RawAnimation.begin().thenPlay("retract");
 
-    // ESTADOS (INT)
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(BlasphemousSpearEntity.class, EntityDataSerializers.INT);
-
 
     private static final EntityDataAccessor<Float> FORCED_YAW = SynchedEntityData.defineId(BlasphemousSpearEntity.class, EntityDataSerializers.FLOAT);
 
@@ -59,7 +56,6 @@ public class BlasphemousSpearEntity extends Entity implements GeoEntity {
         this.damage = damage;
         this.ownerUUID = ownerUUID;
 
-
         this.setForcedYaw(yaw);
     }
 
@@ -68,7 +64,6 @@ public class BlasphemousSpearEntity extends Entity implements GeoEntity {
         this.entityData.define(ANIM_STATE, STATE_RISE);
         this.entityData.define(FORCED_YAW, 0f);
     }
-
 
     public float getForcedYaw() {
         return this.entityData.get(FORCED_YAW);
@@ -100,7 +95,6 @@ public class BlasphemousSpearEntity extends Entity implements GeoEntity {
             else {
                 setAnimState(STATE_RETRACT);
 
-
                 if (age == (RISE_TICKS + IDLE_TICKS)) {
                     spawnRetractParticles();
                 }
@@ -111,7 +105,6 @@ public class BlasphemousSpearEntity extends Entity implements GeoEntity {
         }
     }
 
-
     private void spawnRetractParticles() {
         if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             BlockPos underPos = this.blockPosition().below();
@@ -119,24 +112,20 @@ public class BlasphemousSpearEntity extends Entity implements GeoEntity {
 
             if (state.isAir()) return;
 
-
             net.minecraft.core.particles.ParticleOptions particle =
                     new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK, state);
-
 
             for (int i = 0; i < 8; i++) {
                 double angle = (2 * Math.PI / 8) * i;
                 double px = this.getX() + Math.cos(angle) * 0.4;
                 double pz = this.getZ() + Math.sin(angle) * 0.4;
 
-
                 serverLevel.sendParticles(particle,
                         px, this.getY() + 0.1, pz,
                         1,
-                        0.0, 0.1, 0.0, // Delta X, Y, Z (aleatoriedad)
+                        0.0, 0.1, 0.0,
                         0.15);
             }
-
 
             serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.POOF,
                     this.getX(), this.getY() + 0.5, this.getZ(),
@@ -151,10 +140,7 @@ public class BlasphemousSpearEntity extends Entity implements GeoEntity {
 
         for (LivingEntity target : targets) {
 
-
-
             if (this.ownerUUID != null && target.getUUID().equals(ownerUUID)) continue;
-
 
             target.hurt(this.level().damageSources().magic(), damage);
         }

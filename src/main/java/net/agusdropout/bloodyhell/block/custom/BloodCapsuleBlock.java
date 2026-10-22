@@ -41,19 +41,14 @@ public class BloodCapsuleBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
-    // --- DESTRUCTION LOGIC (Spawning Mobs/Items) ---
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        // Only run if the block is actually changing to a DIFFERENT block (i.e., destroyed)
+
         if (!state.is(newState.getBlock())) {
 
-            // Run on Server Side only
             if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
                 float chance = level.random.nextFloat();
 
-                // Logic: Exclusively spawn one OR the other OR neither
-
-                // 1. 25% Chance to spawn the Mob
                 if (chance < 0.25f) {
                     Entity entity = ModEntityTypes.OFFSPRING_OF_THE_UNKNOWN.get().create(level);
                     if (entity != null) {
@@ -61,57 +56,49 @@ public class BloodCapsuleBlock extends Block {
                         level.addFreshEntity(entity);
                     }
                 }
-                // 2. 25% Chance to drop the Finger (Only if mob didn't spawn)
+
                 else if (chance < 0.50f) {
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(),
                             new ItemStack(WeaponItems.UNKNOWN_ENTITY_FINGER.get()));
                 }
 
-                // Remaining 50%: Normal behavior (just breaks, drops block loot if configured)
             }
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
-    // --- PARTICLES (Magic Red Gradient) ---
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        // 30% Chance per tick
+
         if (random.nextFloat() < 0.3f) {
 
-            // 1. Calculate Random Position INSIDE the block (Safety padding of 0.2)
             double x = pos.getX() + 0.2 + (random.nextDouble() * 0.6);
             double y = pos.getY() + 0.2 + (random.nextDouble() * 0.6);
             double z = pos.getZ() + 0.2 + (random.nextDouble() * 0.6);
 
-            // 2. Colors: Red -> Dark Red Gradient
-            // We use a simple randomizer for the gradient factor
             float ratio = random.nextFloat();
             Vector3f color = ParticleHelper.gradient3(ratio,
-                    new Vector3f(1.0f, 0.0f, 0.0f),  // Pure Red
-                    new Vector3f(0.6f, 0.0f, 0.0f),  // Darker Red
-                    new Vector3f(0.3f, 0.0f, 0.0f)); // Very Dark Red
+                    new Vector3f(1.0f, 0.0f, 0.0f),
+                    new Vector3f(0.6f, 0.0f, 0.0f),
+                    new Vector3f(0.3f, 0.0f, 0.0f));
 
             float size = 0.15f + random.nextFloat() * 0.1f;
 
-            // 3. Spawn Particle using your helper
             ParticleHelper.spawn(level, new MagicFloorParticleOptions(
                     color,
                     size,
-                    true, // Emissive (glowing) matches the theme well
-                    40    // Lifetime
-            ), x, y, z, 0.0, 0.005, 0.0); // Very slow upward float
+                    true,
+                    40
+            ), x, y, z, 0.0, 0.005, 0.0);
         }
 
-        // Ambient Sound
         if (random.nextFloat() < 0.02f) {
             level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
                     SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 0.3f, 0.1f, false);
         }
     }
 
-    // --- PLACEMENT & VISUALS (Standard) ---
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -123,7 +110,6 @@ public class BloodCapsuleBlock extends Block {
         builder.add(FACING);
     }
 
-    // IMPORTANT: Fixes the visibility issue
     @Override
     public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
         return Shapes.empty();

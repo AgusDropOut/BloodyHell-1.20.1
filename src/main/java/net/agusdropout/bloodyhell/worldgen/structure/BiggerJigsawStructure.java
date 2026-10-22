@@ -33,7 +33,7 @@ public class BiggerJigsawStructure extends Structure {
                     HeightProvider.CODEC.fieldOf("start_height").forGetter((structure) -> structure.startHeight),
                     Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter((structure) -> structure.projectStartToHeightmap),
                     Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter((structure) -> structure.maxDistanceFromCenter)
-            ).apply(instance, BiggerJigsawStructure::new))/*.flatXmap(verifyRange(), verifyRange())*/.codec();
+            ).apply(instance, BiggerJigsawStructure::new)).codec();
 
     private final Holder<StructureTemplatePool> startPool;
     private final Optional<ResourceLocation> startJigsawName;

@@ -23,11 +23,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModEntityTypes {
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, BloodyHell.MODID);
 
-    // =======================================================================================
-    // 1. LIVING ENTITIES (MONSTERS & CREATURES)
-    // These MUST have attributes registered in ModEvents.java
-    // =======================================================================================
-
     public static final RegistryObject<EntityType<BloodThirstyBeastEntity>> BLOODTHIRSTYBEAST = ENTITY_TYPES.register("bloodthirstybeast",
             () -> EntityType.Builder.of(BloodThirstyBeastEntity::new, MobCategory.MONSTER).sized(1.5f,1.5f).build(new ResourceLocation(BloodyHell.MODID, "bloodthirstybeast").toString()));
 
@@ -100,11 +95,7 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<UnknownLanternEntity>> UNKNOWN_LANTERN = ENTITY_TYPES.register("unknown_lantern",
             () -> EntityType.Builder.of(UnknownLanternEntity::new, MobCategory.MONSTER).sized(1.2f, 2.5f).build(new ResourceLocation(BloodyHell.MODID, "unknown_lantern").toString()));
 
-
-    // =======================================================================================
-    // 2. PROJECTILES, SPELLS & MISC ENTITIES
     // Changed to MobCategory.MISC so they DO NOT need attributes!
-    // =======================================================================================
 
     public static final RegistryObject<EntityType<BloodArrowEntity>> BLOOD_ARROW = ENTITY_TYPES.register("blood_arrow_entity",
             () -> EntityType.Builder.<BloodArrowEntity>of(BloodArrowEntity::new,MobCategory.MISC).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID, "blood_arrow_entity").toString()));
@@ -212,7 +203,7 @@ public class ModEntityTypes {
             () -> EntityType.Builder.<BloodSoulEntity>of(BloodSoulEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(new ResourceLocation(BloodyHell.MODID, "blood_soul_entity").toString()));
 
     public static final RegistryObject<EntityType<RhnullImpalerEntity>> RHNULL_IMPALER_PROJECTILE = ENTITY_TYPES.register("rhnull_impaler_projectile",
-            () -> EntityType.Builder.<RhnullImpalerEntity>of(RhnullImpalerEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(new ResourceLocation(BloodyHell.MODID, "rhnull_impaler_projectile").toString())); // Fixed the namespace bug here too
+            () -> EntityType.Builder.<RhnullImpalerEntity>of(RhnullImpalerEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(new ResourceLocation(BloodyHell.MODID, "rhnull_impaler_projectile").toString()));
 
     public static final RegistryObject<EntityType<RhnullHeavySwordEntity>> RHNULL_HEAVY_SWORD_PROJECTILE = ENTITY_TYPES.register("rhnull_heavy_sword_projectile",
             () -> EntityType.Builder.<RhnullHeavySwordEntity>of(RhnullHeavySwordEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(new ResourceLocation(BloodyHell.MODID, "rhnull_heavy_sword_projectile").toString()));

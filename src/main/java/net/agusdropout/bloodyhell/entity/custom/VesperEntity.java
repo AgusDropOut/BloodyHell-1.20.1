@@ -51,7 +51,6 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
     private static final EntityDataAccessor<Boolean> ATTACKING =
             SynchedEntityData.defineId(VesperEntity.class, EntityDataSerializers.BOOLEAN);
 
-
     public VesperEntity(EntityType<? extends PathfinderMob> p_35267_, Level p_35268_) {
         super(p_35267_, p_35268_);
         currentInteractionCount = 0;
@@ -116,7 +115,6 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
 
         Item reqItem2 = getItemFromConfig(ModCommonConfig.VESPER_QUEST_ITEM_2_ID.get());
         int reqCount2 = ModCommonConfig.VESPER_QUEST_ITEM_2_COUNT.get();
-
 
         if (isItemQuantityValid(reqItem1, reqCount1, 0) && isItemQuantityValid(reqItem2, reqCount2, 1)) {
             double range = 5.0D;
@@ -203,7 +201,7 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
         }
 
         if(this.isAttacking() && attackAnimationTimeout <= 0) {
-            attackAnimationTimeout = 45; // Length in ticks of your animation
+            attackAnimationTimeout = 45;
             attackAnimationState.start(this.tickCount);
         } else {
             --this.attackAnimationTimeout;
@@ -248,6 +246,4 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
     }
 
 }
-
-
 

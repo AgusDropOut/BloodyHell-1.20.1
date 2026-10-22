@@ -15,36 +15,26 @@ import java.util.List;
 
 public enum GemType {
 
-
-
     EMPTY("empty", 0xFFFFFF, Items.AIR, null, ""),
     PURE("pure_blood_gem", 0xFF2222, SanguiniteItems.SANGUINITE.get(), GemItems.PURE_BLOOD_GEM.get(), "damage"),
     AVENTURINE("aventurine_blood_gem", 0x0088ff, Items.LAPIS_LAZULI, GemItems.AVENTURINE_BLOOD_GEM.get(), "size"),
     CITRINE("citrine_blood_gem", 0xffb700, Items.GOLD_NUGGET, GemItems.CITRINE_BLOOD_GEM.get(), "quantity"),
     TANZARINE("tanzarine_blood_gem", 0xa600ff, Items.AMETHYST_SHARD, GemItems.TANZARINE_BLOOD_GEM.get(), "duration");
 
-
-    /* Universal Bonus Types */
     public static final String TYPE_DAMAGE = "damage";
     public static final String TYPE_SIZE = "size";
     public static final String TYPE_QUANTITY = "quantity";
     public static final String TYPE_DURATION = "duration";
 
-
-    // --- CONFIGURABLE STAT RANGES ---
-    // Damage
     private static final double MIN_DAMAGE = 2.0;
     private static final double MAX_DAMAGE = 10.0;
 
-    // Size (Multiplier, e.g., 0.1 = +10%)
     private static final double MIN_SIZE_BONUS = 0.1;
     private static final double MAX_SIZE_BONUS = 0.5;
 
-    // Quantity (Flat extra projectiles)
     private static final double MIN_QUANTITY_BONUS = 1.0;
     private static final double MAX_QUANTITY_BONUS = 3.0;
 
-    // Duration (Seconds or Multiplier)
     private static final double MIN_DURATION_BONUS = 0.5;
     private static final double MAX_DURATION_BONUS = 3.0;
 
@@ -75,9 +65,6 @@ public enum GemType {
     public Item getResultGem() { return resultGem; }
     public String getBonusType() { return bonusType; }
 
-    /**
-     * Calculates the random stat.
-     */
     public double getBonusStat(RandomSource random) {
         return switch (this.bonusType) {
             case "damage" -> {
@@ -100,16 +87,6 @@ public enum GemType {
         };
     }
 
-    /**
-     * Generating "Rarity":
-     * Uses a Power Function to skew results.
-     * * @param min  The worst possible stat
-     * @param max  The god-roll stat
-     * @param bias Power curve.
-     * 1.0 = Linear (Equal chance for all).
-     * 2.0 = Quadratic (High stats are rare).
-     * 3.0 = Cubic (High stats are LEGENDARY).
-     */
     private double rollRareStat(RandomSource random, double min, double max, double bias) {
         double t = random.nextDouble();
         double weightedT = Math.pow(t, bias);
@@ -118,7 +95,6 @@ public enum GemType {
 
     public static GemType byName(String name) {
         if (name == null || name.isEmpty()) return EMPTY;
-
 
         try {
             return valueOf(name);
@@ -161,7 +137,6 @@ public enum GemType {
         return GemType.EMPTY;
     }
 
-
     public static String getFormattedBonus(String statType, double value) {
         return switch (statType) {
             case "damage" -> "+" + value + " Damage";
@@ -181,7 +156,6 @@ public enum GemType {
             default -> ChatFormatting.WHITE;
         };
     }
-
 
     public static List<Gem> getGemsFromWeapon(ItemStack weapon){
         List<Gem> gems = new java.util.ArrayList<>();
@@ -234,6 +208,5 @@ public enum GemType {
         gemStack.getOrCreateTag().putDouble(gem.getStat(), gem.getValue());
         return gemStack;
     }
-
 
 }

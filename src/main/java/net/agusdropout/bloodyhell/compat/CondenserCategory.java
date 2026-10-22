@@ -33,7 +33,6 @@ public class CondenserCategory implements IRecipeCategory<CondenserRecipe> {
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(PlaceableItems.SANGUINITE_CONDENSER_ITEM.get()));
         this.slotDrawable = helper.getSlotDrawable();
 
-        // Extracts the standard filled arrow from the native vanilla furnace texture
         this.arrow = helper.createDrawable(new ResourceLocation("minecraft", "textures/gui/container/furnace.png"), 176, 14, 24, 17);
     }
 
@@ -75,10 +74,9 @@ public class CondenserCategory implements IRecipeCategory<CondenserRecipe> {
 
     @Override
     public void draw(CondenserRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        // Renders a plus symbol between the item and fluid slots
+
         guiGraphics.drawString(Minecraft.getInstance().font, "+", 27, 14, 0x888888, false);
 
-        // Renders the vanilla progress arrow pointing to the output
         this.arrow.draw(guiGraphics, 58, 9);
     }
 }

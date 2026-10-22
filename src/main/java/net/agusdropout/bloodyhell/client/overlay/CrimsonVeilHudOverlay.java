@@ -24,12 +24,6 @@ public class CrimsonVeilHudOverlay  {
 
     }
 
-
-
-
-
-
-
     private int getMaxMana(Player player) {
         return player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL)
                 .map(cap -> cap.getMAX_CRIMSOMVEIL())
@@ -54,9 +48,8 @@ public class CrimsonVeilHudOverlay  {
 
         int maxMana = 100;
 
-        int offsetLeft = 40;//+right -left
+        int offsetLeft = 40;
         int yOffset = minecraft.getWindow().getGuiScaledHeight() - 40;
-
 
         guiGraphics.blit(SPHERE_EMPTY, offsetLeft, yOffset, 0, 0, SPHERE_SIZE, SPHERE_SIZE, 38, 38);
 
@@ -68,6 +61,5 @@ public class CrimsonVeilHudOverlay  {
     }
 
     static boolean stillBar = true;
-
 
 }

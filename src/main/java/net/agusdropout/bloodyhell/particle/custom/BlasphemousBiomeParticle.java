@@ -6,7 +6,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public class BlasphemousBiomeParticle extends TextureSheetParticle {
-    // Global shared wind direction (static)
+
     private static double windX = 0;
     private static double windZ = 0;
     private static int ticksUntilChange = 0;
@@ -20,7 +20,6 @@ public class BlasphemousBiomeParticle extends TextureSheetParticle {
         super.tick();
 
         this.alpha = 1.0f - ((float) this.age / this.lifetime);
-
 
         this.x += WindController.windX;
         this.z += WindController.windZ;

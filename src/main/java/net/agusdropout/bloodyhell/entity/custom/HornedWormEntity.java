@@ -37,7 +37,6 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-
 public class HornedWormEntity extends Monster implements GeoEntity {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
@@ -53,16 +52,12 @@ public class HornedWormEntity extends Monster implements GeoEntity {
     public int maxBurrowSoundEffectDuration = 120;
     public int burrowSoundEffectDuration = 0;
 
-
-
     private static final EntityDataAccessor<Integer> ATTACK_COOLDOWN = SynchedEntityData.defineId(HornedWormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(HornedWormEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Boolean> IS_BURROWED = SynchedEntityData.defineId(HornedWormEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_BURROWING = SynchedEntityData.defineId(HornedWormEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_RISING = SynchedEntityData.defineId(HornedWormEntity.class, EntityDataSerializers.BOOLEAN);
-
-
 
     @Override
     protected void defineSynchedData() {
@@ -79,7 +74,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
         super.addAdditionalSaveData(compoundTag);
     }
 
-
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
@@ -95,7 +89,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
                 .add(Attributes.ATTACK_SPEED, 0.8F)
                 .add(Attributes.MOVEMENT_SPEED, 0.20f)
                 .add(Attributes.FOLLOW_RANGE,20);
-
 
     }
 
@@ -133,9 +126,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
 
     }
 
-
-
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController(this, "controller",
@@ -154,7 +144,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
     public void aiStep() {
         super.aiStep();
             if(this.level().isClientSide()) return;
-
 
             if (this.getTarget() != null && !this.getIsAttacking()) {
                 this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
@@ -226,11 +215,7 @@ public class HornedWormEntity extends Monster implements GeoEntity {
                 }
             }
 
-
-
-
     }
-
 
     public void updateCooldowns(){
         if(this.getAttackCooldown() > 0 && !this.getIsAttacking()){
@@ -250,8 +235,7 @@ public class HornedWormEntity extends Monster implements GeoEntity {
 
     @Override
     public boolean canCollideWith(Entity p_20303_) {
-        //if(this.isBurrowed() || this.getIsAttacking()) {
-        //} else return super.canCollideWith(p_20303_);
+
         return false;
     }
 
@@ -272,8 +256,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
         } else super.knockback(p_147241_, p_147242_, p_147243_);
     }
 
-
-
     public void burrowingAndRisingEffects() {
 
         BlockPos belowPos = this.blockPosition().below();
@@ -281,7 +263,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
         if (level() instanceof ServerLevel serverLevel) {
             serverLevel.playSound(null, this.blockPosition(), belowBlock.getSoundType().getHitSound(), SoundSource.HOSTILE, 1.0F, 1.0F);
 
-            // Use Explosion helper for block debris
             ParticleHelper.spawnExplosion(level(), new BlockParticleOption(ParticleTypes.BLOCK, belowBlock),
                     position(), 10, 0.1, 0.5);
         }
@@ -293,17 +274,13 @@ public class HornedWormEntity extends Monster implements GeoEntity {
         BlockPos belowPos = this.blockPosition().below();
         BlockState belowBlock = serverLevel.getBlockState(belowPos);
 
-
         if (belowBlock.isAir() || belowBlock.getFluidState().isSource()) return;
 
-
         Vec3 motion = this.getDeltaMovement();
-
 
         double vx = -motion.x * 0.5;
         double vy = Math.abs(motion.y) * 0.3 + 0.05;
         double vz = -motion.z * 0.5;
-
 
         serverLevel.sendParticles(
                 new BlockParticleOption(ParticleTypes.BLOCK, belowBlock),
@@ -312,7 +289,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
                 0.25, 0.1, 0.25,
                 0
         );
-
 
         for (int i = 0; i < 5; i++) {
             double spreadX = vx + (serverLevel.random.nextDouble() - 0.5) * 0.1;
@@ -325,9 +301,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
             );
         }
     }
-
-
-    //Getters & Setters
 
     public void setAttackCooldown(int cooldown) {
         this.entityData.set(ATTACK_COOLDOWN, cooldown);
@@ -374,14 +347,8 @@ public class HornedWormEntity extends Monster implements GeoEntity {
         }
     }
 
-
     protected float getSoundVolume() {
         return 1F;
     }
-
-
-
-
-
 
 }

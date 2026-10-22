@@ -39,20 +39,17 @@ public class TeleportNearGoal extends Goal {
 
         boolean success = false;
 
-
         for (int i = 0; i < 10; i++) {
             Vec3 targetPos = target.position();
 
-            double xOffset = (random.nextDouble() * 8.0) - 4.0; // -4 a 4
+            double xOffset = (random.nextDouble() * 8.0) - 4.0;
             double zOffset = (random.nextDouble() * 8.0) - 4.0;
 
             BlockPos targetBlockPos = new BlockPos((int)(targetPos.x + xOffset), (int)targetPos.y, (int)(targetPos.z + zOffset));
 
-
             BlockPos safePos = findGround(targetBlockPos);
 
             if (safePos != null) {
-
 
                 if (canSeePosition(entity.position(), Vec3.atCenterOf(safePos))) {
                     executeTeleport(safePos);
@@ -61,7 +58,6 @@ public class TeleportNearGoal extends Goal {
                 }
             }
         }
-
 
         stop();
     }
@@ -83,20 +79,17 @@ public class TeleportNearGoal extends Goal {
 
         BlockPos.MutableBlockPos mutable = pos.mutable();
 
-
         int safetyCounter = 0;
         while (entity.level().getBlockState(mutable).blocksMotion() && safetyCounter < 5) {
             mutable.move(Direction.UP);
             safetyCounter++;
         }
 
-
         safetyCounter = 0;
         while (!entity.level().getBlockState(mutable.below()).blocksMotion() && mutable.getY() > entity.level().getMinBuildHeight() && safetyCounter < 5) {
             mutable.move(Direction.DOWN);
             safetyCounter++;
         }
-
 
         if (!entity.level().getBlockState(mutable).blocksMotion() &&
                 !entity.level().getBlockState(mutable.above()).blocksMotion()) {
@@ -120,9 +113,7 @@ public class TeleportNearGoal extends Goal {
                     1, 0.0, 0.0, 0.0, 0.0
             );
 
-            // Teletransporte
             entity.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-
 
             spawnBlasphemousParticles();
             entity.level().playSound(null, entity.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 1.0F);

@@ -45,13 +45,10 @@ import java.util.List;
 
 public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable, IGemSpell {
 
-    // --- FIELDS & DATA KEYS ---
-
     private static final EntityDataAccessor<Boolean> DATA_LAUNCHED = SynchedEntityData.defineId(BloodFireMeteorEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DATA_SCALE = SynchedEntityData.defineId(BloodFireMeteorEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DATA_GROW_TIME = SynchedEntityData.defineId(BloodFireMeteorEntity.class, EntityDataSerializers.INT);
 
-    // Defaults
     private static final int DEFAULT_GROW_TIME = 40;
     private static final float DEFAULT_EXPLOSION_RADIUS = 4.0f;
     private static final int DEFAULT_TICKS_DELAY = 0;
@@ -60,15 +57,11 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
     private float speed = 1.5f;
     private float explosionRadius = DEFAULT_EXPLOSION_RADIUS;
 
-
-    // --- CONSTRUCTORS & INIT ---
-
     public BloodFireMeteorEntity(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
         this.noPhysics = true;
     }
 
-    // Standard Constructor (Mobs)
     public BloodFireMeteorEntity(Level level, LivingEntity owner, float damage, float speed, float size) {
         this(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), level);
         this.setOwner(owner);
@@ -79,13 +72,11 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
         calculateSmartSpawnPosition(owner, level);
     }
 
-    // Gem Constructor (Spellbook)
     public BloodFireMeteorEntity(Level level, LivingEntity owner, float damage, float speed, float size,int ticksDelay, List<Gem> gems) {
         this(ModEntityTypes.BLOOD_FIRE_METEOR_PROJECTILE.get(), level);
         this.setOwner(owner);
         this.damage = damage;
         this.speed = speed;
-
 
         this.setDataGrowTime(DEFAULT_GROW_TIME+ticksDelay);
         this.entityData.set(DATA_SCALE, size);
@@ -120,14 +111,10 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
         this.entityData.define(DATA_GROW_TIME, DEFAULT_GROW_TIME);
     }
 
-    // --- GETTERS ---
-
     public float getScale() { return this.entityData.get(DATA_SCALE); }
     public boolean isLaunched() { return this.entityData.get(DATA_LAUNCHED); }
     public int getGrowTime() { return this.entityData.get(DATA_GROW_TIME); }
     public void setDataGrowTime(int time) { this.entityData.set(DATA_GROW_TIME, time); }
-
-    //  MAIN TICK LOOP ---
 
     @Override
     public void tick() {
@@ -165,8 +152,6 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
         if (this.tickCount > 200 + growTime) discard();
     }
 
-    // ---LOGIC & PHYSICS ---
-
     private void launch() {
         this.entityData.set(DATA_LAUNCHED, true);
 
@@ -187,7 +172,7 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
             this.level().playSound(null, getX(), getY(), getZ(), SoundEvents.GHAST_SHOOT, SoundSource.HOSTILE, 2.0f, 0.5f);
 
         } else {
-            // Dead Owner Fallback
+
             this.setDeltaMovement(new Vec3(0, -1, 0).normalize().scale(this.speed));
         }
     }
@@ -202,7 +187,6 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
         EntityCameraShake.cameraShake(this.level(), this.position(), 20.0f * size, 1.5f, 15, 10);
         this.level().playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 2.0f, 0.6f);
         this.level().broadcastEntityEvent(this, (byte) 3);
-
 
         spawnFallingBlocks(size);
         spawnBloodStain(size);
@@ -276,8 +260,6 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
         }
     }
 
-    // --- CLIENT VISUALS ---
-
     private void spawnParticles(float size) {
         if (!isLaunched()) return;
 
@@ -341,8 +323,6 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
         );
     }
 
-    // --- IGemSpell IMPLEMENTATION ---
-
     @Override
     public void increaseSpellDamage(double amount) {
         this.damage += (float) amount;
@@ -360,7 +340,6 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
         this.entityData.set(DATA_GROW_TIME, current + amount);
     }
 
-
     @Override
     public float getBaseDamage() {
         return this.damage;
@@ -370,8 +349,6 @@ public class BloodFireMeteorEntity extends Projectile implements IBloodFlammable
     public void setBaseDamage(float damage) {
         this.damage = damage;
     }
-
-    // ---  BOILERPLATE ---
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {

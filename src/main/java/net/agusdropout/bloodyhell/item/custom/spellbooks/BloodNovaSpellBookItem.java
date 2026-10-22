@@ -43,7 +43,6 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     float pitch = player.getXRot();
                     double radians = Math.toRadians(-yaw);
 
-
                     double baseX = player.getX() + Math.sin(radians) * 1.0;
                     double baseY = player.getY() + 0.5;
                     double baseZ = player.getZ() + Math.cos(radians) * 1.0;
@@ -52,7 +51,6 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     level.addFreshEntity(projectile);
 
         }
-
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0f, 0.5f);
@@ -63,9 +61,8 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
     @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
         Vec3 playerPos = player.position();
-        Vec3 targetPos = playerPos.add(0, SPAWN_HEIGHT_OFFSET, 0); // Point in the sky
+        Vec3 targetPos = playerPos.add(0, SPAWN_HEIGHT_OFFSET, 0);
         float progress = (float) tick / CHARGE_TIME;
-
 
         if (tick % 2 == 0) {
             ParticleHelper.spawnCylinder(level,
@@ -73,17 +70,15 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     playerPos, 0.2, SPAWN_HEIGHT_OFFSET, 3 + (int)(progress * 5), 0.2);
         }
 
-
         double ringRadius = 3.0 * (1.0 - progress);
         ParticleHelper.spawnRing(level, ModParticles.BLOOD_PULSE_PARTICLE.get(),
                 playerPos.add(0, 0.2, 0), ringRadius, 4, 0);
 
-
         int spiralCount = 2;
         for (int i = 0; i < spiralCount; i++) {
             double angle = (tick * 0.3) + (i * Math.PI);
-            double y = (tick * 0.2) % SPAWN_HEIGHT_OFFSET; // Loops up
-            double r = 1.0; // Radius around beam
+            double y = (tick * 0.2) % SPAWN_HEIGHT_OFFSET;
+            double r = 1.0;
 
             double x = player.getX() + r * Math.cos(angle);
             double z = player.getZ() + r * Math.sin(angle);
@@ -93,11 +88,9 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     0, 0.1, 0);
         }
 
-
         if (tick == CHARGE_TIME) {
 
             ParticleHelper.spawnRing(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), playerPos, 1.0, 40, 0.5);
-
 
             ParticleHelper.spawnExplosion(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), targetPos, 50, 0.5, 1.0);
         }

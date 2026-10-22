@@ -30,7 +30,6 @@ public class SanguiniteInfusorRecipe implements Recipe<SimpleContainer> {
         this.fluid2 = fluid2;
     }
 
-    // --- GETTERS ---
     public FluidStack getFluid1() { return fluid1; }
     public FluidStack getFluid2() { return fluid2; }
     public Ingredient getInputItem() { return recipeItem; }
@@ -78,7 +77,6 @@ public class SanguiniteInfusorRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    // --- SERIALIZER ---
     public static class Serializer implements RecipeSerializer<SanguiniteInfusorRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(BloodyHell.MODID, "sanguinite_infusing");
@@ -121,7 +119,6 @@ public class SanguiniteInfusorRecipe implements Recipe<SimpleContainer> {
         }
     }
 
-    // --- TYPE REGISTRATION ---
     public static class Type implements RecipeType<SanguiniteInfusorRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();

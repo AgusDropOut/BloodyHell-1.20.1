@@ -22,7 +22,7 @@ public class TombBlockEntity extends BlockEntity {
 
     private boolean isRitualActive = false;
     private int timer = 0;
-    private final int TIME_TO_SPAWN = 60; // 3 segundos
+    private final int TIME_TO_SPAWN = 60;
     private final double DETECTION_RADIUS = 5.0;
 
     public TombBlockEntity(BlockPos pos, BlockState state) {
@@ -35,32 +35,24 @@ public class TombBlockEntity extends BlockEntity {
             return;
         }
 
-
         if (!entity.isRitualActive) {
 
             AABB detectionBox = new AABB(pos).inflate(entity.DETECTION_RADIUS);
 
-
-
-
             List<Player> validPlayers = level.getEntitiesOfClass(Player.class, detectionBox,
                     player -> !player.isCreative() && !player.isSpectator());
-
 
             if (!validPlayers.isEmpty()) {
                 entity.startRitual();
             }
         }
 
-
         else {
             entity.timer++;
-
 
             if (entity.timer % 20 == 0) {
                 level.playSound(null, pos, SoundEvents.STONE_HIT, SoundSource.BLOCKS, 1.0f, 0.5f);
             }
-
 
             if (entity.timer >= entity.TIME_TO_SPAWN) {
                 entity.spawnGraveWalker(level, pos, state);
@@ -79,7 +71,6 @@ public class TombBlockEntity extends BlockEntity {
 
         Direction facing = state.getValue(TombBlock.FACING);
 
-
         double spawnX = pos.getX() + 0.5 + facing.getStepX();
         double spawnY = pos.getY();
         double spawnZ = pos.getZ() + 0.5 + facing.getStepZ();
@@ -90,7 +81,6 @@ public class TombBlockEntity extends BlockEntity {
 
             float rotacion = facing.toYRot();
 
-
             boss.moveTo(spawnX, spawnY, spawnZ, rotacion, 0.0F);
             boss.setYBodyRot(rotacion);
             boss.setYHeadRot(rotacion);
@@ -99,10 +89,8 @@ public class TombBlockEntity extends BlockEntity {
 
             level.setBlock(pos, state.setValue(TombBlock.OPEN, true), 3);
 
-
             level.playSound(null, pos, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 1.0f, 1.0f);
         }
-
 
         this.isRitualActive = false;
     }

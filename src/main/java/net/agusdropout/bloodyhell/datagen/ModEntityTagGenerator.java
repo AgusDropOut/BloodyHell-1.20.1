@@ -40,7 +40,6 @@ public class ModEntityTagGenerator extends EntityTypeTagsProvider {
                 .add(ModEntityTypes.OMEN_GAZER_ENTITY.get())
                 .add(ModEntityTypes.VEINRAVER_ENTITY.get());
 
-        // Friendly and animal mobs
         tag(ModTags.Entities.SACRIFICEABLE_ENTITY)
                 .add(EntityType.COW)
                 .add(EntityType.SHEEP)
@@ -55,15 +54,14 @@ public class ModEntityTagGenerator extends EntityTypeTagsProvider {
                 .add(EntityType.PANDA)
                 .add(EntityType.POLAR_BEAR);
 
-        // Monster and corrupted mobs
         tag(ModTags.Entities.CORRUPTED_SACRIFICEABLE_ENTITY)
-                // Modded entities
+
                 .add(ModEntityTypes.BLOODTHIRSTYBEAST.get())
                 .add(ModEntityTypes.BLOOD_SEEKER.get())
                 .add(ModEntityTypes.CRIMSON_RAVEN.get())
                 .add(ModEntityTypes.EYESHELL_SNAIL.get())
                 .add(ModEntityTypes.BLOODPIG.get())
-                // Vanilla monsters
+
                 .add(EntityType.ZOMBIE)
                 .add(EntityType.SKELETON)
                 .add(EntityType.SPIDER)

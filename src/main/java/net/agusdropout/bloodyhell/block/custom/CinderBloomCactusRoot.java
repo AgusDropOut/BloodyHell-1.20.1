@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-
 public class CinderBloomCactusRoot extends RotatedPillarBlock {
 
     public CinderBloomCactusRoot(Properties properties) {
@@ -26,7 +25,6 @@ public class CinderBloomCactusRoot extends RotatedPillarBlock {
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
 
-        // Check if the block below is valid ground or part of the cactus structure
         boolean hasValidBelow =
                 belowState.is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get()) ||
                         belowState.is(Blocks.SAND) ||
@@ -34,8 +32,6 @@ public class CinderBloomCactusRoot extends RotatedPillarBlock {
                         belowState.is(PlantBlocks.CINDER_BLOOM_CACTUS_CENTER.get()) ||
                         belowState.is(PlantBlocks.CINDER_BLOOM_CACTUS_CON.get());
 
-        // Check if there is a valid cactus part on any horizontal side
-        // (Roots no longer count as valid side supports)
         boolean hasValidSide = false;
         for (Direction dir : Direction.Plane.HORIZONTAL) {
             BlockPos sidePos = pos.relative(dir);
@@ -47,7 +43,6 @@ public class CinderBloomCactusRoot extends RotatedPillarBlock {
             }
         }
 
-        // The cactus root can survive if it has a valid block below or a valid side connection
         return hasValidBelow || hasValidSide;
     }
 
@@ -62,7 +57,7 @@ public class CinderBloomCactusRoot extends RotatedPillarBlock {
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        // If the block no longer has valid support, it breaks
+
         if (!state.canSurvive(level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }

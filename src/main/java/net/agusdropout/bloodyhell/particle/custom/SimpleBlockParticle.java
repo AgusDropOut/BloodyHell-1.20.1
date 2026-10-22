@@ -42,16 +42,14 @@ public class SimpleBlockParticle extends Particle {
         this.pitch = this.random.nextFloat() * 360f;
         this.roll = this.random.nextFloat() * 360f;
 
-        this.scale = initialSize; // base size
+        this.scale = initialSize;
         this.hasIncrementalSize = hasIncrementalSize;
     }
     @Override
     public void tick() {
         super.tick();
 
-
         this.yd = 0.03;
-
 
         this.xd /= 0.94;
         this.zd /= 0.94;
@@ -59,7 +57,6 @@ public class SimpleBlockParticle extends Particle {
         if (this.hasIncrementalSize) {
             this.scale += 0.07f;
         }
-
 
         float lifeRatio = (float) this.age / (float) this.lifetime;
         this.alpha = 1.0f - lifeRatio;
@@ -77,13 +74,11 @@ public class SimpleBlockParticle extends Particle {
         poseStack.pushPose();
         poseStack.translate(px, py, pz);
 
-
         poseStack.scale(this.scale, this.scale, this.scale);
 
         poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
         poseStack.mulPose(Axis.ZP.rotationDegrees(roll));
-
 
         BakedModel model = blockRenderer.getBlockModel(state);
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();

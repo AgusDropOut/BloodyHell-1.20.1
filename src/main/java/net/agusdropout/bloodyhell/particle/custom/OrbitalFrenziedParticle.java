@@ -86,18 +86,16 @@ public class OrbitalFrenziedParticle extends Particle {
             }
 
             if (this.level.random.nextFloat() < 0.8f) {
-                /* Randomly selects one of the two orbital paths for emission */
+
                 boolean firstOrbit = this.level.random.nextBoolean();
                 double sign = firstOrbit ? 1.0D : -1.0D;
 
                 double spawnX = this.x + (offsetX * sign);
                 double spawnZ = this.z + (offsetZ * sign);
 
-                /* Calculates the tangential derivative of the circular path */
                 double tangVelX = -this.orbitRadius * this.orbitSpeed * Math.sin(currentAngle) * sign;
                 double tangVelZ = this.orbitRadius * this.orbitSpeed * Math.cos(currentAngle) * sign;
 
-                /* Combines core velocity, tangential velocity, and structural noise */
                 double sparkVelX = this.xd + tangVelX + (this.level.random.nextDouble() - 0.5D) * 0.05D;
                 double sparkVelY = this.yd + (this.level.random.nextDouble() * 0.05D);
                 double sparkVelZ = this.zd + tangVelZ + (this.level.random.nextDouble() - 0.5D) * 0.05D;

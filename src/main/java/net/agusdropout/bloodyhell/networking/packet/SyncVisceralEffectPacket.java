@@ -1,7 +1,5 @@
 package net.agusdropout.bloodyhell.networking.packet;
 
-
-
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,20 +36,19 @@ public class SyncVisceralEffectPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            // Client-Side Logic
+
             if (Minecraft.getInstance().level != null) {
                 Entity entity = Minecraft.getInstance().level.getEntity(entityId);
 
                 if (entity instanceof LivingEntity living) {
-                    // Force apply the effect on the client side immediately
-                    // This updates the 'hasEffect' check instantly for the Renderer
+
                     living.addEffect(new MobEffectInstance(
                             ModEffects.VISCERAL_EFFECT.get(),
                             duration,
                             amplifier,
-                            false, // ambient
-                            false, // visible (particles handled by block/packet)
-                            true   // show icon
+                            false,
+                            false,
+                            true
                     ));
                 }
             }

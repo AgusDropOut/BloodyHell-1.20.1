@@ -31,7 +31,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-
 public abstract class BaseGemSproutBlockEntity extends BlockEntity {
 
     protected int growthTimer = 0;
@@ -68,14 +67,12 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
     private boolean isAcceptableFluid(FluidStack stack) {
         if (stack.isEmpty()) return false;
         Fluid fluid = stack.getFluid();
-        //Need to change this in the future if I do a new sprout with other fluids requirements REMEMBER
+
         return fluid.isSame(getValidFluid()) || fluid.builtInRegistryHolder().is(FORGE_BLOOD_TAG);
     }
 
     private final LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.of(() -> bloodTank);
 
-
-    // --- SAVE / LOAD / SYNC ---
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
@@ -109,7 +106,6 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
         if (level != null) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
     }
 
-
     public void tick(Level level, BlockPos pos, BlockState state) {
         if(level.isClientSide) return;
         int age = state.getValue(BloodGemSproutBlock.AGE);
@@ -135,10 +131,6 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
             }
         }
 
-
-
-
-
         if (growthTimer >= MAX_GROWTH_TOME ) {
             growthTimer = 0;
             if (bloodTank.getFluidAmount() >= BLOOD_PER_STAGE) {
@@ -151,7 +143,6 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
                 }
             }
         }
-
 
         boolean shouldBeFilled = hasBlood(BLOOD_PER_STAGE);
         boolean isCurrentlyFilled = state.getValue(BloodGemSproutBlock.FILLED);
@@ -177,8 +168,6 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
         }
         return false;
     }
-
-
 
     public void setGemColor(int color) {
         this.gemColor = color;
@@ -227,16 +216,11 @@ public abstract class BaseGemSproutBlockEntity extends BlockEntity {
         return this.tempStoredItem;
     }
 
-
-
-
     @Override
     public CompoundTag getUpdateTag() { return saveWithoutMetadata(); }
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
     @Override
     public void onDataPacket(net.minecraft.network.Connection net, ClientboundBlockEntityDataPacket pkt) { load(pkt.getTag()); }
-
-
 
 }

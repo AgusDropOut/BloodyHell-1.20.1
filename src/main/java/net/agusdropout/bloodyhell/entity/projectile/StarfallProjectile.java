@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
-import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake; // Importar Camera Shake
+import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SimpleBlockParticleOptions;
@@ -151,13 +151,11 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
 
         spawnStarFallParticle();
 
-        // 1. EFECTO CAMERA SHAKE
         EntityCameraShake.cameraShake(this.level(), this.position(), 25.0f, 0.4f, 10, 10);
 
         if (!this.level().isClientSide) {
             spawnDustWave();
             spawnSmokeParticles();
-
 
             if (shouldBreakBlocks()) {
                 BlockPos center = this.blockPosition();
@@ -194,7 +192,6 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
 
         level().playSound(null, this.blockPosition(), ModSounds.STARFALL_EXPLOSION_SOUND.get(), SoundSource.PLAYERS, 2.0f, 2.0f);
 
-
         this.customExplosion(radius);
 
         this.setHasExploded(true);
@@ -208,7 +205,6 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     private void customExplosion(double radius) {
         if (this.level().isClientSide) return;
 
-
         List<LivingEntity> entities = this.level().getEntitiesOfClass(
                 LivingEntity.class,
                 this.getBoundingBox().inflate(radius)
@@ -219,7 +215,6 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
                 living.hurt(this.damageSources().explosion(this, living), damage);
             }
         }
-
 
         if (!shouldBreakBlocks()) return;
 
@@ -358,7 +353,6 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
         this.level().addFreshEntity(block);
     }
 
-    // Getters y Setters
     public boolean isShouldExplode() { return this.entityData.get(SHOULD_EXPLODE); }
     public void setShouldExplode(boolean value) { this.entityData.set(SHOULD_EXPLODE, value); }
     public boolean isHasExplode() { return this.entityData.get(HAS_EXPLODED); }
@@ -366,11 +360,9 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     public boolean isHasExplodeClientSide() { return this.entityData.get(HAS_EXPLODED_CLIENTSIDE); }
     public void setHasExplodedClientSide(boolean value) { this.entityData.set(HAS_EXPLODED_CLIENTSIDE, value); }
 
-
     public boolean shouldBreakBlocks() { return this.entityData.get(BREAKS_BLOCKS); }
     public void setBreaksBlocks(boolean value) { this.entityData.set(BREAKS_BLOCKS, value); }
 
-    // Geckolib
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController(this, "controller", 0, this::predicate));

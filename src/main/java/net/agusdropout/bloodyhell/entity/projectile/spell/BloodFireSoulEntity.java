@@ -42,52 +42,41 @@ import java.util.Optional;
 
 public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, IGemSpell {
 
-    // --- SECT 1: FIELDS & DATA KEYS ---
-
     private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(BloodFireSoulEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_SCALE = SynchedEntityData.defineId(BloodFireSoulEntity.class, EntityDataSerializers.FLOAT);
 
-    // Default Stats
     private static final int DEFAULT_LIFETIME = 300;
     private static final float DEFAULT_DAMAGE = 8.0f;
     private static final float DEFAULT_EXPLOSION_RADIUS = 1.5f;
     private static final float DEFAULT_SCALE = 1.0f;
 
-    // Homing Constants
     private static final double HOMING_SPEED = 0.55;
     private static final double HOMING_SEARCH_RANGE = 30.0;
     private static final double HOMING_CONE_THRESHOLD = 0.85;
     private static final double HOMING_TURN_FACTOR = 0.15;
     private static final int NO_TARGET = -1;
 
-    // Instance Variables (Upgradeable)
     private float collisionDamage = DEFAULT_DAMAGE;
     private float explosionRadius = DEFAULT_EXPLOSION_RADIUS;
     private int maxLifetime = DEFAULT_LIFETIME;
 
-    // Effect Constants
     private static final int FIRE_EFFECT_DURATION = 200;
     private static final int BURN_AURA_DURATION = 60;
     private static final int FIRE_SPREAD_RADIUS = 2;
-
-    // --- SECT 2: CONSTRUCTORS ---
 
     public BloodFireSoulEntity(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
     }
 
-    // Standard Constructor (Mobs)
     public BloodFireSoulEntity(EntityType<? extends Projectile> type, Level level, LivingEntity owner) {
         super(type, level);
         this.setOwner(owner);
         this.setPos(owner.getX(), owner.getEyeY() - 0.4, owner.getZ());
 
-        // Initial impulse
         this.setDeltaMovement(owner.getLookAngle().scale(HOMING_SPEED));
         this.selectInitialTarget(owner);
     }
 
-    // Gem Constructor (Spellbook)
     public BloodFireSoulEntity(EntityType<? extends Projectile> type, Level level, LivingEntity owner, List<Gem> gems) {
         this(type, level, owner);
         configureSpell(gems);
@@ -128,8 +117,6 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
         }
     }
 
-    // --- SECT 3: MAIN TICK LOOP ---
-
     @Override
     public void tick() {
         super.tick();
@@ -166,7 +153,6 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
     private void performMovementLogic() {
         int targetId = this.entityData.get(TARGET_ID);
 
-        // Fallback: No target, maintain momentum
         if (targetId == NO_TARGET) {
             Vec3 currentMotion = this.getDeltaMovement();
             if (currentMotion.lengthSqr() < 0.01) {
@@ -183,17 +169,16 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
             Vec3 desiredDirection = targetPos.subtract(this.position()).normalize();
             Vec3 currentDirection = this.getDeltaMovement().normalize();
 
-            // Steer towards target
             Vec3 newDirection = currentDirection.lerp(desiredDirection, HOMING_TURN_FACTOR).normalize();
             this.setDeltaMovement(newDirection.scale(HOMING_SPEED));
         } else {
-            // Target lost
+
             this.entityData.set(TARGET_ID, NO_TARGET);
         }
     }
 
     private void burnNearbyEntities() {
-        // Burn area scales slightly with upgrades
+
         double burnRadius = 1.5D * getScale();
         List<LivingEntity> victims = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(burnRadius),
                 entity -> entity != this.getOwner() && entity.isAlive());
@@ -203,8 +188,6 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
             victim.addEffect(new MobEffectInstance(ModEffects.BLOOD_FIRE_EFFECT.get(), BURN_AURA_DURATION, 0));
         }
     }
-
-    // --- SECT 4: COLLISION & EXPLOSION ---
 
     @Override
     protected void onHit(HitResult result) {
@@ -227,7 +210,7 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
 
     private void spawnFireLogic() {
         BlockPos impactPos = this.blockPosition();
-        // Fire spread scales with upgrade
+
         int range = (int) (FIRE_SPREAD_RADIUS * getScale());
 
         for (int x = -range; x <= range; x++) {
@@ -256,8 +239,6 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
             }
         }
     }
-
-    // --- SECT 5: VISUALS ---
 
     private void generateFireParticles() {
         float scale = getScale();
@@ -289,7 +270,6 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
         float pink = 0.6f + this.random.nextFloat() * 0.4f;
         Vector3f color = new Vector3f(1.0f, pink, pink);
 
-        // Particle size scales with entity
         float size = 0.3f * scale;
 
         this.level().addParticle(new MagicParticleOptions(color, size, false, 10),
@@ -311,8 +291,6 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
                 dir.x * 0.15 + ox * 0.1, dir.y * 0.15 + oy * 0.1, dir.z * 0.15 + oz * 0.1);
     }
 
-    // --- SECT 6: IGemSpell IMPLEMENTATION ---
-
     @Override
     public void increaseSpellDamage(double amount) {
         this.collisionDamage += (float) amount;
@@ -320,17 +298,16 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
 
     @Override
     public void increaseSpellSize(double amount) {
-        // Increase Explosion Radius
+
         this.explosionRadius += (float) amount;
 
-        // Increase Visual Scale
         float currentScale = this.entityData.get(DATA_SCALE);
         this.entityData.set(DATA_SCALE, (float)(currentScale + amount * 0.5f));
     }
 
     @Override
     public void increaseSpellDuration(int amount) {
-        // Increase Lifetime (Seconds -> Ticks)
+
         this.maxLifetime += amount ;
     }
 
@@ -343,8 +320,6 @@ public class BloodFireSoulEntity extends Projectile implements IBloodFlammable, 
     public void setBaseDamage(float damage) {
         this.collisionDamage = damage;
     }
-
-    // --- SECT 7: BOILERPLATE ---
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {

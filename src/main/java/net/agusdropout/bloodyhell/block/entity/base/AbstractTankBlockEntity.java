@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.block.entity.base;
 
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +31,6 @@ public abstract class AbstractTankBlockEntity extends FilterableFluidBlockEntity
     public AbstractTankBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, CAPACITY_PER_BLOCK);
 
-
         this.fluidTank = new FluidTank(CAPACITY_PER_BLOCK) {
             @Override
             protected void onContentsChanged() {
@@ -42,10 +40,9 @@ public abstract class AbstractTankBlockEntity extends FilterableFluidBlockEntity
 
             @Override
             public boolean isFluidValid(FluidStack stack) {
-                // 1. Must be supported by this specific tank type
+
                 if (!isFluidSupported(stack)) return false;
 
-                // 2. Must pass the user-defined filter (if any is set)
               return AbstractTankBlockEntity.this.getFilter() == null
                       || AbstractTankBlockEntity.this.getFilter().isSame(stack.getFluid()) || AbstractTankBlockEntity.this.getFilter() == Fluids.EMPTY;
             }
@@ -53,12 +50,7 @@ public abstract class AbstractTankBlockEntity extends FilterableFluidBlockEntity
         this.lazyFluidHandler = LazyOptional.of(() -> this.fluidTank);
     }
 
-    /**
-     * Define which fluids this specific tank type is allowed to hold.
-     * This blocks insertion from Pipes, Flasks, and Buckets simultaneously.
-     */
     public abstract boolean isFluidSupported(FluidStack stack);
-
 
     @Override
     public Fluid getFilter() {
@@ -85,7 +77,6 @@ public abstract class AbstractTankBlockEntity extends FilterableFluidBlockEntity
         }
         super.cycleFilter(level, pos, player);
     }
-
 
     public FluidStack getFluid() {
         if (level == null) return FluidStack.EMPTY;

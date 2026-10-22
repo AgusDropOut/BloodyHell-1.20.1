@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.item.custom.base; // Or whichever package you prefer
+package net.agusdropout.bloodyhell.item.custom.base;
 
 public enum SpellType {
     BLOODFIRE_COLUMN("bloodfire_column"),

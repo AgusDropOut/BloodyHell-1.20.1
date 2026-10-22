@@ -1,7 +1,5 @@
 package net.agusdropout.bloodyhell.block.custom.mechanism;
 
-
-
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteInfusorBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -42,7 +40,7 @@ public class SanguiniteInfusorBlock extends BaseEntityBlock {
                 ItemStack held = player.getItemInHand(hand);
 
                 infusor.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
-                    // 1. Try Extracting Output (Slot 1) First
+
                     ItemStack outputSlot = h.getStackInSlot(1);
                     if (!outputSlot.isEmpty()) {
                         ItemStack extracted = h.extractItem(1, 64, false);
@@ -53,7 +51,6 @@ public class SanguiniteInfusorBlock extends BaseEntityBlock {
                         return;
                     }
 
-                    // 2. Try Inserting Input (Slot 0)
                     if (!held.isEmpty()) {
                         ItemStack remainder = h.insertItem(0, held, false);
                         player.setItemInHand(hand, remainder);
@@ -61,7 +58,7 @@ public class SanguiniteInfusorBlock extends BaseEntityBlock {
                             level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0f, 1.0f);
                         }
                     }
-                    // 3. Extract Input (Slot 0) if hand empty
+
                     else {
                         ItemStack extracted = h.extractItem(0, 1, false);
                         if (!extracted.isEmpty()) {
@@ -77,7 +74,7 @@ public class SanguiniteInfusorBlock extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL; // Base model + BER
+        return RenderShape.MODEL;
     }
 
     @Nullable

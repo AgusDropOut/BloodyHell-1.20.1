@@ -50,8 +50,6 @@ public class BloodStainParticle extends TextureSheetParticle {
         float y = (float) (Mth.lerp(partialTicks, this.yo, this.y) - camPos.y());
         float z = (float) (Mth.lerp(partialTicks, this.zo, this.z) - camPos.z());
 
-
-
         float size = this.getQuadSize(partialTicks);
         float u0 = this.getU0();
         float u1 = this.getU1();
@@ -59,10 +57,8 @@ public class BloodStainParticle extends TextureSheetParticle {
         float v1 = this.getV1();
         int light = this.getLightColor(partialTicks);
 
-
         float cos = Mth.cos(this.rotAngle);
         float sin = Mth.sin(this.rotAngle);
-
 
         Vector3f[] vertices = new Vector3f[]{
                 new Vector3f(-1.0F * size, 0, -1.0F * size),
@@ -70,7 +66,6 @@ public class BloodStainParticle extends TextureSheetParticle {
                 new Vector3f( 1.0F * size, 0,  1.0F * size),
                 new Vector3f( 1.0F * size, 0, -1.0F * size)
         };
-
 
         for (Vector3f vertex : vertices) {
 
@@ -85,14 +80,12 @@ public class BloodStainParticle extends TextureSheetParticle {
             vertex.add(x, y, z);
         }
 
-
-        // Vertex 0
         buffer.vertex(vertices[0].x(), vertices[0].y(), vertices[0].z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-        // Vertex 1
+
         buffer.vertex(vertices[1].x(), vertices[1].y(), vertices[1].z()).uv(u1, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-        // Vertex 2
+
         buffer.vertex(vertices[2].x(), vertices[2].y(), vertices[2].z()).uv(u0, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-        // Vertex 3
+
         buffer.vertex(vertices[3].x(), vertices[3].y(), vertices[3].z()).uv(u0, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
     }
 

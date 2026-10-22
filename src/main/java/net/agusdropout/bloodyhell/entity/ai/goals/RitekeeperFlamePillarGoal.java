@@ -13,7 +13,7 @@ public class RitekeeperFlamePillarGoal extends Goal {
     private final RitekeeperEntity mob;
     private int animationTicks;
 
-    private final int CAST_POINT = 22; // 1.10 Seconds
+    private final int CAST_POINT = 22;
     private final int ANIMATION_TOTAL = 45;
 
     public RitekeeperFlamePillarGoal(RitekeeperEntity mob) {
@@ -32,7 +32,7 @@ public class RitekeeperFlamePillarGoal extends Goal {
     public void start() {
         this.animationTicks = 0;
         this.mob.setCasting(true);
-        this.mob.setCurrentSpell(3); // Pillar ID
+        this.mob.setCurrentSpell(3);
         this.mob.getNavigation().stop();
     }
 
@@ -55,13 +55,10 @@ public class RitekeeperFlamePillarGoal extends Goal {
 
         this.animationTicks++;
 
-        // --- LOGIC MOVED HERE ---
         if (this.animationTicks == CAST_POINT && target != null) {
 
-            // 1. Create Pillar directly at target's feet
             BloodFireColumnEntity pillar = new BloodFireColumnEntity(ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(),this.mob.level(),this.mob ,target.getX(), target.getY(), target.getZ());
 
-            // 2. Spawn & Sound
             this.mob.level().addFreshEntity(pillar);
             this.mob.playSound(SoundEvents.FIRECHARGE_USE, 1.0f, 0.5f);
         }

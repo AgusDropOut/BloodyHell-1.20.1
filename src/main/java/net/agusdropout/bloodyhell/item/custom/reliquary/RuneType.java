@@ -16,7 +16,7 @@ public enum RuneType {
     RESTLESS_SLUMBER(
             ReliquaryItems.MARK_OF_THE_RESTLESS_SLUMBER,
             5,
-            0, // Requires 0 Insight
+            0,
             (level, player, pos) -> {
                 return ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
@@ -24,7 +24,7 @@ public enum RuneType {
     RAVENOUS_GAZE(
             ReliquaryItems.RUNE_OF_THE_RAVENOUS_GAZE,
             10,
-            0, // Requires 0 Insight
+            0,
             (level, player, pos) -> {
                 return ModEntityTypes.WEEPING_OCULAR.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
@@ -32,7 +32,7 @@ public enum RuneType {
     HOLLOW_BULWARK(
             ReliquaryItems.SEAL_OF_THE_HOLLOW_BULWARK,
             15,
-            51, // Requires 50 Insight (Post-Trial)
+            51,
             (level, player, pos) -> {
                 return ModEntityTypes.BASTION_OF_THE_UNKNOWN.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
@@ -40,7 +40,7 @@ public enum RuneType {
     CRUSHING_TOLL(
             ReliquaryItems.OMEN_OF_THE_CRUSHING_TOLL,
             20,
-            51, // Requires 50 Insight (Post-Trial)
+            51,
             (level, player, pos) -> {
                 return ModEntityTypes.BURDEN_OF_THE_UNKNOWN.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
             }
@@ -74,7 +74,6 @@ public enum RuneType {
         return this.summonAction.summon(level, player, pos);
     }
 
-    /* Retrieves the corresponding RuneType for a given Item instance. Returns null if no match is found. */
     public static RuneType getByItem(Item item) {
         for (RuneType type : values()) {
             if (type.getItem().equals(item)) {
@@ -89,7 +88,6 @@ public enum RuneType {
         return this.capacityCost;
     }
 
-    /* Functional interface to handle specific entity spawning logic per rune. */
     public interface RuneSummonAction {
         AbstractMinionEntity summon(ServerLevel level, Player player, BlockPos pos);
     }

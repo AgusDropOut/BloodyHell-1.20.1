@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory; // Moved here
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.overlay.*;
 import net.agusdropout.bloodyhell.client.ClientModLabelTooltip;
@@ -48,7 +48,7 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent; // Moved here
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.io.IOException;
 
@@ -89,7 +89,6 @@ public class ClientEvents {
             }
         }
 
-
         @SubscribeEvent
         public static void onComputeFov(ViewportEvent.ComputeFov event) {
 
@@ -108,8 +107,6 @@ public class ClientEvents {
                     cyclopsZoomMultiplier = Mth.lerp(chargeRatio, 1.0f, 0.85f);
                 }
             }
-
-
 
             float ritualFovDistortion = RitualAmbienceHandler.getFovModifier(player);
             if (ModClientConfigs.ENABLE_FOV_EFFECTS.get()) {
@@ -183,7 +180,7 @@ public class ClientEvents {
 
             @SubscribeEvent
             public static void onRenderDebugText(CustomizeGuiOverlayEvent.DebugText event) {
-                // Debug text logic
+
             }
 
             @SubscribeEvent
@@ -207,7 +204,6 @@ public class ClientEvents {
     @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
 
-
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(
@@ -217,12 +213,9 @@ public class ClientEvents {
             ModItemProperties.addCustomItemProperties();
         }
 
-
-
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
             return new ModifierLayer<>();
         }
-
 
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
@@ -324,8 +317,6 @@ public class ClientEvents {
         public static void addEntityLayers(EntityRenderersEvent.AddLayers event) {
             EntityLayerHandler.onAddLayers(event);
         }
-
-
 
     }
 }

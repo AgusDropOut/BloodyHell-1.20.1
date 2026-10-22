@@ -60,8 +60,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         fanBlock(PlantBlocks.BLOOD_PETALS);
 
-
-
         blockTranslucent(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
 
         crossBlock(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
@@ -70,37 +68,35 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         veinBlock(PlantBlocks.VISCERAL_INFECTED_VEIN);
 
-        //Bloody Stone
         stairsBlock(((StairBlock) StoneBlocks.BLOODY_STONE_STAIRS.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
         slabBlock(((SlabBlock) StoneBlocks.BLOODY_STONE_SLAB.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
         fenceBlock(((FenceBlock) StoneBlocks.BLOODY_STONE_FENCE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
         fenceGateBlock(((FenceGateBlock) StoneBlocks.BLOODY_STONE_FENCE_GATE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
         wallBlock(((WallBlock) StoneBlocks.BLOODY_STONE_WALL.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
-        //Bloody Stone Tiles
+
         stairsBlock(((StairBlock) StoneBlocks.BLOODY_STONE_TILES_STAIRS.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
         slabBlock(((SlabBlock) StoneBlocks.BLOODY_STONE_TILES_SLAB.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
         fenceBlock(((FenceBlock) StoneBlocks.BLOODY_STONE_TILES_FENCE.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
         fenceGateBlock(((FenceGateBlock) StoneBlocks.BLOODY_STONE_FENCE_TILES_GATE.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
         wallBlock(((WallBlock) StoneBlocks.BLOODY_STONE_TILES_WALL.get()), blockTexture(StoneBlocks.BLOODY_STONE_TILES_BLOCK.get()));
-        //Polished Bloody Stone
+
         stairsBlock(((StairBlock) StoneBlocks.POLISHED_BLOODY_STONE_STAIRS.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
         slabBlock(((SlabBlock) StoneBlocks.POLISHED_BLOODY_STONE_SLAB.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
         fenceBlock(((FenceBlock) StoneBlocks.POLISHED_BLOODY_STONE_FENCE.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
         fenceGateBlock(((FenceGateBlock) StoneBlocks.POLISHED_BLOODY_STONE_FENCE_GATE.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
         wallBlock(((WallBlock) StoneBlocks.POLISHED_BLOODY_STONE_WALL.get()), blockTexture(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get()));
-        //Bloody Stone Bricks
+
         stairsBlock(((StairBlock) StoneBlocks.BLOODY_STONE_BRICKS_STAIRS.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
         slabBlock(((SlabBlock) StoneBlocks.BLOODY_STONE_BRICKS_SLAB.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
         fenceBlock(((FenceBlock) StoneBlocks.BLOODY_STONE_BRICKS_FENCE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
         fenceGateBlock(((FenceGateBlock) StoneBlocks.BLOODY_STONE_FENCE_BRICKS_GATE.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
         wallBlock(((WallBlock) StoneBlocks.BLOODY_STONE_BRICKS_WALL.get()), blockTexture(StoneBlocks.BLOODY_STONE_BRICKS.get()));
-        //Blood Planks
+
         stairsBlock(((StairBlock) WoodBlocks.BLOOD_PLANKS_STAIRS.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
         slabBlock(((SlabBlock) WoodBlocks.BLOOD_PLANKS_SLAB.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
         fenceBlock(((FenceBlock) WoodBlocks.BLOOD_PLANKS_FENCE.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
         fenceGateBlock(((FenceGateBlock) WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get()), blockTexture(WoodBlocks.BLOOD_PLANKS.get()));
 
-        //Ancient
         blockWithItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS);
         stairsBlock(((StairBlock) StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS.get()), blockTexture(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
         slabBlock(((SlabBlock) StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_SLAB.get()), blockTexture(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()), blockTexture(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS.get()));
@@ -113,8 +109,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         wallBlockHorizontal(LightBlocks.ANCIENT_TORCH_BLOCK);
 
-
-        //Blasphemous Biome
         rotatedCubeBlock(SoilBlocks.BLASPHEMOUS_SAND_BLOCK);
         blockWithItem(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
         blockWithItem(MetalBlocks.BLASPHEMITE_ORE);
@@ -141,7 +135,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         block(MachineBlocks.RHNULL_BLOOD_ENGINE_PILLAR_BLOCK);
         block(MachineBlocks.UNKNOWN_PORTAL_BLOCK);
         block(MachineBlocks.SANGUINITE_BLOOD_HARVESTER);
-
 
     }
     private String name(Block block) {
@@ -262,28 +255,22 @@ public class ModBlockStateProvider extends BlockStateProvider {
         signBlock(standingBlock.get(), wallBlock.get(), modLoc("block/" + name));
     }
 
-
-
     public void hangingSign(Supplier<? extends CeilingHangingSignBlock> standingBlock, Supplier<? extends WallHangingSignBlock> wallBlock, String name) {
         ModelFile model = models().getBuilder(name(standingBlock)).texture("particle", modLoc("block/" + name));
         simpleBlock(standingBlock.get(), model);
         simpleBlock(wallBlock.get(), model);
     }
 
-    /**
-     * Generate a blockstate with 0°, 90°, 180°, 270° Y-axis rotations
-     * for any simple cube block.
-     */
     public void rotatedCubeBlock(Supplier<? extends Block> blockSupplier) {
         Block block = blockSupplier.get();
         String blockName = name(block);
 
         ModelFile modelFile = models().cubeAll(blockName, blockTexture(block));
         getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {
-                new ConfiguredModel(modelFile, 0, 0, false),    // 0°
-                new ConfiguredModel(modelFile, 0, 90, false),   // 90°
-                new ConfiguredModel(modelFile, 0, 180, false),  // 180°
-                new ConfiguredModel(modelFile, 0, 270, false)   // 270°
+                new ConfiguredModel(modelFile, 0, 0, false),
+                new ConfiguredModel(modelFile, 0, 90, false),
+                new ConfiguredModel(modelFile, 0, 180, false),
+                new ConfiguredModel(modelFile, 0, 270, false)
         });
         simpleBlockItem(block, modelFile);
     }
@@ -309,7 +296,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
     public void wallBlockHorizontal(Supplier<? extends Block> block) {
         String modelName = name(block);
         ModelFile model = models().getExistingFile(modLoc("block/" + modelName));
-
 
         getVariantBuilder(block.get()).forAllStates(state -> {
             Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -345,7 +331,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .parent(models().getExistingFile(mcLoc("block/block")))
                 .texture("particle", texture)
                 .texture("vein", texture)
-                .renderType("cutout") // Ensure transparency works
+                .renderType("cutout")
                 .element()
                 .from(0.0f, 0.0f, 0.0f)
                 .to(16.0f, 16.0f, 1.0f)
@@ -394,20 +380,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
         }
     }
 
-    /**
-     * Generates a floor fan block state and model using the block's default registry name for the texture.
-     */
     public void fanBlock(Supplier<? extends Block> block) {
         ModelFile fanModel = models().withExistingParent(name(block), mcLoc("block/coral_fan"))
                 .texture("fan", blockTexture(block.get()))
-                .renderType("cutout"); // Crucial for transparency!
+                .renderType("cutout");
 
         simpleBlock(block.get(), fanModel);
     }
 
-    /**
-     * Generates a floor fan block state and model with a specifically named texture.
-     */
     public void fanBlock(Supplier<? extends Block> block, String textureName) {
         ModelFile fanModel = models().withExistingParent(name(block), mcLoc("block/coral_fan"))
                 .texture("fan", modLoc("block/" + textureName))

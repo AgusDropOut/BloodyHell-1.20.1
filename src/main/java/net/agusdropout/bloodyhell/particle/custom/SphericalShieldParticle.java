@@ -57,7 +57,6 @@ public class SphericalShieldParticle extends Particle {
         PoseStack poseStack = new PoseStack();
         poseStack.translate(renderX, renderY, renderZ);
 
-
         Matrix4f capturedPose = new Matrix4f(poseStack.last().pose());
         float currentAlpha = this.alpha;
 
@@ -65,7 +64,6 @@ public class SphericalShieldParticle extends Particle {
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder builder = tesselator.getBuilder();
 
-            // 1. Primary Fire Sphere
             RenderSystem.setShader(() -> ModShaders.SHAPE_UNKNOWN_FIRE_SHADER);
             if (ModShaders.SHAPE_UNKNOWN_FIRE_SHADER != null) {
                 Uniform timeUniform = ModShaders.SHAPE_UNKNOWN_FIRE_SHADER.getUniform("AnimTime");
@@ -77,7 +75,6 @@ public class SphericalShieldParticle extends Particle {
             RenderHelper.renderColorSphere(builder, capturedPose, this.shieldRadius, 32, 32, this.rCol, this.gCol, this.bCol, currentAlpha - 0.3f);
             tesselator.end();
 
-            // 2. Glitter Sphere
             RenderSystem.setShader(() -> ModShaders.SHAPE_GLITTER_SHADER);
             if (ModShaders.SHAPE_GLITTER_SHADER != null) {
                 Uniform timeUniform = ModShaders.SHAPE_GLITTER_SHADER.getUniform("GlitterTime");
@@ -89,7 +86,6 @@ public class SphericalShieldParticle extends Particle {
             RenderHelper.renderColorSphere(builder, capturedPose, this.shieldRadius * 0.99f, 32, 32, this.rCol , this.gCol , this.bCol , 0.2f);
             tesselator.end();
 
-            // 3. Rim Sphere
             RenderSystem.setShader(() -> ModShaders.SHAPE_SPHERICAL_RIM_SHADER);
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             RenderHelper.renderColorSphere(builder, capturedPose, this.shieldRadius * 1.01f, 32, 32, this.rCol * 0.05f, this.gCol * 0.05f, this.bCol * 0.05f, 1f);

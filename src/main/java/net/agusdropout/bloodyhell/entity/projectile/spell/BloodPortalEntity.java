@@ -26,8 +26,6 @@ import java.util.UUID;
 
 public class BloodPortalEntity extends Entity implements IGemSpell {
 
-    // --- SECT 1: FIELDS & DATA KEYS ---
-
     private static final EntityDataAccessor<Float> DATA_RADIUS = SynchedEntityData.defineId(BloodPortalEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_HEIGHT = SynchedEntityData.defineId(BloodPortalEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DATA_LIFE = SynchedEntityData.defineId(BloodPortalEntity.class, EntityDataSerializers.INT);
@@ -40,13 +38,10 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
     @Nullable private UUID ownerUUID;
     private float damageBonus = 0.0f;
 
-    // --- SECT 2: CONSTRUCTORS ---
-
     public BloodPortalEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
-    // Standard Constructor (Mobs / No Gems)
     public BloodPortalEntity(Level level, double x, double y, double z, LivingEntity owner, float heightOffset) {
         this(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), level);
         if (owner != null) this.ownerUUID = owner.getUUID();
@@ -55,7 +50,6 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
         this.entityData.set(DATA_HEIGHT, heightOffset);
     }
 
-    // Spell Book Constructor (With Gems)
     public BloodPortalEntity(Level level, double x, double y, double z, LivingEntity owner, float heightOffset, List<Gem> gems) {
         this(ModEntityTypes.BLOOD_PORTAL_ENTITY.get(), level);
         if (owner != null) this.ownerUUID = owner.getUUID();
@@ -82,8 +76,6 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
         return this.entityData.get(DATA_HEIGHT);
     }
 
-    // --- SECT 3: MAIN TICK LOOP ---
-
     @Override
     public void tick() {
         super.tick();
@@ -104,8 +96,6 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
         }
     }
 
-    // --- SECT 4: SERVER LOGIC ---
-
     private void spawnRain() {
         for(int i = 0; i < daggerCountperCycle; i++) {
             RandomSource r = this.level().getRandom();
@@ -121,7 +111,6 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
 
             SmallCrimsonDagger dagger = new SmallCrimsonDagger(this.level(), sx, sy, sz, this.getOwner());
 
-
             dagger.increaseDamage(damageBonus);
 
             dagger.setDeltaMovement(0, -1.5, 0);
@@ -129,8 +118,6 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
             this.level().addFreshEntity(dagger);
         }
     }
-
-    // --- SECT 5: CLIENT VISUALS ---
 
     private void spawnSkyRift() {
         RandomSource r = this.level().getRandom();
@@ -157,7 +144,7 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
         float currentRadius = getRadius();
 
         if (this.tickCount % 40 == 0) {
-            // Passing Radius via VelocityX (vx) to the particle
+
             this.level().addParticle(ModParticles.BLOOD_RUNE_PARTICLE.get(),
                     this.getX(), this.getY() + 0.05, this.getZ(),
                     currentRadius, 0, 0);
@@ -187,8 +174,6 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
             this.level().addParticle(ModParticles.LIGHT_PARTICLES.get(), px, this.getY() + 0.2, pz, 0, 0.02, 0);
         }
     }
-
-    // --- SECT 6: INTERFACE & BOILERPLATE ---
 
     @Override
     public void increaseSpellDamage(double amount) {

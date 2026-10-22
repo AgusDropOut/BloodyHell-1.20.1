@@ -11,18 +11,17 @@ public interface IGemSpell {
     default void configureSpell(List<Gem> gems) {
         if (gems == null) return;
         for (Gem gem : gems) {
-            String statKey = gem.getStat(); // e.g. "damage"
+            String statKey = gem.getStat();
             double value = gem.getValue();
             switch (statKey) {
                 case GemType.TYPE_DAMAGE -> increaseSpellDamage(value);
                 case GemType.TYPE_SIZE -> increaseSpellSize(value);
-                case GemType.TYPE_DURATION -> increaseSpellDuration((int)value*20); // converting seconds to ticks
+                case GemType.TYPE_DURATION -> increaseSpellDuration((int)value*20);
                 case GemType.TYPE_QUANTITY -> increaseSpellQuantity(value);
             }
         }
     }
 
-    // Config Configuration (Multiplicative)
     default void applyConfigScaling(SpellType spellType) {
         double finalDamageMulti = ModCommonConfig.getFinalDamageMultiplier(spellType.getId());
         if (finalDamageMulti != 1.0) {
@@ -30,18 +29,15 @@ public interface IGemSpell {
         }
     }
 
-    //  Required Getters & Setters for the Interface to do the math
     float getBaseDamage();
     void setBaseDamage(float damage);
 
     void increaseSpellDamage(double amount);
     void increaseSpellSize(double amount);
     void increaseSpellDuration(int amount);
-    /* Optional method, could be handled by the book itself */
+
     default void increaseSpellQuantity(double amount) {
 
     }
-
-
 
 }

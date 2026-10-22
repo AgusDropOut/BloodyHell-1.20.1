@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.event.handlers;
 
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteBloodHarvesterBlockEntity;
 import net.agusdropout.bloodyhell.datagen.ModTags;
-import net.agusdropout.bloodyhell.effect.ModEffects; // Don't forget this import!
+import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulEntity;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulSize;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulType;
@@ -20,13 +20,10 @@ public class BloodHarvestHandler {
 
         if (level.isClientSide) return;
 
-
         if (!isValidSacrifice(entity)) return;
-
 
         int range = 10;
         BlockPos entityPos = entity.blockPosition();
-
 
         BlockPos harvesterPos = BlockPos.findClosestMatch(entityPos, range, range, pos ->
                 level.getBlockEntity(pos) instanceof SanguiniteBloodHarvesterBlockEntity
@@ -53,7 +50,6 @@ public class BloodHarvestHandler {
             return BloodSoulType.INFECTED;
         }
 
-
         if (entity.getType().is(ModTags.Entities.CORRUPTED_SACRIFICEABLE_ENTITY)) {
             return BloodSoulType.CORRUPTED;
         }
@@ -61,7 +57,6 @@ public class BloodHarvestHandler {
             return BloodSoulType.BLOOD;
         }
 
-        // 3. Fallback
         if (entity instanceof Monster) return BloodSoulType.CORRUPTED;
         return BloodSoulType.BLOOD;
     }

@@ -14,9 +14,6 @@ public class ShaderUtils {
         return isIrisShaderActive() || isOptifineShaderActive();
     }
 
-    // ==========================================
-    //                 IRIS
-    // ==========================================
     private static boolean isIrisShaderActive() {
         if (hasIris == null) {
             hasIris = ModList.get().isLoaded("iris") || ModList.get().isLoaded("oculus");
@@ -33,9 +30,6 @@ public class ShaderUtils {
         return false;
     }
 
-    // ==========================================
-    //               OPTIFINE
-    // ==========================================
     private static boolean isOptifineShaderActive() {
         if (hasOptifine == null) {
             try {

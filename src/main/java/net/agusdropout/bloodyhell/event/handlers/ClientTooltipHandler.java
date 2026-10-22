@@ -20,14 +20,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT)
 public class ClientTooltipHandler {
 
-    // --- HANDLE FRAME & BACKGROUND COLORS ---
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
 
         if (ModClientConfigs.DISABLE_MOD_TOOLTIPS.get()) return;
 
         ItemStack stack = event.getItemStack();
-
 
         if (stack.is(ModTags.Items.SANGUINITE_TIER_ITEMS) || stack.is(ModTags.Items.RHNULL_TIER_ITEMS)) {
             int borderStart = 0xffffdd6b;
@@ -58,7 +56,6 @@ public class ClientTooltipHandler {
         }
     }
 
-    // --- HANDLE TEXT COLORS ---
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
 
@@ -67,24 +64,20 @@ public class ClientTooltipHandler {
         ItemStack stack = event.getItemStack();
         if (event.getToolTip().isEmpty()) return;
 
-
         if (stack.is(ModTags.Items.SANGUINITE_TIER_ITEMS)) {
             setColor(event, 0xAA0000);
             return;
         }
 
-
         if (stack.is(ModTags.Items.RHNULL_TIER_ITEMS)) {
-            setColor(event, 0xFFAA00); // Gold
+            setColor(event, 0xFFAA00);
             return;
         }
-
 
         if (stack.is(ModTags.Items.BLASPHEMOUS_TIER_ITEMS)) {
-            setColor(event, 0xFFAA00); // Gold
+            setColor(event, 0xFFAA00);
             return;
         }
-
 
         ResourceLocation registryName = ForgeRegistries.ITEMS.getKey(stack.getItem());
         if (registryName != null && registryName.getNamespace().equals(BloodyHell.MODID)) {
@@ -96,7 +89,6 @@ public class ClientTooltipHandler {
     public static void onGatherComponents(RenderTooltipEvent.GatherComponents event) {
 
         if (ModClientConfigs.DISABLE_MOD_TOOLTIPS.get()) return;
-
 
         if (!event.getItemStack().isEmpty() &&
                 event.getItemStack().getItem().getCreatorModId(event.getItemStack()) != null &&

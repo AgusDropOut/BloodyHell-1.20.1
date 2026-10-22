@@ -27,23 +27,18 @@ public class VisceralEffectHudOverlay {
 
         PoseStack poseStack = guiGraphics.pose();
 
-
         int guiWidth = minecraft.getWindow().getGuiScaledWidth();
         int guiHeight = minecraft.getWindow().getGuiScaledHeight();
 
-
         int textureWidth = 1280;
         int textureHeight = 720;
-
 
         float scaleX = (float) guiWidth / textureWidth;
         float scaleY = (float) guiHeight / textureHeight;
         float scale = Math.max(scaleX, scaleY);
 
-        // 📌 Aplicar escala manual
         poseStack.pushPose();
         poseStack.scale(scale, scale, 1.0f);
-
 
         guiGraphics.blit(EFFECT_OVERLAY, 0, 0, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
 

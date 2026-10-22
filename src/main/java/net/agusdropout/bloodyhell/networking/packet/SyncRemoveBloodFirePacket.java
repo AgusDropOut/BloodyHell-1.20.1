@@ -27,7 +27,7 @@ public class SyncRemoveBloodFirePacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            // CLIENT SIDE: Forcefully remove the effect
+
             if (Minecraft.getInstance().level != null) {
                 Entity entity = Minecraft.getInstance().level.getEntity(entityId);
                 if (entity instanceof LivingEntity living) {

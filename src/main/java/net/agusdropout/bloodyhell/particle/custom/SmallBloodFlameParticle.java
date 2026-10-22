@@ -9,13 +9,11 @@ public class SmallBloodFlameParticle extends TextureSheetParticle {
     protected SmallBloodFlameParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
 
-        // 1. Setup Size & Life
-        this.quadSize = 0.08F; // Small size
-        this.lifetime = (int)(8.0D / (Math.random() * 0.8D + 0.2D)) + 4; // Random life (like vanilla flame)
+        this.quadSize = 0.08F;
+        this.lifetime = (int)(8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
 
-        // 2. Setup Velocity (Rise Up)
         this.xd = xSpeed;
-        this.yd = ySpeed; // Slight upward drift by default
+        this.yd = ySpeed;
         this.zd = zSpeed;
     }
 
@@ -30,9 +28,7 @@ public class SmallBloodFlameParticle extends TextureSheetParticle {
             return;
         }
 
-
         this.move(this.xd, this.yd, this.zd);
-
 
         this.xd *= 0.96F;
         this.zd *= 0.96F;
@@ -43,7 +39,6 @@ public class SmallBloodFlameParticle extends TextureSheetParticle {
             this.zd *= 0.7F;
         }
 
-
         if (this.age > this.lifetime / 2) {
             this.quadSize *= 0.96F;
         }
@@ -53,7 +48,6 @@ public class SmallBloodFlameParticle extends TextureSheetParticle {
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
-
 
     @Override
     protected int getLightColor(float partialTick) {

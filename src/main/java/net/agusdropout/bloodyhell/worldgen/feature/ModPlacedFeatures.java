@@ -20,7 +20,6 @@ import java.util.List;
 
 public class ModPlacedFeatures {
 
-
     public static final ResourceKey<PlacedFeature> SANGUINE_ORE_PLACED_KEY = createKey("sanguine_ore_placed");
     public static final ResourceKey<PlacedFeature> BLASPHEMITE_ORE_PLACED_KEY = createKey("blasphemite_ore_placed");
 
@@ -50,22 +49,20 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> ROUNDED_GRASS_PLACED_KEY = createKey("rounded_grass_placed");
     public static final ResourceKey<PlacedFeature> GLOWING_CRYSTAL_PLACED_KEY = createKey("glowing_crystal_placed_key");
 
-
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
-
         register(context, SANGUINE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.SOUL_DIMENSION_SANGUINE_ORE_KEY),
-                commonOrePlacement(12, // VeinsPerChunk
+                commonOrePlacement(12,
                         HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-10), VerticalAnchor.aboveBottom(100))));
         register(context, BLASPHEMITE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.SOUL_DIMENSION_BLASPHEMITE_ORE_KEY),
-                commonOrePlacement(12, // VeinsPerChunk
+                commonOrePlacement(12,
                         HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-10), VerticalAnchor.aboveBottom(100))));
         register(context, BLEEDING_BLOCK_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.BLEEDING_BLOCK_KEY),
-                commonOrePlacement(24, // VeinsPerChunk
+                commonOrePlacement(24,
                         HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(80))));
         register(context, BLOOD_LIQUID_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.BLOOD_LIQUID_KEY),
-                commonOrePlacement(24, // VeinsPerChunk
+                commonOrePlacement(24,
                         HeightRangePlacement.uniform(VerticalAnchor.absolute(55), VerticalAnchor.absolute(112))));
         register(context,BLOOD_TREE_PLACED_KEY,configuredFeatures.getOrThrow(ModConfiguredFeatures.BLOOD_TREE_KEY),
                 VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2), PlantBlocks.BLOOD_SAPLING.get()));
@@ -93,7 +90,7 @@ public class ModPlacedFeatures {
         register(context,GIANT_ROOT_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.GIANT_ROOT_KEY), patch(1));
         register(context,STING_FLOWER_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.STING_FLOWER_KEY), patch(50));
         register(context,BLOOD_SCRAPPER_PLANT_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.BLOOD_SCRAPPER_PLANT_KEY), patch(30));
-        
+
     }
 
     private static List<PlacementModifier> patch(int count) {

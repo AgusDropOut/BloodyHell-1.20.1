@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.worldgen.structure; // Ajusta tu paquete
+package net.agusdropout.bloodyhell.worldgen.structure;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
@@ -25,25 +25,19 @@ import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import java.util.Map;
 import java.util.Optional;
 
-
-// import net.mcreator.bloodyhell.init.ModStructures;
-// import net.mcreator.bloodyhell.init.ModEntities;
-
 public class PoolStructure extends Structure {
 
     public static final Codec<PoolStructure> CODEC = simpleCodec(PoolStructure::new);
 
-    // Ajusta "bloodyhell" a tu MODID exacto
     private static final ResourceLocation PART_0 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_0");
     private static final ResourceLocation PART_1 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_1");
     private static final ResourceLocation PART_2 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_2");
     private static final ResourceLocation PART_3 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_3");
     private static final ResourceLocation PART_4 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_4");
-    private static final ResourceLocation PART_5 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_5"); // Puerta
+    private static final ResourceLocation PART_5 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_5");
     private static final ResourceLocation PART_6 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_6");
     private static final ResourceLocation PART_7 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_7");
     private static final ResourceLocation PART_8 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_8");
-
 
     private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
             .put(PART_0, new BlockPos(0, 0, 0))
@@ -73,16 +67,13 @@ public class PoolStructure extends Structure {
         int centerZ = context.chunkPos().getMinBlockZ();
         int radius = 45;
 
-
         int yCenter = context.chunkGenerator().getFirstFreeHeight(centerX, centerZ, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner1 = context.chunkGenerator().getFirstFreeHeight(centerX + radius, centerZ + radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner2 = context.chunkGenerator().getFirstFreeHeight(centerX - radius, centerZ - radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner3 = context.chunkGenerator().getFirstFreeHeight(centerX + radius, centerZ - radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         int yCorner4 = context.chunkGenerator().getFirstFreeHeight(centerX - radius, centerZ + radius, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
 
-
         int minY = Math.min(yCenter, Math.min(yCorner1, Math.min(yCorner2, Math.min(yCorner3, yCorner4))));
-
 
         int finalY = minY - 1;
 
@@ -92,12 +83,10 @@ public class PoolStructure extends Structure {
         PoolStructure.start(context.structureTemplateManager(), blockpos, rotation, builder, context.random());
     }
 
-
     public static void start(StructureTemplateManager templateManager, BlockPos pos, Rotation rotation, StructurePiecesBuilder pieceList, RandomSource random) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-
 
         int armLength = 47;
         int centerSize = 6;
@@ -109,8 +98,6 @@ public class PoolStructure extends Structure {
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_8, finalPos, rotation));
 
-
-
         rotationOffset = new BlockPos(-armLength, 0, -armLength).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_0, finalPos, rotation));
@@ -119,12 +106,9 @@ public class PoolStructure extends Structure {
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_1, finalPos, rotation));
 
-
         rotationOffset = new BlockPos(centerSize, 0, -armLength).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_2, finalPos, rotation));
-
-
 
         rotationOffset = new BlockPos(-armLength, 0, 0).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
@@ -134,13 +118,9 @@ public class PoolStructure extends Structure {
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_3, finalPos, rotation));
 
-        // --- FILA INFERIOR (SUR / Z positivo) ---
-
         rotationOffset = new BlockPos(-armLength, 0, centerSize).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_6, finalPos, rotation));
-
-        // Part 5 (PUERTA - Sur): 0 X, +6 Z
 
         rotationOffset = new BlockPos(0, 0, centerSize).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
@@ -161,7 +141,6 @@ public class PoolStructure extends Structure {
     public GenerationStep.Decoration step() {
         return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
-
 
     public static class Piece extends TemplateStructurePiece {
 

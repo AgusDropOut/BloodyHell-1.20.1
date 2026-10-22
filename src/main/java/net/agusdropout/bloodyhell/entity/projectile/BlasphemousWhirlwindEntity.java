@@ -24,8 +24,6 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.UUID;
 
-
-
 public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntity, GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
@@ -42,7 +40,6 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
 
     private int spawnCooldown = 0;
 
-    // === Synced Data ===
     private static final EntityDataAccessor<Boolean> MINOR_RING_ACTIVE =
             SynchedEntityData.defineId(BlasphemousWhirlwindEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -61,7 +58,6 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
         this.entityData.define(MINOR_RING_ACTIVE, false);
     }
 
-    // === Owner ===
     public void setOwner(@Nullable LivingEntity livingEntity) {
         this.owner = livingEntity;
         this.ownerUUID = livingEntity == null ? null : livingEntity.getUUID();
@@ -80,7 +76,6 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
         return this.owner;
     }
 
-    // === Save / Load NBT ===
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
         if (compoundTag.hasUUID("Owner")) {
@@ -100,7 +95,6 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
         compoundTag.putBoolean("MinorRingActive", this.isMinorRingActive());
     }
 
-    // === Tick ===
     @Override
     public void tick() {
         super.tick();
@@ -112,7 +106,7 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
 
         if (  spawnCooldown-- <= 0) {
             spawnMinorRing();
-            spawnCooldown = 100; // 2s aprox
+            spawnCooldown = 100;
         }
 
         if (!level().isClientSide) {
@@ -140,7 +134,7 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
         smallRing = new BlasphemousSmallWhirlwindEntity(level(), getX(), getY(), getZ(), owner);
         smallRing.setParentRing(this);
         level().addFreshEntity(smallRing);
-        setMinorRingActive(true); // sincronizado
+        setMinorRingActive(true);
     }
 
     private void spawnAuraParticles() {
@@ -158,11 +152,9 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
                 double py = this.getY() + 0.3 + this.random.nextDouble() * 3;
                 double pz = this.getZ() + Math.sin(angle) * dist;
 
-
                 double dx = 0;
                 double dz = 0;
-                double dy = (this.random.nextDouble() - 0.5) * verticalSpeed; // -0.01 a +0.01
-
+                double dy = (this.random.nextDouble() - 0.5) * verticalSpeed;
 
                 this.level().addParticle(ModParticles.MAGIC_LINE_PARTICLE.get(),
                         px, py, pz,
@@ -185,27 +177,19 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
     private boolean isValidTarget(LivingEntity candidate) {
         if (candidate == null || !candidate.isAlive()) return false;
 
-
         if (candidate == getOwner()) return false;
-
 
         if (candidate instanceof TamableAnimal tamable && tamable.getOwner() == this.getOwner()) {
             return false;
         }
 
-
         if (candidate instanceof BlasphemousArmEntity) {
             if(((BlasphemousArmEntity) candidate).getOwner() == this.getOwner()) return false;
         }
 
-
-
         return true;
     }
 
-
-
-    // === Boolean synced ===
     public boolean isMinorRingActive() {
         return this.entityData.get(MINOR_RING_ACTIVE);
     }
@@ -218,14 +202,12 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
         setMinorRingActive(false);
     }
 
-    // === Damage ===
     @Override
     public boolean hurt(DamageSource damageSource, float f) {
         if (damageSource.getEntity() instanceof Arrow) return false;
         return super.hurt(damageSource, f);
     }
 
-    // === Animations ===
     private PlayState predicate(software.bernie.geckolib.core.animation.AnimationState animationState) {
         return PlayState.CONTINUE;
     }
@@ -239,7 +221,6 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
-
 
 }
 

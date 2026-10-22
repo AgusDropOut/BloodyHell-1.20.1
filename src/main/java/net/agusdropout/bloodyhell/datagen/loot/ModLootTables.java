@@ -114,15 +114,10 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(MachineBlocks.RHNULL_TANK.get());
             this.dropOther(MachineBlocks.SANGUINITE_BLOOD_HARVESTER.get(),PlaceableItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get());
 
-
             this.createSilkTouchOrShearsDispatchTable(PlantBlocks.VORACIOUS_MUSHROOM_BLOCK.get(), PlaceableItems.VORACIOUS_MUSHROOM.get());
             this.createSilkTouchOrShearsDispatchTable(PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK.get(), PlaceableItems.CRIMSON_LURE_MUSHROOM.get());
             this.dropOther(MachineBlocks.UNKNOWN_PORTAL_BLOCK.get(),PlaceableItems.UNKNOWN_PORTAL_ITEM.get());
             this.dropSelf(MachineBlocks.SANGUINITE_INFUSOR.get());
-
-
-
-
 
             this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK.get());
             this.dropSelf(StoneBlocks.POLISHED_BLOODY_STONE_SLAB.get());
@@ -150,9 +145,6 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(MiscBlocks.ANCIENT_BLOOD_CAPSULE.get());
             this.dropSelf(MachineBlocks.SANGUINE_LAPIDARY.get());
 
-
-
-
             this.dropSelf(StoneBlocks.BLOODY_STONE_SLAB.get());
             this.dropSelf(StoneBlocks.BLOODY_STONE_FENCE_GATE.get());
             this.dropSelf(StoneBlocks.BLOODY_STONE_FENCE.get());
@@ -171,7 +163,6 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(WoodBlocks.BLOOD_PLANKS_SLAB.get());
             this.dropSelf(WoodBlocks.BLOOD_PLANKS_FENCE.get());
             this.dropSelf(WoodBlocks.BLOOD_PLANKS_FENCE_GATE.get());
-
 
             this.dropSelf(PlantBlocks.BLOOD_LILY_BLOCK.get());
             this.dropSelf(PlantBlocks.SMALL_BLOOD_SAPLING.get());
@@ -215,13 +206,7 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(LightBlocks.STAR_LAMP_BLOCK.get());
             this.add(MetalBlocks.BLASPHEMITE_ORE.get(), block -> createOreDrop(MetalBlocks.BLASPHEMITE_ORE.get(), BlasphemiteItems.RAW_BLASPHEMITE.get()));
 
-
-
             ore(MetalBlocks.SANGUINITE_ORE, SanguiniteItems.RAW_SANGUINITE);
-
-
-
-
 
             LootItemCondition.Builder lootitemcondition$builder2 = LootItemBlockStatePropertyCondition
                     .hasBlockStateProperties(PlantBlocks.EYEBALL_CROP.get())
@@ -229,7 +214,6 @@ public class ModLootTables extends LootTableProvider {
                     .or(LootItemBlockStatePropertyCondition
                             .hasBlockStateProperties(PlantBlocks.EYEBALL_CROP.get())
                             .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EyeballCropBlock.AGE, 6)));
-
 
             this.add(PlantBlocks.EYEBALL_CROP.get(), createCropDrops(PlantBlocks.EYEBALL_CROP.get(), FoodItems.EYEBALL.get(),
                     PlaceableItems.EYEBALL_SEED.get(), lootitemcondition$builder2));
@@ -239,8 +223,6 @@ public class ModLootTables extends LootTableProvider {
             this.add(WoodBlocks.SOUL_LEAVES.get(), block ->
                     createLeavesDrops(block, PlantBlocks.BLOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
 
-
-
             this.createGrassDrops(PlantBlocks.BLOOD_GRASS, PlaceableItems.EYEBALL_SEED.get());
 
             this.createPlantsDrops(PlantBlocks.BLOOD_PETALS, PlantBlocks.BLOOD_PETALS.get().asItem());
@@ -248,7 +230,6 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(MiscBlocks.SMALL_ROCKS.get());
             this.createPlantsDrops(PlantBlocks.BLOOD_FLOWER, PlantBlocks.BLOOD_FLOWER.get().asItem());
             this.createPlantsDrops(PlantBlocks.BLOOD_BUSH, PlantBlocks.BLOOD_BUSH.get().asItem());
-
 
             this.add(PlantBlocks.POTTED_BLOOD_FLOWER.get(), createPotFlowerItemTable(PlantBlocks.BLOOD_FLOWER.get()));
         }
@@ -270,7 +251,7 @@ public class ModLootTables extends LootTableProvider {
 
         @Override
         public void generate() {
-            // --- BOSSES & ELITES ---
+
             this.add(ModEntityTypes.UNKNOWN_LANTERN.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
@@ -285,7 +266,6 @@ public class ModLootTables extends LootTableProvider {
             this.add(ModEntityTypes.BLASPHEMOUS_MALFORMATION.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
-            // --- HOSTILE MONSTERS ---
             this.add(ModEntityTypes.BLOODTHIRSTYBEAST.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(DropItems.AUREAL_REVENANT_DAGGER.get())
@@ -331,7 +311,6 @@ public class ModLootTables extends LootTableProvider {
                                     .when(LootItemRandomChanceCondition.randomChance(0.45F))
                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-            // --- PASSIVE & NEUTRAL CREATURES ---
             this.add(ModEntityTypes.BLOODPIG.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.GOREHOG_RAW_STEAK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))))
                     .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))))));
@@ -359,7 +338,6 @@ public class ModLootTables extends LootTableProvider {
             this.add(ModEntityTypes.OFFSPRING_OF_THE_UNKNOWN.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
-            // --- MINIONS & SUMMONS ---
             this.add(ModEntityTypes.FAILED_SON_OF_THE_UNKNOWN.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
@@ -372,13 +350,10 @@ public class ModLootTables extends LootTableProvider {
             this.add(ModEntityTypes.BASTION_OF_THE_UNKNOWN.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
-
-            // --- OTHER ENTITIES ---
             this.add(ModEntityTypes.CRAWLING_DELUSION.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))));
 
         }
-
 
         @Override
         protected Stream<EntityType<?>> getKnownEntityTypes() {

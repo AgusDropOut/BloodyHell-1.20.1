@@ -22,7 +22,6 @@ public class MagicFloorParticle extends TextureSheetParticle {
     private final SpriteSet spriteSet;
     private final boolean jitter;
 
-    // HSB Colors
     private final float baseHue;
     private final float baseSat;
     private final float baseBri;
@@ -35,7 +34,7 @@ public class MagicFloorParticle extends TextureSheetParticle {
         this.spriteSet = spriteSet;
         this.jitter = options.shouldJitter();
         this.lifetime = options.getLifetime();
-        // Convert RGB to HSB
+
         float[] hsb = Color.RGBtoHSB(
                 (int)(options.getColor().x() * 255),
                 (int)(options.getColor().y() * 255),
@@ -50,7 +49,6 @@ public class MagicFloorParticle extends TextureSheetParticle {
         this.gCol = options.getColor().y();
         this.bCol = options.getColor().z();
 
-        // Tiny Start Size (Sharper look for magic)
         this.quadSize = options.getSize() * 0.5F;
         this.initialQuadSize = this.quadSize;
 
@@ -69,11 +67,9 @@ public class MagicFloorParticle extends TextureSheetParticle {
         super.tick();
         this.setSpriteFromAge(this.spriteSet);
 
-        // Shrink with age
         float lifeRatio = (float)this.age / (float)this.lifetime;
         this.quadSize = this.initialQuadSize * (1.0F - lifeRatio);
 
-        // Living Color Jitter
         if (this.jitter) {
             float hueShift = Mth.sin(this.age * 0.4F) * 0.15F;
             float newHue = this.baseHue + hueShift;
@@ -84,42 +80,31 @@ public class MagicFloorParticle extends TextureSheetParticle {
             this.bCol = (rgb & 0xFF) / 255.0F;
         }
 
-        // --- GLOW ALPHA TWEAK ---
-        // For Additive Blending, High Alpha = White Center. Low Alpha = Colored Tint.
-        // We keep it around 0.6 to 0.8 to ensure the color is visible.
-        // If it's too high (1.0), it will just look white.
         if (lifeRatio > 0.7F) {
-            this.alpha = 0.6F - ((lifeRatio - 0.7F) * 2.0F); // Quick fade out
+            this.alpha = 0.6F - ((lifeRatio - 0.7F) * 2.0F);
         } else {
-            this.alpha = 0.6F; // Steady glow
+            this.alpha = 0.6F;
         }
     }
 
-    // --- RENDER TYPE MAGIC ---
-    // We override this to use our custom Additive Render Type
     @Override
     public ParticleRenderType getRenderType() {
         return PARTICLE_SHEET_ADDITIVE;
     }
 
-    // Force full brightness (Emissive)
     @Override
     protected int getLightColor(float partialTick) {
         return 240;
     }
 
-    // --- THE CUSTOM RENDER TYPE ---
-    // This defines HOW the particle is drawn onto the screen.
     public static final ParticleRenderType PARTICLE_SHEET_ADDITIVE = new ParticleRenderType() {
         @Override
         public void begin(BufferBuilder buffer, TextureManager textureManager) {
-            RenderSystem.depthMask(false); // Do not write to depth buffer (Ghostly)
+            RenderSystem.depthMask(false);
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 
             RenderSystem.enableBlend();
-            // THE SECRET SAUCE: ADDITIVE BLENDING
-            // SRC_ALPHA + ONE means: Take the particle color and ADD it to the background.
-            // This creates the "Light" effect.
+
             RenderSystem.blendFunc(
                     com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA,
                     com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE

@@ -24,8 +24,8 @@ public class StarExplosionParticle extends Particle {
         private final ResourceLocation texture = new ResourceLocation(BloodyHell.MODID, "textures/particle/yellow.png");
         private final float baseRadius = 0.5f;
         private final float growthRate = 0.2f;
-        private final int latSegments = 16; // "paralelos"
-        private final int lonSegments = 32;// "meridianos"
+        private final int latSegments = 16;
+        private final int lonSegments = 32;
         private final int lifetime = 100;
 
         protected StarExplosionParticle(ClientLevel level, double x, double y, double z) {
@@ -51,7 +51,6 @@ public class StarExplosionParticle extends Particle {
         RenderSystem.disableCull();
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(false);
-
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1f, 1f, 0f, 1f);

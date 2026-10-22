@@ -38,7 +38,6 @@ import java.util.EnumSet;
 public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
-
     private int aggressionDelay = 100;
 
     public CorruptedBloodySoulEntity(EntityType<? extends FlyingMob> pEntityType, Level pLevel) {
@@ -79,18 +78,16 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
         super.tick();
         if (aggressionDelay > 0) aggressionDelay--;
 
-
         if (this.level().isClientSide) {
             Vector3f darkRed = new Vector3f(0.6f, 0.0f, 0.0f);
 
             ParticleHelper.spawn(level(), new MagicParticleOptions(darkRed, 0.4F, false, 20),
                     this.getX() + (random.nextDouble() - 0.5) * 0.5,
-                    this.getY() + 0.8, // Just under the body
+                    this.getY() + 0.8,
                     this.getZ() + (random.nextDouble() - 0.5) * 0.5,
-                    0, -0.05, 0); // Drift down slightly
+                    0, -0.05, 0);
         }
     }
-
 
     static class KamikazeFlyGoal extends Goal {
         private final CorruptedBloodySoulEntity mob;
@@ -106,25 +103,22 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
             if (mob.aggressionDelay > 0) return false;
 
             this.target = mob.getTarget();
-            return this.target != null && mob.distanceToSqr(this.target) < 400; // 20 blocks
+            return this.target != null && mob.distanceToSqr(this.target) < 400;
         }
 
         @Override
         public void tick() {
             if (target == null) return;
 
-
             mob.getNavigation().moveTo(target, 1.5D);
 
-
             if (mob.distanceToSqr(target) < 3.0D) {
-                mob.level().explode(mob, mob.getX(), mob.getY(), mob.getZ(), 2.0F, Level.ExplosionInteraction.NONE); // NONE = No block damage
+                mob.level().explode(mob, mob.getX(), mob.getY(), mob.getZ(), 2.0F, Level.ExplosionInteraction.NONE);
                 mob.discard();
             }
         }
     }
 
-    // --- INTERACTION (Capture in bottle) ---
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if(player.getMainHandItem().getItem() == FlaskItems.BLOOD_FLASK.get()) {
@@ -136,7 +130,6 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
         return InteractionResult.PASS;
     }
 
-    // --- GECKOLIB ---
     private PlayState predicate(AnimationState<CorruptedBloodySoulEntity> state) {
 
         if(state.isMoving()) {
@@ -156,7 +149,6 @@ public class CorruptedBloodySoulEntity extends FlyingMob implements GeoEntity {
         return factory;
     }
 
-    // --- SOUNDS ---
     protected SoundEvent getHurtSound(DamageSource source) { return SoundEvents.SLIME_HURT; }
     protected SoundEvent getDeathSound() { return SoundEvents.SLIME_DEATH; }
 }

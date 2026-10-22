@@ -18,7 +18,7 @@ public class PatchouliBookBuilder {
     }
 
     public PatchouliBookBuilder setMacros(JsonObject macros) {
-        book.add("macros", macros); // MUST BE "macros"
+        book.add("macros", macros);
         return this;
     }
 

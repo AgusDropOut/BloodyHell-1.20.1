@@ -45,7 +45,6 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Set;
 
-
 public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnimal {
     private static final Item POISONOUS_FOOD = Items.COOKIE;
     private static final Set<Item> TAME_FOOD = Sets.newHashSet(PlaceableItems.EYEBALL_SEED.get());
@@ -57,7 +56,6 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
     private float flapping = 1.0F;
     private float nextFlap = 1.0F;
 
-
   public CrimsonRavenEntity(EntityType<? extends Parrot> pEntityType, Level pLevel) {
       super(pEntityType, pLevel);
      this.moveControl = new FlyingMoveControl(this, 10, false);
@@ -65,7 +63,6 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
      this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
 
   }
-
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_29389_, DifficultyInstance p_29390_, MobSpawnType p_29391_, @javax.annotation.Nullable SpawnGroupData p_29392_, @javax.annotation.Nullable CompoundTag p_29393_) {
@@ -82,7 +79,6 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
 
                 .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
-
 
     @Override
     protected void registerGoals() {
@@ -185,10 +181,9 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
             state.getController().setAnimation(RawAnimation.begin().then("animation.crimsonraven.attack", Animation.LoopType.PLAY_ONCE));
             this.swinging = false;
         }
-//
+
         return PlayState.CONTINUE;
     }
-
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -197,8 +192,6 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
         controllers.add(new AnimationController(this, "attackController",
                 0, this::attackPredicate));
     }
-
-
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -212,7 +205,6 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
     protected float tickHeadTurn(float v, float v1) {
         return super.tickHeadTurn(v, v1);
     }
-
 
     public SoundEvent getAmbientSound() {
         return SoundEvents.PARROT_AMBIENT;
@@ -257,17 +249,11 @@ public class CrimsonRavenEntity extends Parrot implements GeoEntity, FlyingAnima
             return this.isInLove() && crimsonRavenEntity.isInLove();
         }
 
-
     }
 
     public static float getPitch(RandomSource p_218237_) {
         return (p_218237_.nextFloat() - p_218237_.nextFloat()) * 0.2F + 1.0F;
     }
-
-
-
-
-
 
     @Override
     public boolean isFlying() {

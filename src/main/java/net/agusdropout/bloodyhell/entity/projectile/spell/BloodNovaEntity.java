@@ -34,8 +34,6 @@ import java.util.List;
 
 public class BloodNovaEntity extends Projectile implements IGemSpell {
 
-    // --- SECT 1: FIELDS & DATA KEYS ---
-
     private static final EntityDataAccessor<Integer> DATA_LIFE_TICKS = SynchedEntityData.defineId(BloodNovaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_COLLAPSE_TICKS = SynchedEntityData.defineId(BloodNovaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_RADIUS = SynchedEntityData.defineId(BloodNovaEntity.class, EntityDataSerializers.FLOAT);
@@ -47,12 +45,9 @@ public class BloodNovaEntity extends Projectile implements IGemSpell {
     private int tickCounter = 0;
     private float damage;
 
-    // Timing constants (Static relative to start)
     private final int tStop = 20;
     private final int tLiftStart = 30;
     private final int tLiftEnd = 100;
-
-    // --- SECT 2: CONSTRUCTORS & INIT ---
 
     public BloodNovaEntity(EntityType<? extends BloodNovaEntity> type, Level level) {
         super(type, level);
@@ -94,13 +89,10 @@ public class BloodNovaEntity extends Projectile implements IGemSpell {
         return this.entityData.get(DATA_RADIUS);
     }
 
-    // --- SECT 3: MAIN TICK LOOP ---
-
     @Override
     public void tick() {
         super.tick();
 
-        // Phase 1: Initial Travel
         if (tickCounter < tStop) {
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9));
         } else if (tickCounter == tStop) {
@@ -113,7 +105,6 @@ public class BloodNovaEntity extends Projectile implements IGemSpell {
 
         int collapseTime = getCollapseTime();
 
-        // Phase 2: Server Mechanics (Pulling & Lifting)
         if (!this.level().isClientSide) {
             if (tickCounter > tLiftStart && tickCounter < tLiftEnd && tickCounter % 4 == 0) {
                 spawnRisingBlock();
@@ -126,19 +117,15 @@ public class BloodNovaEntity extends Projectile implements IGemSpell {
             }
         }
 
-        // Phase 3: Client Visuals
         if (this.level().isClientSide) {
             spawnAmbientParticles();
         }
 
-        // Phase 4: Explosion
         if (this.tickCounter >= getLifeTicks()) {
             explode();
         }
         this.tickCounter++;
     }
-
-    // --- SECT 4: PHYSICS & LOGIC ---
 
     private void performAreaLogic() {
         float radius = getRadius();
@@ -229,8 +216,6 @@ public class BloodNovaEntity extends Projectile implements IGemSpell {
         entity.setDeltaMovement(entity.getDeltaMovement().lerp(targetMotion, 0.15));
     }
 
-    // --- SECT 5: EXPLOSION & SPAWNING ---
-
     private void explode() {
         if (!this.level().isClientSide) {
             float radius = getRadius();
@@ -304,8 +289,6 @@ public class BloodNovaEntity extends Projectile implements IGemSpell {
         }
     }
 
-    // --- SECT 6: CLIENT EVENTS & PARTICLES ---
-
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 3) {
@@ -364,8 +347,6 @@ public class BloodNovaEntity extends Projectile implements IGemSpell {
             }
         }
     }
-
-    // --- SECT 7: INTERFACE & DATA ---
 
     @Override
     public void increaseSpellDamage(double amount) {

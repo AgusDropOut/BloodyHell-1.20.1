@@ -39,8 +39,6 @@ import java.util.UUID;
 
 public class BloodSlashEntity extends Projectile implements IGemSpell {
 
-    // --- FIELDS & DATA KEYS ---
-
     private static final EntityDataAccessor<Float> SYNCED_YAW = SynchedEntityData.defineId(BloodSlashEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> SYNCED_PITCH = SynchedEntityData.defineId(BloodSlashEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_SCALE = SynchedEntityData.defineId(BloodSlashEntity.class, EntityDataSerializers.FLOAT);
@@ -53,8 +51,6 @@ public class BloodSlashEntity extends Projectile implements IGemSpell {
     private float damage = 10.0f;
     private final List<UUID> hitEntities = new ArrayList<>();
     private int decalCooldown = 0;
-
-    // --- CONSTRUCTORS ---
 
     public BloodSlashEntity(EntityType<? extends Projectile> type, Level level) {
         super(type, level);
@@ -96,8 +92,6 @@ public class BloodSlashEntity extends Projectile implements IGemSpell {
     public float getScale() {
         return this.entityData.get(DATA_SCALE);
     }
-
-    // --- MAIN TICK LOOP ---
 
     @Override
     public void tick() {
@@ -149,8 +143,6 @@ public class BloodSlashEntity extends Projectile implements IGemSpell {
         return new Vec3(offsetX, offsetY, offsetZ);
     }
 
-    // --- COLLISION & LOGIC ---
-
     private void checkAreaCollisions() {
         double width = 3.0 * getScale();
         AABB scanArea = this.getBoundingBox().inflate(width, 1.0, width);
@@ -195,7 +187,6 @@ public class BloodSlashEntity extends Projectile implements IGemSpell {
 
             BloodSlashDecalEntity decal = new BloodSlashDecalEntity(this.level(), x, y, z, this.getYRot(), face);
 
-            // Pass Stats to Decal
             decal.setSize(getScale());
             decal.setDuration(this.maxLife * 10);
 
@@ -206,8 +197,6 @@ public class BloodSlashEntity extends Projectile implements IGemSpell {
             }
         }
     }
-
-    // --- VISUALS ---
 
     private void spawnGroundInteractionEffects() {
         BlockPos center = this.blockPosition();
@@ -308,8 +297,6 @@ public class BloodSlashEntity extends Projectile implements IGemSpell {
         }
     }
 
-    // --- INTERFACE & SYNC ---
-
     @Override
     public void increaseSpellDamage(double amount) {
         this.damage += (float) amount;
@@ -317,14 +304,14 @@ public class BloodSlashEntity extends Projectile implements IGemSpell {
 
     @Override
     public void increaseSpellSize(double amount) {
-        // Percentage increase (e.g., 0.5 = +50%)
+
         float current = this.entityData.get(DATA_SCALE);
         this.entityData.set(DATA_SCALE, current + (DEFAULT_SCALE * (float)amount));
     }
 
     @Override
     public void increaseSpellDuration(int amount) {
-        // Amount is seconds
+
         this.maxLife += amount;
     }
 

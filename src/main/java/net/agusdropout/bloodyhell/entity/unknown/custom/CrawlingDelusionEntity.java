@@ -72,7 +72,7 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.15D)
-                .add(Attributes.ATTACK_DAMAGE, 1.0D); // Kept low because the danger is the grapple effect
+                .add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
     @Override
@@ -166,16 +166,13 @@ public class CrawlingDelusionEntity extends AbstractInsightMonster implements Ge
             MobEffectInstance currentEffect = player.getEffect(net.agusdropout.bloodyhell.effect.ModEffects.DELUSION_GRASP.get());
             int currentAmp = currentEffect != null ? currentEffect.getAmplifier() : -1;
 
-            // Limit to 3 max attachments (Amplifier 2)
             int newAmp = Math.min(2, currentAmp + 1);
 
-            // Effect lasts 8 seconds (160 ticks)
             player.addEffect(new MobEffectInstance(net.agusdropout.bloodyhell.effect.ModEffects.DELUSION_GRASP.get(), 160, newAmp, false, true, true));
 
             this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 0.5F);
             this.playSound(SoundEvents.SCULK_SHRIEKER_STEP, 1.0F, 1.5F);
 
-            // Discard the physical entity as it has "attached" to the player
             this.discard();
             return true;
         }

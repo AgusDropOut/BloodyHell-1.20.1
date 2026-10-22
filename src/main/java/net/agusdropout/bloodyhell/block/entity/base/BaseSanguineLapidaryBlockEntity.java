@@ -40,13 +40,11 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
     private static final int SLOT_GEM_3 = 2;
     private static final int[] GEM_SLOTS = {SLOT_GEM_1, SLOT_GEM_2, SLOT_GEM_3};
 
-    // CHANGED: Added ghost items for client-side rendering
     private ItemStack ghostWeapon = ItemStack.EMPTY;
     private ItemStack ghostGem1 = ItemStack.EMPTY;
     private ItemStack ghostGem2 = ItemStack.EMPTY;
     private ItemStack ghostGem3 = ItemStack.EMPTY;
 
-    // CHANGED: Added shared animation tick state
     public int animationTick = 0;
     private static final int ANIM_DURATION = 40;
 
@@ -113,7 +111,6 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
             this.ghostGem2 = itemHandler.getStackInSlot(SLOT_GEM_2).copy();
             this.ghostGem3 = itemHandler.getStackInSlot(SLOT_GEM_3).copy();
 
-
             this.animationTick = ANIM_DURATION;
 
             List<Gem> gemsToPack = getGemsInSlots();
@@ -122,7 +119,6 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
             cleanGemItemsFromSlots();
 
             level.playSound(null, worldPosition, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0f, 1.0f);
-
 
             sync();
         }
@@ -177,7 +173,6 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
         }
     }
 
-    // CHANGED: Tick logic now runs on both sides to countdown animation and clean up
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (this.animationTick > 0) {
             this.animationTick--;
@@ -194,7 +189,6 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
             }
         }
     }
-
 
     public ItemStack getRenderWeapon() {
         return animationTick > 0 ? ghostWeapon : itemHandler.getStackInSlot(SLOT_WEAPON);
@@ -233,7 +227,6 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
             itemHandler.deserializeNBT(nbt.getCompound("Inventory"));
         }
 
-        // CHANGED: Load animation state if present
         if (nbt.contains("AnimTick")) {
             this.animationTick = nbt.getInt("AnimTick");
             ghostWeapon = ItemStack.of(nbt.getCompound("GhostWeapon"));
@@ -272,7 +265,6 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new SanguineLapidaryMenu(id, inventory, itemHandler, this);
     }
-
 
     private void spawnFusionParticles(Level level, BlockPos pos) {
         Vec3 center = new Vec3(pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5);

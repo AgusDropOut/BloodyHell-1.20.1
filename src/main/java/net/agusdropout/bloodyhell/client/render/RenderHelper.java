@@ -12,21 +12,10 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-/**
- * A centralized utility for rendering complex procedural shapes in 3D space.
- * Includes support for Spheres, Icosahedrons, Cylinders, Billboards, and procedural noise geometry.
- */
 public class RenderHelper {
 
     private static final float PHI = 1.618034f;
 
-    /**
-     * Renders a standard full sphere.
-     *
-     * @param radius  The radius of the sphere.
-     * @param latSegs Vertical segments (Latitude).
-     * @param lonSegs Horizontal segments (Longitude).
-     */
     public static void renderSphere(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                     float radius, int latSegs, int lonSegs,
                                     float r, float g, float b, float a, int light) {
@@ -35,12 +24,6 @@ public class RenderHelper {
                 r, g, b, a, light);
     }
 
-    /**
-     * Renders a "Slice" of a sphere (e.g., a band or ring-like sphere).
-     *
-     * @param minTheta Starting vertical angle (-PI/2 is bottom).
-     * @param maxTheta Ending vertical angle (PI/2 is top).
-     */
     public static void renderSphereSlice(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                          float radius, int latSegs, int lonSegs,
                                          double minTheta, double maxTheta,
@@ -63,9 +46,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a magical cylinder with dynamically shifting segment heights and shiny white flashes.
-     */
     public static void renderMagicalDynamicCylinder(VertexConsumer consumer, Matrix4f pose,
                                                     float radius, float baseHeight, int segments, float time,
                                                     float r, float g, float b, float alpha) {
@@ -120,9 +100,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a textureless auroral ring effect using vertical alpha gradients and wave interference.
-     */
     public static void renderAuroraRing(VertexConsumer consumer, Matrix4f pose,
                                         float radius, float maxHeight, int segments, float time,
                                         float r, float g, float b, float baseAlpha) {
@@ -166,8 +143,6 @@ public class RenderHelper {
             float curR = Mth.clamp(r + (interference1 * 0.1f + brightnessBoost) - darkening * 0.2f, 0.0f, 1.0f);
             float curG = Mth.clamp(g + (interference1 * 0.1f + brightnessBoost) - darkening * 0.6f, 0.0f, 1.0f);
             float curB = Mth.clamp(b + (interference1 * 0.1f + brightnessBoost) - darkening * 1.0f, 0.0f, 1.0f);
-
-
 
             simpleVertex(consumer, pose, x1, 0, z1, curR, curG, curB, a1);
             simpleVertex(consumer, pose, x1, h1, z1, curR, curG, curB, 0.0f);
@@ -214,7 +189,6 @@ public class RenderHelper {
                 float u3 = (s1 + 1) * S + uOffset;
                 float v3 = r1 * R + vOffset;
 
-
                 consumer.vertex(pose, x0 * radius, y0 * radius, z0 * radius).color(r, g, b, a).uv(u0, v0).endVertex();
                 consumer.vertex(pose, x1 * radius, y1 * radius, z1 * radius).color(r, g, b, a).uv(u1, v1).endVertex();
                 consumer.vertex(pose, x2 * radius, y2 * radius, z2 * radius).color(r, g, b, a).uv(u2, v2).endVertex();
@@ -223,7 +197,6 @@ public class RenderHelper {
         }
     }
 
-
     public static void renderTexturedAuroraRing(VertexConsumer consumer, Matrix4f pose,
                                                 float radius, float maxHeight, int segments, float time,
                                                 float r, float g, float b, float baseAlpha) {
@@ -231,7 +204,6 @@ public class RenderHelper {
         if (ShaderUtils.areShadersActive()) {
             segments *= 2;
         }
-
 
         float scrollSpeed = time * 0.05f;
         float textureRepeats = 3.0f;
@@ -250,10 +222,8 @@ public class RenderHelper {
             float x2 = cos2 * radius;
             float z2 = sin2 * radius;
 
-
             float u1 = ((float) j / segments) * textureRepeats + scrollSpeed;
             float u2 = ((float) (j + 1) / segments) * textureRepeats + scrollSpeed;
-
 
             float wave1_a = Mth.sin(ang1 * 4.0f - time * 0.8f);
             float wave1_b = Mth.sin(ang1 * 7.0f + time * 1.2f);
@@ -276,13 +246,11 @@ public class RenderHelper {
             float curG = Mth.clamp(g + (interference1 * 0.1f + brightnessBoost) - darkening * 0.6f, 0.0f, 1.0f);
             float curB = Mth.clamp(b + (interference1 * 0.1f + brightnessBoost) - darkening * 1.0f, 0.0f, 1.0f);
 
-
             texturedVertex(consumer, pose, x1, 0, z1, curR, curG, curB, a1, u1, 1.0f);
             texturedVertex(consumer, pose, x1, h1, z1, curR, curG, curB, 0.0f, u1, 0.0f);
             texturedVertex(consumer, pose, x2, h2, z2, curR, curG, curB, 0.0f, u2, 0.0f);
             texturedVertex(consumer, pose, x2, 0, z2, curR, curG, curB, a2, u2, 1.0f);
 
-            // Back face
             texturedVertex(consumer, pose, x2, 0, z2, curR, curG, curB, a2, u2, 1.0f);
             texturedVertex(consumer, pose, x2, h2, z2, curR, curG, curB, 0.0f, u2, 0.0f);
             texturedVertex(consumer, pose, x1, h1, z1, curR, curG, curB, 0.0f, u1, 0.0f);
@@ -290,9 +258,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a sphere where the radius is determined dynamically per vertex via a function.
-     */
     public static void renderProceduralSphere(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                               int latSegs, int lonSegs,
                                               RadiusModifier radiusFunc,
@@ -313,20 +278,11 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a standard Icosahedron (20-sided shape).
-     */
     public static void renderIcosahedron(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                          float scale, float r, float g, float b, float a, int light) {
         renderStellatedIcosahedron(consumer, pose, normal, scale, scale, r, g, b, a, light);
     }
 
-    /**
-     * Renders a "Stellated" (Spiked) Icosahedron.
-     *
-     * @param baseScale Radius of the inner valleys.
-     * @param tipScale  Radius of the outer spikes.
-     */
     public static void renderStellatedIcosahedron(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                                   float baseScale, float tipScale,
                                                   float r, float g, float b, float a, int light) {
@@ -353,10 +309,6 @@ public class RenderHelper {
         }
     }
 
-
-    /**
-     * Renders an intersecting quad beam (Tether/Laser) between two exact points.
-     */
     public static void renderBeam(PoseStack poseStack, VertexConsumer consumer,
                                   net.minecraft.world.phys.Vec3 start, net.minecraft.world.phys.Vec3 end,
                                   float thickness, float r, float g, float b, float a, int light) {
@@ -364,15 +316,10 @@ public class RenderHelper {
         net.minecraft.world.phys.Vec3 diff = end.subtract(start);
         float distance = (float) diff.length();
 
-
-
-
         poseStack.translate(start.x, start.y, start.z);
-
 
         float yRot = ((float) (Mth.atan2(diff.z, diff.x) * (180F / Math.PI)) - 90.0F) *-1;
         float xRot = (float) -(Mth.atan2(diff.y, Mth.sqrt((float)(diff.x * diff.x + diff.z * diff.z))) * (180F / Math.PI));
-
 
         poseStack.mulPose(Axis.YP.rotationDegrees(yRot));
         poseStack.mulPose(Axis.XP.rotationDegrees(xRot));
@@ -382,24 +329,18 @@ public class RenderHelper {
         float halfW = thickness / 2.0f;
         float[] color = new float[]{r, g, b, a};
 
-
         vertex(consumer, pose, normal, -halfW, 0, 0, color, light, 0, 0, 0, 1, 0);
         vertex(consumer, pose, normal, halfW, 0, 0, color, light, 1, 0, 0, 1, 0);
         vertex(consumer, pose, normal, halfW, 0, distance, color, light, 1, 1, 0, 1, 0);
         vertex(consumer, pose, normal, -halfW, 0, distance, color, light, 0, 1, 0, 1, 0);
-
 
         vertex(consumer, pose, normal, 0, -halfW, 0, color, light, 0, 0, 1, 0, 0);
         vertex(consumer, pose, normal, 0, halfW, 0, color, light, 1, 0, 1, 0, 0);
         vertex(consumer, pose, normal, 0, halfW, distance, color, light, 1, 1, 1, 0, 0);
         vertex(consumer, pose, normal, 0, -halfW, distance, color, light, 0, 1, 1, 0, 0);
 
-
     }
 
-    /**
-     * Renders a stellated icosahedron with double-sided faces for lamps or glowing artifacts.
-     */
     public static void renderStarLampIcosahedron(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                                  float baseScale, float tipScale,
                                                  float r, float g, float b, float a, int light) {
@@ -423,13 +364,6 @@ public class RenderHelper {
         }
     }
 
-
-
-    /**
-     * Renders a cylinder where the radius follows a power curve (Trumpet/Flare shape).
-     *
-     * @param shapePower 1.0 = Cone (Linear), 2.0 = Trumpet (Quadratic), 0.5 = Dome.
-     */
     public static void renderFlaredCylinder(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                             float height, float radBase, float radTop,
                                             float rotation, float totalTwist,
@@ -476,9 +410,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a tapered cylinder with smooth normals for shaders.
-     */
     public static void renderTaperedCylinder(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                              float height, float radBase, float radTop,
                                              float rotation, float twist,
@@ -543,16 +474,6 @@ public class RenderHelper {
         }
     }
 
-
-    /**
-     * Renders a hollow rectangle box (walls only, no top/bottom caps).
-     * Useful for magical barriers or highlighting areas.
-     *
-     * @param width   Half-width of the rectangle (extends +/- width from center).
-     * @param height  The vertical extent of the walls (extends +/- height from center).
-     * @param yOffset vertical shift applied to the top/bottom edges (e.g. for animations).
-     * @param upAlpha Alpha transparency for the top edge of the walls.
-     */
     public static void renderHollowRectangle(VertexConsumer consumer, Matrix4f pose,
                                              float width, float height, float yOffset,
                                              float r, float g, float b, float alpha, float upAlpha,float jitterIntensity) {
@@ -561,42 +482,35 @@ public class RenderHelper {
         float upGreenColor = g;
         float upBlueColor = b;
 
-
         RandomSource random = RandomSource.create();
 
         if (jitterIntensity > 0) {
-            // Apply random offset based on intensity (e.g., -0.1 to +0.1)
+
             upRedColor = Mth.clamp(r + (random.nextFloat() - 0.5f) * jitterIntensity, 0.0f, 1.0f);
             upGreenColor = Mth.clamp(g + (random.nextFloat() - 0.5f) * jitterIntensity, 0.0f, 1.0f);
             upBlueColor = Mth.clamp(b + (random.nextFloat() - 0.5f) * jitterIntensity, 0.0f, 1.0f);
         }
 
-
-        // Face 1: EAST (+X)
         simpleVertex(consumer, pose, width, -yOffset, -height, r, g, b, alpha);
         simpleVertex(consumer, pose, width, -yOffset,  height, r, g, b, alpha);
         simpleVertex(consumer, pose, width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
         simpleVertex(consumer, pose, width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
 
-        // Face 2: WEST (-X)
         simpleVertex(consumer, pose, -width, -yOffset,  height, r, g, b, alpha);
         simpleVertex(consumer, pose, -width, -yOffset, -height, r, g, b, alpha);
         simpleVertex(consumer, pose, -width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
         simpleVertex(consumer, pose, -width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
 
-        // Face 3: NORTH (-Z)
         simpleVertex(consumer, pose, -width, -yOffset, -height, r, g, b, alpha);
         simpleVertex(consumer, pose,  width, -yOffset, -height, r, g, b, alpha);
         simpleVertex(consumer, pose,  width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
         simpleVertex(consumer, pose, -width,  yOffset, -height, upRedColor, upGreenColor, upBlueColor, upAlpha);
 
-        // Face 4: SOUTH (+Z)
         simpleVertex(consumer, pose,  width, -yOffset,  height, r, g, b, alpha);
         simpleVertex(consumer, pose, -width, -yOffset,  height, r, g, b, alpha);
         simpleVertex(consumer, pose, -width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
         simpleVertex(consumer, pose,  width,  yOffset,  height, upRedColor, upGreenColor, upBlueColor, upAlpha);
     }
-
 
     public static void renderPureMathToroid(VertexConsumer consumer, Matrix4f pose,
                                             float R, float r, float rCol, float gCol, float bCol, float alpha) {
@@ -615,9 +529,7 @@ public class RenderHelper {
 
     private static void drawFormulaVertex(VertexConsumer consumer, Matrix4f pose, float R, float r,
                                           float phi, float theta, float rCol, float gCol, float bCol, float alpha) {
-        // x = (R + r * sin(theta)) * cos(phi)
-        // z = (R + r * sin(theta)) * sin(phi)
-        // y = r * cos(theta)
+
         float x = (R + r * Mth.sin(theta)) * Mth.cos(phi);
         float z = (R + r * Mth.sin(theta)) * Mth.sin(phi);
         float y = r * Mth.cos(theta);
@@ -625,13 +537,6 @@ public class RenderHelper {
         consumer.vertex(pose, x, y, z).color(rCol, gCol, bCol, alpha).endVertex();
     }
 
-
-    /**
-     * Renders a horizontal cylinder (lying on its side).
-     * * @param radius The radius of the circular face.
-     * @param length The total length of the cylinder.
-     * @param segments How many quads to use for the roundness (Resolution).
-     */
     public static void renderSideCylinder(VertexConsumer consumer, Matrix4f pose,
                                           float radius, float length, int segments,
                                           float rCol, float gCol, float bCol, float alpha) {
@@ -658,7 +563,6 @@ public class RenderHelper {
             consumer.vertex(pose, nextx, y+10, nextz).color(rCol, 0.5f, bCol, alpha).endVertex();
             consumer.vertex(pose, x, y+10, z).color(rCol, gCol, 1.0f, alpha).endVertex();
 
-
             consumer.vertex(pose, x, y+10, z).color(rCol, gCol, 1.0f, alpha).endVertex();
             consumer.vertex(pose, nextx, y+10, nextz).color(rCol, 0.5f, bCol, alpha).endVertex();
             consumer.vertex(pose, nextx, y, nextz).color(1.0f, gCol, bCol, alpha).endVertex();
@@ -666,10 +570,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a Cylinder using POSITION_COLOR only.
-     * Increase segments if shaders are active to force smoothness without normals.
-     */
     public static void renderSimpleGradientCylinder(VertexConsumer consumer, Matrix4f pose,
                                                     float height, float radBase, float radTop,
                                                     int segments, float rotation,
@@ -713,9 +613,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a camera-facing quad at a specific position.
-     */
     public static void renderBillboardQuad(VertexConsumer consumer, Matrix4f pose,
                                            float x, float y, float z, float size,
                                            float r, float g, float b, float a,
@@ -738,9 +635,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a flat disk or ring.
-     */
     public static void renderDisk(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                   float innerRad, float outerRad, int segments, float rotation,
                                   float[] cInner, float[] cOuter, int light) {
@@ -761,9 +655,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a noise-distorted ring using POSITION_COLOR.
-     */
     public static void renderSimpleProceduralRing(VertexConsumer consumer, Matrix4f pose,
                                                   float baseRadius, float width, int segments, float rotation,
                                                   float r, float g, float b, float alphaInner, float alphaOuter,
@@ -807,9 +698,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a ring with procedural noise affecting the radius at each vertex.
-     */
     public static void renderProceduralRing(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                             float baseRadius, float width, int segments, float rotation,
                                             float[] cInner, float[] cOuter, int light,
@@ -864,9 +752,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders the crescent slash shape.
-     */
     public static void renderCrescent(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                       float radius, float maxThickness, float arcAngle,
                                       float r, float g, float b, float maxAlpha, int light) {
@@ -893,9 +778,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a crescent with a color gradient from the inner edge to the outer edge.
-     */
     public static void renderCrescentGradient(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                               float radius, float maxThickness, float arcAngle,
                                               float[] cInner, float[] cOuter, int light) {
@@ -927,9 +809,6 @@ public class RenderHelper {
         }
     }
 
-    /**
-     * Renders a double-sided floating diamond shape.
-     */
     public static void renderFloatingDiamond(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                              float x, float y, float z,
                                              float w, float h,
@@ -954,9 +833,6 @@ public class RenderHelper {
         addDoubleSidedTri(consumer, pose, normal, vNorth, vEast, vBot, r, g, b, a, light);
     }
 
-    /**
-     * Renders a classic 8-sided Gem (Octahedron). Guaranteed to be visible from all angles.
-     */
     public static void renderOctahedron(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                         float size,
                                         float r, float g, float b, float a, int light) {
@@ -979,9 +855,6 @@ public class RenderHelper {
         addDoubleSidedTri(consumer, pose, normal, bot, front, left, r, g, b, a, light);
     }
 
-    /**
-     * Renders a Dodecahedron (12 pentagonal faces).
-     */
     public static void renderDodecahedron(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                           float size,
                                           float r, float g, float b, float a, int light) {
@@ -1023,9 +896,6 @@ public class RenderHelper {
         renderPentagon(consumer, pose, normal, dV[3], dV[2], aV[6], cV[3], aV[7], r, g, b, a, light);
     }
 
-    /**
-     * Renders a pixel-like voxel box.
-     */
     public static void renderPixel(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                    float x, float y, float z, float size,
                                    float r, float g, float b, float a, int light) {
@@ -1037,15 +907,6 @@ public class RenderHelper {
         vertexForPixel(consumer, pose, normal, x, y + size, z, 0.0f, 0.0f, color, light);
     }
 
-
-
-
-
-
-    /**
-     * Renders a pulsating, spinning "Atlas" Heart (Complex geometric artifact).
-     * Consists of 3 layers of Stellated Icosahedrons rotating against each other.
-     */
     public static void renderAtlasHeart(VertexConsumer consumer, Matrix4f pose, Matrix3f normal,
                                         long gameTime, float partialTick,
                                         float rBase, float gBase, float bBase,
@@ -1295,7 +1156,6 @@ public class RenderHelper {
                                          float radius, int latSegs, int lonSegs,
                                          float r, float g, float b, float a) {
 
-
         int red = (int)(r * 255.0F);
         int green = (int)(g * 255.0F);
         int blue = (int)(b * 255.0F);
@@ -1332,7 +1192,6 @@ public class RenderHelper {
         float x = (float) (rad * Math.cos(theta) * Math.cos(phi));
         float y = (float) (rad * Math.sin(theta));
         float z = (float) (rad * Math.cos(theta) * Math.sin(phi));
-
 
         consumer.vertex(pose, x, y, z).color(r, g, b, a).endVertex();
     }

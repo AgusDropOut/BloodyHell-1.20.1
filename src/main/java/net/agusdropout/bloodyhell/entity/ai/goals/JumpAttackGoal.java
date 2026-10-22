@@ -68,7 +68,7 @@ public class JumpAttackGoal extends Goal {
                 entity.lookAt(EntityAnchorArgument.Anchor.EYES, target.position());
             }
         } else {
-            // Aterrizaje
+
             doImpactAttack();
             stop();
         }
@@ -94,14 +94,10 @@ public class JumpAttackGoal extends Goal {
         double radius = 4.0;
         double damage = 20.0;
 
-        // --- 1. CAMERA SHAKE ---
-
         EntityCameraShake.cameraShake(level, entity.position(), 30.0f, 0.8f, 10, 10);
-
 
         level.playSound(null, entity.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.HOSTILE, 1.0F, 0.5F);
         level.playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 0.5F, 0.5F);
-
 
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class,
                 entity.getBoundingBox().inflate(radius),
@@ -110,7 +106,6 @@ public class JumpAttackGoal extends Goal {
             e.push(0, 0.6, 0);
         }
 
-        // --- 4. EFECTOS VISUALES ---
         spawnImpactEffects(level, this.entity.getOnPos());
     }
 

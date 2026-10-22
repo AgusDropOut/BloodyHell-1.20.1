@@ -15,14 +15,12 @@ import java.util.Locale;
 
 public class MagicParticleOptions implements ParticleOptions {
 
-    // DATA
     private final Vector3f color;
     private final float size;
     private final boolean jitter;
     private final int lifetime;
     private final boolean whiteCore;
 
-    // --- CODEC ---
     public static final Codec<MagicParticleOptions> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.FLOAT.fieldOf("r").forGetter(d -> d.color.x()),
@@ -35,7 +33,6 @@ public class MagicParticleOptions implements ParticleOptions {
             ).apply(instance, MagicParticleOptions::new)
     );
 
-    // --- DESERIALIZER ---
     public static final ParticleOptions.Deserializer<MagicParticleOptions> DESERIALIZER = new ParticleOptions.Deserializer<MagicParticleOptions>() {
         @Override
         public MagicParticleOptions fromCommand(ParticleType<MagicParticleOptions> type, StringReader reader) throws CommandSyntaxException {
@@ -58,7 +55,7 @@ public class MagicParticleOptions implements ParticleOptions {
 
         @Override
         public MagicParticleOptions fromNetwork(ParticleType<MagicParticleOptions> type, FriendlyByteBuf buffer) {
-            // Read individually
+
             return new MagicParticleOptions(
                     buffer.readFloat(),
                     buffer.readFloat(),
@@ -71,9 +68,6 @@ public class MagicParticleOptions implements ParticleOptions {
         }
     };
 
-    // --- CONSTRUCTORS ---
-
-    // Constructor used by Codec (Takes individual floats)
     public MagicParticleOptions(float r, float g, float b, float size, boolean jitter, int lifetime, boolean whiteCore) {
         this.color = new Vector3f(r, g, b);
         this.size = size;
@@ -90,7 +84,6 @@ public class MagicParticleOptions implements ParticleOptions {
         this.whiteCore = whiteCore;
     }
 
-    // Constructor for your own code (Takes Vector3f directly)
     public MagicParticleOptions(Vector3f color, float size, boolean jitter, int lifetime) {
         this.color = color;
         this.size = size;
@@ -99,7 +92,6 @@ public class MagicParticleOptions implements ParticleOptions {
         this.whiteCore = false;
     }
 
-    // GETTERS
     public Vector3f getColor() { return color; }
     public float getSize() { return size; }
     public boolean shouldJitter() { return jitter; }
@@ -128,6 +120,5 @@ public class MagicParticleOptions implements ParticleOptions {
                 BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
                 this.color.x(), this.color.y(), this.color.z(), this.size, this.jitter, this.lifetime, this.whiteCore);
     }
-
 
 }

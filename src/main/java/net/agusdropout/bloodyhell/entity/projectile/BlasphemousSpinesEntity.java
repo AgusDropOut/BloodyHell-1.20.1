@@ -1,7 +1,5 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
-
-
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -26,16 +24,13 @@ import java.util.UUID;
 public class BlasphemousSpinesEntity extends Entity implements GeoEntity {
     private final SingletonAnimatableInstanceCache cache = (SingletonAnimatableInstanceCache) GeckoLibUtil.createInstanceCache(this, true);
 
-
     private static final int STATE_RISE = 0;
     private static final int STATE_IDLE = 1;
     private static final int STATE_RETRACT = 2;
 
-
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(BlasphemousSpinesEntity.class, EntityDataSerializers.INT);
 
-
-    private static final int RISE_TICKS = 10;     // 0.5s subiendo
+    private static final int RISE_TICKS = 10;
     private static final int IDLE_TICKS = 50;
     private static final int RETRACT_TICKS = 15;
     private static final int LIFESPAN = RISE_TICKS + IDLE_TICKS + RETRACT_TICKS;
@@ -46,7 +41,6 @@ public class BlasphemousSpinesEntity extends Entity implements GeoEntity {
     public BlasphemousSpinesEntity(EntityType<?> type, Level level) {
         super(type, level);
     }
-
 
     public BlasphemousSpinesEntity(Level level, double x, double y, double z, float damage, UUID ownerUUID) {
         this(ModEntityTypes.BLASPHEMOUS_SPINES.get(), level);
@@ -102,14 +96,10 @@ public class BlasphemousSpinesEntity extends Entity implements GeoEntity {
         return false;
     }
 
-
-
-    // --- GECKOLIB ---
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, state -> {
             int currentAnimState = this.entityData.get(ANIM_STATE);
-
 
             return switch (currentAnimState) {
                 case STATE_RISE -> state.setAndContinue(RawAnimation.begin().thenPlay("rise"));
@@ -128,7 +118,6 @@ public class BlasphemousSpinesEntity extends Entity implements GeoEntity {
         this.entityData.set(ANIM_STATE, state);
     }
 
-    // --- BOILERPLATE ---
     @Override protected void readAdditionalSaveData(CompoundTag pCompound) {}
     @Override protected void addAdditionalSaveData(CompoundTag pCompound) {}
     @Override public Packet<ClientGamePacketListener> getAddEntityPacket() { return NetworkHooks.getEntitySpawningPacket(this); }

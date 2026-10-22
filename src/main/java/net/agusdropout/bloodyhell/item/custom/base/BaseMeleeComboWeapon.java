@@ -46,7 +46,7 @@ public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem,
             player.getCooldowns().addCooldown(this, duration);
 
             if (!player.level().isClientSide) {
-                // Server logic (Damage, Sound)
+
                 CompoundTag tag = stack.getOrCreateTag();
                 tag.putBoolean("IsAttacking", true);
                 tag.putBoolean("IsSpecial", false);
@@ -58,7 +58,7 @@ public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem,
             }
 
             if (player.level().isClientSide) {
-                // Client logic (Animation)
+
                 handleClientAnimations(player, stack, currentCombo, false);
             }
         }
@@ -108,8 +108,6 @@ public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem,
         tag.putInt("AttackCombo", 0);
     }
 
-
-
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (isSelected && entity instanceof Player player) {
@@ -119,11 +117,8 @@ public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem,
                 player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
 
-
-
             if (!level.isClientSide) {
                 CompoundTag tag = stack.getOrCreateTag();
-
 
                 if (tag.getBoolean("IsAttacking")) {
                     int counter = tag.getInt("AttackTickCounter");
@@ -184,7 +179,6 @@ public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem,
         }
     }
 
-    // Abstract methods to implement in specific weapons
     public abstract int getMaxCombos();
     public abstract int getComboDuration(int combo);
     public abstract int getDamageTick(int combo);

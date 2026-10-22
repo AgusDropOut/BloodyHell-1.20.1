@@ -31,7 +31,6 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
     private float damage = 4.0f;
     private float spread = 0.25f;
 
-
     private float shotsPerTick = 1.0f / 3.0f;
     private float shotAccumulator = 0.0f;
 
@@ -64,7 +63,6 @@ public class RhnullOrbEmitter extends Projectile implements IGemSpell {
         if (!this.level().isClientSide) {
             this.shotAccumulator += this.shotsPerTick;
 
-            /* While loop allows multiple shots per tick if rate exceeds 1.0 */
             while (this.shotAccumulator >= 1.0f) {
                 fireDropletInCone();
                 this.shotAccumulator -= 1.0f;

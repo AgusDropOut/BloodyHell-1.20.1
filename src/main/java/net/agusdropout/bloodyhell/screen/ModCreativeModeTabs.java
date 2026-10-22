@@ -44,14 +44,11 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.bloody_hell_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
 
-                        // --- Guide Book ---
                         output.accept(MiscItems.UNKNOWN_GUIDE_BOOK.get());
 
-                        // --- Ores & Minerals ---
                         output.accept(MetalBlocks.SANGUINITE_ORE.get());
                         output.accept(MetalBlocks.BLASPHEMITE_ORE.get());
 
-                        // --- Base Materials ---
                         output.accept(SanguiniteItems.RAW_SANGUINITE.get());
                         output.accept(SanguiniteItems.SANGUINITE_NUGGET.get());
                         output.accept(SanguiniteItems.SANGUINITE.get());
@@ -64,7 +61,6 @@ public class ModCreativeModeTabs {
                         output.accept(BlasphemiteItems.BLASPHEMITE.get());
                         output.accept(MetalBlocks.BLASPHEMITE_BLOCK.get());
 
-                        // --- Tools & Weapons ---
                         output.accept(SanguiniteItems.SANGUINITE_SWORD.get());
                         output.accept(SanguiniteItems.SANGUINITE_PICKAXE.get());
                         output.accept(SanguiniteItems.SANGUINITE_AXE.get());
@@ -92,7 +88,6 @@ public class ModCreativeModeTabs {
                         output.accept(WeaponItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get());
                         output.accept(WeaponItems.BLASPHEMOUS_IMPALER.get());
 
-                        // --- Armor ---
                         output.accept(BloodGearItems.BLOOD_HELMET.get());
                         output.accept(BloodGearItems.BLOOD_CHESTPLATE.get());
                         output.accept(BloodGearItems.BLOOD_LEGGINGS.get());
@@ -108,7 +103,6 @@ public class ModCreativeModeTabs {
                         output.accept(BlasphemiteItems.BLASPHEMITE_LEGGINGS.get());
                         output.accept(BlasphemiteItems.BLASPHEMITE_BOOTS.get());
 
-                        // --- Accessories & Artifacts ---
                         output.accept(GemItems.AMULET_OF_ANCESTRAL_BLOOD.get());
                         output.accept(GemItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD.get());
                         output.accept(GemItems.CRIMSON_WARD_RING.get());
@@ -118,7 +112,6 @@ public class ModCreativeModeTabs {
                         output.accept(DropItems.BLOOD_ECHO_SHARD.get());
                         output.accept(DropItems.NAMELESS_ECHO_SHARD.get());
 
-                        // --- Magic, Spell Books & Reliquary ---
                         output.accept(SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get());
                         output.accept(SpellBookItems.BLOOD_SPHERE_SPELLBOOK.get());
                         output.accept(SpellBookItems.BLOOD_NOVA_SPELLBOOK.get());
@@ -144,7 +137,6 @@ public class ModCreativeModeTabs {
                         output.accept(ReliquaryItems.OMEN_OF_THE_CRUSHING_TOLL.get());
                         output.accept(ReliquaryItems.SEAL_OF_THE_HOLLOW_BULWARK.get());
 
-                        // --- Gems & Components ---
                         output.accept(GemItems.PURE_BLOOD_GEM.get());
                         output.accept(GemItems.TANZARINE_BLOOD_GEM.get());
                         output.accept(GemItems.AVENTURINE_BLOOD_GEM.get());
@@ -161,7 +153,6 @@ public class ModCreativeModeTabs {
                         output.accept(GemItems.RHNULL_GEM_FRAME.get());
                         output.accept(GemItems.RHNULL_GREAT_GEM_FRAME.get());
 
-                        // --- Mechanisms & Stations ---
                         output.accept(MachineBlocks.BLOOD_ALTAR.get());
                         output.accept(MachineBlocks.MAIN_BLOOD_ALTAR.get());
                         output.accept(PlaceableItems.BLASPHEMOUS_BLOOD_ALTAR_ITEM.get());
@@ -179,7 +170,6 @@ public class ModCreativeModeTabs {
                         output.accept(PlaceableItems.RHNULL_BLOOD_ENGINE_ITEM.get());
                         output.accept(PlaceableItems.RHNULL_BLOOD_ENGINE_PILLAR_ITEM.get());
 
-                        // --- Fluids & Flasks ---
                         output.accept(BucketItems.BLOOD_BUCKET.get());
                         output.accept(BucketItems.CORRUPTED_BLOOD_BUCKET.get());
                         output.accept(BucketItems.VISCERAL_BLOOD_BUCKET.get());
@@ -191,10 +181,8 @@ public class ModCreativeModeTabs {
                         output.accept(FlaskItems.FILLED_RHNULL_BLOOD_FLASK.get());
                         output.accept(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get());
 
-                        // --- Ingredients ---
                         output.accept(MiscItems.ROOTLET_POWDER.get());
 
-                        // --- Mob Drops & Boss Items ---
                         output.accept(MiscItems.BLOODY_SOUL_DUST.get());
                         output.accept(DropItems.AUREAL_REVENANT_DAGGER.get());
                         output.accept(DropItems.VEINREAVER_HORN.get());
@@ -209,7 +197,6 @@ public class ModCreativeModeTabs {
                         output.accept(DropItems.CINDER_ACOLYTE_FAINTED_EMBER.get());
                         output.accept(DropItems.FAILED_REMNANT_ASHES.get());
 
-                        // --- Food ---
                         output.accept(FoodItems.SCARLET_RAW_CHICKEN.get());
                         output.accept(FoodItems.SCARLET_COOKED_CHICKEN.get());
                         output.accept(FoodItems.GOREHOG_RAW_STEAK.get());
@@ -218,7 +205,6 @@ public class ModCreativeModeTabs {
                         output.accept(PlaceableItems.EYEBALL_SEED.get());
                         output.accept(FoodItems.GLOW_FRUIT.get());
 
-                        // --- Nature, Plants & Mushrooms ---
                         output.accept(SoilBlocks.BLOOD_DIRT_BLOCK.get());
                         output.accept(SoilBlocks.BLOOD_GRASS_BLOCK.get());
                         output.accept(PlantBlocks.BLOOD_SCRAPPER_PLANT.get());
@@ -257,7 +243,6 @@ public class ModCreativeModeTabs {
                         output.accept(PlaceableItems.CRIMSON_LURE_MUSHROOM.get());
                         output.accept(PlantBlocks.VISCERAL_INFECTED_VEIN.get());
 
-                        // --- Building Blocks ---
                         output.accept(WoodBlocks.BLOOD_PLANKS.get());
                         output.accept(WoodBlocks.BLOOD_PLANKS_STAIRS.get());
                         output.accept(WoodBlocks.BLOOD_PLANKS_SLAB.get());
@@ -313,7 +298,6 @@ public class ModCreativeModeTabs {
                         output.accept(SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get());
                         output.accept(SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get());
 
-                        // --- Decorations & Misc Blocks ---
                         output.accept(LightBlocks.GLOWING_CRYSTAL.get());
                         output.accept(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK.get());
                         output.accept(LightBlocks.GLOWING_CRYSTAL_LANTERN.get());
@@ -332,7 +316,6 @@ public class ModCreativeModeTabs {
                         output.accept(MiscBlocks.EYEBALLSHELL_SNAIL_GOO_BLOCK.get());
                         output.accept(MiscBlocks.EYEBALLSHELL_SNAIL_GOO.get());
 
-                        // --- Spawn Eggs ---
                         output.accept(SpawnEggItems.BLOOD_SEEKER_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.CRIMSON_RAVEN_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.EYESHELLSNAIL_SPAWN_EGG.get());

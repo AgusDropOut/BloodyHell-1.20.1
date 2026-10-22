@@ -2,11 +2,6 @@ package net.agusdropout.bloodyhell.util;
 
 import org.joml.Quaternionf;
 
-/**
- * @author Paul Fulham
- */
-
-/*Code borrowed from Mowzie's Mobs */
 public final class MathUtils {
     public static final float TAU = (float) (2 * StrictMath.PI);
 

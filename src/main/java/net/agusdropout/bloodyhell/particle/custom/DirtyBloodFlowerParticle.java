@@ -8,7 +8,6 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
-
 public class DirtyBloodFlowerParticle extends SimpleAnimatedParticle {
     private double preVX;
     private double preVY;
@@ -21,15 +20,15 @@ public class DirtyBloodFlowerParticle extends SimpleAnimatedParticle {
         super(world, x, y, z, sprites, 0);
         setSprite(sprites.get(random));
         this.lifetime = (int) ((Math.random()*500)+200);
-        this.quadSize = (float) ((Math.random()*0.2)+0.05);//0.1f ;
+        this.quadSize = (float) ((Math.random()*0.2)+0.05);
         this.setFadeColor(15916745);
         this.setSpriteFromAge(sprites);
         this.setAlpha(0);
 
         this.friction = 1.0F;
-        this.xd =0.0D; //this.random.nextGaussian()
-        this.yd=0.0D; //+= ySpeed * 0.05D + this.random.nextGaussian() * diagonalFactor;
-        this.zd = 0.0D;// += zSpeed * 0.05D + this.random.nextGaussian() * diagonalFactor;
+        this.xd =0.0D;
+        this.yd=0.0D;
+        this.zd = 0.0D;
         this.gravity = 0.0001F;
         this.hasPhysics = true;
     }
@@ -58,7 +57,6 @@ public class DirtyBloodFlowerParticle extends SimpleAnimatedParticle {
         }
         super.tick();
     }
-
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;

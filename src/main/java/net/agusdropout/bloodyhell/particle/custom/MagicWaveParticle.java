@@ -25,8 +25,8 @@ public class MagicWaveParticle extends Particle {
     private final ResourceLocation texture = new ResourceLocation(BloodyHell.MODID, "textures/particle/yellow.png");
     private final float baseRadius = 4f;
     private final float growthRate = 0.1f;
-    private final int latSegments = 16; // "paralelos"
-    private final int lonSegments = 32; // "meridianos"
+    private final int latSegments = 16;
+    private final int lonSegments = 32;
 
     protected MagicWaveParticle(ClientLevel level, double x, double y, double z, int maxLifeTime) {
         super(level, x, y, z);

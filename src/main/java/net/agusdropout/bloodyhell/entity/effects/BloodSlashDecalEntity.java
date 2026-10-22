@@ -20,11 +20,8 @@ import java.util.UUID;
 
 public class BloodSlashDecalEntity extends Entity {
 
-    // ---  FIELDS & DATA KEYS ---
-
     private static final EntityDataAccessor<Direction> DATA_FACE = SynchedEntityData.defineId(BloodSlashDecalEntity.class, EntityDataSerializers.DIRECTION);
     private static final EntityDataAccessor<Float> DATA_SIZE = SynchedEntityData.defineId(BloodSlashDecalEntity.class, EntityDataSerializers.FLOAT);
-
 
     private static final EntityDataAccessor<Integer> DATA_MAX_AGE = SynchedEntityData.defineId(BloodSlashDecalEntity.class, EntityDataSerializers.INT);
 
@@ -32,8 +29,6 @@ public class BloodSlashDecalEntity extends Entity {
     private static final int DEFAULT_MAX_AGE = 200;
 
     @Nullable private UUID ownerUUID;
-
-    // --- CONSTRUCTORS ---
 
     public BloodSlashDecalEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -53,8 +48,6 @@ public class BloodSlashDecalEntity extends Entity {
         this.entityData.define(DATA_SIZE, 1.0f);
         this.entityData.define(DATA_MAX_AGE, DEFAULT_MAX_AGE);
     }
-
-    // --- GETTERS & SETTERS ---
 
     public void setFace(Direction face) { this.entityData.set(DATA_FACE, face); }
     public Direction getFace() { return this.entityData.get(DATA_FACE); }
@@ -80,8 +73,6 @@ public class BloodSlashDecalEntity extends Entity {
         return false;
     }
 
-    // --- TICK LOOP ---
-
     @Override
     public void tick() {
         if (!this.level().isClientSide) {
@@ -92,8 +83,6 @@ public class BloodSlashDecalEntity extends Entity {
     }
 
     public float getAge(float partialTicks) { return this.age + partialTicks; }
-
-    // --- SERIALIZATION ---
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {

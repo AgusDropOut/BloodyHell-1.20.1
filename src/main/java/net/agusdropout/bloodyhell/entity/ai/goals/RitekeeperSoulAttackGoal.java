@@ -14,7 +14,7 @@ public class RitekeeperSoulAttackGoal extends Goal {
     private final RitekeeperEntity mob;
     private int animationTicks;
 
-    private final int CAST_POINT = 35; // 1.75 Seconds
+    private final int CAST_POINT = 35;
     private final int ANIMATION_TOTAL = 55;
 
     public RitekeeperSoulAttackGoal(RitekeeperEntity mob) {
@@ -33,7 +33,7 @@ public class RitekeeperSoulAttackGoal extends Goal {
     public void start() {
         this.animationTicks = 0;
         this.mob.setCasting(true);
-        this.mob.setCurrentSpell(2); // Soul ID
+        this.mob.setCurrentSpell(2);
         this.mob.getNavigation().stop();
     }
 
@@ -56,21 +56,16 @@ public class RitekeeperSoulAttackGoal extends Goal {
 
         this.animationTicks++;
 
-        // --- LOGIC MOVED HERE ---
         if (this.animationTicks == CAST_POINT && target != null) {
 
-            // 1. Spawn from Boss Chest Height
             Vec3 spawnPos = this.mob.position().add(0, 1.5, 0);
 
-            // 2. Create Projectile
             BloodFireSoulEntity soul = new BloodFireSoulEntity(ModEntityTypes.BLOOD_FIRE_SOUL.get(), this.mob.level(),this.mob);
             soul.setPos(spawnPos);
 
-            // 3. Aim at target
             Vec3 dir = target.getBoundingBox().getCenter().subtract(spawnPos).normalize();
-            soul.setDeltaMovement(dir.scale(0.8)); // Slower, homing?
+            soul.setDeltaMovement(dir.scale(0.8));
 
-            // 4. Spawn & Sound
             this.mob.level().addFreshEntity(soul);
             this.mob.playSound(SoundEvents.BLAZE_SHOOT, 1.0f, 1.2f);
         }

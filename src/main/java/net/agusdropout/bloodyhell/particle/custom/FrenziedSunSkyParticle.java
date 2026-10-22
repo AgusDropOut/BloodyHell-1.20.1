@@ -41,7 +41,6 @@ public class FrenziedSunSkyParticle extends Particle {
         if (cameraEntity != null) {
             Vec3 look = cameraEntity.getLookAngle();
 
-            /* Projects the physical bounding box directly into the camera's line of sight to bypass frustum culling. */
             this.setPos(
                     cameraEntity.getX() + look.x * 10,
                     cameraEntity.getEyeY() + look.y * 10,

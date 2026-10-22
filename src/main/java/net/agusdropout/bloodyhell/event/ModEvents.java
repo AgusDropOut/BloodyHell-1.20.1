@@ -60,14 +60,13 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void EntityAttributeEvent(EntityAttributeCreationEvent event) {
-            // --- BOSSES & ELITES ---
+
             event.put(UNKNOWN_LANTERN.get(), UnknownLanternEntity.createAttributes().build());
             event.put(SELIORA.get(), SelioraEntity.createAttributes().build());
             event.put(BLASPHEMOUS_ARM_ENTITY.get(), BlasphemousArmEntity.createAttributes().build());
             event.put(RITEKEEPER.get(), RitekeeperEntity.createAttributes().build());
             event.put(BLASPHEMOUS_MALFORMATION.get(), BlasphemousMalformationEntity.createAttributes().build());
 
-            // --- HOSTILE MONSTERS ---
             event.put(BLOODTHIRSTYBEAST.get(), BloodThirstyBeastEntity.createAttributes().build());
             event.put(OMEN_GAZER_ENTITY.get(), OmenGazerEntity.createAttributes().build());
             event.put(VEINRAVER_ENTITY.get(), VeinraverEntity.createAttributes().build());
@@ -81,7 +80,6 @@ public class ModEvents {
             event.put(CRAWLING_DELUSION.get(), CrawlingDelusionEntity.createAttributes().build());
             event.put(ModEntityTypes.ECHO_OF_THE_NAMELESS.get(), EchoOfTheNamelessEntity.createAttributes().build());
 
-            // --- PASSIVE & NEUTRAL CREATURES ---
             event.put(BLOOD_SEEKER.get(), BloodSeekerEntity.createAttributes().build());
             event.put(BLOODY_SOUL_ENTITY.get(), BloodySoulEntity.createAttributes().build());
             event.put(CORRUPTED_BLOODY_SOUL_ENTITY.get(), CorruptedBloodySoulEntity.createAttributes().build());
@@ -91,7 +89,6 @@ public class ModEvents {
             event.put(SCARLETSPECKLED_FISH.get(), ScarletSpeckledFishEntity.createAttributes().build());
             event.put(BLOODPIG.get(), BloodPigEntity.createAttributes().build());
 
-            // --- MINIONS ---
             event.put(FAILED_SON_OF_THE_UNKNOWN.get(), FailedSonOfTheUnknown.createAttributes().build());
             event.put(WEEPING_OCULAR.get(), WeepingOcularEntity.createAttributes().build());
             event.put(BURDEN_OF_THE_UNKNOWN.get(), BurdenOfTheUnknownEntity.createAttributes().build());
@@ -110,7 +107,7 @@ public class ModEvents {
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent event) {
             event.enqueueWork(() -> {
-                // Common setup work
+
             });
         }
     }
@@ -122,7 +119,6 @@ public class ModEvents {
         public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
             PlayerCapabilityHandler.handleAttachCapabilities(event);
         }
-
 
         @SubscribeEvent
         public static void onLivingDeath(LivingDeathEvent event) {
@@ -165,8 +161,6 @@ public class ModEvents {
         public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
             PlayerCapabilityHandler.handlePlayerJoinLevel(event);
         }
-
-
 
         @SubscribeEvent
         public static void onPlayerTick(TickEvent.PlayerTickEvent event) {

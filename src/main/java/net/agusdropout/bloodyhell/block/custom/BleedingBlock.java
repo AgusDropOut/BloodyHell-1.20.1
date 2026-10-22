@@ -18,7 +18,6 @@ import org.joml.Vector3f;
 
 public class BleedingBlock extends Block {
 
-
     public BleedingBlock(Properties properties) {
         super(properties);
     }
@@ -30,7 +29,6 @@ public class BleedingBlock extends Block {
                 LivingEntity.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 200));
             }
         }
-        
 
         super.stepOn(level, blockPos, state, entity);
     }
@@ -38,28 +36,24 @@ public class BleedingBlock extends Block {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 
-        // --- 1. MAGICAL BLOOD AURA ---
-        // Spawns with some frequency (30% chance per tick)
         if (random.nextFloat() < 0.3F) {
-            // Position: Random spot on the top surface
+
             double x = pos.getX() + 0.5D + (random.nextDouble() - 0.5D) * 0.8D;
-            double y = pos.getY() + 1.1D; // Start slightly above the block
+            double y = pos.getY() + 1.1D;
             double z = pos.getZ() + 0.5D + (random.nextDouble() - 0.5D) * 0.8D;
 
             level.addParticle(
                     new MagicParticleOptions(
-                            new Vector3f(0.9F, 0.0F, 0.1F), // Deep Red color
-                            0.4F + random.nextFloat() * 0.4F, // Random Size (0.4 to 0.8)
-                            false,                             // Jitter Enabled (Living Color)
-                            40 + random.nextInt(20)           // Lifetime: 40-60 ticks
+                            new Vector3f(0.9F, 0.0F, 0.1F),
+                            0.4F + random.nextFloat() * 0.4F,
+                            false,
+                            40 + random.nextInt(20)
                     ),
                     x, y, z,
-                    0.0, 0.015, 0.0 // Very slow gentle rise upwards
+                    0.0, 0.015, 0.0
             );
         }
 
-        // --- 2. EXISTING BLOOD DRIP PARTICLES ---
-        // I kept your original logic for the messy dripping on the sides
         if (random.nextInt(10) == 0) {
             for (int i = 0; i < 4; ++i) {
                 double x = (double) pos.getX() + random.nextDouble();
@@ -83,26 +77,24 @@ public class BleedingBlock extends Block {
         }
 
         for(int i = 0; i < 3; i++) {
-            // Start near the top center of the block
+
             double x = pos.getX() + 0.5D + (random.nextDouble() - 0.5D) * 0.4D;
             double y = pos.getY() + 1.2D;
             double z = pos.getZ() + 0.5D + (random.nextDouble() - 0.5D) * 0.4D;
 
-            // Random Velocity EVERYWHERE
-            // Upwards (0.1 to 0.3) + Random Horizontal (-0.15 to 0.15)
             double vx = 0;
             double vy = 0.1D + random.nextDouble() * 0.2D;
             double vz = 0;
 
             level.addParticle(
                     new MagicFloorParticleOptions(
-                            new Vector3f(0.6F, 0.0F, 0.0F), // Dark Red
-                            0.5F,                           // Size
-                            false,                          // Jitter (Off)
-                            60                              // Max Lifetime (will die sooner on shrink)
+                            new Vector3f(0.6F, 0.0F, 0.0F),
+                            0.5F,
+                            false,
+                            60
                     ),
                     x, y, z,
-                    vx, vy, vz // Pass the random velocity here
+                    vx, vy, vz
             );
         }
 

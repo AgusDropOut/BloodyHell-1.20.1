@@ -20,7 +20,7 @@ public class CrimsonVeilDataSyncS2CPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier){
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            //HERE WE ARE ON THE CLIENT!
+
             ClientCrimsonVeilData.set(crimsonVeil);
         });
         return true;

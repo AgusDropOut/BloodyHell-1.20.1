@@ -40,7 +40,6 @@ public class PatchouliProvider implements DataProvider {
         );
         saveCategory(cache, category);
 
-        // --- ENTRY: SPELL BOOKS ---
         PatchouliEntryBuilder spellbooks = PatchouliEntryBuilder.create("spellbooks", category.getId(), "Spell Books", "bloodyhell:blood_scratch_spellbook")
                 .addSpotlightPage("tag:bloodyhell:spellbooks", link("Spell Books") + br() + br() +
                         "Tomes of ancient power that allow you to channel raw essence into devastating magical attacks.")
@@ -48,7 +47,6 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("The true potential of a Spell Book lies in its modularity. By taking a book to the " + entryLink("blood_mechanisms", "sanguine_lapidary", "Sanguinite Lapidary") + ", you can socket up to 3 " + entryLink("blood_spells", "power_gems", "Blood Gems") + " into it, vastly enhancing its capabilities.");
         saveEntry(cache, spellbooks);
 
-        // --- ENTRY: BLOOD GEMS ---
         PatchouliEntryBuilder powerGems = PatchouliEntryBuilder.create("power_gems", category.getId(), "Blood Gems", "bloodyhell:pure_blood_gem")
                 .addTextPage("Blood Gems are the crystallized manifestation of raw power, essential for upgrading your spell books." + br() + br() +
                         "These gems are exclusively obtained by nurturing a " + entryLink("blood_mechanisms", "blood_gem_sprout", "Blood Gem Sprout") + "." + br() + br() +
@@ -71,7 +69,6 @@ public class PatchouliProvider implements DataProvider {
                         link("Stat Roll:") + " +0.5s to +3.0s Duration");
         saveEntry(cache, powerGems);
 
-        // --- ENTRY: MAGIC GEMS (Ancient & Rhnull) ---
         PatchouliEntryBuilder magicGems = PatchouliEntryBuilder.create("magic_gems", category.getId(), "Arcane Gems", "bloodyhell:ancient_gem")
                 .addTextPage("While standard Blood Gems modify existing spells, " + link("Arcane Gems") + " are the foundational catalysts used in powerful magic recipes to forge the spell books themselves.")
                 .addSpotlightPage("bloodyhell:ancient_gem,bloodyhell:great_ancient_gem", link("Ancient Gem & Great Ancient Gem") + br() + br() +
@@ -84,7 +81,6 @@ public class PatchouliProvider implements DataProvider {
                 "Due to the fluid's extreme and corrosive nature, this process can " + link("only") + " be safely performed inside a " + gold("Rhnull ") + entryLink("blood_mechanisms", "blood_condensers", "Condenser") + ".");
         saveEntry(cache, magicGems);
 
-        // --- ENTRY: CRIMSON VEIL ---
         PatchouliEntryBuilder crimsonVeil = PatchouliEntryBuilder.create("crimson_veil", category.getId(), "The Crimson Veil", "bloodyhell:filled_blood_flask")
                 .addTextPage("To wield the power of Blood Spells, you must draw upon the " + blood("Crimson Veil") + ". This acts as your internal reserve of arcane energy, a mana pool bound directly to your life force." + br() + br() +
                         "Casting spells depletes the Veil. If the Veil runs dry, your spells will fail to manifest.")
@@ -103,14 +99,12 @@ public class PatchouliProvider implements DataProvider {
         );
         saveCategory(cache, category);
 
-        // --- ENTRY: SACRIFICIAL DAGGER ---
         PatchouliEntryBuilder daggerEntry = PatchouliEntryBuilder.create("sacrificial_dagger", category.getId(), "The Sacrificial Dagger", "bloodyhell:sacrificial_dagger")
                 .addSpotlightPage("bloodyhell:sacrificial_dagger", "A sacrificial blade used to extract life and manipulate blood machinery.")
                 .addTextPage("The " + dagger() + " is more than just a weapon. It serves as a wrench and a catalyst for your mechanisms." + br() + br() +
                         "Right-clicking certain machines or pipes with this blade allows you to alter their configuration, such as applying fluid filters.");
         saveEntry(cache, daggerEntry);
 
-        // --- ENTRY: RHNULL INGOT ---
         PatchouliEntryBuilder rhnullIngot = PatchouliEntryBuilder.create("rhnull_ingot", category.getId(), "Forging Rhnull", "bloodyhell:rhnull")
                 .addSpotlightPage("bloodyhell:rhnull", gold("Rhnull") + br() + br() +
                         "An incredibly dense, arcane material capable of containing the most volatile energies without shattering.")
@@ -121,7 +115,6 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("This highly resilient material is absolutely essential for crafting advanced machinery, high-tier Condenser frames, and pipes capable of transporting " + blasphemous("Viscous Blasphemy") + ".");
         saveEntry(cache, rhnullIngot);
 
-        // --- ENTRY: BLOOD ALTARS ---
         JsonObject altarMultiblock = new JsonObject();
         com.google.gson.JsonArray altarPattern = new com.google.gson.JsonArray();
         altarPattern.add("____A____");
@@ -155,7 +148,6 @@ public class PatchouliProvider implements DataProvider {
                 .addMultiblockPage("Ritual Setup", "The Main Altar sits in the center. Four standard Blood Altars must be placed in the cardinal directions, exactly 3 empty blocks away from the center.", altarMultiblock);
         saveEntry(cache, altars);
 
-        // --- ENTRY: HARVESTING ---
         PatchouliEntryBuilder harvesters = PatchouliEntryBuilder.create("blood_harvesters", category.getId(), "Blood Harvesting", "bloodyhell:sanguinite_blood_harvester_item")
                 .addSpotlightPage("bloodyhell:sanguinite_blood_harvester_item", "Extracts life force from the recently deceased.")
                 .addTextPage("Place this machine near your killing floors. It will automatically collect the spilled essence of nearby dead entities." + br() + br() +
@@ -163,7 +155,6 @@ public class PatchouliProvider implements DataProvider {
                         "For more details on fluid types, refer to the " + entryLink("blood_fluids", "blood_variants", "Blood Variants") + " entry.");
         saveEntry(cache, harvesters);
 
-        // --- ENTRY: FLUID TRANSPORT (PIPES) ---
         PatchouliEntryBuilder pipes = PatchouliEntryBuilder.create("blood_pipes", category.getId(), "Fluid Transport", "bloodyhell:sanguinite_pipe_item")
                 .addTextPage("To automate your systems, you must use piping."  + br() + br() +
                         "Pipes have specific flow states. By " + link("Right-Clicking") + " the connection point on a pipe, you can toggle it between " + blood("Push") + " and " + green("Pull") + " modes.")
@@ -174,7 +165,6 @@ public class PatchouliProvider implements DataProvider {
                         "Note: This pipe can handle all fluid types");
         saveEntry(cache, pipes);
 
-        // --- ENTRY: STORAGE (TANKS) ---
         JsonObject tankMultiblock = new JsonObject();
         com.google.gson.JsonArray pattern = new com.google.gson.JsonArray();
         com.google.gson.JsonArray layer1 = new com.google.gson.JsonArray();
@@ -202,14 +192,12 @@ public class PatchouliProvider implements DataProvider {
                 .addMultiblockPage("2x2 Tank Example", "A demonstration of a 2x2x2 tank. All blocks in the structure must be of the same tier to form properly.", tankMultiblock);
         saveEntry(cache, tanks);
 
-        // --- ENTRY: INFUSORS ---
         PatchouliEntryBuilder infusor = PatchouliEntryBuilder.create("sanguinite_infusor", category.getId(), "Blood Infusion", "bloodyhell:sanguinite_infusor")
                 .addSpotlightPage("bloodyhell:sanguinite_infusor", "Uses stored blood to imbue items with powerful, dark properties.")
                 .addTextPage("To function, the Infusor must be supplied with fluid via pipes set to " + blood("Push") + " mode." + br() + br() +
                         "It can " + link("only") + " process " + blood("Normal Blood") + " and " + infected("Infected Blood") + ".");
         saveEntry(cache, infusor);
 
-        // --- ENTRY: GEM FRAMES ---
         PatchouliEntryBuilder gemFrames = PatchouliEntryBuilder.create("gem_frames", category.getId(), "Gem Frames", "bloodyhell:sanguinite_gem_frame")
                 .addTextPage("To crystallize blood properly within a Condenser, a frame must be used to give it shape and structure.")
                 .addSpotlightPage("bloodyhell:sanguinite_gem_frame", "Standard frame for shaping blood crystals.")
@@ -217,7 +205,6 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("The type of frame you use directly determines both the resulting " + link("gem's size") + " and the " + link("amount of blood") + " that will be consumed during the condensation process.");
         saveEntry(cache, gemFrames);
 
-        // --- ENTRY: CONDENSERS ---
         PatchouliEntryBuilder condensers = PatchouliEntryBuilder.create("blood_condensers", category.getId(), "Blood Condensers", "bloodyhell:sanguinite_condenser_item")
                 .addTextPage("Condensers turn liquid blood into solid, crystallized fragments. The process requires a " + entryLink("blood_mechanisms", "gem_frames", "Gem Frame") + " to shape the crystal." + br() + br() +
                         "A condenser can " + link("only") + " be pumped with " + link("one") + " type of fluid at a time.")
@@ -226,14 +213,12 @@ public class PatchouliProvider implements DataProvider {
                         "Can safely hold " + link("all") + " fluid types.");
         saveEntry(cache, condensers);
 
-        // --- ENTRY: GEM CRAFTING (LAPIDARY) ---
         PatchouliEntryBuilder lapidary = PatchouliEntryBuilder.create("sanguine_lapidary", category.getId(), "The Lapidary", "bloodyhell:sanguine_lapidary")
                 .addTextPage("The Sanguinite Lapidary is a specialized workstation designed to imbue and upgrade Spell Books with crystallized power." + br() + br() +
                         "By placing a Spell Book within, you can socket up to " + link("3") + " " + entryLink("blood_spells", "power_gems", "Blood Gems") + " into it.")
                 .addSpotlightPage("bloodyhell:sanguine_lapidary", "Socketing gems significantly amplifies the spell's potential, altering its damage, range, or effect.");
         saveEntry(cache, lapidary);
 
-        // --- ENTRY: BLOOD GEM SPROUT (1x1 Multiblock Trick) ---
         JsonObject sproutMultiblock = new JsonObject();
         com.google.gson.JsonArray sproutPattern = new com.google.gson.JsonArray();
         com.google.gson.JsonArray sproutLayer = new com.google.gson.JsonArray();
@@ -257,7 +242,6 @@ public class PatchouliProvider implements DataProvider {
                         "- " + link("Gold Nugget") + " -> Citrine");
         saveEntry(cache, sprout);
 
-        // --- ENTRY: BLOOD FLORA (MUSHROOMS) ---
         PatchouliEntryBuilder flora = PatchouliEntryBuilder.create("blood_flora", category.getId(), "Blood Flora", "bloodyhell:voracious_mushroom_item")
                 .addSpotlightPage("bloodyhell:voracious_mushroom_item", link("Voracious Mushroom") + br() + br() +
                         "This hungry fungus must be constantly pumped with blood via pipes set to " + blood("Push") + " mode. " + br() + br() +
@@ -292,7 +276,6 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("Hold the " + link("Chalice of the Damned") + " and interact with the center of the portal structure to tear open a rift to the " + blood("Blood Dimension") + ".");
         saveEntry(cache, bloodPortal);
 
-        // --- ENTRY: SELIORA (BOSS) ---
         PatchouliEntryBuilder selioraBoss = PatchouliEntryBuilder.create("seliora_boss", category.getId(), "Seliora", "bloodyhell:seliora_essence")
                 .addEntityPage("bloodyhell:seliora", "Seliora", "A corrupted mage who foolishly sought to make contact with the Unknown.", 0.6f, 0.0f)
                 .addTextPage("She resides within the ancient pyramids scattered across the surface of the " + madness("Blasphemous Biome") + " in the Blood Dimension." + br() + br() +
@@ -302,7 +285,6 @@ public class PatchouliProvider implements DataProvider {
                         "Using Seliora's Essence at a standard " + link("Crafting Table") + " allows you to craft these devastating weapons.");
         saveEntry(cache, selioraBoss);
 
-        // --- ENTRY: RITEKEEPER (BOSS) ---
         PatchouliEntryBuilder ritekeeperBoss = PatchouliEntryBuilder.create("ritekeeper_boss", category.getId(), "The Ritekeeper", "bloodyhell:ritekeeper_heart")
                 .addEntityPage("bloodyhell:ritekeeper", "Ritekeeper", "A powerful practitioner of Blood Fire magic. Though he interacted with the Unknown, he was far more careful than Seliora.", 0.6f, 0.0f)
                 .addTextPage("This formidable foe can be found lurking deep underground within the " + blood("Blood Biome") + " of the Blood Dimension, specifically sealed inside the " + link("Sanctum of the Unknown") + " dungeon.")
@@ -320,7 +302,6 @@ public class PatchouliProvider implements DataProvider {
         );
         saveCategory(cache, category);
 
-        // --- ENTRY: INSIGHT ---
         PatchouliEntryBuilder insightEntry = PatchouliEntryBuilder.create("insight", category.getId(), "Insight", "bloodyhell:blasphemous_eye")
                 .addTextPage("Insight represents your comprehension of the cosmic horrors that lurk around you. You will begin this dark journey with " + link("0 Insight") + ".")
                 .addTextPage("The primary way to gain Insight is by consuming the " + entryLink("the_unknown", "unknown_lantern", "Gaze of the Unknown") + "." + br() + br() +
@@ -330,7 +311,6 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("Once you cross a certain Insight threshold, the veil lifts, and you will be able to see these horrors clearly and fight back.");
         saveEntry(cache, insightEntry);
 
-        // --- ENTRY: HERETICAL DAGGER ---
         PatchouliEntryBuilder hereticalDagger = PatchouliEntryBuilder.create("heretical_dagger", category.getId(), "Heretical Sacrificial Dagger", "bloodyhell:heretic_sacrificial_dagger")
                 .addSpotlightPage("bloodyhell:heretic_sacrificial_dagger", "A tainted version of the Sacrificial Dagger, bound to the cosmic void.")
                 .addTextPage("Simply holding the Heretical Sacrificial Dagger allows you to see exactly how much " + entryLink("the_unknown", "insight", "Insight") + " you possess.")
@@ -382,7 +362,6 @@ public class PatchouliProvider implements DataProvider {
                         "However, you can customize the appearance of your army! By placing any standard " + link("Vanilla Dye") + " into the bottom-right slot of the Reliquary, your summons will absorb that color instead.");
         saveEntry(cache, reliquary);
 
-        // --- ENTRY: UNKNOWN PORTAL BLOCK ---
         PatchouliEntryBuilder unknownPortal = PatchouliEntryBuilder.create("unknown_portal", category.getId(), "Unknown Portal", "bloodyhell:unknown_portal_item")
                 .addSpotlightPage("bloodyhell:unknown_portal_item", "A dormant gateway to places best left untouched.")
                 .addTextPage("To awaken this structure, you must force-feed it raw life. Connect pipes to the block and supply it with blood in " + blood("Push") + " mode.")
@@ -394,7 +373,6 @@ public class PatchouliProvider implements DataProvider {
                 .addMultiblockPage("Portal Automation", "A basic setup. Pump blood in from one tank to activate the portal, and pull the resulting Viscous Blasphemy out into the other.", createUnknownPortalMultiblock());
         saveEntry(cache, unknownPortal);
 
-        // --- ENTRY: BLASPHEMOUS ALTARS ---
         JsonObject blasphemousAltarMultiblock = new JsonObject();
         com.google.gson.JsonArray bAltarPattern = new com.google.gson.JsonArray();
         bAltarPattern.add("____A____");
@@ -446,7 +424,6 @@ public class PatchouliProvider implements DataProvider {
                         "A highly dangerous and complex substance. It is a byproduct generated exclusively by the " + entryLink("the_unknown", "unknown_portal", "Unknown Portal") + " when it consumes living flesh.");
         saveEntry(cache, variants);
 
-        // --- ENTRY: SOULS ---
         PatchouliEntryBuilder souls = PatchouliEntryBuilder.create("souls", category.getId(), "Manifested Souls", "bloodyhell:blood_flask")
                 .addTextPage("Fluids are not the only essence that can be extracted from the living. By slaying a creature with the " + entryLink("blood_mechanisms", "sacrificial_dagger", "Sacrificial Dagger") + ", you can force its soul to manifest upon death.")
                 .addTextPage("These souls are highly volatile and will " + link("vanish after a few seconds") + ". To capture them, you must quickly interact with the floating soul while holding an " + link("empty Blood Flask") + " in your hand.")
@@ -460,12 +437,10 @@ public class PatchouliProvider implements DataProvider {
         JsonObject multiblock = new JsonObject();
         com.google.gson.JsonArray pattern = new com.google.gson.JsonArray();
 
-        // Top layer (Y=1)
         com.google.gson.JsonArray layerTop = new com.google.gson.JsonArray();
         layerTop.add("T   T");
         pattern.add(layerTop);
 
-        // Bottom layer (Y=0)
         com.google.gson.JsonArray layerBot = new com.google.gson.JsonArray();
         layerBot.add("TP0PT");
         pattern.add(layerBot);
@@ -485,7 +460,6 @@ public class PatchouliProvider implements DataProvider {
         JsonObject multiblock = new JsonObject();
         com.google.gson.JsonArray pattern = new com.google.gson.JsonArray();
 
-        // 1x2 Layer
         com.google.gson.JsonArray layer = new com.google.gson.JsonArray();
         layer.add("P0");
         pattern.add(layer);

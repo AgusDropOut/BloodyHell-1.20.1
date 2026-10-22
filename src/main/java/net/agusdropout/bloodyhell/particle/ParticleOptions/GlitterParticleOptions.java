@@ -15,13 +15,11 @@ import java.util.Locale;
 
 public class GlitterParticleOptions implements ParticleOptions {
 
-
     private final Vector3f color;
     private final float size;
     private final boolean jitter;
     private final int lifetime;
     private final boolean whiteCore;
-
 
     public static final Codec<GlitterParticleOptions> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
@@ -34,7 +32,6 @@ public class GlitterParticleOptions implements ParticleOptions {
                     Codec.BOOL.fieldOf("whiteCore").forGetter(d -> d.whiteCore)
             ).apply(instance, GlitterParticleOptions::new)
     );
-
 
     public static final Deserializer<GlitterParticleOptions> DESERIALIZER = new Deserializer<GlitterParticleOptions>() {
         @Override
@@ -70,7 +67,6 @@ public class GlitterParticleOptions implements ParticleOptions {
         }
     };
 
-
     public GlitterParticleOptions(float r, float g, float b, float size, boolean jitter, int lifetime, boolean whiteCore) {
         this.color = new Vector3f(r, g, b);
         this.size = size;
@@ -87,7 +83,6 @@ public class GlitterParticleOptions implements ParticleOptions {
         this.whiteCore = whiteCore;
     }
 
-
     public GlitterParticleOptions(Vector3f color, float size, boolean jitter, int lifetime) {
         this.color = color;
         this.size = size;
@@ -96,7 +91,6 @@ public class GlitterParticleOptions implements ParticleOptions {
         this.whiteCore = false;
     }
 
-    // GETTERS
     public Vector3f getColor() { return color; }
     public float getSize() { return size; }
     public boolean shouldJitter() { return jitter; }
@@ -125,6 +119,5 @@ public class GlitterParticleOptions implements ParticleOptions {
                 BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
                 this.color.x(), this.color.y(), this.color.z(), this.size, this.jitter, this.lifetime, this.whiteCore);
     }
-
 
 }

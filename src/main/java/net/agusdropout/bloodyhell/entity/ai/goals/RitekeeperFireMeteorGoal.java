@@ -14,7 +14,7 @@ public class RitekeeperFireMeteorGoal extends Goal {
     private final RitekeeperEntity mob;
     private int animationTicks;
 
-    private final int CAST_POINT = 30; // 1.5 Seconds
+    private final int CAST_POINT = 30;
     private final int ANIMATION_TOTAL = 50;
 
     public RitekeeperFireMeteorGoal(RitekeeperEntity mob) {
@@ -33,7 +33,7 @@ public class RitekeeperFireMeteorGoal extends Goal {
     public void start() {
         this.animationTicks = 0;
         this.mob.setCasting(true);
-        this.mob.setCurrentSpell(1); // Meteor ID
+        this.mob.setCurrentSpell(1);
         this.mob.getNavigation().stop();
     }
 
@@ -56,21 +56,16 @@ public class RitekeeperFireMeteorGoal extends Goal {
 
         this.animationTicks++;
 
-        // --- LOGIC MOVED HERE ---
         if (this.animationTicks == CAST_POINT && target != null) {
 
-            // 1. Calculate Spawn Position (High above target)
             Vec3 spawnPos = target.position().add(0, 10, 0);
 
-            // 2. Create Projectile
             BloodFireMeteorEntity meteor = new BloodFireMeteorEntity( this.mob.level(), this.mob, 10.0f, 0.3f, 1);
             meteor.setPos(spawnPos);
 
-            // 3. Aim DOWN at the target
             Vec3 dir = target.position().subtract(spawnPos).normalize();
-            meteor.setDeltaMovement(dir.scale(1.5)); // Speed
+            meteor.setDeltaMovement(dir.scale(1.5));
 
-            // 4. Spawn & Sound
             this.mob.level().addFreshEntity(meteor);
             this.mob.playSound(SoundEvents.GHAST_SHOOT, 1.0f, 0.5f);
         }

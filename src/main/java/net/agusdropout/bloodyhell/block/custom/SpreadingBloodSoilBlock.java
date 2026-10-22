@@ -17,13 +17,10 @@ import net.minecraft.world.level.lighting.LightEngine;
 import static net.minecraft.world.level.levelgen.structure.Structure.simpleCodec;
 
 public class SpreadingBloodSoilBlock extends SpreadingSnowyDirtBlock {
-    //public static final MapCodec<SpreadingBloodSoilBlock> CODEC = simpleCodec(SpreadingBloodSoilBlock::new);
 
     public SpreadingBloodSoilBlock(Properties properties) {
         super(properties);
     }
-
-
 
     private static boolean canPropagate(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.above();

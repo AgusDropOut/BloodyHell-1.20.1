@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
 import net.agusdropout.bloodyhell.BloodyHell;
-import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions; // Make sure this points to your dimension key
+import net.agusdropout.bloodyhell.worldgen.dimension.ModDimensions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.animal.horse.TraderLlama;

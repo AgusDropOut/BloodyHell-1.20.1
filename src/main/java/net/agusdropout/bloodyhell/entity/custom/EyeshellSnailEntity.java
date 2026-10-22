@@ -37,7 +37,6 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import javax.annotation.Nullable;
 
-
 public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable, net.minecraftforge.common.IForgeShearable {
     private static final int EAT_ANIMATION_TICKS = 40;
     private int eatAnimationTick;
@@ -67,8 +66,6 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
 
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-
-
 
     }
     protected void customServerAiStep() {
@@ -127,7 +124,6 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
         return PlayState.CONTINUE;
     }
 
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController(this, "controller",
@@ -136,8 +132,6 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
                 0, this::attackPredicate));
     }
 
-
-
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
@@ -145,18 +139,7 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(SoundEvents.AMETHYST_BLOCK_STEP, 0.15F, 1.0F);
     }
-   //public InteractionResult mobInteract(Player p_29853_, InteractionHand p_29854_) {
-   //    ItemStack itemstack = p_29853_.getItemInHand(p_29854_);
-   //    if (false && itemstack.getItem() == Items.SHEARS) { //Forge: Moved to onSheared
-   //        if (!this.level().isClientSide && this.readyForShearing()) {
-   //            itemstack.hurtAndBreak(1, p_29853_, (p_29822_) -> {
-   //                p_29822_.broadcastBreakEvent(p_29854_);
-   //            });
-   //        } else {
-   //        }
-   //    } else {
-   //    }
-   //}
+
     public void shear(SoundSource p_29819_) {
         this.level().playSound((Player)null, this, SoundEvents.SHEEP_SHEAR, p_29819_, 1.0F, 1.0F);
         this.setSheared(true);
@@ -220,19 +203,10 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
 
     }
 
-
-
-
-
-
-
-
-
     @Override
     protected float tickHeadTurn(float v, float v1) {
         return super.tickHeadTurn(v, v1);
     }
-
 
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ENDERMAN_AMBIENT;

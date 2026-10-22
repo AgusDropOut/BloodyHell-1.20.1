@@ -9,16 +9,16 @@ import org.joml.Vector3f;
 
 public enum BloodSoulType {
     BLOOD(
-            new Vector3f(1.0f, 0.0f, 0.0f), // Red
-            new Vector3f(1.0f, 0.6f, 0.8f)  // Pinkish Red
+            new Vector3f(1.0f, 0.0f, 0.0f),
+            new Vector3f(1.0f, 0.6f, 0.8f)
     ),
     CORRUPTED(
-            new Vector3f(0.2f, 0.0f, 0.0f), // Dark Red
-            new Vector3f(0.6f, 0.0f, 0.0f)  // Crimson
+            new Vector3f(0.2f, 0.0f, 0.0f),
+            new Vector3f(0.6f, 0.0f, 0.0f)
     ),
     INFECTED(
-            new Vector3f(0.1f, 0.8f, 0.2f), // Toxic Green
-            new Vector3f(0.6f, 0.8f, 0.1f)  // Sickly Yellow-Green
+            new Vector3f(0.1f, 0.8f, 0.2f),
+            new Vector3f(0.6f, 0.8f, 0.1f)
     );
 
     private final Vector3f startColor;
@@ -31,17 +31,15 @@ public enum BloodSoulType {
 
     public void spawnParticles(Level level, Vec3 pos, RandomSource random, float scaleMultiplier) {
         float ratio = random.nextFloat();
-        // Linear interpolation between start and end color
+
         Vector3f color = new Vector3f(
                 startColor.x + (endColor.x - startColor.x) * ratio,
                 startColor.y + (endColor.y - startColor.y) * ratio,
                 startColor.z + (endColor.z - startColor.z) * ratio
         );
 
-        // Scale the particle size based on soul size
         float particleSize = 0.5F * scaleMultiplier;
 
-        // Scale the jitter/spread
         double spread = 0.3 * scaleMultiplier;
 
         ParticleHelper.spawn(level, new MagicParticleOptions(color, particleSize, false, 20),

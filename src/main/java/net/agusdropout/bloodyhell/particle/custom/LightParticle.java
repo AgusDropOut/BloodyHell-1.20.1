@@ -13,9 +13,9 @@ public class LightParticle extends TextureSheetParticle {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.friction = 1.0F;
         double diagonalFactor = 0.01D;
-        this.xd += xSpeed * 0.0075D +   diagonalFactor; //this.random.nextGaussian()
-        this.yd=0.0D; //+= ySpeed * 0.05D + this.random.nextGaussian() * diagonalFactor;
-        this.zd = 0.0D;// += zSpeed * 0.05D + this.random.nextGaussian() * diagonalFactor;
+        this.xd += xSpeed * 0.0075D +   diagonalFactor;
+        this.yd=0.0D;
+        this.zd = 0.0D;
         this.gravity = 0.003F;
         this.lifetime = 80;
         this.quadSize *= 0.2F;
@@ -69,8 +69,4 @@ public class LightParticle extends TextureSheetParticle {
         }
     }
 }
-
-
-
-
 

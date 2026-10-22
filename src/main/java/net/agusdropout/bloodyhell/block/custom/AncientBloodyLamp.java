@@ -31,7 +31,6 @@ public class AncientBloodyLamp extends LanternBlock {
                     random.nextFloat() * 0.7F + 0.3F, false);
         }
 
-
         for(int i = 0; i < 2; i++) {
             double offsetRatio = random.nextDouble() * 0.15D;
             double angle = random.nextDouble() * Math.PI * 2;
@@ -41,13 +40,11 @@ public class AncientBloodyLamp extends LanternBlock {
 
             float t = (float) (offsetRatio / 0.15D);
 
-
-            float r = 1.0F - (t * 0.7F); // 1.0 -> 0.3
-            float g = 0.2F - (t * 0.2F); // 0.2 -> 0.0
-            float b = 0.5F - (t * 0.5F); // 0.5 -> 0.0
+            float r = 1.0F - (t * 0.7F);
+            float g = 0.2F - (t * 0.2F);
+            float b = 0.5F - (t * 0.5F);
 
             Vector3f color = new Vector3f(r, g, b);
-
 
             float size = 0.25F + (t * 0.2F);
             double speedY = 0.02D - (t * 0.015D);
@@ -55,12 +52,11 @@ public class AncientBloodyLamp extends LanternBlock {
             ParticleHelper.spawn(level, new MagicParticleOptions(
                             color,
                             size,
-                            false, // Emissive/Glowing
-                            30), // Lifetime
+                            false,
+                            30),
                     x + offsetX, y, z + offsetZ,
                     0.0D, speedY, 0.0D);
         }
-
 
         if(random.nextDouble() < 0.2) {
             ParticleHelper.spawn(level, ModParticles.SMALL_BLOOD_FLAME_PARTICLE.get(),
@@ -71,7 +67,7 @@ public class AncientBloodyLamp extends LanternBlock {
         if(random.nextDouble() < 0.1) {
             ParticleHelper.spawn(level, ParticleTypes.SMOKE,
                     x + (random.nextDouble() - 0.5D) * 0.1D,
-                    y + 0.3D, // Higher up
+                    y + 0.3D,
                     z + (random.nextDouble() - 0.5D) * 0.1D,
                     0.0D, 0.02D, 0.0D);
         }

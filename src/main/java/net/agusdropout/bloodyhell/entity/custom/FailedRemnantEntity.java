@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.custom;
 
-import net.agusdropout.bloodyhell.sound.ModSounds; // Assuming you have sounds, otherwise use Vanilla
+import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -34,10 +34,10 @@ public class FailedRemnantEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D) // Decent health
+                .add(Attributes.MAX_HEALTH, 30.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0f)
-                .add(Attributes.ATTACK_SPEED, 1.0f) // Fast, frantic attacks
-                .add(Attributes.MOVEMENT_SPEED, 0.25D) // Dragging itself fast
+                .add(Attributes.ATTACK_SPEED, 1.0f)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D);
     }
 
@@ -54,15 +54,14 @@ public class FailedRemnantEntity extends Monster implements GeoEntity {
 
     }
 
-    // --- ANIMATION CONTROLLER ---
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 5, state -> {
             if (state.isMoving()) {
-                // Crawling animation
+
                 return state.setAndContinue(RawAnimation.begin().then("walking", Animation.LoopType.LOOP));
             }
-            // Twitching/Panting on the floor
+
             return state.setAndContinue(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }));
     }
@@ -72,14 +71,12 @@ public class FailedRemnantEntity extends Monster implements GeoEntity {
         return cache;
     }
 
-    // --- SOUNDS ---
-    // Using wet/squishy sounds to make it "disgusting"
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WITHER_SKELETON_AMBIENT; }
     @Override protected SoundEvent getHurtSound(DamageSource source) { return SoundEvents.WITHER_SKELETON_HURT; }
     @Override protected SoundEvent getDeathSound() { return SoundEvents.DROWNED_DEATH; }
 
     @Override protected void playStepSound(BlockPos pos, BlockState block) {
-        // Dragging sound
+
         this.playSound(SoundEvents.STONE_STEP, 0.5F, 1.0F);
     }
 }

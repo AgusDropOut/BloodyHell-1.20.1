@@ -40,15 +40,15 @@ public class SyncBloodFireEffectPacket {
                 Entity entity = Minecraft.getInstance().level.getEntity(entityId);
 
                 if (entity instanceof LivingEntity living) {
-                    // FIX: Set ambient to FALSE (4th arg) and visible to FALSE (5th arg)
+
                     // This matches standard potion application so vanilla sync packets can overwrite/remove it correctly.
                     living.addEffect(new MobEffectInstance(
                             ModEffects.BLOOD_FIRE_EFFECT.get(),
                             duration,
                             amplifier,
                             false, // ambient (Set to FALSE to fix persistence bug)
-                            false, // visible (particles handled by block)
-                            true   // show icon
+                            false,
+                            true
                     ));
                 }
             }

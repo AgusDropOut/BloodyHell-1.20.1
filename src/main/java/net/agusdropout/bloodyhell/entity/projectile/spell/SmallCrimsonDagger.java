@@ -35,7 +35,6 @@ public class SmallCrimsonDagger extends Projectile {
 
     private static final EntityDataAccessor<Boolean> STUCK = SynchedEntityData.defineId(SmallCrimsonDagger.class, EntityDataSerializers.BOOLEAN);
 
-    // Trail History: Stores the last 12 positions (World Space)
     private final Deque<Vec3> trailHistory = new ArrayDeque<>();
 
     private int lifeTicks = 120;
@@ -62,8 +61,6 @@ public class SmallCrimsonDagger extends Projectile {
     public void tick() {
         super.tick();
 
-        // --- TRAIL LOGIC ---
-        // Only record history on client, while moving, and not stuck
         if (this.level().isClientSide) {
             if (!this.isStuckInGround() && this.getVehicle() == null) {
                 trailHistory.addFirst(this.position());
@@ -71,12 +68,11 @@ public class SmallCrimsonDagger extends Projectile {
                     trailHistory.removeLast();
                 }
             } else if (!trailHistory.isEmpty()) {
-                // If stuck, shrink the trail so it catches up and disappears
+
                 trailHistory.removeLast();
             }
         }
 
-        // 1. Stuck in Ground
         if (this.entityData.get(STUCK)) {
             this.setDeltaMovement(Vec3.ZERO);
             if (fadeTimer++ > 60) {
@@ -85,7 +81,6 @@ public class SmallCrimsonDagger extends Projectile {
             return;
         }
 
-        // 2. Riding Entity
         if (this.getVehicle() != null) {
             if (!this.getVehicle().isAlive() || this.lifeTicks-- <= 0) {
                 this.discard();
@@ -93,13 +88,11 @@ public class SmallCrimsonDagger extends Projectile {
             return;
         }
 
-        // 3. Flight
         if (this.lifeTicks-- <= 0) {
             this.discard();
             return;
         }
 
-        // Spawn Pop (Visual)
         if (this.tickCount == 1 && this.level().isClientSide) {
             for (int i = 0; i < 3; i++) {
                 this.level().addParticle(ModParticles.BLOOD_PARTICLES.get(),
@@ -153,16 +146,14 @@ public class SmallCrimsonDagger extends Projectile {
             }
         }
         if (!this.level().isClientSide) {
-            // Calculate spawn position relative to the hit face
+
             Direction face = result.getDirection();
             BlockPos hitPos = result.getBlockPos();
 
-            // Move slightly out of the block so it isn't inside
             double spawnX = hitPos.getX() + 0.5 + (face.getStepX() * 0.05);
-            double spawnY = hitPos.getY() + 0.5 + (face.getStepY() * 0.05); // Center of block face
+            double spawnY = hitPos.getY() + 0.5 + (face.getStepY() * 0.05);
             double spawnZ = hitPos.getZ() + 0.5 + (face.getStepZ() * 0.05);
 
-            // If hitting the top of a block (Floor), we usually want it exactly on top
             if (face == Direction.UP) spawnY = hitPos.getY() + 1.0;
             if (face == Direction.DOWN) spawnY = hitPos.getY();
             if (face == Direction.NORTH) spawnZ = hitPos.getZ();
@@ -170,12 +161,8 @@ public class SmallCrimsonDagger extends Projectile {
             if (face == Direction.WEST) spawnX = hitPos.getX();
             if (face == Direction.EAST) spawnX = hitPos.getX() + 1.0;
 
-            // Ideally, pass the exact hit location from result.getLocation()
-            // but aligning to the block grid often looks cleaner for decals.
-            // Let's use the exact hit location for accuracy:
             Vec3 exactHit = result.getLocation();
 
-            // Spawn the Stain
             BloodStainEntity stain = new BloodStainEntity(this.level(),
                     exactHit.x, exactHit.y, exactHit.z, face);
 
@@ -209,7 +196,6 @@ public class SmallCrimsonDagger extends Projectile {
     public void increaseDamage(float damage) {
         this.damage += damage; }
 
-    // Accessor for Renderer
     public Deque<Vec3> getTrailHistory() {
         return this.trailHistory;
     }

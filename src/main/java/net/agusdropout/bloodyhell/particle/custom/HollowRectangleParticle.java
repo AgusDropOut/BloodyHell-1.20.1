@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.particle.custom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Axis; // Import Axis for rotation
+import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.HollowRectangleOptions;
 import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.minecraft.client.Camera;
@@ -26,14 +26,11 @@ public class HollowRectangleParticle extends TextureSheetParticle {
     protected HollowRectangleParticle(ClientLevel level, double x, double y, double z, HollowRectangleOptions options) {
         super(level, x, y, z);
 
-
          jitterIntensity = options.getJitter();
-
 
         this.rCol = options.getColor().x();
         this.gCol = options.getColor().y();
         this.bCol = options.getColor().z();
-
 
         this.lifetime = options.getLife();
         this.width = options.getWidth();
@@ -63,14 +60,11 @@ public class HollowRectangleParticle extends TextureSheetParticle {
         PoseStack poseStack = new PoseStack();
         poseStack.translate(px, py, pz);
 
-
         if (this.yaw != 0) {
             poseStack.mulPose(Axis.YP.rotationDegrees(this.yaw));
         }
 
         float time = age + partialTicks;
-
-
 
         Matrix4f pose = poseStack.last().pose();
 
@@ -95,9 +89,6 @@ public class HollowRectangleParticle extends TextureSheetParticle {
                 jitterIntensity
         );
 
-
-
-
         tess.end();
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
@@ -108,7 +99,6 @@ public class HollowRectangleParticle extends TextureSheetParticle {
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.CUSTOM;
     }
-
 
     @Override
     public AABB getBoundingBox() {

@@ -12,16 +12,13 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 public class ModSurfaceRules {
 
-    // === BLOOD BIOME BLOCKS ===
     private static final SurfaceRules.RuleSource BLOOD_DIRT = makeStateRule(SoilBlocks.BLOOD_DIRT_BLOCK.get());
     private static final SurfaceRules.RuleSource BLOOD_GRASS = makeStateRule(SoilBlocks.BLOOD_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource BLOODY_STONE = makeStateRule(StoneBlocks.BLOODY_STONE_BLOCK.get());
 
-    // === BLASPHEMOUS BIOME BLOCKS ===
     private static final SurfaceRules.RuleSource BLASPHEMOUS_SAND = makeStateRule(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get());
-    private static final SurfaceRules.RuleSource BLASPHEMOUS_SANDSTONE = makeStateRule(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get()); // placeholder
+    private static final SurfaceRules.RuleSource BLASPHEMOUS_SANDSTONE = makeStateRule(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK.get());
 
-    // === GENERAL RULES ===
     private static final SurfaceRules.RuleSource BEDROCK_FLOOR = SurfaceRules.ifTrue(
             SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)),
             SurfaceRules.state(Blocks.BEDROCK.defaultBlockState())
@@ -72,9 +69,6 @@ public class ModSurfaceRules {
             BLASPHEMOUS_SANDSTONE
     );
 
-
-
-    // === BLOOD BIOME RULE SET ===
     private static SurfaceRules.RuleSource bloodRules() {
         SurfaceRules.ConditionSource isAtOrAboveWater = SurfaceRules.waterBlockCheck(-1, 0);
         SurfaceRules.ConditionSource aLittleBelowSurface = SurfaceRules.abovePreliminarySurface();
@@ -101,7 +95,6 @@ public class ModSurfaceRules {
         );
     }
 
-    // === BLASPHEMOUS BIOME RULE SET ===
     private static SurfaceRules.RuleSource blasphemousRules() {
         SurfaceRules.ConditionSource isAtOrAboveWater = SurfaceRules.waterBlockCheck(-1, 0);
         SurfaceRules.ConditionSource aLittleBelowSurface = SurfaceRules.abovePreliminarySurface();
@@ -128,7 +121,6 @@ public class ModSurfaceRules {
         );
     }
 
-    // === FINAL CENTRALIZED RULES ===
     public static SurfaceRules.RuleSource makeRules() {
         return SurfaceRules.sequence(
                 bloodRules(),
@@ -136,7 +128,6 @@ public class ModSurfaceRules {
         );
     }
 
-    // Helper method
     private static SurfaceRules.RuleSource makeStateRule(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
     }

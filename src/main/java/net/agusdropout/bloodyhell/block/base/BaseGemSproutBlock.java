@@ -39,13 +39,10 @@ public abstract class BaseGemSproutBlock  extends BaseEntityBlock {
 
     public static final int MAX_AGE = 5;
 
-
-    // 0 = Empty/Just Planted, 3 = Fully Grown
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, MAX_AGE);
     public static final BooleanProperty FILLED = BooleanProperty.create("filled");
     public static final BooleanProperty ITEM_INSIDE = BooleanProperty.create("item_inside");
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-
 
     public BaseGemSproutBlock(Properties pProperties) {
         super(pProperties);
@@ -66,7 +63,7 @@ public abstract class BaseGemSproutBlock  extends BaseEntityBlock {
                     sprout.setGemType("empty");
                     sprout.setTempStoredItem(ItemStack.EMPTY);
                     level.setBlock(pos, state.setValue(ITEM_INSIDE, false), 3);
-                    sprout.setGemColor(0x3cff00); // Reset color to Default Green
+                    sprout.setGemColor(0x3cff00);
                     level.setBlock(pos, state.setValue(AGE, 0), 3);
                     level.playSound(null, pos, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f);
                     return InteractionResult.SUCCESS;
@@ -163,7 +160,6 @@ public abstract class BaseGemSproutBlock  extends BaseEntityBlock {
 
         if (level.getGameTime() % 5 != 0) return;
 
-
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 0.6;
         double z = pos.getZ() + 0.5;
@@ -184,8 +180,6 @@ public abstract class BaseGemSproutBlock  extends BaseEntityBlock {
                 x + offsetX, y, z + offsetZ,
                 0, 0.015, 0
         );
-
-        // --- 2. The "Pulse" (Bright Red) ---
 
         if (level.getGameTime() % 20 == 0) {
             Vec3 ringCenter = new Vec3(x, y + 0.2, z);

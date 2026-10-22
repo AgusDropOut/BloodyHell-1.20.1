@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.client.overlay;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-// Assuming your effects are here
+
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,14 +16,11 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.joml.Matrix4f;
 
-
 public class BloodFireOverlay {
-
 
     private static final ResourceLocation BLOOD_FIRE_TEXTURE = new ResourceLocation("bloodyhell", "block/blood_fire");
 
     public static final IGuiOverlay HUD_BLOOD_FIRE = BloodFireOverlay::renderOverlay;
-
 
     public static void renderOverlay(ForgeGui gui, GuiGraphics guiGraphics, float pt, int width, int height) {
         if (Minecraft.getInstance().player == null || !Minecraft.getInstance().player.hasEffect(ModEffects.BLOOD_FIRE_EFFECT.get())) {
@@ -33,13 +30,10 @@ public class BloodFireOverlay {
         PoseStack posestack = guiGraphics.pose();
         posestack.pushPose();
 
-
         posestack.translate(width / 2.0F, height / 2.0F, 0.0F);
-
 
         float scale = Math.max(width, height);
         posestack.scale(scale, -scale, 1.0F);
-
 
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
@@ -47,7 +41,6 @@ public class BloodFireOverlay {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-
 
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(BLOOD_FIRE_TEXTURE);
         RenderSystem.setShaderTexture(0, sprite.atlasLocation());
@@ -82,7 +75,7 @@ public class BloodFireOverlay {
 
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
-        RenderSystem.depthFunc(515); // GL_LEQUAL
+        RenderSystem.depthFunc(515);
 
         posestack.popPose();
     }

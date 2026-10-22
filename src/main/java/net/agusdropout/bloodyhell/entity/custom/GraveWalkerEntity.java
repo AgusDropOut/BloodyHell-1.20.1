@@ -38,15 +38,11 @@ import java.util.EnumSet;
 public class GraveWalkerEntity extends Monster implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
-    // --- ANIMACIONES ---
-
     private static final RawAnimation SHIELD_HIT = RawAnimation.begin().thenPlay("shield_hit");
 
-    // DATA SYNCED
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(GraveWalkerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_BLOCKING = SynchedEntityData.defineId(GraveWalkerEntity.class, EntityDataSerializers.BOOLEAN);
 
-    // VARIABLES INTERNAS
     private int deathTimer = 30;
     private boolean isDeadAnimation = false;
     private int shieldCooldown = 0;
@@ -86,16 +82,13 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
 
     }
 
-    // --- LOGICA PRINCIPAL (TICK) ---
     @Override
     public void aiStep() {
         super.aiStep();
 
-
         if (this.shieldCooldown > 0) {
             this.shieldCooldown--;
         }
-
 
         if (this.level().isClientSide && this.tickCount % 5 == 0) {
             this.level().addParticle(ParticleTypes.ASH,
@@ -110,18 +103,15 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         }
     }
 
-
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.isBlocking()) {
             this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
 
-
             if (!this.level().isClientSide) {
 
                 this.triggerAnim("controller", "shield_hit");
             }
-
 
             if (source.getDirectEntity() != null && source.getDirectEntity() != source.getEntity()) {
                 Entity projectile = source.getDirectEntity();
@@ -144,7 +134,6 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         }
         deathTimer--;
 
-
         if (level().isClientSide && deathTimer > 0) {
             for (int i = 0; i < 3; i++) {
                 level().addParticle(ModParticles.MAGIC_LINE_PARTICLE.get(),
@@ -160,7 +149,6 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         }
     }
 
-    // --- GETTERS & SETTERS & NBT ---
     public void setAttacking(boolean attacking) { this.entityData.set(IS_ATTACKING, attacking); }
     public boolean isAttacking() { return this.entityData.get(IS_ATTACKING); }
 
@@ -182,13 +170,11 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         this.shieldCooldown = tag.getInt("ShieldCooldown");
     }
 
-    // --- GECKOLIB CONTROLLERS ---
     private PlayState predicate(AnimationState event) {
         if (this.isDeadAnimation) {
             event.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
         }
-
 
         if (this.isAttacking()) {
             if (event.getController().getAnimationState() == AnimationController.State.STOPPED) {
@@ -198,19 +184,16 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
             return PlayState.CONTINUE;
         }
 
-
         if (this.isBlocking()) {
             event.getController().setAnimation(RawAnimation.begin().then("shield", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         }
 
-        // Movimiento
         if (event.isMoving()) {
             event.getController().setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
         }
 
-        // Idle
         event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
@@ -218,16 +201,12 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
-
         controllers.add(new AnimationController<>(this, "controller", 5, this::predicate)
                 .triggerableAnim("shield_hit", SHIELD_HIT));
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() { return factory; }
-
-    // --- GOALS PERSONALIZADOS ---
-
 
     static class GraveWalkerAttackGoal extends Goal {
         private final GraveWalkerEntity mob;
@@ -295,14 +274,13 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         }
     }
 
-
     static class GraveWalkerShieldGoal extends Goal {
         private final GraveWalkerEntity mob;
         private int shieldTime;
 
         public GraveWalkerShieldGoal(GraveWalkerEntity mob) {
             this.mob = mob;
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP)); // Bloquea movimiento
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
         }
 
         @Override
@@ -322,7 +300,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
 
         @Override
         public void start() {
-            this.shieldTime = 40; // Bloqueo dura 2 segundos
+            this.shieldTime = 40;
             this.mob.setBlocking(true);
             this.mob.getNavigation().stop();
             this.mob.playSound(SoundEvents.ARMOR_EQUIP_IRON, 1.0f, 0.5f);

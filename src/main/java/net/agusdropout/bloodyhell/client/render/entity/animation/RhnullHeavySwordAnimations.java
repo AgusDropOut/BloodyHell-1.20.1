@@ -15,11 +15,9 @@ public class RhnullHeavySwordAnimations {
             ))
             .addAnimation("rhnull_heavy_sword_entity", new AnimationChannel(AnimationChannel.Targets.POSITION,
                     new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    // WAS: 14.0F (Moved "Down" in Blockbench, interpreted as "Up" here?)
-                    // Let's invert it:
+
                     new Keyframe(1.0F, KeyframeAnimations.posVec(0.0F, -14.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    // WAS: -39.0F (Moved "Down" in Blockbench, interpreted as "Up" here)
-                    // Change to Positive to move DOWN in Minecraft:
+
                     new Keyframe(4.0F, KeyframeAnimations.posVec(0.0F, 39.0F, -22.0F), AnimationChannel.Interpolations.CATMULLROM)
             ))
             .build();

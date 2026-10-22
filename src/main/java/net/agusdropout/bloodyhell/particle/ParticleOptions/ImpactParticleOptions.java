@@ -12,7 +12,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.Locale;
 
 public class ImpactParticleOptions implements ParticleOptions {
-    // 1. DATA FIELDS (Individual RGB)
+
     private final float r;
     private final float g;
     private final float b;
@@ -21,7 +21,6 @@ public class ImpactParticleOptions implements ParticleOptions {
     private final boolean jitter;
     private final float expansionSpeed;
 
-    // 2. CODEC
     public static final Codec<ImpactParticleOptions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("r").forGetter(o -> o.r),
             Codec.FLOAT.fieldOf("g").forGetter(o -> o.g),
@@ -32,7 +31,6 @@ public class ImpactParticleOptions implements ParticleOptions {
             Codec.FLOAT.fieldOf("expansion_speed").forGetter(o -> o.expansionSpeed)
     ).apply(instance, ImpactParticleOptions::new));
 
-    // 3. CONSTRUCTOR
     public ImpactParticleOptions(float r, float g, float b, float size, int lifetime, boolean jitter, float expansionSpeed) {
         this.r = r;
         this.g = g;
@@ -43,7 +41,6 @@ public class ImpactParticleOptions implements ParticleOptions {
         this.expansionSpeed = expansionSpeed;
     }
 
-    // Helper: Create using 0-255 Integers
     public static ImpactParticleOptions create(int r, int g, int b, float size, int lifetime, boolean jitter, float expansion) {
         return new ImpactParticleOptions(
                 r / 255.0f, g / 255.0f, b / 255.0f,
@@ -81,7 +78,6 @@ public class ImpactParticleOptions implements ParticleOptions {
                 this.getType().toString(), r, g, b, size, lifetime, jitter, expansionSpeed);
     }
 
-    // 4. DESERIALIZER
     public static final Deserializer<ImpactParticleOptions> DESERIALIZER = new Deserializer<ImpactParticleOptions>() {
         @Override
         public ImpactParticleOptions fromCommand(ParticleType<ImpactParticleOptions> type, StringReader reader) throws CommandSyntaxException {

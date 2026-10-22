@@ -120,12 +120,6 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ReliquaryItems.SEAL_OF_THE_HOLLOW_BULWARK.get())
                 .add(ReliquaryItems.OMEN_OF_THE_CRUSHING_TOLL.get());
 
-
-        // =================================================================
-        // TOOLTIP TIERS
-        // =================================================================
-
-        // 1. Sanguinite Tier
         this.tag(ModTags.Items.SANGUINITE_TIER_ITEMS)
                 .add(SanguiniteItems.SANGUINITE.get())
                 .add(SanguiniteItems.RAW_SANGUINITE.get())
@@ -159,7 +153,6 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(GemItems.TANZARINE_BLOOD_GEM.get())
                 .add(GemItems.AVENTURINE_BLOOD_GEM.get());
 
-        // 2. Rhnull Tier
         this.tag(ModTags.Items.RHNULL_TIER_ITEMS)
                 .add(RhnullItems.RHNULL.get())
                 .add(RhnullItems.RHNULL_NUGGET.get())
@@ -186,7 +179,6 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(SpellBookItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
                 .add(SpellBookItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
 
-        // 3. Blasphemous Tier
         this.tag(ModTags.Items.BLASPHEMOUS_TIER_ITEMS)
                 .add(BlasphemiteItems.BLASPHEMITE.get())
                 .add(BlasphemiteItems.RAW_BLASPHEMITE.get())
@@ -220,11 +212,6 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(SandstoneBlocks.CUT_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
                 .add(SandstoneBlocks.CHISELED_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem())
                 .add(SandstoneBlocks.CHISELED_DETAILED_BLASPHEMOUS_SANDSTONE_BLOCK.get().asItem());
-
-
-        // =================================================================
-        // SYSTEM TAGS
-        // =================================================================
 
         this.tag(ModTags.Items.GEM_FRAMES)
                 .add(GemItems.SANGUINITE_GEM_FRAME.get())

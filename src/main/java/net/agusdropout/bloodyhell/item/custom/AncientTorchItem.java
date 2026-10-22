@@ -23,11 +23,9 @@ import org.joml.Vector3f;
 
 public class AncientTorchItem extends BlockItem  {
 
-    // --- POSITION CONFIGURATION ---
-    // Adjust these values to perfectly align the particles with the hand
-    private static final double OFFSET_FORWARD = 0.15D; // How far in front of the player (Distance from face)
-    private static final double OFFSET_SIDE    = 0.20D; // How far to the right/left (Width of shoulders)
-    private static final double OFFSET_DOWN    = 0.00D;  // How far down from eye level (Arm height)
+    private static final double OFFSET_FORWARD = 0.15D;
+    private static final double OFFSET_SIDE    = 0.20D;
+    private static final double OFFSET_DOWN    = 0.00D;
 
     public AncientTorchItem(Block block, Properties properties) {
         super(block, properties);
@@ -82,39 +80,32 @@ public class AncientTorchItem extends BlockItem  {
         Vec3 rightVec = viewVec.cross(new Vec3(0, 1, 0)).normalize();
         Vec3 downVec = rightVec.cross(viewVec).normalize();
 
-        // Base Position (The "Hand")
         Vec3 basePos = eyePos
                 .add(viewVec.scale(OFFSET_FORWARD))
                 .add(rightVec.scale(currentSideOffset))
                 .add(downVec.scale(OFFSET_DOWN));
 
-
         double offsetX = (level.random.nextDouble() - 0.5) * 0.1;
         double offsetY = (level.random.nextDouble() - 0.5) * 0.1;
         double offsetZ = (level.random.nextDouble() - 0.5) * 0.1;
 
-
         double dist = Math.sqrt(offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ) / 0.1;
         float ratio = (float) Mth.clamp(dist, 0.0, 1.0);
 
-
         Vector3f color = ParticleHelper.gradient3(ratio,
-                new Vector3f(1.0f, 0.6f, 0.8f), // START: Pink
-                new Vector3f(0.9f, 0.1f, 0.1f), // MID: Red
-                new Vector3f(0.3f, 0.0f, 0.0f)  // END: Dark Red
+                new Vector3f(1.0f, 0.6f, 0.8f),
+                new Vector3f(0.9f, 0.1f, 0.1f),
+                new Vector3f(0.3f, 0.0f, 0.0f)
         );
 
         float size = 0.15f + level.random.nextFloat() * 0.1f;
 
-        // Spawn Magic Particle
         ParticleHelper.spawn(level, new MagicParticleOptions(
                 color,
                 size,
                 false,
                 25
         ), basePos.x + offsetX, basePos.y + offsetY, basePos.z + offsetZ, 0.0, 0.015, 0.0);
-
-
 
         if (level.random.nextFloat() < 0.3f) {
             ParticleHelper.spawn(level, ParticleTypes.SMOKE,
@@ -124,7 +115,5 @@ public class AncientTorchItem extends BlockItem  {
                     0.0, 0.03, 0.0);
         }
     }
-
-
 
 }

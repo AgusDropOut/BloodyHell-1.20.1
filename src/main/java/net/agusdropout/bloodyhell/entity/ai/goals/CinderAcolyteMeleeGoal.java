@@ -10,8 +10,8 @@ import java.util.EnumSet;
 public class CinderAcolyteMeleeGoal extends Goal {
     private final CinderAcolyteEntity mob;
     private int attackTicks;
-    private final int ATTACK_DAMAGE_POINT = 15; // 1.0 seconds (20 ticks)
-    private final int ANIMATION_DURATION = 25; // Total animation length
+    private final int ATTACK_DAMAGE_POINT = 15;
+    private final int ANIMATION_DURATION = 25;
 
     public CinderAcolyteMeleeGoal(CinderAcolyteEntity mob) {
         this.mob = mob;
@@ -22,7 +22,7 @@ public class CinderAcolyteMeleeGoal extends Goal {
     public boolean canUse() {
         LivingEntity target = this.mob.getTarget();
         return target != null && target.isAlive()
-                && this.mob.distanceTo(target) < 2.0D // Very close range
+                && this.mob.distanceTo(target) < 2.0D
                 && this.mob.isMeleeReady()
                 && !this.mob.isFlameAttacking();
     }
@@ -52,13 +52,11 @@ public class CinderAcolyteMeleeGoal extends Goal {
             this.mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         }
 
-
         this.attackTicks++;
 
-        // Deal damage at exactly 1.0s
         if (this.attackTicks == ATTACK_DAMAGE_POINT && target != null) {
             double distSqr = this.mob.distanceToSqr(target);
-            if (distSqr < 12.0D) { // Allow slight range forgiveness
+            if (distSqr < 12.0D) {
                 this.mob.performMeleeDamage(target);
                 mob.level().playSound(null, mob.getX(), mob.getY(), mob.getZ(),
                         SoundEvents.CHAIN_BREAK, mob.getSoundSource(),

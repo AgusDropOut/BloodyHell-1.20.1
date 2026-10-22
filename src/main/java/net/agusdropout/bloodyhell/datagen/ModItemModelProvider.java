@@ -61,10 +61,9 @@ public class ModItemModelProvider extends ItemModelProvider {
     }
     @Override
     protected void registerModels() {
-        // Guide book
+
         normalItem(MiscItems.UNKNOWN_GUIDE_BOOK);
 
-        //Sanguinite Items
         toolItem(SanguiniteItems.SANGUINITE_SWORD);
         toolItem(SanguiniteItems.SANGUINITE_PICKAXE);
         toolItem(SanguiniteItems.SANGUINITE_AXE);
@@ -83,13 +82,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(GemItems.CITRINE_BLOOD_GEM);
         normalItem(GemItems.TANZARINE_BLOOD_GEM);
 
-
-        //Bucket
         normalItem(BucketItems.BLOOD_BUCKET);
         normalItem(BucketItems.CORRUPTED_BLOOD_BUCKET);
         normalItem(BucketItems.VISCOUS_BLASPHEMY_BUCKET);
         normalItem(BucketItems.VISCERAL_BLOOD_BUCKET);
-        //Rhnull Items
+
         toolItem(RhnullItems.RHNULL_SWORD);
         toolItem(RhnullItems.RHNULL_PICKAXE);
         toolItem(RhnullItems.RHNULL_AXE);
@@ -102,7 +99,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(RhnullItems.RHNULL_LEGGINGS);
         normalItem(RhnullItems.RHNULL_BOOTS);
 
-        //Mobs Drops
         normalItem(DropItems.AUREAL_REVENANT_DAGGER);
         normalItem(DropItems.VEINREAVER_HORN);
         normalItem(DropItems.CRIMSON_SHELL);
@@ -111,7 +107,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(DropItems.FAILED_REMNANT_ASHES);
         normalItem(DropItems.CINDER_ACOLYTE_FAINTED_EMBER);
 
-        //Mobs spawn eggs
         egg(SpawnEggItems.VEINRAVER_ENTITY_SPAWN_EGG);
         egg(SpawnEggItems.OFFSPRING_OF_THE_UNKNOWN_SPAWN_EGG);
         egg(SpawnEggItems.BLASPHEMOUS_MALFORMATION_SPAWN_EGG);
@@ -123,7 +118,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         egg(SpawnEggItems.CINDER_ACOLYTE_SPAWN_EGG);
         egg(SpawnEggItems.FAILED_REMNANT_SPAWN_EGG);
 
-        //Food Items
         normalItem(FoodItems.GOREHOG_RAW_STEAK);
         normalItem(FoodItems.GOREHOG_COOKED_STEAK);
         normalItem(FoodItems.SCARLET_RAW_CHICKEN);
@@ -131,8 +125,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(FoodItems.GLOW_FRUIT);
         normalItem(FoodItems.GLOW_MUSHROOM);
 
-
-        //Misc Items
         normalItem(MiscItems.CHALICE_OF_THE_DAMMED);
         normalItem(MiscItems.CRIMSON_IDOL_COIN);
         normalItem(MiscItems.SANGUINE_CRUCIBLE_CORE);
@@ -140,10 +132,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(PlaceableItems.CRIMSON_LURE_MUSHROOM);
         normalItem(PlaceableItems.BLOOD_GEM_SPROUT_SEED);
 
-        //Ingredient Items
         normalItem(MiscItems.ROOTLET_POWDER);
 
-        //Potions
         normalItem(FlaskItems.BLOOD_FLASK);
         normalItem(FlaskItems.CORRUPTED_BLOOD_FLASK);
         normalItem(FlaskItems.FILLED_BLOOD_FLASK);
@@ -151,11 +141,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK);
         normalItem(FlaskItems.BOUND_BLOOD_FLASK);
 
-        //Dagger
         toolItem(WeaponItems.SACRIFICIAL_DAGGER);
         toolItem(WeaponItems.HERETIC_SACRIFICIAL_DAGGER);
 
-        //Unknown entity items
         normalItem(WeaponItems.UNKNOWN_ENTITY_FINGER);
 
         normalItem(MiscItems.GAZE_OF_THE_UNKNOWN);
@@ -163,7 +151,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(DropItems.BLOOD_ECHO_SHARD);
         normalItem(DropItems.NAMELESS_ECHO_SHARD);
 
-        //Crimson Veil Items
         normalItem(GemItems.AMULET_OF_ANCESTRAL_BLOOD);
         normalItem(GemItems.SANGUINITE_GEM_FRAME);
         normalItem(GemItems.SANGUINITE_GREAT_GEM_FRAME);
@@ -179,7 +166,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(GemItems.CRIMSON_WARD_RING);
         normalItem(GemItems.BLASPHEMOUS_RING);
 
-        //Reliquary Items
         normalItem(ReliquaryItems.ANCIENT_OCULAR_LENSE);
         normalItem(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE);
         normalItem(ReliquaryItems.MARK_OF_THE_RESTLESS_SLUMBER);
@@ -188,8 +174,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         normalItem(ReliquaryItems.SEAL_OF_THE_HOLLOW_BULWARK);
 
         normalItem(BlasphemiteItems.BLASPHEMOUS_EYE);
-
-
 
         block(MachineBlocks.SANGUINITE_PIPE);
         block(MachineBlocks.RHNULL_PIPE);
@@ -209,15 +193,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         simpleBlockItemBlockTexture(PlantBlocks.VISCERAL_INFECTED_VEIN);
 
-
         evenSimplerBlockItem(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
         evenSimplerBlockItem(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK);
 
         normalItem(PlaceableItems.BLOOD_LILY);
         blockFlatWithItemTexture(LightBlocks.STAR_LAMP_BLOCK, "star_lamp_block");
 
-
-        //Bloody stone
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_BLOCK);
 
         simpleBlockItemBlockTexture(MiscBlocks.BLOOD_FIRE);
@@ -228,7 +209,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_SLAB);
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_FENCE_GATE);
 
-        //Bloody stone tiles
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_TILES_BLOCK);
         fenceItem(StoneBlocks.BLOODY_STONE_TILES_FENCE, StoneBlocks.BLOODY_STONE_TILES_BLOCK);
         wallItem(StoneBlocks.BLOODY_STONE_TILES_WALL, StoneBlocks.BLOODY_STONE_TILES_BLOCK);
@@ -236,7 +216,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_TILES_SLAB);
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_FENCE_TILES_GATE);
 
-        //Polished bloody stone
         evenSimplerBlockItem(StoneBlocks.POLISHED_BLOODY_STONE_BLOCK);
         fenceItem(StoneBlocks.POLISHED_BLOODY_STONE_FENCE, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK);
         wallItem(StoneBlocks.POLISHED_BLOODY_STONE_WALL, StoneBlocks.POLISHED_BLOODY_STONE_BLOCK);
@@ -244,7 +223,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(StoneBlocks.POLISHED_BLOODY_STONE_SLAB);
         evenSimplerBlockItem(StoneBlocks.POLISHED_BLOODY_STONE_FENCE_GATE);
 
-        //Bloody Stone Bricks
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_BRICKS);
         fenceItem(StoneBlocks.BLOODY_STONE_BRICKS_FENCE, StoneBlocks.BLOODY_STONE_BRICKS);
         wallItem(StoneBlocks.BLOODY_STONE_BRICKS_WALL, StoneBlocks.BLOODY_STONE_BRICKS);
@@ -252,17 +230,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_BRICKS_SLAB);
         evenSimplerBlockItem(StoneBlocks.BLOODY_STONE_FENCE_BRICKS_GATE);
 
-        //Blood Planks
         fenceItem(WoodBlocks.BLOOD_PLANKS_FENCE, WoodBlocks.BLOOD_PLANKS);
         evenSimplerBlockItem(WoodBlocks.BLOOD_PLANKS_STAIRS);
         evenSimplerBlockItem(WoodBlocks.BLOOD_PLANKS_SLAB);
         evenSimplerBlockItem(WoodBlocks.BLOOD_PLANKS_FENCE_GATE);
 
-
-
-
-
-        //Ancient Bricks
         evenSimplerBlockItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS);
         wallItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_WALL, StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS);
         evenSimplerBlockItem(StoneBlocks.ANCIENT_BLOODY_STONE_BRICKS_STAIRS);
@@ -273,9 +245,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(LightBlocks.ANCIENT_BLOODY_LAMP);
         blockItem(PlaceableItems.ANCIENT_TORCH_ITEM, LightBlocks.ANCIENT_TORCH_BLOCK);
 
-
-
-        //Blasphemous Biome
         evenSimplerBlockItem(SoilBlocks.BLASPHEMOUS_SAND_BLOCK);
         evenSimplerBlockItem(SandstoneBlocks.BLASPHEMOUS_SANDSTONE_BLOCK);
         evenSimplerBlockItem(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK);
@@ -293,7 +262,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(PlantBlocks.SPIKY_GRASS);
         simpleBlockItemBlockTexture(PlantBlocks.ROUNDED_GRASS);
         simpleBlockItemBlockTexture(PlantBlocks.STING_FLOWER);
-
 
         normalItem(MiscItems.DIRTY_BLOOD_FLOWER);
         normalItem(BloodGearItems.BLOOD_ARROW);
@@ -320,7 +288,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(PlantBlocks.DROOPVINE);
         simpleBlockItemBlockTexture(PlantBlocks.DROOPVINE_PLANT);
         fanItem(PlantBlocks.BLOOD_PETALS);
-
 
     }
     public void evenSimplerBlockItem(RegistryObject<Block> block) {
@@ -437,13 +404,10 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .renderType("cutout");
     }
 
-
-
     public void blockItem(RegistryObject<Item> item, RegistryObject<Block> block) {
 
         ResourceLocation Itemid = ForgeRegistries.ITEMS.getKey(item.get());
         ResourceLocation Blockid = ForgeRegistries.BLOCKS.getKey(block.get());
-
 
         this.withExistingParent(Itemid.getPath(), modLoc("block/" + Blockid.getPath()));
     }
@@ -452,7 +416,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/coral_fan"))
                 .texture("fan", modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block.get()).getPath()));
     }
-
 
     public void fanItem(RegistryObject<Block> block, String textureName) {
         this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/coral_fan"))

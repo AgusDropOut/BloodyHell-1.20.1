@@ -26,10 +26,8 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
             SynchedEntityData.defineId(BlasphemousTwinDaggersCloneEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-
 
     private boolean isAttacking = false;
     private int attackTimer = 0;
@@ -52,7 +50,6 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
         this.entityData.define(OWNER_UUID, Optional.empty());
     }
 
-
     public void setOwner(Player player) {
         this.entityData.set(OWNER_UUID, Optional.of(player.getUUID()));
         this.setPos(player.getX(), player.getY(), player.getZ());
@@ -63,20 +60,17 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
         return uuid.map(value -> this.level().getPlayerByUUID(value)).orElse(null);
     }
 
-
     @Override
     public void tick() {
         super.tick();
 
         Player owner = getOwner();
 
-
         if (!this.level().isClientSide) {
             if (owner == null || !owner.isAlive() || !(owner.getMainHandItem().getItem() instanceof BlasphemousTwinDaggerItem)) {
                 this.discard();
                 return;
             }
-
 
             if (isAttacking) {
                 attackTimer--;
@@ -86,12 +80,10 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
             }
         }
 
-
         if (owner != null) {
 
             this.setPos(owner.getX(), owner.getY(), owner.getZ());
 
-            // Copiar rotaciones (Cuerpo y Cabeza)
             this.setYRot(owner.getYRot());
             this.setXRot(owner.getXRot());
             this.yBodyRot = owner.yBodyRot;
@@ -100,7 +92,6 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
             this.yBodyRotO = owner.yBodyRotO;
         }
     }
-
 
     public void triggerAttack(String animName, int durationTicks) {
         if (!this.level().isClientSide) {
@@ -111,17 +102,14 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
         }
     }
 
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 5, state -> {
-
 
                     if (this.isAttacking) {
                         return PlayState.CONTINUE;
                     }
 
-                    // B. MOVIMIENTO (WALK / RUN / IDLE)
                     Player owner = getOwner();
                     if (owner != null) {
 
@@ -129,13 +117,9 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
                         double dz = owner.getZ() - owner.zo;
                         double speed = Math.sqrt(dx * dx + dz * dz);
 
-
                         if (speed > 0.005) {
 
-
-
                             state.getController().setAnimationSpeed((float)(speed * 3.5));
-
 
                             if (speed > 0.22) {
                                 return state.setAndContinue(RawAnimation.begin().thenLoop("run"));
@@ -144,7 +128,6 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
                             }
                         }
                     }
-
 
                     state.getController().setAnimationSpeed(1.0f);
                     return state.setAndContinue(RawAnimation.begin().thenLoop("idle"));

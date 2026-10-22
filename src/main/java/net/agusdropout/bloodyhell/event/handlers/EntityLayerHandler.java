@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class EntityLayerHandler {
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
-        // 1. PLAYERS
+
         for (String skinType : event.getSkins()) {
             LivingEntityRenderer<Player, EntityModel<Player>> renderer = event.getSkin(skinType);
             if (renderer != null) {
@@ -32,7 +32,6 @@ public class EntityLayerHandler {
             }
         }
 
-        // 2. MOBS
         List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(
                 ForgeRegistries.ENTITY_TYPES.getValues().stream()
                         .filter(DefaultAttributes::hasSupplier)
@@ -40,7 +39,6 @@ public class EntityLayerHandler {
                         .collect(Collectors.toList())
         );
 
-        // 3. GECKO ENTITIES
         List<EntityType<? extends GeoEntity>> entityGeoTypes = ImmutableList.copyOf(
                 ForgeRegistries.ENTITY_TYPES.getValues().stream()
                         .filter(DefaultAttributes::hasSupplier)
@@ -91,6 +89,5 @@ public class EntityLayerHandler {
             }
         }
     }
-
 
 }

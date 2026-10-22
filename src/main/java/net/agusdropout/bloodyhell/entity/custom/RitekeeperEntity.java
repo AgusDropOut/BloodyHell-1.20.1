@@ -37,17 +37,14 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    // --- SYNCED DATA ---
     private static final EntityDataAccessor<Boolean> IS_CASTING = SynchedEntityData.defineId(RitekeeperEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_EVADING = SynchedEntityData.defineId(RitekeeperEntity.class, EntityDataSerializers.BOOLEAN); // NEW
+    private static final EntityDataAccessor<Boolean> IS_EVADING = SynchedEntityData.defineId(RitekeeperEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CURRENT_SPELL = SynchedEntityData.defineId(RitekeeperEntity.class, EntityDataSerializers.INT);
 
-    // --- COOLDOWNS ---
     private int meteorCooldown = 0;
     private int soulCooldown = 0;
     private int pillarCooldown = 0;
 
-    // --- CONSTANTS ---
     public static final int CD_METEOR_MAX = 300;
     public static final int CD_SOUL_MAX = 100;
     public static final int CD_PILLAR_MAX = 200;
@@ -70,7 +67,7 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new RitekeeperEvasionGoal(this)); // High Priority
+        this.goalSelector.addGoal(1, new RitekeeperEvasionGoal(this));
         this.goalSelector.addGoal(2, new RitekeeperFlamePillarGoal(this));
         this.goalSelector.addGoal(3, new RitekeeperFireMeteorGoal(this));
         this.goalSelector.addGoal(4, new RitekeeperSoulAttackGoal(this));
@@ -83,8 +80,6 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
 
     }
 
-
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -93,10 +88,9 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
         this.entityData.define(CURRENT_SPELL, 0);
     }
 
-    // --- INVULNERABILITY LOGIC ---
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        // If evading, ignore all damage except from Creative Players or OutOfWorld (Void)
+
         if (this.isEvading() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
         }
@@ -112,7 +106,6 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
             if (pillarCooldown > 0) pillarCooldown--;
         }
 
-        // Ambient Particles (Only if NOT evading, to avoid clutter)
         if (this.level().isClientSide && !this.isEvading() && this.tickCount % 5 == 0) {
             this.level().addParticle(ModParticles.BLOOD_SIGIL_PARTICLE.get(),
                     this.getX() + (random.nextDouble() - 0.5),
@@ -128,7 +121,6 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
         sendBossPacket();
     }
 
-    // --- STATE MANAGEMENT ---
     public boolean isCasting() { return this.entityData.get(IS_CASTING); }
     public void setCasting(boolean casting) { this.entityData.set(IS_CASTING, casting); }
 
@@ -147,11 +139,10 @@ public class RitekeeperEntity extends Monster implements GeoEntity {
     public boolean isPillarReady() { return pillarCooldown <= 0; }
     public void setPillarCooldown(int t) { this.pillarCooldown = t; }
 
-    // --- ANIMATION ---
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
         data.add(new AnimationController<>(this, "controller", 5, event -> {
-            if (isEvading()) return PlayState.STOP; // Stop animations while invisible
+            if (isEvading()) return PlayState.STOP;
 
             if (isCasting()) {
                 int spell = getCurrentSpell();

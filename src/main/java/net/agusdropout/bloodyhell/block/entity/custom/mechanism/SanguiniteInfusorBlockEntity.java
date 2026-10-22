@@ -35,12 +35,10 @@ import java.util.Optional;
 
 public class SanguiniteInfusorBlockEntity extends BlockEntity {
 
-    // --- CONFIG ---
     private int progress = 0;
     private int maxProgress = 200;
     private float rotation = 0;
 
-    // --- INVENTORY ---
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -59,7 +57,6 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
         }
     };
 
-    // --- TANKS (No Hardcoded Fluids!) ---
     private final FluidTank tank1 = new FluidTank(4000) {
         @Override protected void onContentsChanged() { setChanged(); sync(); }
     };
@@ -68,16 +65,15 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
         @Override protected void onContentsChanged() { setChanged(); sync(); }
     };
 
-    // --- CAPABILITIES ---
     private final LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.of(() -> itemHandler);
     private final LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.of(() -> new IFluidHandler() {
         @Override public int getTanks() { return 2; }
         @Override public @NotNull FluidStack getFluidInTank(int tank) { return tank == 0 ? tank1.getFluid() : tank2.getFluid(); }
         @Override public int getTankCapacity(int tank) { return 4000; }
-        @Override public boolean isFluidValid(int tank, @NotNull FluidStack stack) { return true; } // Accepts anything!
+        @Override public boolean isFluidValid(int tank, @NotNull FluidStack stack) { return true; }
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            // Priority filling logic
+
             if (tank1.isEmpty() || tank1.isFluidValid(resource) && tank1.getFluid().isFluidEqual(resource)) {
                 return tank1.fill(resource, action);
             }
@@ -91,7 +87,6 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
         super(ModBlockEntities.SANGUINITE_INFUSOR_BE.get(), pos, state);
     }
 
-    // --- TICK LOGIC ---
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide) {
             float speed = progress > 0 ? 15.0f : 1.0f;
@@ -125,7 +120,6 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
         if (progress > 0 && progress % 20 == 0) sync();
     }
 
-    // --- RECIPE LOGIC ---
     private SanguiniteInfusorRecipe getCurrentRecipe() {
         SimpleContainer temp = new SimpleContainer(1);
         temp.setItem(0, itemHandler.getStackInSlot(0));
@@ -151,14 +145,13 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
     }
 
     private boolean canProcess(SanguiniteInfusorRecipe recipe) {
-        // Match Tank 1 to Fluid 1
+
         if (!recipe.getFluid1().isEmpty()) {
             if (!tank1.getFluid().isFluidEqual(recipe.getFluid1()) || tank1.getFluidAmount() < recipe.getFluid1().getAmount()) {
                 return false;
             }
         }
 
-        // Match Tank 2 to Fluid 2
         if (!recipe.getFluid2().isEmpty()) {
             if (!tank2.getFluid().isFluidEqual(recipe.getFluid2()) || tank2.getFluidAmount() < recipe.getFluid2().getAmount()) {
                 return false;
@@ -189,23 +182,20 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
         sync();
     }
 
-    // --- VISUALS ---
     private void spawnWorkingParticles(BlockPos pos) {
         double offset = 0.35;
         double startY = pos.getY() + 0.9;
 
         double[][] corners = {
-                {pos.getX() + 0.5 - offset, pos.getZ() + 0.5 - offset}, // 0: NW
-                {pos.getX() + 0.5 + offset, pos.getZ() + 0.5 - offset}, // 1: NE
-                {pos.getX() + 0.5 - offset, pos.getZ() + 0.5 + offset}, // 2: SW
-                {pos.getX() + 0.5 + offset, pos.getZ() + 0.5 + offset}  // 3: SE
+                {pos.getX() + 0.5 - offset, pos.getZ() + 0.5 - offset},
+                {pos.getX() + 0.5 + offset, pos.getZ() + 0.5 - offset},
+                {pos.getX() + 0.5 - offset, pos.getZ() + 0.5 + offset},
+                {pos.getX() + 0.5 + offset, pos.getZ() + 0.5 + offset}
         };
 
         boolean useTank1 = !tank1.isEmpty();
         boolean useTank2 = !tank2.isEmpty();
 
-
-        // Fallback to dark red/green if the tank is empty or the registry fails to fetch it.
         Vector3f color1 = new Vector3f(0.8f, 0.0f, 0.0f);
         if (useTank1) {
             int tint1 = IClientFluidTypeExtensions.of(tank1.getFluid().getFluid()).getTintColor();
@@ -227,7 +217,6 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
 
                 Vector3f finalColor;
 
-                // Alternate colors between corners if both tanks are being used
                 if (useTank1 && useTank2) {
                     finalColor = (i == 0 || i == 3) ? color1 : color2;
                 } else if (useTank2) {
@@ -241,7 +230,6 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
             }
         }
 
-        // The central pulse particle
         if (level.random.nextFloat() < 0.3f) {
             level.addParticle(ModParticles.BLOOD_PULSE_PARTICLE.get(), pos.getX() + 0.5, pos.getY() + 1.25, pos.getZ() + 0.5, 0, 0, 0);
         }
@@ -263,7 +251,6 @@ public class SanguiniteInfusorBlockEntity extends BlockEntity {
     public float getRotation() { return rotation; }
     public boolean isWorking() { return progress > 0; }
 
-    // --- BOILERPLATE ---
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("Inventory", itemHandler.serializeNBT());

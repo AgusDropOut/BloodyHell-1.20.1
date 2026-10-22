@@ -44,7 +44,6 @@ public class ReliquaryItem extends BaseGeckoItem {
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation CHARGING_ANIM = RawAnimation.begin().thenLoop("charging");
 
-
     public static final double MAX_SUMMON_DISTANCE = 8.0;
 
     public ReliquaryItem(Properties properties) {
@@ -113,11 +112,9 @@ public class ReliquaryItem extends BaseGeckoItem {
             ServerLevel serverLevel = (ServerLevel) level;
             CompoundTag nbt = stack.getOrCreateTag();
 
-            // 1. EXTRACT COLOR TINT FROM SLOT 13
             AtomicInteger tintColor = getAtomicInteger(stack);
             int finalColor = tintColor.get();
 
-            // 2. CLEAR OLD SUMMONS
             if (nbt.contains("SummonedUUIDs")) {
                 ListTag oldUuidList = nbt.getList("SummonedUUIDs", Tag.TAG_INT_ARRAY);
                 for (int i = 0; i < oldUuidList.size(); i++) {
@@ -129,7 +126,6 @@ public class ReliquaryItem extends BaseGeckoItem {
                 }
             }
 
-            // 3. SUMMON NEW ENTITIES
             ListTag newUuidList = new ListTag();
             java.util.List<RuneType> activeRunes = getSlottedRunes(stack);
             boolean summonedAny = false;
@@ -140,9 +136,9 @@ public class ReliquaryItem extends BaseGeckoItem {
                 AbstractMinionEntity spawnedMinion = rune.executeSummon(serverLevel, player, spawnPos);
 
                 if (spawnedMinion != null) {
-                    // Set Owner
+
                     spawnedMinion.setOwnerUUID(player.getUUID());
-                    // Apply Custom Color!
+
                     spawnedMinion.setStripeColor(finalColor);
 
                     newUuidList.add(NbtUtils.createUUID(spawnedMinion.getUUID()));
@@ -150,18 +146,11 @@ public class ReliquaryItem extends BaseGeckoItem {
                 }
             }
 
-            // 4. FINALIZE
             if (summonedAny) {
                 nbt.put("SummonedUUIDs", newUuidList);
                 level.playSound(null, player.blockPosition(), SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 0.5F, 1.5F);
                 int capacityMultiplier =  activeRunes.stream().mapToInt(RuneType::getCaoapacityCost).sum() * 2;
 
-                /* COOLDOWN LOGIC:
-                * - Base cooldown is 200 ticks (10 seconds)
-                * - Each summoned minion adds to the cooldown based on its rune's capacity cost
-                * - This encourages strategic choices in which runes to slot, as summoning more or stronger minions will result in a longer cooldown before the next use.
-                *
-                */
                 player.getCooldowns().addCooldown(this, 200 + capacityMultiplier);
             }
         }

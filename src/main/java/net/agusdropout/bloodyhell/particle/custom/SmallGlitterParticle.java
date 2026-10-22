@@ -22,11 +22,9 @@ public class SmallGlitterParticle extends TextureSheetParticle {
     private final boolean jitter;
     private final boolean hasWhiteCore;
 
-    // HSB Colors
     private final float baseHue;
     private final float baseSat;
     private final float baseBri;
-
 
     private final float initialQuadSize;
 
@@ -37,7 +35,7 @@ public class SmallGlitterParticle extends TextureSheetParticle {
         this.jitter = options.shouldJitter();
         this.lifetime = options.getLifetime();
         this.hasWhiteCore = this.random.nextBoolean();
-        // Convert RGB to HSB
+
         float[] hsb = Color.RGBtoHSB(
                 (int)(options.getColor().x() * 255),
                 (int)(options.getColor().y() * 255),
@@ -51,7 +49,6 @@ public class SmallGlitterParticle extends TextureSheetParticle {
         this.rCol = options.getColor().x();
         this.gCol = options.getColor().y();
         this.bCol = options.getColor().z();
-
 
         this.initialQuadSize = !hasWhiteCore ?  this.quadSize * 1.2f : this.quadSize * 0.8F;
 
@@ -69,10 +66,8 @@ public class SmallGlitterParticle extends TextureSheetParticle {
     public void tick() {
         super.tick();
 
-
         float lifeRatio = (float)this.age / (float)this.lifetime;
         this.quadSize = this.initialQuadSize * (1.0F - lifeRatio);
-
 
         if (this.jitter) {
             float hueShift = Mth.sin(this.age * 0.4F) * 0.15F;
@@ -84,14 +79,12 @@ public class SmallGlitterParticle extends TextureSheetParticle {
             this.bCol = (rgb & 0xFF) / 255.0F;
         }
 
-
         if (lifeRatio > 0.7F && !this.hasWhiteCore) {
             this.alpha = 0.6F - ((lifeRatio - 0.7F) * 2.0F);
         } else {
             this.alpha = 0.6F;
         }
     }
-
 
     @Override
     public ParticleRenderType getRenderType() {
@@ -113,8 +106,6 @@ public class SmallGlitterParticle extends TextureSheetParticle {
         float originalB = this.bCol;
         float originalSize = this.quadSize;
 
-
-
         if(this.hasWhiteCore) {
 
             this.rCol = originalR;
@@ -129,7 +120,6 @@ public class SmallGlitterParticle extends TextureSheetParticle {
             this.bCol = 1.0F;
             super.render(buffer, camera, partialTicks);
 
-
         } else {
             this.rCol = originalR;
             this.gCol = originalG;
@@ -138,16 +128,12 @@ public class SmallGlitterParticle extends TextureSheetParticle {
             super.render(buffer, camera, partialTicks);
         }
 
-
-
     }
-
 
     @Override
     protected int getLightColor(float partialTick) {
         return hasWhiteCore ?  15728880 : 240;
     }
-
 
     public static final ParticleRenderType PARTICLE_SHEET_ADDITIVE = new ParticleRenderType() {
         @Override

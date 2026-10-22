@@ -24,7 +24,7 @@ public class FrenziedExplosionParticle extends Particle {
 
         this.hasPhysics = false;
         this.baseScale = options.getSize();
-        this.lifetime = 30; // 1.5 seconds at 20 ticks
+        this.lifetime = 30;
     }
 
     @Override

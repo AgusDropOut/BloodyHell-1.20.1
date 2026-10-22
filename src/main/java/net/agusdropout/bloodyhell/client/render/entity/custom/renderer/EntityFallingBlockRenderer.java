@@ -14,8 +14,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-/*Code borrowed from Mowzie's Mobs*/
-
 public class EntityFallingBlockRenderer extends EntityRenderer<EntityFallingBlock> {
     public EntityFallingBlockRenderer(EntityRendererProvider.Context mgr) {
         super(mgr);

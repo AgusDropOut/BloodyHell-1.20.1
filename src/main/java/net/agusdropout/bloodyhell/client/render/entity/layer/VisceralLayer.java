@@ -19,7 +19,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class VisceralLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-
     private static final ResourceLocation VISCERAL_TEXTURE = new ResourceLocation(BloodyHell.MODID, "textures/entity/visceral_overlay.png");
 
     public VisceralLayer(RenderLayerParent<T, M> parent) {
@@ -29,10 +28,7 @@ public class VisceralLayer<T extends LivingEntity, M extends EntityModel<T>> ext
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
-
         MobEffectInstance instance = entity.getEffect(ModEffects.VISCERAL_EFFECT.get());
-
-
 
             if (instance == null || instance.getDuration() <= 1 || entity.isInWater()) {
                 return;
@@ -40,14 +36,12 @@ public class VisceralLayer<T extends LivingEntity, M extends EntityModel<T>> ext
 
             M model = this.getParentModel();
 
-
             model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
             model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
             VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(VISCERAL_TEXTURE));
 
-
-            float pulse = (float) (Math.sin(ageInTicks * 0.1) * 0.2 + 0.6); // Oscillates between 0.4 and 0.8 opacity
+            float pulse = (float) (Math.sin(ageInTicks * 0.1) * 0.2 + 0.6);
 
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 0.6F, 1.0F, 0.2F, pulse);
 

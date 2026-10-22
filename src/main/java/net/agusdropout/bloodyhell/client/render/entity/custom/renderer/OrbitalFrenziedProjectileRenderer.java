@@ -27,7 +27,7 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
 
     @Override
     public boolean shouldRender(OrbitalFrenziedProjectile entity, Frustum frustum, double camX, double camY, double camZ) {
-        /* Bypasses frustum culling so the trail remains visible even if the entity's core leaves the screen */
+
         return true;
     }
 
@@ -43,7 +43,6 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
         double lerpZ = Mth.lerp(partialTicks, entity.zo, entity.getZ());
         Vec3 currentCore = new Vec3(lerpX, lerpY, lerpZ);
 
-        /* 2. Extract the pure Camera View Matrix from the PoseStack. */
         float relX = (float) (lerpX - cameraPos.x());
         float relY = (float) (lerpY - cameraPos.y());
         float relZ = (float) (lerpZ - cameraPos.z());
@@ -52,14 +51,12 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
         viewStack.last().pose().set(poseStack.last().pose());
         viewStack.translate(-relX, -relY, -relZ);
 
-        /* 3. Manipulate the RenderSystem ModelView stack directly */
         PoseStack rsStack = RenderSystem.getModelViewStack();
         rsStack.pushPose();
         rsStack.setIdentity();
         rsStack.mulPoseMatrix(viewStack.last().pose());
         RenderSystem.applyModelViewMatrix();
 
-        /* 4. Inject the active frame coordinates at the head of the trails */
         List<Vec3> smoothCore = new ArrayList<>();
         smoothCore.add(currentCore);
         smoothCore.addAll(entity.historyCore);
@@ -105,7 +102,6 @@ public class OrbitalFrenziedProjectileRenderer extends EntityRenderer<OrbitalFre
                 time
         );
 
-        /* 5. Restore the RenderSystem stack */
         rsStack.popPose();
         RenderSystem.applyModelViewMatrix();
 

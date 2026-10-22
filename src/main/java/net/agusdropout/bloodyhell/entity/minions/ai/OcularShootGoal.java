@@ -66,7 +66,6 @@ public class OcularShootGoal extends Goal {
                 return;
             }
 
-
             this.ocular.triggerShootAnimation();
 
             this.performAttack(this.target);
@@ -87,7 +86,7 @@ public class OcularShootGoal extends Goal {
 
         WeepingTearEntity projectile = new WeepingTearEntity(this.ocular.level(), this.ocular.getX(), this.ocular.getY(0.5D), this.ocular.getZ(), this.ocular);
         projectile.setOwners(this.ocular);
-        projectile.shoot(shootVector.x, shootVector.y, shootVector.z, 1.2F, 1.0F); // Speed and inaccuracy
+        projectile.shoot(shootVector.x, shootVector.y, shootVector.z, 1.2F, 1.0F);
         this.ocular.level().addFreshEntity(projectile);
     }
 }

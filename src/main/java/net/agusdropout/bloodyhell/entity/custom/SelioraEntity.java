@@ -76,8 +76,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
     private int DeathCooldown = 100;
     private boolean isAlreadyDead = false;
 
-
-
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Boolean> STARFALL_ACTIVE = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
@@ -89,12 +87,9 @@ public class SelioraEntity extends Monster implements GeoEntity{
 
     private static final EntityDataAccessor<Boolean> IS_STARTING_SECOND_PHASE = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
 
-
     private static final EntityDataAccessor<Boolean> DODGE_ACTIVE = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
 
-
     private static final EntityDataAccessor<Boolean> IS_SECOND_PHASE_SYNCED = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
-
 
     public SelioraEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -273,7 +268,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
                 this.heal(this.getMaxHealth());
                 this.setSecondPhaseStarting(false);
 
-
                 this.setSecondPhase(true);
             }
 
@@ -314,8 +308,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
         }
     }
 
-
-
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.isSecondPhaseStarting()) {
@@ -347,9 +339,8 @@ public class SelioraEntity extends Monster implements GeoEntity{
         return false;
     }
 
-
     protected SoundEvent getAmbientSound() {
-        // Getter sincronizado
+
         if (this.isSecondPhase()) {
             return ModSounds.SELIORA_SECOND_PHASE_AMBIENT_SOUND.get();
         } else {
@@ -358,7 +349,7 @@ public class SelioraEntity extends Monster implements GeoEntity{
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        // Getter sincronizado
+
         if (!this.isSecondPhase()) {
             if (this.random.nextFloat() < 0.5f) {
                 return ModSounds.SELIORA_HURT2_SOUND.get();
@@ -373,7 +364,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
     protected float getSoundVolume() {
         return 1F;
     }
-
 
     private void spawnSecondPhaseParticles() {
         if (!(level() instanceof ServerLevel server)) return;
@@ -408,8 +398,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
         }
     }
 
-    // --- GETTERS Y SETTERS ---
-
     public void setIsAttacking(boolean isAttacking) {
         this.entityData.set(IS_ATTACKING, isAttacking);
     }
@@ -431,7 +419,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
     public boolean isDodgeActive() { return this.entityData.get(DODGE_ACTIVE); }
     public void setDodgeActive(boolean active) { this.entityData.set(DODGE_ACTIVE, active); }
     public void setDodgeCooldown(int ticks) { this.dodgeCooldown = ticks; }
-
 
     public boolean canUseSummonBlasphemousArmsGoal() {
         return this.getRiseCooldown() <= 0 && this.isAlive() && this.getTarget() != null && !this.isSecondPhase() && !this.isStarFallActive() && !this.isWhirlWindActive() && !isSecondPhaseStarting();

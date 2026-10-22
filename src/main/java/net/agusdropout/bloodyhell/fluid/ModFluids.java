@@ -22,9 +22,6 @@ public class ModFluids {
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, BloodyHell.MODID);
 
-    // ========================================================================
-    // 1. BLOOD (Red)
-    // ========================================================================
     public static final RegistryObject<FluidType> BLOOD_TYPE = register("blood",
             FluidType.Properties.create()
                     .lightLevel(2)
@@ -46,10 +43,6 @@ public class ModFluids {
             .block(FluidBlocks.BLOOD_FLUID_BLOCK)
             .bucket(BucketItems.BLOOD_BUCKET);
 
-
-    // ========================================================================
-    // 2. CORRUPTED BLOOD (Dark Red)
-    // ========================================================================
     public static final RegistryObject<FluidType> CORRUPTED_BLOOD_TYPE = register("corrupted_blood",
             FluidType.Properties.create()
                     .lightLevel(5)
@@ -70,11 +63,6 @@ public class ModFluids {
             .slopeFindDistance(3).levelDecreasePerBlock(3)
             .block(FluidBlocks.CORRUPTED_BLOOD_BLOCK)
             .bucket(BucketItems.CORRUPTED_BLOOD_BUCKET);
-
-
-    // ========================================================================
-    // 3. VISCOUS BLASPHEMY (Black & Yellow)
-    // ========================================================================
 
     public static final RegistryObject<FluidType> VISCOUS_BLASPHEMY_TYPE = register("viscous_blasphemy",
             FluidType.Properties.create()
@@ -98,34 +86,23 @@ public class ModFluids {
             .block(FluidBlocks.VISCOUS_BLASPHEMY_BLOCK)
             .bucket(BucketItems.VISCOUS_BLASPHEMY_BUCKET);
 
-
-    // ========================================================================
-    // 3. VISCERAL BLOOD (Black & Yellow)
-    // ========================================================================
-    // ========================================================================
-    // 3. VISCERAL FLUID (Yellow-Greenish / Infected)
-    // ========================================================================
-
-    // 1. Fluid Type (Physics, Sound, Tint)
     public static final RegistryObject<FluidType> VISCERAL_FLUID_TYPE = register("visceral_blood",
             FluidType.Properties.create()
-                    .lightLevel(8)      // Slight sickly glow
-                    .density(3500)      // Thicker than blood
-                    .viscosity(5000)    // Sluggish flow
-                    .temperature(310)   // Body temperature
-                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_TADPOLE) // Squishy sound
+                    .lightLevel(8)
+                    .density(3500)
+                    .viscosity(5000)
+                    .temperature(310)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_TADPOLE)
                     .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_TADPOLE),
-            0xFFC8E617, // Hex Color: Sickly Yellow-Green (AARRGGBB)
-            new Vector3f(200f/255f, 230f/255f, 23f/255f)); // Vector Color
+            0xFFC8E617,
+            new Vector3f(200f/255f, 230f/255f, 23f/255f));
 
-    // 2. Fluid Instances
     public static final RegistryObject<FlowingFluid> VISCERAL_BLOOD_SOURCE = FLUIDS.register("visceral_blood_source",
             () -> new ForgeFlowingFluid.Source(ModFluids.VISCERAL_BLOOD_PROPERTIES));
 
     public static final RegistryObject<FlowingFluid> VISCERAL_BLOOD_FLOWING = FLUIDS.register("visceral_blood_flowing",
             () -> new ForgeFlowingFluid.Flowing(ModFluids.VISCERAL_BLOOD_PROPERTIES));
 
-    // 3. Properties Bundle
     public static final ForgeFlowingFluid.Properties VISCERAL_BLOOD_PROPERTIES = new ForgeFlowingFluid.Properties(
             VISCERAL_FLUID_TYPE, VISCERAL_BLOOD_SOURCE, VISCERAL_BLOOD_FLOWING)
             .slopeFindDistance(2)
@@ -133,8 +110,6 @@ public class ModFluids {
             .block(FluidBlocks.VISCERAL_BLOOD_BLOCK)
             .bucket(BucketItems.VISCERAL_BLOOD_BUCKET);
 
-
-    // --- HELPER REGISTRY METHOD ---
     private static RegistryObject<FluidType> register(String name, FluidType.Properties properties, int tintColor, Vector3f fogColor) {
         return FLUID_TYPES.register(name, () -> new BaseFluidType(
                 new ResourceLocation(BloodyHell.MODID, "block/fluid/" + name + "_still"),

@@ -32,7 +32,7 @@ public class PatchouliEntryBuilder {
 
     public PatchouliEntryBuilder addItemWithTextPage(String item, String text) {
         JsonObject page = new JsonObject();
-        page.addProperty("type", "bloodyhell:item_and_text"); // Uses the template we defined
+        page.addProperty("type", "bloodyhell:item_and_text");
         page.addProperty("item", item);
         page.addProperty("text", text);
         this.pages.add(page);
@@ -52,7 +52,6 @@ public class PatchouliEntryBuilder {
         JsonObject page = new JsonObject();
         page.addProperty("type", "patchouli:image");
 
-
         JsonArray imagesArray = new JsonArray();
         imagesArray.add(new JsonPrimitive(imagePath));
         page.add("images", imagesArray);
@@ -62,7 +61,6 @@ public class PatchouliEntryBuilder {
         pages.add(page);
         return this;
     }
-
 
     public PatchouliEntryBuilder addEntityPage(String entityId, String name, String text, float scale, float offset) {
         JsonObject page = new JsonObject();
@@ -83,7 +81,7 @@ public class PatchouliEntryBuilder {
         page.addProperty("type", "patchouli:multiblock");
         page.addProperty("name", name);
         page.addProperty("text", text);
-        page.add("multiblock", multiblock); // Adds the inline structure
+        page.add("multiblock", multiblock);
         pages.add(page);
         return this;
     }

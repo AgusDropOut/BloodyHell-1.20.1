@@ -34,7 +34,6 @@ import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInst
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-
 public class VeinraverEntity extends Monster implements GeoEntity {
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private static final EntityDataAccessor<Boolean> isSlamAttack = SynchedEntityData.defineId(VeinraverEntity.class, EntityDataSerializers.BOOLEAN);
@@ -73,7 +72,6 @@ public class VeinraverEntity extends Monster implements GeoEntity {
         super.addAdditionalSaveData(compoundTag);
     }
 
-
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
@@ -89,7 +87,6 @@ public class VeinraverEntity extends Monster implements GeoEntity {
                 .add(Attributes.ATTACK_SPEED, 0.8F)
                 .add(Attributes.MOVEMENT_SPEED, 0.2D)
                 .add(Attributes.FOLLOW_RANGE,20);
-
 
     }
 
@@ -148,7 +145,6 @@ public class VeinraverEntity extends Monster implements GeoEntity {
         return PlayState.CONTINUE;
     }
 
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController(this, "controller",
@@ -185,10 +181,7 @@ public class VeinraverEntity extends Monster implements GeoEntity {
             this.getNavigation().moveTo(getTarget(), 1.2);
         }
 
-
-
     }
-
 
     public void updateCooldowns(){
         if(this.getThrowCooldown() > 0 && !this.isThrowing()){
@@ -201,9 +194,6 @@ public class VeinraverEntity extends Monster implements GeoEntity {
             this.setSlashAttackCooldown(this.getSlashAttackCooldown() - 1);
         }
     }
-
-
-    //Getters & Setters
 
     public boolean isSlamAttack() {
         return this.entityData.get(isSlamAttack);
@@ -257,10 +247,5 @@ public class VeinraverEntity extends Monster implements GeoEntity {
     protected float getSoundVolume() {
         return 1F;
     }
-
-
-
-    
-
 
 }

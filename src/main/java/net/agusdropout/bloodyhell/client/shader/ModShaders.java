@@ -45,7 +45,7 @@ public class ModShaders {
 
     @SubscribeEvent
     public static void onRegisterShaders(RegisterShadersEvent event) {
-        // POSITION_TEX_COLOR
+
         register(event, "distortion", DefaultVertexFormat.POSITION_TEX_COLOR, s -> DISTORTION_SHADER = s);
         register(event, "radial_distortion", DefaultVertexFormat.POSITION_TEX_COLOR, s -> RADIAL_DISTORTION_SHADER = s);
         register(event, "ethereal_swirl", DefaultVertexFormat.POSITION_TEX_COLOR, s -> ETHEREAL_SWIRL_SHADER = s);
@@ -57,30 +57,25 @@ public class ModShaders {
         register(event, "frenzied_explosion", DefaultVertexFormat.POSITION_TEX_COLOR, s -> FRENZIED_EXPLOSION_SHADER = s);
         register(event, "blood_drop", DefaultVertexFormat.POSITION_TEX_COLOR, s -> BLOOD_DROP_SHADER = s);
 
-        // NEW_ENTITY
         register(event, "entity_glitter", DefaultVertexFormat.NEW_ENTITY, s -> ENTITY_GLITTER_SHADER = s);
         register(event, "insight_distortion", DefaultVertexFormat.NEW_ENTITY, s -> INSIGHT_DISTORTION_SHADER = s);
         register(event, "omnitome_void", DefaultVertexFormat.NEW_ENTITY, s -> OMNITOME_VOID_SHADER = s);
         register(event, "omnitome_emerge_clip", DefaultVertexFormat.NEW_ENTITY, s -> EMERGE_CLIP_SHADER = s);
 
-        // POSITION_COLOR
         register(event, "shape_glitter", DefaultVertexFormat.POSITION_COLOR, s -> SHAPE_GLITTER_SHADER = s);
         register(event, "shape_unknown_fire", DefaultVertexFormat.POSITION_COLOR, s -> SHAPE_UNKNOWN_FIRE_SHADER = s);
         register(event, "spherical_rim", DefaultVertexFormat.POSITION_COLOR, s -> SHAPE_SPHERICAL_RIM_SHADER = s);
 
-        // POSITION_TEX
         register(event, "black_hole", DefaultVertexFormat.POSITION_TEX, s -> BLACK_HOLE_SHADER = s);
         register(event, "blood_blob", DefaultVertexFormat.POSITION_TEX, s -> BLOOD_BLOB_SHADER = s);
         register(event, "blood_orb", DefaultVertexFormat.POSITION_TEX, s -> BLOOD_ORB_SHADER = s);
         register(event, "crimson_veil_gui", DefaultVertexFormat.POSITION_TEX, s -> CRIMSON_VEIL_GUI_SHADER = s);
         register(event, "spell_wheel_bg", DefaultVertexFormat.POSITION_TEX, s -> SPELL_WHEEL_BG_SHADER = s);
 
-        // POSITION
         register(event, "mini_blood_blob", DefaultVertexFormat.POSITION, s -> MINI_BLOOD_BLOB_SHADER = s);
         register(event, "golden_sorrow_orb", DefaultVertexFormat.POSITION, s -> GOLDEN_SORROW_ORB_SHADER = s);
         register(event, "scarlet_cinder_orb", DefaultVertexFormat.POSITION, s -> SCARLET_CINDER_ORB_SHADER = s);
 
-        // POSITION_COLOR_TEX
         register(event, "blood_stain", DefaultVertexFormat.POSITION_COLOR_TEX, s -> BLOOD_STAIN_SHADER = s);
     }
 

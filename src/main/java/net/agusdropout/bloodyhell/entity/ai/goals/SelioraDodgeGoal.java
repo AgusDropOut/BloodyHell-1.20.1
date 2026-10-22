@@ -15,8 +15,7 @@ import java.util.Random;
 public class SelioraDodgeGoal extends Goal {
     private final SelioraEntity seliora;
     private int dodgeTimer;
-    private final int MAX_DODGE_DURATION = 15; // 0.75 segundos
-
+    private final int MAX_DODGE_DURATION = 15;
 
     private final float DODGE_SPEED = 2.3f;
 
@@ -31,12 +30,10 @@ public class SelioraDodgeGoal extends Goal {
             return false;
         }
 
-
         if (seliora.distanceTo(seliora.getTarget()) < 5.0D) {
             return true;
         }
 
-        // B. Proyectiles
         AABB perceptionBox = seliora.getBoundingBox().inflate(5.0D);
         List<Projectile> projectiles = seliora.level().getEntitiesOfClass(Projectile.class, perceptionBox);
 
@@ -79,13 +76,11 @@ public class SelioraDodgeGoal extends Goal {
             else dodgeVec = right;
         }
 
-
         seliora.setDeltaMovement(dodgeVec.x * DODGE_SPEED, 0, dodgeVec.z * DODGE_SPEED);
 
         if (target != null) {
             seliora.getLookControl().setLookAt(target, 30.0F, 30.0F);
         }
-
 
         seliora.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0f, 2.0f);
     }

@@ -30,7 +30,6 @@ public class TombBlock extends BaseEntityBlock {
                 .setValue(FACING, Direction.NORTH));
     }
 
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -38,12 +37,10 @@ public class TombBlock extends BaseEntityBlock {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
-    // 4. Registramos ambas propiedades
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(OPEN, FACING);
     }
-
 
     @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
@@ -54,7 +51,6 @@ public class TombBlock extends BaseEntityBlock {
     public BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
-
 
     @Override
     public RenderShape getRenderShape(BlockState state) {

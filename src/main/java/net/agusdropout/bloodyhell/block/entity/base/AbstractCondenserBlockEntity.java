@@ -49,7 +49,6 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
     private int maxProgress = 80;
     private boolean isCrafting = false;
 
-    // --- NEW: Caches the registry name of the last fluid added ---
     private String lastFluidName = "";
 
     public final FluidTank fluidTank;
@@ -212,7 +211,6 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
 
             FluidStack currentFluid = this.fluidTank.getFluid();
 
-
             if (currentFluid.isEmpty() && !this.lastFluidName.isEmpty()) {
                 Fluid cachedFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(this.lastFluidName));
                 if (cachedFluid != null && cachedFluid != net.minecraft.world.level.material.Fluids.EMPTY) {
@@ -292,7 +290,7 @@ public abstract class AbstractCondenserBlockEntity extends BaseGeckoBlockEntity 
         itemHandler.deserializeNBT(tag.getCompound("inventory"));
         this.progress = tag.getInt("condenser.progress");
         this.isCrafting = tag.getBoolean("condenser.isCrafting");
-        // Load the cached fluid
+
         this.lastFluidName = tag.getString("condenser.lastFluidName");
     }
 

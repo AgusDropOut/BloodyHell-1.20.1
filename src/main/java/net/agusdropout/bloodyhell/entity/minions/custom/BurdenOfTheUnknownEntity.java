@@ -86,14 +86,12 @@ public class BurdenOfTheUnknownEntity extends AbstractMinionEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<BurdenOfTheUnknownEntity> controller = new AnimationController<>(this, "controller", 5, state -> {
-           // if (this.getIsSummoning()) {
-           // }
+
             if (state.isMoving()) {
                 return state.setAndContinue(RawAnimation.begin().thenLoop("walk"));
             }
             return state.setAndContinue(RawAnimation.begin().thenLoop("idle"));
         });
-
 
         controller.setCustomInstructionKeyframeHandler(event -> {
             if (this.level().isClientSide) {
@@ -118,11 +116,9 @@ public class BurdenOfTheUnknownEntity extends AbstractMinionEntity {
         EntityCameraShake.clientCameraShake(this.level(), this.position(), 5.0f, 0.3f, 10, 3);
     }
 
-
     public void triggerShootAnimation() {
         this.triggerAnim("controller", "shoot");
     }
-
 
     @Override
     public String getMinionId() {

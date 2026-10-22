@@ -29,7 +29,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import java.util.List;
 import java.util.UUID;
 
-
 public class VisceralProjectile extends Entity implements GeoEntity, TraceableEntity {
     private int lifeTicks = 80;
     private float damage;
@@ -67,8 +66,6 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
             this.ownerUUID = compoundTag.getUUID("Owner");
         }
         this.setIsOnGround(compoundTag.getBoolean("OnGround"));
-
-
 
     }
 
@@ -114,7 +111,6 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
         return entityData.get(ON_GROUND);
     }
 
-
     private void initializeRotation() {
         Vec3 motion = this.getDeltaMovement();
         float yaw = (float) Math.toDegrees(Math.atan2(motion.x, motion.z));
@@ -125,7 +121,6 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
 
             this.setYRot(yaw);
             this.setXRot(pitch);
-
 
     }
 
@@ -146,7 +141,7 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
                         SoundEvents.SLIME_ATTACK,
                         SoundSource.HOSTILE,
                         1.0F,
-                        1.0F // Pitch
+                        1.0F
                 );
             }
             this.checkCollisions();
@@ -175,8 +170,6 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
         }
 
     }
-
-
 
     private void spawnFlyingParticles() {
         ParticleHelper.spawnSphereVolume(level(), ModParticles.VICERAL_PARTICLE.get(), position().add(0, 1, 0), 0.1, 5, getDeltaMovement().scale(-1));
@@ -242,6 +235,4 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
         entityData.set(GRAVITY, gravity);
     }
 }
-
-
 

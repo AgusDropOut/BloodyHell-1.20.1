@@ -22,7 +22,7 @@ public class UnknownGuideBookItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
-            // This directly opens your specific Patchouli book!
+
             PatchouliAPI.get().openBookGUI(serverPlayer, new ResourceLocation(BloodyHell.MODID, "into_the_unknown_guide"));
         }
 

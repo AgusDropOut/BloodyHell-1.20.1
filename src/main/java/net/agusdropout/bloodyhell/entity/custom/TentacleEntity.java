@@ -35,12 +35,9 @@ import java.util.Random;
 
 public class TentacleEntity extends Entity {
 
-    // --- TIEMPOS ---
     public static final int GRAB_TIME = 45;
     public static final int GIVE_TIME = 85;
     private static final int DEATH_TIME = 120;
-
-    // ----------------------------------------------
 
     private static final EntityDataAccessor<ItemStack> ITEM_1 = SynchedEntityData.defineId(TentacleEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<ItemStack> ITEM_2 = SynchedEntityData.defineId(TentacleEntity.class, EntityDataSerializers.ITEM_STACK);
@@ -76,7 +73,6 @@ public class TentacleEntity extends Entity {
         this.entityData.define(IS_GIVER, false);
     }
 
-    // Getters y Setters
     public float getRandomSeed() { return this.entityData.get(RANDOM_SEED); }
     public void setInitialDelay(int ticks) { this.initialDelay = ticks; }
     public void setTargetAltar(BlockPos pos) { this.entityData.set(TARGET_ALTAR_POS, Optional.ofNullable(pos)); }
@@ -95,7 +91,6 @@ public class TentacleEntity extends Entity {
     public void tick() {
         super.tick();
 
-
         if (this.level().isClientSide && this.entityData.get(LIFE_TICKS) > 0) {
             if (random.nextInt(3) == 0) {
                 this.level().addParticle(ParticleTypes.SQUID_INK,
@@ -105,7 +100,6 @@ public class TentacleEntity extends Entity {
                         0, -0.05, 0);
             }
         }
-
 
         if (this.level().isClientSide) {
             this.prevClientAge = this.clientAge;
@@ -125,13 +119,11 @@ public class TentacleEntity extends Entity {
                 return;
             }
 
-
             if (!hasPlayedSpawnSound) {
 
                 this.level().playSound(null, this.blockPosition(), SoundEvents.WARDEN_EMERGE, SoundSource.HOSTILE, 1.0f, 1.5f);
                 hasPlayedSpawnSound = true;
             }
-
 
             if (this.tickCount % 20 == 0 && random.nextInt(3) == 0) {
                 this.level().playSound(null, this.blockPosition(), SoundEvents.SCULK_CLICKING, SoundSource.HOSTILE, 0.5f, 0.5f);
@@ -144,7 +136,6 @@ public class TentacleEntity extends Entity {
             int currentLife = this.entityData.get(LIFE_TICKS);
             this.entityData.set(LIFE_TICKS, currentLife + 1);
 
-            // LOGICA DIFERENCIADA
             if (!isGiver() && currentLife == GRAB_TIME) {
                 performGrab();
             }
@@ -179,7 +170,6 @@ public class TentacleEntity extends Entity {
 
             this.level().addFreshEntity(itemEntity);
 
-
             this.level().playSound(null, new BlockPos((int)spawnX, (int)spawnY, (int)spawnZ), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1.0f, 1.2f);
             this.level().playSound(null, new BlockPos((int)spawnX, (int)spawnY, (int)spawnZ), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 2.0f, 0.5f);
 
@@ -192,13 +182,11 @@ public class TentacleEntity extends Entity {
         if (target == null) return;
         if (level().getBlockState(target).getBlock() instanceof BlasphemousBloodAltarBlock) {
 
-
             spawnEldritchImpactParticles(target);
 
             if (level().getBlockEntity(target) instanceof BlasphemousBloodAltarBlockEntity tile) {
                 List<Item> items = tile.getItemsInside();
                 if (!items.isEmpty()) {
-
 
                     this.level().playSound(null, target, SoundEvents.SCULK_SHRIEKER_SHRIEK, SoundSource.HOSTILE, 1.0f, 1.2f);
                     this.level().playSound(null, target, SoundEvents.SCULK_BLOCK_BREAK, SoundSource.HOSTILE, 1.0f, 0.8f);
@@ -212,21 +200,17 @@ public class TentacleEntity extends Entity {
         }
     }
 
-
     private void spawnEldritchImpactParticles(BlockPos pos) {
         if (level() instanceof ServerLevel serverLevel) {
             BlockState state = level().getBlockState(pos);
-
 
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state),
                     pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
                     20, 0.3, 0.3, 0.3, 0.15);
 
-
             serverLevel.sendParticles(ParticleTypes.SCULK_SOUL,
                     pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
                     15, 0.2, 0.2, 0.2, 0.05);
-
 
             serverLevel.sendParticles(ParticleTypes.SONIC_BOOM,
                     pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,

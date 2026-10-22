@@ -44,7 +44,6 @@ public class CyclopsEntity extends Mob {
         this.setPersistenceRequired();
     }
 
-
     @Override
     public void checkDespawn() {
 
@@ -61,7 +60,6 @@ public class CyclopsEntity extends Mob {
 
         return true;
     }
-    // -------------------------------------------
 
     @Override
     protected void defineSynchedData() {
@@ -74,8 +72,6 @@ public class CyclopsEntity extends Mob {
     public int getClientSideAttackTicks() {
         return this.entityData.get(SYNCED_LINE_OF_SIGHT_TICKS);
     }
-
-
 
     private void spawnAmbientEyeParticles() {
         ParticleHelper.spawnHollowSphere(level(), ModParticles.EYE_PARTICLE.get(),

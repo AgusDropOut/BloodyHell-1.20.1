@@ -14,11 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-
-/* Code borrowed from Mowzie's Mobs */
-
-
-
 public class EntityFallingBlock extends Entity {
     public static float GRAVITY = 0.1f;
     public double prevMotionX, prevMotionY, prevMotionZ;

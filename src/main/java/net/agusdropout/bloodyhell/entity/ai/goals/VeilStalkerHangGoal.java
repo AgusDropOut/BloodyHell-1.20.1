@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.entity.ai.goals;
 
-
 import net.agusdropout.bloodyhell.entity.custom.VeilStalkerEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,11 +12,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-
-/**
- * Makes the VeilStalker move toward a nearby wall and hang there for a short period.
- * Works together with PatrolGoal by respecting cooldowns.
- */
 public class VeilStalkerHangGoal extends Goal {
     private final VeilStalkerEntity mob;
     private final double speed;
@@ -25,13 +19,11 @@ public class VeilStalkerHangGoal extends Goal {
     private int hangingTime;
     private boolean reachedWall;
 
-    // Duration of the hanging state
-    private final int minHangTicks = 20 * 6;      // 6 seconds
-    private final int maxExtraHangTicks = 20 * 8; // up to +8 seconds
+    private final int minHangTicks = 20 * 6;
+    private final int maxExtraHangTicks = 20 * 8;
 
-    // Search timeout to prevent getting stuck
     private int searchTicks;
-    private final int maxSearchTicks = 200; // 10 seconds
+    private final int maxSearchTicks = 200;
 
     public VeilStalkerHangGoal(VeilStalkerEntity mob, double speed) {
         this.mob = mob;
@@ -41,14 +33,13 @@ public class VeilStalkerHangGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        // Must not have a target, be alive, not hanging, not attacking, and cooldown must be ready
+
         if (mob.getTarget() != null) return false;
         if (!mob.isAlive()) return false;
         if (mob.isHanging()) return false;
         if (mob.isAttacking()) return false;
         if (mob.getHangCooldown() > 0) return false;
 
-        // Try to find a nearby wall to hang from
         hangPos = findNearbyWall();
         if( hangPos != null) {
             return true;
@@ -63,27 +54,23 @@ public class VeilStalkerHangGoal extends Goal {
         if (hangPos != null) {
             reachedWall = false;
             hangingTime = 0;
-            searchTicks = 0; // reset search timer
+            searchTicks = 0;
         }
     }
 
     @Override
     public void tick() {
 
-
-        // Stop immediately if it detects a target
         if (mob.getTarget() != null) {
             stop();
             return;
         }
 
-        // Move toward the hanging position
         if (!reachedWall && hangPos != null) {
             searchTicks++;
 
-            // Calculate direction FROM mob TO hangPos
             double dx = (hangPos.getX() + 0.5) - mob.getX();
-            double dy = ((hangPos.getY() + 0.5) - mob.getY()) * 0.2; // smooth vertical motion
+            double dy = ((hangPos.getY() + 0.5) - mob.getY()) * 0.2;
             double dz = (hangPos.getZ() + 0.5) - mob.getZ();
 
             Vec3 vec = new Vec3(dx, dy, dz).normalize().scale(Math.min(speed, 0.5));
@@ -92,7 +79,6 @@ public class VeilStalkerHangGoal extends Goal {
 
             double distSq = dx * dx + dy * dy + dz * dz;
 
-            // Check if reached or search timed out
             if (distSq < 3 * 3 || searchTicks > maxSearchTicks) {
                 reachedWall = true;
                 mob.getNavigation().stop();
@@ -100,7 +86,7 @@ public class VeilStalkerHangGoal extends Goal {
                 mob.startHangingServerSide();
                 hangingTime = 0;
             } else {
-                // Keep facing the wall while moving
+
                 mob.getLookControl().setLookAt(
                         hangPos.getX() + 0.5,
                         hangPos.getY() + 0.5,
@@ -110,7 +96,7 @@ public class VeilStalkerHangGoal extends Goal {
                 );
             }
         }
-        // If already hanging, count down the time before resuming patrol
+
         else if (reachedWall) {
             hangingTime++;
             if (hangingTime > minHangTicks) {
@@ -123,13 +109,13 @@ public class VeilStalkerHangGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        // Continue only while hanging with no target
+
         return  mob.getTarget() == null && mob.isAlive() && hangingTime < minHangTicks;
     }
 
     @Override
     public void stop() {
-        // Stop hanging and apply patrol cooldown
+
         mob.stopHanging();
         hangPos = null;
         reachedWall = false;
@@ -141,25 +127,22 @@ public class VeilStalkerHangGoal extends Goal {
         return true;
     }
 
-
     private BlockPos findNearbyWall() {
         BlockPos origin = mob.blockPosition();
         Level level = mob.level();
 
-        int horizontalRange = 50; // horizontal search radius
-        int verticalRangeDown = 5; // downward search
+        int horizontalRange = 50;
+        int verticalRangeDown = 5;
 
         ServerLevel serverLevel = null;
         if (level instanceof ServerLevel) {
             serverLevel = (ServerLevel) level;
         }
 
-        // 1️⃣ Horizontal slice at current Y
         int y = origin.getY();
         for (int dx = -horizontalRange; dx <= horizontalRange; dx++) {
             for (int dz = -horizontalRange; dz <= horizontalRange; dz++) {
                 BlockPos pos = origin.offset(dx, 0, dz);
-
 
                 BlockState state = level.getBlockState(pos);
                 if (state.isSolidRender(level, pos)) {
@@ -175,7 +158,6 @@ public class VeilStalkerHangGoal extends Goal {
             }
         }
 
-        // 2️⃣ Search downward
         for (int dy = 1; dy <= verticalRangeDown; dy++) {
             int currentY = origin.getY() - dy;
             for (int dx = -horizontalRange; dx <= horizontalRange; dx++) {
@@ -200,13 +182,9 @@ public class VeilStalkerHangGoal extends Goal {
         return null;
     }
 
-    /**
-     * Checks if the direct path from 'start' to 'end' is free of obstacles
-     * using a simple straight-line approximation.
-     */
     private boolean isPathClear(BlockPos start, BlockPos end) {
         Level level = mob.level();
-        int steps = 5; // number of steps along the line to check
+        int steps = 5;
         double dx = (end.getX() + 0.5 - start.getX()) / steps;
         double dy = (end.getY() + 0.5 - start.getY()) / steps;
         double dz = (end.getZ() + 0.5 - start.getZ()) / steps;

@@ -22,7 +22,7 @@ public class InfestationDecalEntity extends Entity {
 
     private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(InfestationDecalEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(InfestationDecalEntity.class, EntityDataSerializers.FLOAT);
-    // NEW: Store the face index (0=Down, 1=Up, 2=North...)
+
     private static final EntityDataAccessor<Byte> FACE = SynchedEntityData.defineId(InfestationDecalEntity.class, EntityDataSerializers.BYTE);
 
     private MobEffect effectToApply;
@@ -40,29 +40,28 @@ public class InfestationDecalEntity extends Entity {
         this.setColor(colorHex);
         this.setRadius(radius);
         this.effectToApply = effect;
-        this.duration = lifeTimeTicks; // Custom lifetime
+        this.duration = lifeTimeTicks;
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(COLOR, 0xFFFFFFFF);
         this.entityData.define(RADIUS, 1.0f);
-        this.entityData.define(FACE, (byte) Direction.UP.ordinal()); // Default to Floor
+        this.entityData.define(FACE, (byte) Direction.UP.ordinal());
     }
 
     @Override
     public void tick() {
         super.tick();
         if (!this.level().isClientSide) {
-            // Lifetime Logic
+
             if (this.tickCount >= duration) {
                 this.discard();
                 return;
             }
 
-            // Effect Logic (every 5 ticks)
             if (this.tickCount % 5 == 0 && effectToApply != null) {
-                // Inflate box slightly to catch entities touching the surface
+
                 List<LivingEntity> victims = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2));
                 for (LivingEntity victim : victims) {
                     if (!victim.hasEffect(effectToApply)) {
@@ -72,8 +71,6 @@ public class InfestationDecalEntity extends Entity {
             }
         }
     }
-
-    // --- GETTERS / SETTERS ---
 
     public void setFace(Direction face) {
         this.entityData.set(FACE, (byte) face.ordinal());
@@ -88,8 +85,6 @@ public class InfestationDecalEntity extends Entity {
 
     public void setRadius(float r) { this.entityData.set(RADIUS, r); }
     public float getRadius() { return this.entityData.get(RADIUS); }
-
-    // --- SAVE / LOAD ---
 
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {

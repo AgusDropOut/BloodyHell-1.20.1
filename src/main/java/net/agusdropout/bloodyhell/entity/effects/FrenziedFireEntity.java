@@ -31,7 +31,7 @@ public class FrenziedFireEntity extends Entity {
         }
 
         if (!this.level().isClientSide) {
-            /* Area of effect damage logic is executed here */
+
         }
     }
 

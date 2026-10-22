@@ -15,7 +15,7 @@ public class BloodNovaDebrisEntity extends EntityFallingBlock {
 
     public BloodNovaDebrisEntity(EntityType<?> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
-        this.noPhysics = true; // 1. Disable wall collision checks (smoother)
+        this.noPhysics = true;
     }
 
     public BloodNovaDebrisEntity(Level worldIn, BlockState blockState, int duration) {
@@ -27,24 +27,22 @@ public class BloodNovaDebrisEntity extends EntityFallingBlock {
 
     @Override
     public boolean isNoGravity() {
-        return true; // 2. CRITICAL FIX: Stops client from predicting gravity
+        return true;
     }
 
     @Override
     public void tick() {
-        // 3. Sync Previous Position (Vital for interpolation)
+
         this.xo = this.getX();
         this.yo = this.getY();
         this.zo = this.getZ();
 
-        // Standard base tick (timers, portals)
         this.baseTick();
 
         if (getMode() == EnumFallingBlockMode.MOBILE) {
-            // Apply the velocity set by the BloodNovaEntity
+
             this.move(MoverType.SELF, this.getDeltaMovement());
 
-            // Drag (keeps movement controlled)
             this.setDeltaMovement(this.getDeltaMovement().scale(0.98));
 
             if (this.tickCount > getDuration()) {
@@ -52,7 +50,7 @@ public class BloodNovaDebrisEntity extends EntityFallingBlock {
             }
         }
         else {
-            // Fallback for popup animation mode
+
             float animVY = getAnimVY();
             this.prevAnimY = this.animY;
             this.animY += animVY;
@@ -61,7 +59,6 @@ public class BloodNovaDebrisEntity extends EntityFallingBlock {
         }
     }
 
-    // 4. Packet Syncing: Ensures custom entity data reaches the client
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);

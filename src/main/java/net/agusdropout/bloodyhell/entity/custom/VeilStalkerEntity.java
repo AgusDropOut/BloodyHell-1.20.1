@@ -29,21 +29,18 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class VeilStalkerEntity extends Monster implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    // timers and control
     private int diveTimer = 0;
     private int warningTimer = 0;
 
     private final int maxDiveDuration = 40;
     private final int maxWarningDuration = 20;
 
-    // === Cooldown management ===
     private int hangCooldown = 0;
     private int patrolCooldown = 0;
 
-    private final int maxHangCooldown = 1000;   // 10 seconds (20 ticks = 1 second)
-    private final int maxPatrolCooldown = 40;  // 2 seconds
+    private final int maxHangCooldown = 1000;
+    private final int maxPatrolCooldown = 40;
 
-    // synced data
     private static final EntityDataAccessor<Boolean> DATA_FLYING = SynchedEntityData.defineId(VeilStalkerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HANGING = SynchedEntityData.defineId(VeilStalkerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_ATTACKING = SynchedEntityData.defineId(VeilStalkerEntity.class, EntityDataSerializers.BOOLEAN);
@@ -78,16 +75,6 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
         this.entityData.define(DATA_ATTACHED_ENTITY_ID, -1);
     }
 
-    /* ===================================================
-       ==             GOAL-ACCESSIBLE METHODS            ==
-       =================================================== */
-
-
-
-    /* ===================================================
-       ==                  ANIMATION LOGIC               ==
-       =================================================== */
-
     private PlayState predicate(AnimationState<VeilStalkerEntity> state) {
         if (this.isHanging()) {
             state.getController().setAnimation(RawAnimation.begin().then("hanging_from_wall", Animation.LoopType.LOOP));
@@ -117,10 +104,6 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
         return cache;
     }
 
-    /* ===================================================
-       ==                    LOGIC LOOP                  ==
-       =================================================== */
-
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -139,20 +122,14 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
     public void aiStep() {
         super.aiStep();
 
-
         if (this.level().isClientSide()) return;
 
-
-
-        // update cooldowns
         if (warningTimer > 0) warningTimer--;
 
-        // Update cooldowns each tick
         this.decrementHangCooldown();
         this.decrementPatrolCooldown();
 
     }
-
 
     protected PathNavigation createNavigation(Level p_29417_) {
         FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, p_29417_);
@@ -161,7 +138,6 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
         flyingpathnavigation.setCanPassDoors(true);
         return flyingpathnavigation;
     }
-
 
     private void detachFromEntity() {
         this.entityData.set(DATA_ATTACHED_ENTITY_ID, -1);
@@ -174,7 +150,6 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
         this.setFlyingState(false);
         this.setDeltaMovement(Vec3.ZERO);
 
-        // Prevent immediate re-hanging and re-patrolling
         this.setHangCooldown(this.maxHangCooldown);
         this.setPatrolCooldown(this.maxPatrolCooldown);
     }
@@ -183,13 +158,8 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
         this.setHanging(false);
         this.setFlyingState(true);
 
-        // Give a short patrol cooldown before it starts moving again
         this.setPatrolCooldown(this.maxPatrolCooldown);
     }
-
-    /* ===================================================
-       ==                 DATA ACCESSORS                 ==
-       =================================================== */
 
     public boolean isFlyingState() { return this.entityData.get(DATA_FLYING); }
     public void setFlyingState(boolean flying) { this.entityData.set(DATA_FLYING, flying); }
@@ -203,10 +173,6 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
     public boolean isSpecialAttack() { return this.entityData.get(DATA_SPECIAL_ATTACK); }
     public void setSpecialAttack(boolean special) { this.entityData.set(DATA_SPECIAL_ATTACK, special); }
 
-    /* ===================================================
-       ==                  DAMAGE LOGIC                  ==
-       =================================================== */
-
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.isHanging()) return super.hurt(source, amount * 0.6f);
@@ -218,7 +184,6 @@ public class VeilStalkerEntity extends Monster implements GeoEntity {
         return false;
     }
 
-    // --- Getters and setters ---
     public int getHangCooldown() {
         return this.hangCooldown;
     }

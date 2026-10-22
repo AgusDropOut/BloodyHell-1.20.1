@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BasePlayerInventoryMenu extends AbstractContainerMenu {
 
-    // ... constants ...
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;

@@ -87,7 +87,6 @@ public class SanguiniteBloodHarvesterBlockEntity extends BaseGeckoBlockEntity im
             }
         });
 
-        // --- KEYFRAME HANDLER ---
         controller.setCustomInstructionKeyframeHandler(event -> {
             String instruction = event.getKeyframeData().getInstructions();
             Direction dir = null;
@@ -108,12 +107,10 @@ public class SanguiniteBloodHarvesterBlockEntity extends BaseGeckoBlockEntity im
     private void spawnStrikeEffects(Direction dir) {
         if (this.level == null) return;
 
-
         double posX = this.worldPosition.getX() + 0.5 + (dir.getStepX() * 0.5);
         double posY = this.worldPosition.getY() + 1.0;
         double posZ = this.worldPosition.getZ() + 0.5 + (dir.getStepZ() * 0.5);
         Vec3 effectPos = new Vec3(posX, posY, posZ);
-
 
         if (this.level.isClientSide) {
             for (int i = 0; i < 8; i++) {
@@ -143,16 +140,9 @@ public class SanguiniteBloodHarvesterBlockEntity extends BaseGeckoBlockEntity im
                     false
             );
 
-
-
-
             EntityCameraShake.clientCameraShake(this.level, effectPos, 6.0f, 0.05f, 5, 5);
         }
     }
-
-
-
-    // --- REMAINDER OF YOUR LOGIC ---
 
     public static void tick(Level level, BlockPos pos, BlockState state, SanguiniteBloodHarvesterBlockEntity pEntity) {
         if (level.isClientSide) return;
@@ -177,7 +167,6 @@ public class SanguiniteBloodHarvesterBlockEntity extends BaseGeckoBlockEntity im
                 ResourceLocation fluidLoc = new ResourceLocation(net.agusdropout.bloodyhell.config.ModCommonConfig.HARVESTER_DEFAULT_BLOOD_FLUID.get());
                 net.minecraft.world.level.material.Fluid configuredFluid = net.minecraftforge.registries.ForgeRegistries.FLUIDS.getValue(fluidLoc);
 
-                //  Fallback to Bloody Hell blood if the config is invalid or empty
                 if (configuredFluid == null || configuredFluid == net.minecraft.world.level.material.Fluids.EMPTY) {
                     yield new FluidStack(ModFluids.BLOOD_SOURCE.get(), amount);
                 } else {

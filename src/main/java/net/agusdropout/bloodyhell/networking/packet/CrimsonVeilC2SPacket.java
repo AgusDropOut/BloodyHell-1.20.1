@@ -23,7 +23,7 @@ public class CrimsonVeilC2SPacket {
    public boolean handle(Supplier<NetworkEvent.Context> supplier){
        NetworkEvent.Context context = supplier.get();
        context.enqueueWork(() -> {
-           //HERE WE ARE ON THE SERVER!
+
            ServerPlayer player = context.getSender();
            ServerLevel level = player.serverLevel();
 
@@ -36,8 +36,6 @@ public class CrimsonVeilC2SPacket {
 
                    ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(crimsonVeil.getCrimsonVeil()), player);
                });
-
-
 
        });
        return true;

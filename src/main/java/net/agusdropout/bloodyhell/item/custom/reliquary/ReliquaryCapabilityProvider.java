@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ReliquaryCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static final int SLOTS = 14; // Updated to 14 to match the menu size
+    public static final int SLOTS = 14;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOTS) {
         @Override
@@ -26,17 +26,15 @@ public class ReliquaryCapabilityProvider implements ICapabilityProvider, INBTSer
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            // Slots 0 to 11: Rune slots
+
             if (slot >= 0 && slot <= 11) {
 
                 return stack.is(ModTags.Items.RELIQUARY_RUNE_ITEM);
             }
 
-            // Slot 12: Upgrade slot
             if (slot == 12) {
                 return stack.is(ModTags.Items.RELIQUARY_UPGRADE_ITEM);
             }
-
 
             if (slot == 13) {
 
@@ -46,10 +44,6 @@ public class ReliquaryCapabilityProvider implements ICapabilityProvider, INBTSer
             return super.isItemValid(slot, stack);
         }
     };
-
-
-
-
 
     private final LazyOptional<IItemHandler> optional = LazyOptional.of(() -> itemHandler);
 

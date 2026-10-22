@@ -30,7 +30,6 @@ import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInst
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-
 public class BloodSeekerEntity extends Monster implements GeoEntity {
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
@@ -74,10 +73,9 @@ public class BloodSeekerEntity extends Monster implements GeoEntity {
             state.getController().setAnimation(RawAnimation.begin().then("animation.bloodseeker.attack", Animation.LoopType.PLAY_ONCE));
             this.swinging = false;
         }
-//
+
         return PlayState.CONTINUE;
     }
-
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -86,8 +84,6 @@ public class BloodSeekerEntity extends Monster implements GeoEntity {
         controllers.add(new AnimationController(this, "attackController",
                 0, this::attackPredicate));
     }
-
-
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -145,7 +141,5 @@ public class BloodSeekerEntity extends Monster implements GeoEntity {
         return flag;
 
     }
-    
-
 
 }

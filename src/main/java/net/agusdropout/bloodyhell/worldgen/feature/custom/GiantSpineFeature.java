@@ -25,26 +25,23 @@ public class GiantSpineFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos origin = context.origin();
         RandomSource random = context.random();
 
-        // --- Check valid base terrain ---
         BlockPos ground = origin.below();
         if (!level.getBlockState(ground).is(Blocks.SAND) &&
                 !level.getBlockState(ground).is(SoilBlocks.BLASPHEMOUS_SAND_BLOCK.get())) {
             return false;
         }
 
-        // --- Check open sky above ---
         boolean hasOpenSky = true;
-        for (int dy = 1; dy < 64; dy++) { // check up to 64 blocks above
+        for (int dy = 1; dy < 64; dy++) {
             BlockPos check = origin.above(dy);
             if (level.getBlockState(check).isSolid()) {
                 hasOpenSky = false;
                 break;
             }
         }
-        if (!hasOpenSky) return false; // don't spawn if blocked
+        if (!hasOpenSky) return false;
 
-        // --- Horn properties ---
-        int height = 25 + random.nextInt(16); // 25–40 tall
+        int height = 25 + random.nextInt(16);
         Direction curveDir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         float curveStrength = 0.15f + random.nextFloat() * 0.15f;
         double baseRadius = 3.5 + random.nextDouble();
@@ -52,11 +49,10 @@ public class GiantSpineFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos current = origin;
 
         for (int y = 0; y < height; y++) {
-            double ratio = (double) y / height; // 0.0 bottom → 1.0 top
+            double ratio = (double) y / height;
             double radius = baseRadius * (1.0 - ratio / 1.1);
             int r = (int) Math.ceil(radius);
 
-            // --- Curvature offset ---
             double curveOffset = Math.sin(ratio * Math.PI) * curveStrength * y;
             BlockPos layerCenter = current.offset(
                     curveDir.getStepX() * (int) curveOffset,
@@ -64,26 +60,19 @@ public class GiantSpineFeature extends Feature<NoneFeatureConfiguration> {
                     curveDir.getStepZ() * (int) curveOffset
             );
 
-            // --- Generate per-layer ---
             for (int dx = -r; dx <= r; dx++) {
                 for (int dz = -r; dz <= r; dz++) {
                     if (dx * dx + dz * dz > radius * radius) continue;
                     BlockPos pos = layerCenter.offset(dx, 0, dz);
                     if (!level.getBlockState(pos).isAir() && !level.getBlockState(pos).is(Blocks.CAVE_AIR)) continue;
 
-                    // --- Per-block random material selection ---
                     float roll = random.nextFloat();
 
-                    // Weighted gradient by height
-                    // Base: mostly sandstone, some eroded
-                    // Mid: mix of eroded + cracked
-                    // Top: cracked + fully eroded
                     float sandstoneChance = (float) Math.max(0.2, 1.0 - ratio * 1.8);
                     float erodedChance = (float) Math.max(0.1, 0.5 - Math.abs(0.5 - ratio));
                     float crackedChance = (float) Math.max(0.1, ratio * 1.0);
                     float fullyErodedChance = (float) Math.max(0.0, ratio * ratio * 0.8);
 
-                    // Normalize so total = 1
                     float total = sandstoneChance + erodedChance + crackedChance + fullyErodedChance;
                     sandstoneChance /= total;
                     erodedChance /= total;

@@ -56,15 +56,13 @@ public class FlaskFillCategory implements IRecipeCategory<FlaskFillRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, FlaskFillRecipe recipe, IFocusGroup focuses) {
-        // Slot 1: The Fluid required in the tank
+
         builder.addSlot(RecipeIngredientRole.INPUT, 10, 10)
                 .addIngredient(ForgeTypes.FLUID_STACK, recipe.requiredFluid());
 
-        // Slot 2: The Empty Flask you click with
         builder.addSlot(RecipeIngredientRole.INPUT, 30, 10)
                 .addItemStack(recipe.emptyFlask());
 
-        // Slot 3: The Output Flask
         builder.addSlot(RecipeIngredientRole.OUTPUT, 70, 10)
                 .addItemStack(recipe.filledFlask());
     }

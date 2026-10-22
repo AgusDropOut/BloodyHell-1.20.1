@@ -25,7 +25,6 @@ import java.util.List;
 public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpellBookItem> {
     private static final int COST = 5;
 
-
     public BloodScratchSpellBookItem(Properties properties) {
         super(properties);
     }
@@ -34,7 +33,6 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
     public int getCrimsonCost() {
         return COST;
     }
-
 
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
@@ -50,7 +48,6 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
                     float yaw = player.getYRot();
                     float pitch = player.getXRot();
 
-
                     double radians = Math.toRadians(-yaw);
                     double xDir = Math.sin(radians);
                     double zDir = Math.cos(radians);
@@ -58,7 +55,6 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
                     double baseX = player.getX() + xDir * 1.5;
                     double baseY = player.getEyeY() - 0.4;
                     double baseZ = player.getZ() + zDir * 1.5;
-
 
                     double offsetRadians = Math.toRadians(-yaw + 90);
                     double perpX = Math.sin(offsetRadians);
@@ -71,13 +67,11 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
 
                         float multiplier = i - (projectileCount - 1) / 2.0f;
 
-
                         double currentOffsetX = perpX * (multiplier * spreadDistance);
                         double currentOffsetZ = perpZ * (multiplier * spreadDistance);
 
-                        double spawnX = baseX /*+ currentOffsetX*/;
-                        double spawnZ = baseZ  /*currentOffsetZ*/;
-
+                        double spawnX = baseX;
+                        double spawnZ = baseZ;
 
                         float spawnYaw = yaw - (multiplier * spreadAngle);
 
@@ -116,7 +110,6 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
 
         double spreadDistance = 1.2;
 
-
         for (int i = 0; i < projectileCount; i++) {
             float multiplier = i - (projectileCount - 1) / 2.0f;
 
@@ -133,12 +126,10 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
                         0, 0, 0);
             }
 
-
             if (tick == getMinChargeTime()) {
                 ParticleHelper.spawnCircle(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), new Vec3(pX, baseY, pZ), 1.5, 10);
             }
         }
-
 
         if (tick % 5 == 0) {
             level.addParticle(ModParticles.BLOOD_PULSE_PARTICLE.get(),

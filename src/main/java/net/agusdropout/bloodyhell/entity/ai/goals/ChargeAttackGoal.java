@@ -68,7 +68,6 @@ public class ChargeAttackGoal extends Goal {
                 Vec3 targetDirection = target.position().subtract(entity.position()).normalize();
                 entity.setDeltaMovement(targetDirection.scale(4));
 
-
                 entity.level().playSound(null, entity.getOnPos(), ModSounds.SELIORA_CHARGE_ATTACK_SOUND.get(),
                         SoundSource.HOSTILE, 1.5F, 0.9F + entity.level().random.nextFloat() * 0.2F);
                 entity.level().playSound(null, entity.getOnPos(), SoundEvents.TRIDENT_RIPTIDE_3,
@@ -100,8 +99,6 @@ public class ChargeAttackGoal extends Goal {
         double radius = 2;
         double damage = 20;
 
-
-
         if (minimunChargeTicks % 4 == 0) {
 
             EntityCameraShake.cameraShake(level, entity.position(), 15.0f, 0.15f, 3, 2);
@@ -110,7 +107,6 @@ public class ChargeAttackGoal extends Goal {
         }
 
         BlockPos centerPos = entity.blockPosition();
-
 
         boolean hitSomeone = false;
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class,
@@ -129,7 +125,6 @@ public class ChargeAttackGoal extends Goal {
             level.playSound(null, centerPos, SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.HOSTILE, 1.0F, 0.8F);
         }
 
-        // --- 3. EFECTOS VISUALES ---
         if (level instanceof ServerLevel server) {
             BlockState belowBlock = level.getBlockState(centerPos.below());
 
@@ -141,7 +136,6 @@ public class ChargeAttackGoal extends Goal {
                     entity.getX(), entity.getY() + 0.5, entity.getZ(),
                     2, 0.5, 0.1, 0.5, 0.05);
         }
-
 
         if (minimunChargeTicks % 5 == 0) {
             spawnRadialFallingBlocks(level, centerPos);

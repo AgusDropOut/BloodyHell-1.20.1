@@ -20,14 +20,12 @@ import net.minecraft.world.level.material.Fluids;
 
 public class InfestationVeinBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
 
-    // 1. Add Waterlogging Property
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     public InfestationVeinBlock(Properties properties) {
         super(properties);
-        // 2. Register Default State with Waterlogged = false
-        // (MultifaceBlock handles the face properties automatically)
+
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
     }
 
@@ -37,7 +35,6 @@ public class InfestationVeinBlock extends MultifaceBlock implements SimpleWaterl
         builder.add(WATERLOGGED);
     }
 
-    // 3. Update Shape (Handle Water flowing)
     @Override
     public BlockState updateShape(BlockState state, Direction dir, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
@@ -51,9 +48,6 @@ public class InfestationVeinBlock extends MultifaceBlock implements SimpleWaterl
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-
-
-    // 5. Spreading Logic
     @Override
     public MultifaceSpreader getSpreader() {
         return spreader;

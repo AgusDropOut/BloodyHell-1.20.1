@@ -24,29 +24,24 @@ public class OmenGazerThrowGoal extends Goal {
             omenGazer.setThrowing(true);
             omenGazer.swing(InteractionHand.MAIN_HAND);
 
-            // Calculate spawn position
             double spawnX = omenGazer.getX();
             double spawnY = omenGazer.getY() + 1.5;
             double spawnZ = omenGazer.getZ();
 
-            // Calculate aim vector: (Target Center) - (Spawn Position)
             Vec3 direction = new Vec3(
                     target.getX() - spawnX,
-                    target.getBoundingBox().getCenter().y - spawnY, // Aim at the body center
+                    target.getBoundingBox().getCenter().y - spawnY,
                     target.getZ() - spawnZ
             ).normalize().scale(THROW_SPEED);
 
-            // Use the new Constructor (Level, x, y, z, Owner)
             SmallCrimsonDagger dagger = new SmallCrimsonDagger(
                     this.omenGazer.level(),
                     spawnX, spawnY, spawnZ,
                     omenGazer
             );
 
-            // Set Velocity manually after instantiation
             dagger.setDeltaMovement(direction);
 
-            // Add entity to world
             this.omenGazer.level().addFreshEntity(dagger);
         }
     }

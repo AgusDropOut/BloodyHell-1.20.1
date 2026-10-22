@@ -26,7 +26,6 @@ public class ModMessages {
 
         INSTANCE = net;
 
-
         net.messageBuilder(CrimsonVeilC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(CrimsonVeilC2SPacket::new)
                 .encoder(CrimsonVeilC2SPacket::toBytes)
@@ -95,7 +94,7 @@ public class ModMessages {
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);
     }
-    // Helper to send to all players watching a specific entity
+
     public static <MSG> void sendToPlayersTrackingEntity(MSG message, net.minecraft.world.entity.Entity entity) {
         INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
     }

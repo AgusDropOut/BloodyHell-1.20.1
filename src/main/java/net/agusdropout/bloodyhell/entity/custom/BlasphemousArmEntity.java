@@ -46,7 +46,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import java.util.List;
 import java.util.UUID;
 
-
 public class BlasphemousArmEntity extends Monster implements GeoEntity {
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
@@ -64,7 +63,6 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Integer> ATTACK_COOLDOWN = SynchedEntityData.defineId(BlasphemousArmEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> LIFE_TICKS = SynchedEntityData.defineId(BlasphemousArmEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BlasphemousArmEntity.class, EntityDataSerializers.BOOLEAN);
-
 
     public BlasphemousArmEntity(EntityType<? extends Monster> p_33002_, Level p_33003_,LivingEntity livingEntity) {
         super(p_33002_, p_33003_);
@@ -92,7 +90,6 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
         compoundTag.putInt("attackCooldown", this.getAttackCooldown());
     }
 
-
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
@@ -105,7 +102,6 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
         this.setIsAttacking(compoundTag.getBoolean("isAttacking"));
 
     }
-
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
@@ -148,7 +144,6 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
         }
         return PlayState.CONTINUE;
     }
-
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -198,7 +193,6 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
         }
         this.setLifeTicks(this.getLifeTicks() - 1);
     }
-
 
     @Override
     protected void tickDeath() {
@@ -255,7 +249,6 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
         }
     }
 
-
     public boolean isValidTarget() {
         LivingEntity target = this.getTarget();
         LivingEntity owner = this.getOwner();
@@ -274,14 +267,10 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
                 return true;
             }
 
-
         } else {
             return false;
         }
     }
-
-
-    //Getters & Setters
 
     public void setAttackCooldown(int cooldown) {
         this.entityData.set(ATTACK_COOLDOWN, cooldown);
@@ -316,7 +305,6 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
         this.ownerUUID = livingEntity == null ? null : livingEntity.getUUID();
     }
 
-
     @Nullable
     public LivingEntity getOwner() {
         Entity entity;
@@ -326,11 +314,9 @@ public class BlasphemousArmEntity extends Monster implements GeoEntity {
         return this.owner;
     }
 
-
     protected float getSoundVolume() {
         return 1F;
     }
-
 
     @Override
     public boolean isPushable() {

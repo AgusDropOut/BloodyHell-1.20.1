@@ -21,7 +21,6 @@ public class ImpactParticle extends TextureSheetParticle {
     private final boolean jitter;
     private final float targetSize;
 
-    // Jitter Bases
     private final float baseHue;
     private final float baseSat;
     private final float baseBri;
@@ -29,7 +28,6 @@ public class ImpactParticle extends TextureSheetParticle {
     public ImpactParticle(ClientLevel level, double x, double y, double z, ImpactParticleOptions options, SpriteSet sprites) {
         super(level, x, y, z);
         this.sprites = sprites;
-
 
         this.rCol = options.getR();
         this.gCol = options.getG();
@@ -40,10 +38,8 @@ public class ImpactParticle extends TextureSheetParticle {
         this.jitter = options.shouldJitter();
         this.expansionSpeed = options.getExpansionSpeed();
 
-
         this.gravity = 0.0F;
         this.quadSize = 0.25F;
-
 
         if (this.jitter) {
             float[] hsb = Color.RGBtoHSB((int)(rCol*255), (int)(gCol*255), (int)(bCol*255), null);
@@ -63,20 +59,18 @@ public class ImpactParticle extends TextureSheetParticle {
         this.yo = this.y;
         this.zo = this.z;
 
-        // Expansion
         this.quadSize = Mth.lerp(this.expansionSpeed, this.quadSize, this.targetSize);
 
         if (this.age++ >= this.lifetime) {
             this.remove();
         } else {
-            // Fade
+
             float lifeRatio = (float)this.age / (float)this.lifetime;
             if (lifeRatio > 0.7f) {
                 this.alpha = 1.0f - ((lifeRatio - 0.7f) * 3.3f);
             }
         }
 
-        // Jitter
         if (this.jitter) {
             float hueShift = Mth.sin(this.age * 0.2f) * 0.05f;
             int rgb = Color.HSBtoRGB(this.baseHue + hueShift, this.baseSat, this.baseBri);

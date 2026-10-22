@@ -15,7 +15,7 @@ public class BloodDimensionRenderInfo extends DimensionSpecialEffects {
 
     @Nullable
     @Override
-    public float[] getSunriseColor(float daycycle, float partialTicks) { // Fog color
+    public float[] getSunriseColor(float daycycle, float partialTicks) {
         return null;
     }
 
@@ -38,9 +38,5 @@ public class BloodDimensionRenderInfo extends DimensionSpecialEffects {
     public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
         return BloodDimensionSkyRenderer.renderSky(level, partialTick, poseStack, camera, projectionMatrix, setupFog);
     }
-
-
-
-
 
 }

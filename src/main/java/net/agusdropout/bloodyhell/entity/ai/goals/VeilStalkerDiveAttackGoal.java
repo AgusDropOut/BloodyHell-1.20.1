@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.entity.ai.goals;
 
-
 import net.agusdropout.bloodyhell.entity.custom.VeilStalkerEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,15 +16,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
-
-
-
-/**
- * Aerial combat goal for Veil Stalker.
- * - Smooth hovering movement
- * - Random short dashes with animation
- * - Occasional dive attacks using parabolic motion
- */
 public class VeilStalkerDiveAttackGoal extends Goal {
     private final VeilStalkerEntity mob;
     private final double baseSpeed;
@@ -91,7 +81,6 @@ public class VeilStalkerDiveAttackGoal extends Goal {
         if (targetAltitude < groundY + 6.0)
             targetAltitude = groundY + 6.0;
 
-        // === DASH STATE ===
         if (mob.isDashing()) {
             dashTicks--;
             if (dashTicks <= 0) {
@@ -99,16 +88,14 @@ public class VeilStalkerDiveAttackGoal extends Goal {
                 mob.setStalking(true);
             }
 
-            // Maintain dash motion and look direction
             Vec3 motion = mob.getDeltaMovement();
             float yaw = (float) (Math.toDegrees(Math.atan2(-motion.x, motion.z)));
             float pitch = (float) (Math.toDegrees(-Math.atan2(motion.y, motion.horizontalDistance())));
             mob.setYRot(yaw);
             mob.setXRot(pitch);
-            return; // Skip rest of logic while dashing
+            return;
         }
 
-        // === DIVE BEHAVIOR ===
         if (diving) {
             handleDiveTick();
 
@@ -119,17 +106,14 @@ public class VeilStalkerDiveAttackGoal extends Goal {
 
             double t = diveProgress;
 
-
             Vec3 midXZ = new Vec3(
                     Mth.lerp(t, diveStart.x, diveEnd.x),
                     0,
                     Mth.lerp(t, diveStart.z, diveEnd.z)
             );
 
-
             double heightOffset = 4 * Math.pow(t - 0.5, 2) - 1;
             double arcHeight = 4.0;
-
 
             Vec3 diveTarget = new Vec3(
                     midXZ.x,
@@ -153,9 +137,6 @@ public class VeilStalkerDiveAttackGoal extends Goal {
                 return;
             }
 
-
-
-
             List<LivingEntity> nearby = level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(1.5));
             for (LivingEntity e : nearby) {
                 if (e != mob && e.isAlive()) {
@@ -168,7 +149,6 @@ public class VeilStalkerDiveAttackGoal extends Goal {
 
         double destY = targetAltitude;
 
-        // === RANDOM DASH TRIGGER ===
         if (--dashCooldown <= 0) {
             orbitAngle += (random.nextBoolean() ? 1 : -1) * Math.toRadians(45);
             dashCooldown = 60 + random.nextInt(60);
@@ -177,16 +157,14 @@ public class VeilStalkerDiveAttackGoal extends Goal {
             Vec3 dashMotion = dashDir.scale(baseSpeed * (0.8 + random.nextDouble() * 0.4));
             mob.setDeltaMovement(dashMotion.x, mob.getDeltaMovement().y, dashMotion.z);
 
-            // Enable dash state for animation
             mob.setDashing(true);
             mob.setStalking(false);
-            dashTicks = 10; // short dash (about 1 second)
+            dashTicks = 10;
 
             mob.playSound(SoundEvents.PHANTOM_FLAP, 0.6f, 1.0f);
             return;
         }
 
-        // === NORMAL HOVERING MOVEMENT ===
         Vec3 targetPos = new Vec3(
                 target.getX() + orbitRadius * Math.cos(orbitAngle),
                 destY,
@@ -203,7 +181,6 @@ public class VeilStalkerDiveAttackGoal extends Goal {
         mob.setYRot(yaw);
         mob.setXRot(pitch);
 
-        // === TRIGGER DIVE ===
         if (--ticksUntilDive <= 0 && mob.hasLineOfSight(target)) {
             diving = true;
             diveProgress = 0.0;
@@ -224,8 +201,6 @@ public class VeilStalkerDiveAttackGoal extends Goal {
     public boolean requiresUpdateEveryTick() {
         return true;
     }
-
-
 
     private void handleDiveTick() {
 

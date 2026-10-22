@@ -52,7 +52,7 @@ public class ModBow extends BowItem {
                         abstractarrow2 = this.customArrow(abstractarrow2);
                         abstractarrow3 = this.customArrow(abstractarrow3);
                         abstractarrow4 = this.customArrow(abstractarrow4);
-                        // ,gravity,
+
                         abstractarrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 1.0F);
                         abstractarrow1.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 2.0F);
                         abstractarrow2.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 0.1F);
@@ -106,7 +106,6 @@ public class ModBow extends BowItem {
                     player.awardStat(Stats.ITEM_USED.get(this));
                 }
             }
-
 
         }
     }

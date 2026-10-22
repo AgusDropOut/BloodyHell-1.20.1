@@ -23,21 +23,18 @@ public class EffectBlock extends Block {
         @Override
         public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
 
-
                     double range = 5.0D;
                     AABB effectArea = (new AABB(blockPos)).inflate(range);
                     List<Player> players = level.getEntitiesOfClass(Player.class, effectArea);
-                    for (Player player : players) { // Iterate over the players
+                    for (Player player : players) {
                         player.removeEffect(ModEffects.BLOOD_LUST.get());
                     }
-
-
 
         }
 
         @Override
         public boolean isRandomlyTicking(BlockState state) {
-            return true; // Make this block tick randomly
+            return true;
         }
     }
 

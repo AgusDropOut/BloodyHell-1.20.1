@@ -68,7 +68,6 @@ public class HollowRectangleOptions implements ParticleOptions {
         this.jitter = jitter;
     }
 
-    // Backwards compatibility constructor if needed, or remove
     public HollowRectangleOptions(Vector3f color, float width, float height, int life) {
         this(color, width, height, life, 0.0f, 0.0f);
     }

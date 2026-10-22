@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.block.entity.custom.plant;
 
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
@@ -17,27 +16,22 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BloodGemSproutBlockEntity extends BaseGemSproutBlockEntity {
 
-    // --- CONFIG ---
     private static final int BLOOD_PER_STAGE = 250;
     private static final int MAX_GROWTH_TOME = 500;
     private static final float GROWTH_CHANCE = 0.35f;
-
-
 
     public BloodGemSproutBlockEntity(BlockPos pPos, BlockState pState) {
         super(ModBlockEntities.BLOOD_GEM_SPROUT_BE.get(), pPos, pState,
                 MAX_GROWTH_TOME, BLOOD_PER_STAGE, GROWTH_CHANCE);
     }
 
-
     @Override
     public Fluid getValidFluid() {
-        // Blood sprout input fluid config handling
+
         String configuredName = ModCommonConfig.BLOOD_GEM_SPROUT_REQUIRED_FLUID.get();
         if (configuredName != null && !configuredName.isEmpty()) {
             ResourceLocation fluidLoc = new ResourceLocation(configuredName);
             Fluid configuredFluid = ForgeRegistries.FLUIDS.getValue(fluidLoc);
-
 
             if (configuredFluid != null && configuredFluid != Fluids.EMPTY) {
                 return configuredFluid;
@@ -54,8 +48,6 @@ public class BloodGemSproutBlockEntity extends BaseGemSproutBlockEntity {
         float g = ((c >> 8) & 0xFF) / 255f;
         float b = (c & 0xFF) / 255f;
 
-        // 5. Render Octahedron
-        // Outer Shell
         RenderHelper.renderOctahedron(
                 consumer,
                 poseStack.last().pose(),
@@ -65,6 +57,5 @@ public class BloodGemSproutBlockEntity extends BaseGemSproutBlockEntity {
                 15728880
         );
     }
-
 
 }

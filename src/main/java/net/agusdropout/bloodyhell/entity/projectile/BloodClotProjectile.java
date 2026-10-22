@@ -23,7 +23,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class BloodClotProjectile extends Projectile {
 
-    private int leechTimer = 0; // Tracks how long it has been stuck
+    private int leechTimer = 0;
     private boolean isLeeching = false;
 
     public BloodClotProjectile(EntityType<? extends Projectile> type, Level level) {
@@ -42,14 +42,12 @@ public class BloodClotProjectile extends Projectile {
     public void tick() {
         super.tick();
 
-
         if (this.isLeeching) {
             Entity vehicle = this.getVehicle();
-            if (vehicle == null || !vehicle.isAlive() || leechTimer++ > 60) { // 3 Seconds max
+            if (vehicle == null || !vehicle.isAlive() || leechTimer++ > 60) {
                 pop();
                 return;
             }
-
 
             if (leechTimer % 20 == 0 && vehicle instanceof LivingEntity living) {
                 living.hurt(this.level().damageSources().mobProjectile(this, (LivingEntity)getOwner()), 2.0f);
@@ -57,7 +55,6 @@ public class BloodClotProjectile extends Projectile {
             }
             return;
         }
-
 
         if (this.level().isClientSide) {
 
@@ -83,13 +80,10 @@ public class BloodClotProjectile extends Projectile {
 
         Entity target = result.getEntity();
 
-
         if (target == this.getOwner() || target instanceof BloodClotProjectile) return;
-
 
         this.startRiding(target, true);
         this.isLeeching = true;
-
 
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_HIT, this.getSoundSource(), 1.0f, 1.0f);
     }
@@ -112,7 +106,6 @@ public class BloodClotProjectile extends Projectile {
             }
         } else {
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_BREAK, this.getSoundSource(), 1.0f, 0.5f);
-
 
             if (this.getVehicle() instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));

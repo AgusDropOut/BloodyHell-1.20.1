@@ -16,10 +16,6 @@ public final class FluidBoxRenderer {
         return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
     }
 
-    /**
-     * Draws an axis-aligned box textured with a single sprite stretched over every face.
-     * {@code argb} is the packed tint as returned by {@code IClientFluidTypeExtensions#getTintColor}.
-     */
     public static void drawBox(VertexConsumer builder, PoseStack.Pose pose, TextureAtlasSprite sprite, int argb,
                                float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
                                int light, int overlay) {

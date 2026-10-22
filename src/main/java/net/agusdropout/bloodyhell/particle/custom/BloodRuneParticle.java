@@ -31,7 +31,6 @@ public class BloodRuneParticle extends Particle {
         this.gravity = 0;
         this.hasPhysics = false;
 
-
         this.baseRadius = (radius > 0) ? (float) radius : 4.5f;
         this.cylinderHeight = 8.0f;
     }
@@ -53,7 +52,6 @@ public class BloodRuneParticle extends Particle {
         PoseStack poseStack = new PoseStack();
         poseStack.translate(px, py, pz);
 
-        // --- RENDER SETUP ---
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         RenderSystem.disableCull();
@@ -72,7 +70,6 @@ public class BloodRuneParticle extends Particle {
         Matrix4f pose = poseStack.last().pose();
         float rotation = time * 0.02f;
 
-        // 1. RENDER RINGS
         for (int layer = 0; layer < 3; layer++) {
             float waveOffset = (float) Math.sin((time * 0.1f) + (layer * 1.5f));
             float currentRadius = baseRadius + (waveOffset * 0.3f);
@@ -92,7 +89,6 @@ public class BloodRuneParticle extends Particle {
             );
         }
 
-        // 2. RENDER CYLINDER
         float cylRadius = baseRadius * 0.95f;
         float baseAlpha = 0.15f * alphaFade;
 
@@ -119,7 +115,7 @@ public class BloodRuneParticle extends Particle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-            // VX is hijacked to pass the Radius
+
             return new BloodRuneParticle(world, x, y, z, vx);
         }
     }

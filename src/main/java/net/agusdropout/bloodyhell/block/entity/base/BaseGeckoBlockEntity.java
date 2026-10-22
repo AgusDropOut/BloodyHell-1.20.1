@@ -21,8 +21,7 @@ public abstract class BaseGeckoBlockEntity extends BlockEntity implements GeoBlo
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // Default controller: Always plays "idle" if available.
-        // Child classes can override this if they have complex states (on/off/working)
+
         controllers.add(new AnimationController<>(this, "controller", 0, state -> {
             return state.setAndContinue(RawAnimation.begin().thenLoop("idle"));
         }));
@@ -33,9 +32,5 @@ public abstract class BaseGeckoBlockEntity extends BlockEntity implements GeoBlo
         return cache;
     }
 
-    /**
-     * @return The unique name used for .geo.json, .png, and .animation.json files.
-     * Example: Return "sanguinite_blood_harvester"
-     */
     public abstract String getAssetPathName();
 }

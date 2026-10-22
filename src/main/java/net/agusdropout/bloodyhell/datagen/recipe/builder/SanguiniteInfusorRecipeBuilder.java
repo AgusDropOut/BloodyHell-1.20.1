@@ -27,7 +27,6 @@ public class SanguiniteInfusorRecipeBuilder implements RecipeBuilder {
     private final FluidStack fluid2;
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
 
-
     public SanguiniteInfusorRecipeBuilder(Item result, Ingredient input, @Nullable FluidStack fluid1, @Nullable FluidStack fluid2) {
         this.result = result;
         this.input = input;
@@ -89,7 +88,6 @@ public class SanguiniteInfusorRecipeBuilder implements RecipeBuilder {
             outputJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
             json.add("output", outputJson);
 
-            // SAFE: We are guaranteed fluid1 and fluid2 are not null here because of the constructor check
             if (!fluid1.isEmpty()) {
                 JsonObject f1 = new JsonObject();
                 f1.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(fluid1.getFluid()).toString());

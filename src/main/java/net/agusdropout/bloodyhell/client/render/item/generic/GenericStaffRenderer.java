@@ -17,7 +17,6 @@ import software.bernie.geckolib.util.RenderUtils;
 
 public class GenericStaffRenderer extends GeoItemRenderer<BaseStaffItem> {
 
-    // Weapon sway :L
     private static final float SWAY_RECOVERY_SPEED = 0.55f;
     private static final float SWAY_MAX_ANGLE = 25f;
     private static final float SWAY_MULT_HORIZONTAL = -1.1f;

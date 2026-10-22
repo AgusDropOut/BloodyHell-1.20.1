@@ -20,7 +20,6 @@ public class MagicParticle extends TextureSheetParticle {
     private final boolean jitter;
     private final boolean hasWhiteCore;
 
-    // HSB Colors
     private final float baseHue;
     private final float baseSat;
     private final float baseBri;
@@ -34,7 +33,7 @@ public class MagicParticle extends TextureSheetParticle {
         this.jitter = options.shouldJitter();
         this.lifetime = options.getLifetime();
         this.hasWhiteCore = options.hasWhiteCore();
-        // Convert RGB to HSB
+
         float[] hsb = Color.RGBtoHSB(
                 (int)(options.getColor().x() * 255),
                 (int)(options.getColor().y() * 255),
@@ -49,7 +48,6 @@ public class MagicParticle extends TextureSheetParticle {
         this.gCol = options.getColor().y();
         this.bCol = options.getColor().z();
 
-        // Tiny Start Size (Sharper look for magic)
         this.quadSize = options.getSize() * 0.5F;
         this.initialQuadSize = this.quadSize;
 
@@ -68,10 +66,8 @@ public class MagicParticle extends TextureSheetParticle {
         super.tick();
         this.setSpriteFromAge(this.spriteSet);
 
-
         float lifeRatio = (float)this.age / (float)this.lifetime;
         this.quadSize = this.initialQuadSize * (1.0F - lifeRatio);
-
 
         if (this.jitter) {
             float hueShift = Mth.sin(this.age * 0.4F) * 0.15F;
@@ -83,14 +79,12 @@ public class MagicParticle extends TextureSheetParticle {
             this.bCol = (rgb & 0xFF) / 255.0F;
         }
 
-
         if (lifeRatio > 0.7F) {
             this.alpha = 0.6F - ((lifeRatio - 0.7F) * 2.0F);
         } else {
             this.alpha = 0.6F;
         }
     }
-
 
     @Override
     public ParticleRenderType getRenderType() {
@@ -122,19 +116,16 @@ public class MagicParticle extends TextureSheetParticle {
             super.render(buffer, camera, partialTicks);
         }
 
-
         this.rCol = originalR;
         this.gCol = originalG;
         this.bCol = originalB;
         this.quadSize = originalSize;
     }
 
-    // Force full brightness (Emissive)
     @Override
     protected int getLightColor(float partialTick) {
         return 240;
     }
-
 
     public static final ParticleRenderType PARTICLE_SHEET_ADDITIVE = new ParticleRenderType() {
         @Override

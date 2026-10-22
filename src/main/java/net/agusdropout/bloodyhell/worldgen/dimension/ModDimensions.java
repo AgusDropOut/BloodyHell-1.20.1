@@ -31,7 +31,6 @@ import java.util.OptionalLong;
 
 import static net.agusdropout.bloodyhell.worldgen.biome.ModBiomes.buildBiomeSource;
 
-
 public class ModDimensions {
     public static final ResourceKey<LevelStem> SOUL_DIMENSION_KEY = ResourceKey.create(Registries.LEVEL_STEM,
             new ResourceLocation(BloodyHell.MODID, "soul_dimension"));
@@ -42,7 +41,6 @@ public class ModDimensions {
     public static final ResourceKey<NoiseGeneratorSettings> SOUL_DIMENSION_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS,
             new ResourceLocation(BloodyHell.MODID, "soul_dimension"));
 
-
     private static ResourceLocation name(String name) {
         return new ResourceLocation(BloodyHell.MODID, name);
     }
@@ -50,20 +48,20 @@ public class ModDimensions {
     public static final ResourceLocation DIMENSION_RENDERER = BloodyHell.prefix("renderer");
     public static void bootstrapType(BootstapContext<DimensionType> context) {
         context.register(SOUL_DIMENSION_TYPE, new DimensionType(
-                OptionalLong.of(18000L), // fixedTime
-                true, // hasSkylight
-                false, // hasCeiling
-                false, // ultraWarm
-                true, // natural
-                4.0D, // coordinateScale
-                true, // bedWorks
-                false, // respawnAnchorWorks
-                0, // minY
-                256, // height
-                144, // logicalHeight
-                BlockTags.INFINIBURN_OVERWORLD, // infiniburn
-                DIMENSION_RENDERER, // effectsLocation
-                0.1f, // ambientLight
+                OptionalLong.of(18000L),
+                true,
+                false,
+                false,
+                true,
+                4.0D,
+                true,
+                false,
+                0,
+                256,
+                144,
+                BlockTags.INFINIBURN_OVERWORLD,
+                DIMENSION_RENDERER,
+                0.1f,
                 new DimensionType.MonsterSettings(true, false, UniformInt.of(0, 7), 2)));
     }
 
@@ -76,7 +74,7 @@ public class ModDimensions {
                 dimTypes.getOrThrow(SOUL_DIMENSION_TYPE),
                 new NoiseBasedChunkGenerator(
                         buildBiomeSource(biomeRegistry),
-                        noiseGenSettings.getOrThrow(SOUL_DIMENSION_NOISE_GEN) // Terreno base
+                        noiseGenSettings.getOrThrow(SOUL_DIMENSION_NOISE_GEN)
                 )
         ));
     }
@@ -92,22 +90,22 @@ public class ModDimensions {
                 StoneBlocks.BLOODY_STONE_BLOCK.get().defaultBlockState(),
                 Blocks.WATER.defaultBlockState(),
                 new NoiseRouter(
-                        DensityFunctions.zero(), //barrier
-                        DensityFunctions.zero(), //fluid level floodedness
-                        DensityFunctions.zero(), //fluid level spread
-                        DensityFunctions.zero(), //lava
-                        DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25D, noises.getOrThrow(Noises.TEMPERATURE)), //temperature
-                        DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25D, noises.getOrThrow(Noises.VEGETATION)), //vegetation
-                        NoiseRouterData.getFunction(functions, NoiseRouterData.CONTINENTS), //continents
-                        NoiseRouterData.getFunction(functions, NoiseRouterData.EROSION), //erosion
+                        DensityFunctions.zero(),
+                        DensityFunctions.zero(),
+                        DensityFunctions.zero(),
+                        DensityFunctions.zero(),
+                        DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25D, noises.getOrThrow(Noises.TEMPERATURE)),
+                        DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25D, noises.getOrThrow(Noises.VEGETATION)),
+                        NoiseRouterData.getFunction(functions, NoiseRouterData.CONTINENTS),
+                        NoiseRouterData.getFunction(functions, NoiseRouterData.EROSION),
                         DensityFunctions.rangeChoice(
                                 NoiseRouterData.getFunction(functions, NoiseRouterData.Y),
                                 0.0D,
                                 32.0D,
                                 DensityFunctions.constant(2.0D),
-                                DensityFunctions.constant(-2.0D)), //depth
-                        NoiseRouterData.getFunction(functions, NoiseRouterData.RIDGES), //ridges
-                        DensityFunctions.zero(), //initial density
+                                DensityFunctions.constant(-2.0D)),
+                        NoiseRouterData.getFunction(functions, NoiseRouterData.RIDGES),
+                        DensityFunctions.zero(),
                         DensityFunctions.mul(
                                 DensityFunctions.constant(0.64D),
                                 DensityFunctions.interpolated(
@@ -132,25 +130,17 @@ public class ModDimensions {
                                                 )
                                         )
                                 )
-                        ).squeeze(), //final density
-                        DensityFunctions.zero(), //vein toggle
-                        DensityFunctions.zero(), //vein ridged
-                        DensityFunctions.zero() //vein gap
+                        ).squeeze(),
+                        DensityFunctions.zero(),
+                        DensityFunctions.zero(),
+                        DensityFunctions.zero()
                 ),
                 SurfaceRules.sequence(
 
-                      //////bedrock floor
-                      //SurfaceRules.ifTrue(SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), SurfaceRules.state(Blocks.BEDROCK.defaultBlockState())),
-                      //SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.aboveBottom(110),1),SurfaceRules.state(Blocks.AIR.defaultBlockState())),
-                      //SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.aboveBottom(107),1), SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.hole()), SurfaceRules.state(SoilBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState()))),
-                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, CaveSurface.FLOOR), SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(33), 0)), SurfaceRules.state(SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState()))),
-                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR), SurfaceRules.state(SoilBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState())),
-
-                      //SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR), SurfaceRules.state(SoilBlocks.BLOOD_GRASS_BLOCK.get().defaultBlockState())),
                         ModSurfaceRules.makeRules()
 
                 ),
-                List.of(), //spawn targets
+                List.of(),
                 32,
                 false,
                 false,
@@ -160,9 +150,5 @@ public class ModDimensions {
 
     }
 
-
-
 }
-
-
 

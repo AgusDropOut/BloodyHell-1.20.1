@@ -45,7 +45,6 @@ public class CrimsonVeilHelper {
         });
     }
 
-    /* Synchronizes current value with the client */
     public static void sync(ServerPlayer player) {
         player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(cap -> {
             ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(cap.getCrimsonVeil()), player);

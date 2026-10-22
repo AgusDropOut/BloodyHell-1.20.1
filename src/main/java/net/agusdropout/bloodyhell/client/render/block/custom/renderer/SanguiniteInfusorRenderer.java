@@ -43,9 +43,9 @@ public class SanguiniteInfusorRenderer implements BlockEntityRenderer<Sanguinite
 
             RenderHelper.renderAtlasHeart(consumer, poseStack.last().pose(), null,
                     be.getLevel().getGameTime(), partialTick,
-                    c.x(), c.y(), c.z(), // RGB
-                    0.8f, // Alpha
-                    15728880 // Light
+                    c.x(), c.y(), c.z(),
+                    0.8f,
+                    15728880
             );
 
             poseStack.popPose();

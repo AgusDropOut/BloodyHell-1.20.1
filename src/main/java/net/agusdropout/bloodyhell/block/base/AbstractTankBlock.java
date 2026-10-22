@@ -1,6 +1,5 @@
 package net.agusdropout.bloodyhell.block.base;
 
-
 import net.agusdropout.bloodyhell.block.custom.mechanism.ConnectionType;
 import net.agusdropout.bloodyhell.block.entity.base.AbstractTankBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -136,7 +135,7 @@ public abstract class AbstractTankBlock extends BaseEntityBlock implements IFilt
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            // Add custom fluid dropping/voiding logic here if needed
+
             super.onRemove(state, level, pos, newState, isMoving);
         }
     }

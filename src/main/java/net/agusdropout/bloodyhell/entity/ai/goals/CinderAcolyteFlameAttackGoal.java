@@ -10,9 +10,9 @@ public class CinderAcolyteFlameAttackGoal extends Goal {
     private final CinderAcolyteEntity mob;
     private int attackTicks;
 
-    private final int DAMAGE_START_POINT = 15; // 0.75 seconds (Windup)
-    private final int ANIMATION_DURATION = 40;  // 3.0 seconds (Total)
-    private static final int minimunDistance = 16; // 4 Blocks sqr
+    private final int DAMAGE_START_POINT = 15;
+    private final int ANIMATION_DURATION = 40;
+    private static final int minimunDistance = 16;
 
     public CinderAcolyteFlameAttackGoal(CinderAcolyteEntity mob) {
         this.mob = mob;
@@ -52,14 +52,12 @@ public class CinderAcolyteFlameAttackGoal extends Goal {
     public void tick() {
         this.attackTicks++;
 
-
         if (this.attackTicks < DAMAGE_START_POINT) {
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
                 this.mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
             }
         }
-
 
         if (this.attackTicks >= DAMAGE_START_POINT) {
             if (this.attackTicks % 4 == 0) {

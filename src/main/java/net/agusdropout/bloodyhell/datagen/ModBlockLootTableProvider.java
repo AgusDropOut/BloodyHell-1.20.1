@@ -60,7 +60,6 @@ public abstract class ModBlockLootTableProvider extends BlockLootSubProvider {
         this.add(block.get(), (ore) -> createSilkTouchDispatchTable(ore, applyExplosionDecay(ore, LootItem.lootTableItem(drop).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))));
     }
 
-
     public void createGrassDrops(Supplier<? extends Block> grass, Item drop) {
         this.add(grass.get(), (block) -> createShearsDispatchTable(block, applyExplosionDecay(block, (LootItem.lootTableItem(drop).when(LootItemRandomChanceCondition.randomChance(0.125F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 2)))));
     }
@@ -68,7 +67,6 @@ public abstract class ModBlockLootTableProvider extends BlockLootSubProvider {
     public void createPlantsDrops(Supplier<? extends Block> grass, Item drop) {
         this.add(grass.get(), (block) -> createShearsDispatchTable(block, applyExplosionDecay(block, (LootItem.lootTableItem(drop).when(LootItemRandomChanceCondition.randomChance(0.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 2)))));
     }
-
 
     public void  createSilkTouchOrShearsDispatchTable(Block blockDrop, Item drop) {
         this.add(blockDrop, (block) -> createSilkTouchOrShearsDispatchTable(block, (LootItem.lootTableItem(drop))));
@@ -78,15 +76,10 @@ public abstract class ModBlockLootTableProvider extends BlockLootSubProvider {
                 LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
 
-                        // 1. Caso Silk Touch
                         .add(LootItem.lootTableItem(block)
                                 .when(HAS_SILK_TOUCH)
                         )
 
-
-
-
-                        // A. Blasphemite Nugget (Subido a 25%)
                         .add(LootItem.lootTableItem(BlasphemiteItems.BLASPHEMITE_NUGGET.get())
                                 .setWeight(25)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
@@ -99,7 +92,6 @@ public abstract class ModBlockLootTableProvider extends BlockLootSubProvider {
                                 .when(HAS_SILK_TOUCH.invert())
                         )
 
-
                         .add(LootItem.lootTableItem(Items.COBWEB)
                                 .setWeight(40)
                                 .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
@@ -107,6 +99,5 @@ public abstract class ModBlockLootTableProvider extends BlockLootSubProvider {
                         )
         );
     }
-
 
 }

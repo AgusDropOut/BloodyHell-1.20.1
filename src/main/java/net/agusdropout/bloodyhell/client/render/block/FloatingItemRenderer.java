@@ -14,13 +14,6 @@ public final class FloatingItemRenderer {
     private FloatingItemRenderer() {
     }
 
-    /**
-     * @param x,y,z         offset from the block origin
-     * @param scale         uniform scale (negative flips the model)
-     * @param spinSpeed     degrees per tick around Y
-     * @param bobAmplitude  vertical sway in blocks, 0 disables bobbing
-     * @param bobSpeed      radians per tick fed to the sway sine
-     */
     public record Style(double x, double y, double z, float scale, float spinSpeed,
                         float bobAmplitude, float bobSpeed, ItemDisplayContext context) {
     }

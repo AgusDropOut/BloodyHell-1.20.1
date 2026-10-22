@@ -15,13 +15,11 @@ import java.util.Locale;
 
 public class MagicFloorParticleOptions implements ParticleOptions {
 
-    // DATA (Same as before)
     private final Vector3f color;
     private final float size;
     private final boolean jitter;
     private final int lifetime;
 
-    // --- CODEC (Updated to create MagicFloorParticleOptions) ---
     public static final Codec<MagicFloorParticleOptions> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.FLOAT.fieldOf("r").forGetter(d -> d.color.x()),
@@ -33,7 +31,6 @@ public class MagicFloorParticleOptions implements ParticleOptions {
             ).apply(instance, MagicFloorParticleOptions::new)
     );
 
-    // --- DESERIALIZER (Updated) ---
     public static final ParticleOptions.Deserializer<MagicFloorParticleOptions> DESERIALIZER = new ParticleOptions.Deserializer<MagicFloorParticleOptions>() {
         @Override
         public MagicFloorParticleOptions fromCommand(ParticleType<MagicFloorParticleOptions> type, StringReader reader) throws CommandSyntaxException {
@@ -61,7 +58,6 @@ public class MagicFloorParticleOptions implements ParticleOptions {
         }
     };
 
-    // --- CONSTRUCTORS ---
     public MagicFloorParticleOptions(float r, float g, float b, float size, boolean jitter, int lifetime) {
         this.color = new Vector3f(r, g, b);
         this.size = size;
@@ -76,14 +72,11 @@ public class MagicFloorParticleOptions implements ParticleOptions {
         this.lifetime = lifetime;
     }
 
-    // GETTERS
     public Vector3f getColor() { return color; }
     public float getSize() { return size; }
     public boolean shouldJitter() { return jitter; }
     public int getLifetime() { return lifetime; }
 
-    // --- THE CRITICAL CHANGE ---
-    // This method tells the server: "I am a Floor Particle!"
     @Override
     public ParticleType<?> getType() {
         return ModParticles.MAGIC_FLOOR_PARTICLE.get();

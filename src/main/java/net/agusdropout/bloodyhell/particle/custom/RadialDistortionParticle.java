@@ -43,7 +43,7 @@ public class RadialDistortionParticle extends Particle {
 
     @Override
     public void render(VertexConsumer ignored, Camera camera, float partialTicks) {
-        // Access protected variables (xo, yo, zo, x, y, z) using 'this.'
+
         net.minecraft.world.phys.Vec3 camPos = camera.getPosition();
         double px = Mth.lerp(partialTicks, this.xo, this.x) - camPos.x;
         double py = Mth.lerp(partialTicks, this.yo, this.y) - camPos.y;
@@ -57,7 +57,6 @@ public class RadialDistortionParticle extends Particle {
 
         float currentSize = 0.5f + (time * 2.5f);
 
-        // Queue the distortion quad instead of drawing immediately
         Effects.RADIAL_DISTORTION.addDistortion(
                 poseStack.last().pose(),
                 currentSize,

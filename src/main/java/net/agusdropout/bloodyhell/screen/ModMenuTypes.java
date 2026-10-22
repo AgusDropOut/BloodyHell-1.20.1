@@ -16,8 +16,6 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, BloodyHell.MODID);
 
-    // --- Menu Registrations ---
-
     public static final RegistryObject<MenuType<BloodWorkBenchMenu>> BLOOD_WORKBENCH_MENU =
             registerMenuType(BloodWorkBenchMenu::new, "blood_workbench_menu");
 
@@ -33,8 +31,6 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<OmnitomeMenu>> OMNITOME_MENU =
             registerMenuType(OmnitomeMenu::new, "omnitome_menu");
 
-
-    // --- Helper Methods ---
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

@@ -57,9 +57,8 @@ public class NamelessTrialRiftEntity extends AbstractTrialRiftEntity {
                     }
                 }
 
-                // Spawns much more frequently (every 40 ticks instead of 50, and guaranteed)
                 if (this.tickCount % 40 == 0) {
-                    // Spawns 1 to 2 delusions at a time
+
                     int swarmSize = 1 + this.random.nextInt(2);
                     for (int i = 0; i < swarmSize; i++) {
                         this.spawnDelusionNear(player, serverLevel);
@@ -85,7 +84,7 @@ public class NamelessTrialRiftEntity extends AbstractTrialRiftEntity {
 
     private void spawnDelusionNear(Player player, ServerLevel level) {
         double angle = this.random.nextDouble() * Math.PI * 2;
-        // Spawns much closer: between 4.0 and 8.0 blocks away
+
         double distance = 4.0 + this.random.nextDouble() * 4.0;
 
         double spawnX = player.getX() + Math.cos(angle) * distance;
