@@ -101,7 +101,7 @@ public class SanguineSacrificeEntity extends Entity implements TraceableEntity, 
         super.tick();
 
 
-        // 🔹 Actualizar fases en CLIENTE leyendo de SynchedEntityData
+
         if (this.level().isClientSide) {
             emergePhase = entityData.get(EMERGE_PHASE);
             idlePhase = entityData.get(IDLE_PHASE);
@@ -114,7 +114,6 @@ public class SanguineSacrificeEntity extends Entity implements TraceableEntity, 
 
         }
 
-        // 🔹 Efecto sobre flechas cercanas
         List<Arrow> arrows = this.level().getEntitiesOfClass(Arrow.class, this.getBoundingBox().inflate(1.2D));
         for (Arrow arrow : arrows) {
             Vec3 selfPos = this.position().add(0, 1.6f, 0);
@@ -168,13 +167,13 @@ public class SanguineSacrificeEntity extends Entity implements TraceableEntity, 
                 retractPhase = true;
                 lifeTicks = 15;
             } else {
-                // 🔹 Manejo de daño a entidades cercanas
+
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2, 0.0, 0.2));
                 for (LivingEntity livingEntity : list) {
                     this.dealDamageTo(livingEntity);
                 }
 
-                // 🔹 Manejo de fases en SERVIDOR
+
                 if (emergePhase && lifeTicks < 150) {
                     idlePhase = true;
                     emergePhase = false;
@@ -195,7 +194,7 @@ public class SanguineSacrificeEntity extends Entity implements TraceableEntity, 
                 }
             }
 
-            // 🔹 Sincronizar fases con SynchedEntityData (solo en servidor)
+
             entityData.set(EMERGE_PHASE, emergePhase);
             entityData.set(RETRACT_PHASE, retractPhase);
             entityData.set(IDLE_PHASE, idlePhase);
@@ -206,7 +205,7 @@ public class SanguineSacrificeEntity extends Entity implements TraceableEntity, 
 
         }
 
-        // 🔹 Manejo de la fase de retracción
+
         if (retractPhase && lifeTicks==0) {
             if (!isTargetAlive){
                 if(isSacrificeableTarget){

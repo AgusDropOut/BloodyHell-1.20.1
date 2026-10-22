@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
+import net.agusdropout.bloodyhell.BloodyHell;
 import com.google.common.collect.ImmutableList;
 import net.agusdropout.bloodyhell.client.render.entity.layer.BloodFireLayer;
 import net.agusdropout.bloodyhell.client.render.entity.layer.PainThroneLayer;
@@ -60,7 +61,7 @@ public class EntityLayerHandler {
         try {
             renderer = event.getRenderer(entityType);
         } catch (Exception e) {
-            System.err.println("Failed to get renderer for entity: " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+            BloodyHell.LOGGER.error("Failed to get renderer for entity: " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
         }
 
         if (renderer != null) {
@@ -68,7 +69,7 @@ public class EntityLayerHandler {
                 renderer.addLayer(new BloodFireLayer<>(renderer));
                 renderer.addLayer(new VisceralLayer<>(renderer));
             } catch (Exception e) {
-                System.err.println("Failed to add layers to entity: " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+                BloodyHell.LOGGER.error("Failed to add layers to entity: " + ForgeRegistries.ENTITY_TYPES.getKey(entityType));
             }
         }
     }
@@ -83,9 +84,9 @@ public class EntityLayerHandler {
                 try {
 
                     geoEntityRenderer.addRenderLayer(new PainThroneLayer(geoEntityRenderer));
-                    System.out.println("Added PainThroneLayer to: " + entityGeoType.getDescriptionId());
+                    BloodyHell.LOGGER.debug("Added PainThroneLayer to: {}", entityGeoType.getDescriptionId());
                 } catch (Exception e) {
-                    System.err.println("Failed to add layer to Gecko entity: " + entityGeoType.getDescriptionId());
+                    BloodyHell.LOGGER.error("Failed to add layer to Gecko entity: " + entityGeoType.getDescriptionId());
                 }
             }
         }

@@ -19,14 +19,14 @@ import software.bernie.geckolib.core.object.PlayState;
 import java.util.function.Consumer;
 
 public class RhnullArmorItem extends ArmorItem implements GeoItem {
-    // 1. Necesitas el cache OBLIGATORIAMENTE para que no crashee
+
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public RhnullArmorItem(ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
     }
 
-    // 2. Esto es lo que hace que se vea el modelo 3D
+
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {

@@ -49,7 +49,6 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     private static final EntityDataAccessor<Boolean> HAS_EXPLODED = SynchedEntityData.defineId(StarfallProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_EXPLODED_CLIENTSIDE = SynchedEntityData.defineId(StarfallProjectile.class, EntityDataSerializers.BOOLEAN);
 
-    // NUEVO FLAG
     private static final EntityDataAccessor<Boolean> BREAKS_BLOCKS = SynchedEntityData.defineId(StarfallProjectile.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
@@ -71,7 +70,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
         this.entityData.define(SHOULD_EXPLODE, false);
         this.entityData.define(HAS_EXPLODED, false);
         this.entityData.define(HAS_EXPLODED_CLIENTSIDE, false);
-        // Por defecto true, pero lo cambiaremos en el Goal
+
         this.entityData.define(BREAKS_BLOCKS, true);
     }
 
@@ -95,7 +94,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
             }
             if (!isHasExplode()) {
                 checkCollisions();
-                // Lógica de movimiento guiado (Homing)
+
                 Vec3 current = this.getDeltaMovement();
                 Vec3 desiredHorizontal = Vec3.ZERO;
                 if (target != null && target.isAlive()) {
@@ -136,7 +135,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     }
 
     public void explode() {
-        // Objeto explosión base para cálculos de resistencia
+
         Explosion explosion = new Explosion(
                 this.level(),
                 this,
@@ -147,7 +146,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
                 this.getOnPos().getZ(),
                 (float) radius,
                 false,
-                Explosion.BlockInteraction.KEEP // NONE aquí para controlar destrucción manualmente abajo
+                Explosion.BlockInteraction.KEEP
         );
 
         spawnStarFallParticle();
@@ -159,7 +158,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
             spawnDustWave();
             spawnSmokeParticles();
 
-            // 2. LOGICA DE BLOQUES (SOLO SI ESTÁ ACTIVADA)
+
             if (shouldBreakBlocks()) {
                 BlockPos center = this.blockPosition();
                 int radius = 8;
@@ -176,7 +175,6 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
                     }
                 }
 
-                // Romper algunos bloques aleatorios (Efecto visual de impacto central)
                 for (int i = 0; i < Math.min(nearbyBlocks.size(), 24); i++) {
                     BlockPos pos = nearbyBlocks.get(this.random.nextInt(nearbyBlocks.size()));
                     BlockState state = this.level().getBlockState(pos);
@@ -196,7 +194,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
 
         level().playSound(null, this.blockPosition(), ModSounds.STARFALL_EXPLOSION_SOUND.get(), SoundSource.PLAYERS, 2.0f, 2.0f);
 
-        // Daño de área y destrucción masiva
+
         this.customExplosion(radius);
 
         this.setHasExploded(true);
@@ -210,7 +208,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     private void customExplosion(double radius) {
         if (this.level().isClientSide) return;
 
-        // 1. DAÑO A ENTIDADES (Siempre ocurre)
+
         List<LivingEntity> entities = this.level().getEntitiesOfClass(
                 LivingEntity.class,
                 this.getBoundingBox().inflate(radius)
@@ -222,7 +220,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
             }
         }
 
-        // 2. DESTRUCCION DE BLOQUES (Solo si shouldBreakBlocks es true)
+
         if (!shouldBreakBlocks()) return;
 
         BlockPos center = this.blockPosition();
@@ -249,7 +247,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
                     if (dist <= r) {
                         toRemove.add(pos);
                     } else {
-                        // Lógica de fragmentos extra
+
                         for (double shootTheta : shootThetas) {
                             double angleDiff = Math.abs(theta - shootTheta);
                             angleDiff = Math.min(angleDiff, 2 * Math.PI - angleDiff);
@@ -368,7 +366,7 @@ public class StarfallProjectile extends Projectile implements GeoEntity {
     public boolean isHasExplodeClientSide() { return this.entityData.get(HAS_EXPLODED_CLIENTSIDE); }
     public void setHasExplodedClientSide(boolean value) { this.entityData.set(HAS_EXPLODED_CLIENTSIDE, value); }
 
-    // Getter y Setter para la destrucción de bloques
+
     public boolean shouldBreakBlocks() { return this.entityData.get(BREAKS_BLOCKS); }
     public void setBreaksBlocks(boolean value) { this.entityData.set(BREAKS_BLOCKS, value); }
 

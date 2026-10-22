@@ -35,9 +35,9 @@ public class GiantBloodTrunkPlacer extends TrunkPlacer {
             List<FoliagePlacer.FoliageAttachment> list = Lists.newArrayList();
             OptionalInt optionalInt = OptionalInt.empty();
 
-            // Definir la altura del tronco y asegurarse de que sea al menos 8
+
             int minHeight = 10;
-            int height = minHeight + pRandom.nextInt(8); // Rango de altura entre 8 y 15 bloques
+            int height = minHeight + pRandom.nextInt(8);
 
 
 

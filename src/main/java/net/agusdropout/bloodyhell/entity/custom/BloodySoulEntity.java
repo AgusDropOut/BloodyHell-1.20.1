@@ -122,7 +122,7 @@ public class BloodySoulEntity extends Animal implements GeoEntity {
                         player.drop(soulFlask, false);
                     }
                 } else {
-                    // Si era un alma genérica sin datos de aliado, te da sangre normal
+
                     itemInHand.shrink(1);
                     ItemStack genericFlask = new ItemStack(FlaskItems.FILLED_BLOOD_FLASK.get());
                     if (!player.getInventory().add(genericFlask)) {

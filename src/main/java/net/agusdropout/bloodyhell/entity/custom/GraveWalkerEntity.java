@@ -39,7 +39,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     // --- ANIMACIONES ---
-    // Definimos la animación de golpe en escudo (0.5s)
+
     private static final RawAnimation SHIELD_HIT = RawAnimation.begin().thenPlay("shield_hit");
 
     // DATA SYNCED
@@ -91,12 +91,12 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
     public void aiStep() {
         super.aiStep();
 
-        // 1. Gestión del cooldown del escudo
+
         if (this.shieldCooldown > 0) {
             this.shieldCooldown--;
         }
 
-        // 2. Partículas visuales (Ceniza)
+
         if (this.level().isClientSide && this.tickCount % 5 == 0) {
             this.level().addParticle(ParticleTypes.ASH,
                     this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.getBbWidth(),
@@ -105,39 +105,36 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
                     0.0D, 0.0D, 0.0D);
         }
 
-        // 3. Movimiento al objetivo
         if(this.getTarget() != null && !this.isBlocking() && !this.isAttacking()) {
             this.getNavigation().moveTo(getTarget(), 1.0D);
         }
     }
 
-    // --- GESTIÓN DE DAÑO Y FEEDBACK VISUAL ---
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.isBlocking()) {
-            // Sonido de bloqueo
             this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
 
-            // Trigger Visual: Interrumpe el loop de escudo para mostrar el impacto
+
             if (!this.level().isClientSide) {
-                // Esto envía un paquete al cliente para reproducir "shield_hit" inmediatamente
+
                 this.triggerAnim("controller", "shield_hit");
             }
 
-            // Rebote genérico de proyectiles
+
             if (source.getDirectEntity() != null && source.getDirectEntity() != source.getEntity()) {
                 Entity projectile = source.getDirectEntity();
                 Vec3 motion = projectile.getDeltaMovement();
                 projectile.setDeltaMovement(motion.scale(-0.5));
                 projectile.setYRot(projectile.getYRot() + 180.0F);
             }
-            // Anular daño (return false)
+
             return false;
         }
         return super.hurt(source, amount);
     }
 
-    // --- LOGICA DE MUERTE ---
     @Override
     protected void tickDeath() {
         if (!isDeadAnimation) {
@@ -147,7 +144,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         }
         deathTimer--;
 
-        // Partículas de muerte
+
         if (level().isClientSide && deathTimer > 0) {
             for (int i = 0; i < 3; i++) {
                 level().addParticle(ModParticles.MAGIC_LINE_PARTICLE.get(),
@@ -187,13 +184,12 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
 
     // --- GECKOLIB CONTROLLERS ---
     private PlayState predicate(AnimationState event) {
-        // Muerte
         if (this.isDeadAnimation) {
             event.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
         }
 
-        // Ataque (Con reset forzado para repetición)
+
         if (this.isAttacking()) {
             if (event.getController().getAnimationState() == AnimationController.State.STOPPED) {
                 event.getController().forceAnimationReset();
@@ -202,7 +198,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
             return PlayState.CONTINUE;
         }
 
-        // Escudo (Hold on last frame para postura estática)
+
         if (this.isBlocking()) {
             event.getController().setAnimation(RawAnimation.begin().then("shield", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
@@ -221,8 +217,8 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // Registramos el controlador con una transición suave de 5 ticks
-        // Y añadimos el trigger "shield_hit" para feedback visual instantáneo
+
+
         controllers.add(new AnimationController<>(this, "controller", 5, this::predicate)
                 .triggerableAnim("shield_hit", SHIELD_HIT));
     }
@@ -237,8 +233,8 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         private final GraveWalkerEntity mob;
         private int attackTicks;
         private int cooldownBetweenAttacks = 0;
-        private final int ATTACK_DELAY = 16;     // Momento del impacto
-        private final int ANIMATION_LENGTH = 30; // Duración total animación
+        private final int ATTACK_DELAY = 16;
+        private final int ANIMATION_LENGTH = 30;
 
         public GraveWalkerAttackGoal(GraveWalkerEntity mob) {
             this.mob = mob;
@@ -247,13 +243,11 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
 
         @Override
         public boolean canUse() {
-            // Cooldown interno breve para permitir reset visual
             if (cooldownBetweenAttacks > 0) {
                 cooldownBetweenAttacks--;
                 return false;
             }
             LivingEntity target = this.mob.getTarget();
-            // Distancia < 9.0D (3 bloques)
             return target != null && target.isAlive() && this.mob.distanceToSqr(target) < 9.0D && !this.mob.isBlocking();
         }
 
@@ -273,7 +267,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         public void stop() {
             this.mob.setAttacking(false);
             this.attackTicks = 0;
-            this.cooldownBetweenAttacks = 5; // Pausa de 0.25s entre ataques
+            this.cooldownBetweenAttacks = 5;
         }
 
         @Override
@@ -318,7 +312,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
                     && !this.mob.isShieldOnCooldown()
                     && !this.mob.isAttacking()
                     && this.mob.distanceToSqr(target) < 64.0D
-                    && this.mob.getRandom().nextInt(20) == 0; // 1 de cada 20 ticks (promedio 1 seg)
+                    && this.mob.getRandom().nextInt(20) == 0;
         }
 
         @Override
@@ -337,7 +331,7 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         @Override
         public void stop() {
             this.mob.setBlocking(false);
-            this.mob.setShieldCooldown(60); // Cooldown de 3 segundos
+            this.mob.setShieldCooldown(60);
         }
 
         @Override
@@ -350,7 +344,6 @@ public class GraveWalkerEntity extends Monster implements GeoEntity {
         }
     }
 
-    // Sonidos base
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WITHER_SKELETON_AMBIENT; }
     @Override protected SoundEvent getHurtSound(DamageSource s) { return SoundEvents.IRON_GOLEM_HURT; }
     @Override protected void playStepSound(BlockPos p, BlockState b) { this.playSound(SoundEvents.IRON_GOLEM_STEP, 1.0F, 0.5F); }

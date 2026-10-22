@@ -26,27 +26,25 @@ public class VeilStalkerTargetGoal<T extends LivingEntity> extends Goal {
     public boolean canUse() {
         LivingEntity currentTarget = stalker.getTarget();
 
-        // Si ya tiene target pero murió, resetearlo
+
         if (currentTarget != null && !currentTarget.isAlive()) {
             stalker.setTarget(null);
             currentTarget = null;
         }
 
-        // Si ya tiene target vivo, no buscar otro
+
         if (currentTarget != null) return false;
 
-        // Obtener rango desde FOLLOW_RANGE
         double range = stalker.getAttributeValue(Attributes.FOLLOW_RANGE);
         AABB searchBox = stalker.getBoundingBox().inflate(range);
 
-        // Buscar entidades del tipo especificado
         List<T> potentialTargets = stalker.level().getEntitiesOfClass(targetClass, searchBox,
                 entity -> targeting.test(stalker, entity)
         );
 
         if (potentialTargets.isEmpty()) return false;
 
-        // Ordenar por distancia y asignar target
+
         potentialTargets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(stalker)));
         stalker.setTarget(potentialTargets.get(0));
         return true;
@@ -56,7 +54,7 @@ public class VeilStalkerTargetGoal<T extends LivingEntity> extends Goal {
     public boolean canContinueToUse() {
         LivingEntity target = stalker.getTarget();
 
-        // Resetear target si murió mientras lo seguía
+
         if (target != null && !target.isAlive()) {
             stalker.setTarget(null);
             return false;

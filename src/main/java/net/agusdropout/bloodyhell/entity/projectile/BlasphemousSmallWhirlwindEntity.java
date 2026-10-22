@@ -49,12 +49,12 @@ public class BlasphemousSmallWhirlwindEntity extends AbstractHurtingProjectile i
 
     @Nullable private BlasphemousWhirlwindEntity parentRing;
 
-    // ===== NUEVOS CAMPOS PARA EL "RETROCESO" =====
+
     private double xPower;
     private double yPower;
     private double zPower;
 
-    // Sincronización de estados
+
     private static final EntityDataAccessor<Boolean> RETURNING = SynchedEntityData.defineId(BlasphemousSmallWhirlwindEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_RETURNED = SynchedEntityData.defineId(BlasphemousSmallWhirlwindEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -74,7 +74,7 @@ public class BlasphemousSmallWhirlwindEntity extends AbstractHurtingProjectile i
         this.parentRing = parent;
     }
 
-    // ===== MÉTODO PARA CONFIGURAR EL "POWER" COMO EN AbstractHurtingProjectile =====
+
     public void shootPower(Vec3 direction, float velocity) {
         Vec3 norm = direction.normalize().scale(velocity);
         this.xPower = norm.x;
@@ -87,7 +87,6 @@ public class BlasphemousSmallWhirlwindEntity extends AbstractHurtingProjectile i
     public void tick() {
         super.tick();
 
-        // === SIMULAR EL EMPUJE CONSTANTE ===
         this.setDeltaMovement(this.getDeltaMovement().add(xPower, yPower, zPower));
         this.move(MoverType.SELF, this.getDeltaMovement());
 
@@ -215,11 +214,11 @@ public class BlasphemousSmallWhirlwindEntity extends AbstractHurtingProjectile i
             Vec3 attackerPos = source.getEntity().position();
             Vec3 dir = this.position().subtract(attackerPos).normalize();
 
-            double knockbackStrength = 2; // Ajusta la fuerza del empuje
+            double knockbackStrength = 2;
             this.setDeltaMovement(this.getDeltaMovement().add(dir.scale(knockbackStrength)));
             this.wasHit = true;
 
-            // Opcional: ponerle un breve "stun" para que deje de perseguir al target
+
             this.currentTarget = null;
         }
 
@@ -229,20 +228,20 @@ public class BlasphemousSmallWhirlwindEntity extends AbstractHurtingProjectile i
     private boolean isValidTarget(LivingEntity candidate) {
         if (candidate == null || !candidate.isAlive()) return false;
 
-        // No atacar al owner
+
         if (candidate == getOwner()) return false;
 
-        // Si es una entidad domesticable y tiene mismo dueño, no atacarla
+
         if (candidate instanceof TamableAnimal tamable && tamable.getOwner() == this.getOwner()) {
             return false;
         }
 
-        // Si es otra entidad de tu mod que quieras excluir
+
         if (candidate instanceof BlasphemousArmEntity) {
             if(((BlasphemousArmEntity) candidate).getOwner() == this.getOwner()) return false;
         }
 
-        // Más condiciones a futuro acá
+
 
         return true;
     }

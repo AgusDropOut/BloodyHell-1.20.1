@@ -57,7 +57,7 @@ public class TentacleEntity extends Entity {
 
     private int initialDelay = 0;
     private Player summoner;
-    private boolean hasPlayedSpawnSound = false; // Para que suene al aparecer
+    private boolean hasPlayedSpawnSound = false;
 
     public TentacleEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -154,7 +154,6 @@ public class TentacleEntity extends Entity {
             }
 
             if (currentLife >= DEATH_TIME) {
-                // Sonido de desaparecer (glitch/magia oscura)
                 this.level().playSound(null, this.blockPosition(), SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.HOSTILE, 1.0f, 0.8f);
                 this.discard();
             }

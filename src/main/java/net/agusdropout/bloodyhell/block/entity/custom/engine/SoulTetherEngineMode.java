@@ -128,7 +128,6 @@ public class SoulTetherEngineMode implements IEngineMode {
 
             if (player != null && player.isAlive() && engine.getLevel().getGameTime() % 20 == 0) {
                 player.hurt(player.damageSources().magic(), 1.0f);
-                System.out.println("hola");
 
                 if (player.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ModParticles.VICERAL_PARTICLE.get(),

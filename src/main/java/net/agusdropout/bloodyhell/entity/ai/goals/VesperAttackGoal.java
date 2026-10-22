@@ -64,7 +64,6 @@ public class VesperAttackGoal extends MeleeAttackGoal {
     }
 
     protected boolean isTimeToStartAttackAnimation() {
-        System.out.println(ticksUntilNextAttack <= attackDelay);
         return this.ticksUntilNextAttack <= attackDelay;
     }
 
@@ -75,7 +74,6 @@ public class VesperAttackGoal extends MeleeAttackGoal {
 
     protected void performAttack(LivingEntity pEnemy) {
         this.resetAttackCooldown();
-        System.out.println("g");
         this.mob.swing(InteractionHand.MAIN_HAND);
         this.mob.doHurtTarget(pEnemy);
     }
@@ -90,8 +88,6 @@ public class VesperAttackGoal extends MeleeAttackGoal {
         ServerLevel serverLevel = (ServerLevel) this.mob.level();
 
 
-            //serverLevel.sendParticles(ModParticles.LIGHT_PARTICLES.get(), mob.getX(), mob.getY(), mob.getZ() , 0, 0.2, 0);
-            //serverLevel.addAlwaysVisibleParticle(ModParticles.LIGHT_PARTICLES.get(), mob.getX()+1, mob.getY(), mob.getZ()+1 , 0, 0.2, 0);
 
 
 

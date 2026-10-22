@@ -83,26 +83,25 @@ public abstract class ModBlockLootTableProvider extends BlockLootSubProvider {
                                 .when(HAS_SILK_TOUCH)
                         )
 
-                        // 2. Caso Lotería (Sin Silk Touch)
-                        // Total de peso: 25 + 35 + 40 = 100 (para que sea fácil calcular %)
+
+
 
                         // A. Blasphemite Nugget (Subido a 25%)
                         .add(LootItem.lootTableItem(BlasphemiteItems.BLASPHEMITE_NUGGET.get())
-                                .setWeight(25) // Antes era 10
+                                .setWeight(25)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
                                 .when(HAS_SILK_TOUCH.invert())
                         )
 
-                        // B. Huesos (Bajado un poco a 35%)
                         .add(LootItem.lootTableItem(Items.BONE)
-                                .setWeight(35) // Antes era 45
+                                .setWeight(35)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
                                 .when(HAS_SILK_TOUCH.invert())
                         )
 
-                        // C. Telaraña (Bajado a 40%)
+
                         .add(LootItem.lootTableItem(Items.COBWEB)
-                                .setWeight(40) // Antes era 45
+                                .setWeight(40)
                                 .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
                                 .when(HAS_SILK_TOUCH.invert())
                         )

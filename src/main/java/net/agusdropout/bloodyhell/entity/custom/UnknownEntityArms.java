@@ -179,7 +179,7 @@ public class UnknownEntityArms extends Entity implements TraceableEntity, GeoEnt
             entityData.set(IDLE_PHASE, idlePhase);
             entityData.set(LIFE_TICKS, lifeTicks);
 
-            // 🔹 Manejo de la fase de retracción
+
             if (retractPhase && lifeTicks < 0) {
                 this.discard();
             }

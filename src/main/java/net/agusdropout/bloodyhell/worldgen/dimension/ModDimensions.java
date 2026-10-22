@@ -75,7 +75,7 @@ public class ModDimensions {
         context.register(SOUL_DIMENSION_KEY, new LevelStem(
                 dimTypes.getOrThrow(SOUL_DIMENSION_TYPE),
                 new NoiseBasedChunkGenerator(
-                        buildBiomeSource(biomeRegistry),  // Biomes encima del terreno
+                        buildBiomeSource(biomeRegistry),
                         noiseGenSettings.getOrThrow(SOUL_DIMENSION_NOISE_GEN) // Terreno base
                 )
         ));

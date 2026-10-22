@@ -720,7 +720,6 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_smooth_blasphemous_sandstone_slab", has(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB.get()))
                 .save(consumer, name("chiseled_blasphemous_sandstone"));
 
-        // --- ESCALERAS Y LOSAS ---
         makeStairs(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_STAIRS, SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
         makeSlab(SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_SLAB, SandstoneBlocks.SMOOTH_BLASPHEMOUS_SANDSTONE_BLOCK).save(consumer);
 

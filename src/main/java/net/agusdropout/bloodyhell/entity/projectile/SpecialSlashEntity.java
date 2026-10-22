@@ -1,6 +1,6 @@
 package net.agusdropout.bloodyhell.entity.projectile;
 
-import net.agusdropout.bloodyhell.entity.ModEntityTypes; // Asegurate de tener esto
+import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

@@ -149,17 +149,12 @@ public class EyeshellSnailEntity extends Animal implements GeoEntity, Shearable,
    //    ItemStack itemstack = p_29853_.getItemInHand(p_29854_);
    //    if (false && itemstack.getItem() == Items.SHEARS) { //Forge: Moved to onSheared
    //        if (!this.level().isClientSide && this.readyForShearing()) {
-   //            this.shear(SoundSource.PLAYERS);
-   //            this.gameEvent(GameEvent.SHEAR, p_29853_);
    //            itemstack.hurtAndBreak(1, p_29853_, (p_29822_) -> {
    //                p_29822_.broadcastBreakEvent(p_29854_);
    //            });
-   //            return InteractionResult.SUCCESS;
    //        } else {
-   //            return InteractionResult.CONSUME;
    //        }
    //    } else {
-   //        return super.mobInteract(p_29853_, p_29854_);
    //    }
    //}
     public void shear(SoundSource p_29819_) {

@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.client.render.item.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis; // En versiones anteriores puede ser Vector3f
+import com.mojang.math.Axis;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;

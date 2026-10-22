@@ -63,7 +63,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
     private int teleportMaxCooldown = 150;
     private int avoidDistance = 6;
 
-    // Cooldown para esquivar
     private int dodgeCooldown = 60;
 
     private int riseTicksDuration = 80;
@@ -77,7 +76,7 @@ public class SelioraEntity extends Monster implements GeoEntity{
     private int DeathCooldown = 100;
     private boolean isAlreadyDead = false;
 
-    // NOTA: Eliminé la variable local "isSecondPhase" porque ahora usamos SynchedEntityData
+
 
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -90,10 +89,10 @@ public class SelioraEntity extends Monster implements GeoEntity{
 
     private static final EntityDataAccessor<Boolean> IS_STARTING_SECOND_PHASE = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
 
-    // Sincronización para esquivar
+
     private static final EntityDataAccessor<Boolean> DODGE_ACTIVE = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
 
-    // --- NUEVO: Sincronización de Fase 2 (Solución al Bug) ---
+
     private static final EntityDataAccessor<Boolean> IS_SECOND_PHASE_SYNCED = SynchedEntityData.defineId(SelioraEntity.class, EntityDataSerializers.BOOLEAN);
 
 
@@ -224,10 +223,10 @@ public class SelioraEntity extends Monster implements GeoEntity{
         } else if (this.isStarFallActive()) {
             state.getController().setAnimation(RawAnimation.begin().then("starfall", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
-        } else if (this.isSecondPhase() && this.isJumpAttackActive()) { // Usamos el getter sincronizado
+        } else if (this.isSecondPhase() && this.isJumpAttackActive()) {
             state.getController().setAnimation(RawAnimation.begin().then("jump", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
-        } else if (this.isSecondPhase() && this.isChargeAttackActive()) { // Usamos el getter sincronizado
+        } else if (this.isSecondPhase() && this.isChargeAttackActive()) {
             state.getController().setAnimation(RawAnimation.begin().then("charged_attack", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         } else if (state.isMoving()) {
@@ -274,7 +273,7 @@ public class SelioraEntity extends Monster implements GeoEntity{
                 this.heal(this.getMaxHealth());
                 this.setSecondPhaseStarting(false);
 
-                // ACTUALIZACIÓN CLAVE: Usamos el setter sincronizado
+
                 this.setSecondPhase(true);
             }
 
@@ -283,7 +282,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
             if (this.isDodgeActive()) {
                 return;
             }
-            // Verificamos usando el getter sincronizado
             if (this.getTarget() != null && !this.isDodgeActive() && !this.isStarFallActive() && !this.isWhirlWindActive() && !this.isRiseActive() && !this.isJumpAttackActive() && !this.isChargeAttackActive() && !this.isSecondPhaseStarting() && this.isSecondPhase()) {
                 this.getNavigation().moveTo(getTarget(), 1.5);
             } else {
@@ -316,7 +314,7 @@ public class SelioraEntity extends Monster implements GeoEntity{
         }
     }
 
-    // --- MÉTODOS DE DAÑO ---
+
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
@@ -324,7 +322,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
             return false;
         }
 
-        // Usamos el getter sincronizado
         if (!this.isSecondPhase() && (this.getHealth() - amount <= 0 || this.getHealth() - amount < 10)) {
             this.setHealth(1.0F);
             this.setSecondPhaseStarting(true);
@@ -334,7 +331,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
             return false;
         }
 
-        // Usamos el getter sincronizado
         if (this.isSecondPhase() && this.getHealth() - amount <= 0) {
             this.isAlreadyDead = true;
             return super.hurt(source, amount);
@@ -351,7 +347,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
         return false;
     }
 
-    // --- SONIDOS ---
 
     protected SoundEvent getAmbientSound() {
         // Getter sincronizado
@@ -379,7 +374,6 @@ public class SelioraEntity extends Monster implements GeoEntity{
         return 1F;
     }
 
-    // --- LOGICA DE PARTICULAS ---
 
     private void spawnSecondPhaseParticles() {
         if (!(level() instanceof ServerLevel server)) return;
@@ -428,7 +422,7 @@ public class SelioraEntity extends Monster implements GeoEntity{
     public void setRiseCooldown(int riseCooldown) { this.riseCooldown = riseCooldown; }
 
     public boolean canUseDodge() {
-        // Usamos getter sincronizado isSecondPhase() implícitamente en las validaciones si fuera necesario
+
         return this.dodgeCooldown <= 0 && this.isAlive() && !this.isSecondPhaseStarting()
                 && !this.isStarFallActive() && !this.isRiseActive() && !this.isWhirlWindActive()
                 && !this.isJumpAttackActive() && !this.isChargeAttackActive() && !this.isSecondPhase()  && this.getTarget() != null;
@@ -438,7 +432,7 @@ public class SelioraEntity extends Monster implements GeoEntity{
     public void setDodgeActive(boolean active) { this.entityData.set(DODGE_ACTIVE, active); }
     public void setDodgeCooldown(int ticks) { this.dodgeCooldown = ticks; }
 
-    // Validación de Goals usando el getter sincronizado de isSecondPhase()
+
     public boolean canUseSummonBlasphemousArmsGoal() {
         return this.getRiseCooldown() <= 0 && this.isAlive() && this.getTarget() != null && !this.isSecondPhase() && !this.isStarFallActive() && !this.isWhirlWindActive() && !isSecondPhaseStarting();
     }

@@ -8,8 +8,8 @@ import net.minecraft.world.phys.Vec3;
 public class KeepDistanceGoal extends Goal {
     private final BlasphemousMalformationEntity entity;
     private final double moveSpeed;
-    private final double minDistance; // Distancia mínima antes de retroceder
-    private final double maxDistance; // Distancia máxima antes de avanzar
+    private final double minDistance;
+    private final double maxDistance;
 
     public KeepDistanceGoal(BlasphemousMalformationEntity entity, double moveSpeed, double minDistance, double maxDistance) {
         this.entity = entity;

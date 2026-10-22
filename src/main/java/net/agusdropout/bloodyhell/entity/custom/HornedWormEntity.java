@@ -251,7 +251,6 @@ public class HornedWormEntity extends Monster implements GeoEntity {
     @Override
     public boolean canCollideWith(Entity p_20303_) {
         //if(this.isBurrowed() || this.getIsAttacking()) {
-        //    return false;
         //} else return super.canCollideWith(p_20303_);
         return false;
     }
@@ -291,31 +290,30 @@ public class HornedWormEntity extends Monster implements GeoEntity {
     public void spawnMovingWhileBurrowedParticles() {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
 
-        // Bloque directamente debajo del gusano
         BlockPos belowPos = this.blockPosition().below();
         BlockState belowBlock = serverLevel.getBlockState(belowPos);
 
-        // Solo spawnear partículas si el bloque no es aire ni líquido
+
         if (belowBlock.isAir() || belowBlock.getFluidState().isSource()) return;
 
-        // Obtenemos el movimiento actual de la entidad
+
         Vec3 motion = this.getDeltaMovement();
 
-        // Invertimos el movimiento (para que las partículas vayan hacia atrás)
-        double vx = -motion.x * 0.5; // factor de dispersión
-        double vy = Math.abs(motion.y) * 0.3 + 0.05; // un poquito hacia arriba
+
+        double vx = -motion.x * 0.5;
+        double vy = Math.abs(motion.y) * 0.3 + 0.05;
         double vz = -motion.z * 0.5;
 
-        // Spawnear las partículas del bloque
+
         serverLevel.sendParticles(
                 new BlockParticleOption(ParticleTypes.BLOCK, belowBlock),
                 this.getX(), this.getY() + 0.1, this.getZ(),
-                8,                     // cantidad
-                0.25, 0.1, 0.25,       // dispersión inicial
-                0                      // velocidad base (usamos la nuestra)
+                8,
+                0.25, 0.1, 0.25,
+                0
         );
 
-        // Opcional: emitir una ráfaga de partículas direccionales (más dinámico)
+
         for (int i = 0; i < 5; i++) {
             double spreadX = vx + (serverLevel.random.nextDouble() - 0.5) * 0.1;
             double spreadY = vy + (serverLevel.random.nextDouble() - 0.5) * 0.05;
@@ -383,7 +381,7 @@ public class HornedWormEntity extends Monster implements GeoEntity {
 
 
 
-    
+
 
 
 }

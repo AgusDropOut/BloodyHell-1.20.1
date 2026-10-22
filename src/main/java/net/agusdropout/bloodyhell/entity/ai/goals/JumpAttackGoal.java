@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.SelioraEntity;
-import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake; // Importamos tu clase
+import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -47,17 +47,14 @@ public class JumpAttackGoal extends Goal {
     @Override
     public void tick() {
         if (chargeTicks > 0) {
-            // Fase de carga
             entity.setDeltaMovement(Vec3.ZERO);
             chargeTicks--;
         } else if (chargeTicks == 0 && !hasJumped) {
-            // Salto
             LivingEntity target = entity.getTarget();
             if (target != null) {
                 Vec3 targetDirection = target.position().subtract(entity.position()).normalize();
                 entity.setDeltaMovement(targetDirection.add(0, 1.2, 0));
 
-                // Sonidos de despegue
                 entity.level().playSound(null, entity.getOnPos(), ModSounds.SELIORA_JUMP_ATTACK_SOUND.get(),
                         SoundSource.HOSTILE, 1.5F, 0.9F + entity.level().random.nextFloat() * 0.2F);
                 entity.level().playSound(null, entity.getOnPos(), SoundEvents.ENDER_DRAGON_FLAP,
@@ -65,7 +62,7 @@ public class JumpAttackGoal extends Goal {
             }
             hasJumped = true;
         } else if (!entity.onGround()) {
-            // En el aire
+
             LivingEntity target = entity.getTarget();
             if (target != null && target.isAlive()) {
                 entity.lookAt(EntityAnchorArgument.Anchor.EYES, target.position());
@@ -98,20 +95,18 @@ public class JumpAttackGoal extends Goal {
         double damage = 20.0;
 
         // --- 1. CAMERA SHAKE ---
-        // Radio: 30 bloques | Magnitud: 0.8 (fuerte) | Duración: 10 ticks | Fade: 10 ticks
+
         EntityCameraShake.cameraShake(level, entity.position(), 30.0f, 0.8f, 10, 10);
 
-        // --- 2. SONIDOS DE IMPACTO ---
-        // Sonido pesado de yunque + explosión genérica para dar "peso"
+
         level.playSound(null, entity.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.HOSTILE, 1.0F, 0.5F);
         level.playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 0.5F, 0.5F);
 
-        // --- 3. DAÑO Y EMPUJE ---
+
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class,
                 entity.getBoundingBox().inflate(radius),
                 e -> e != entity && e.isAlive())) {
             e.hurt(entity.damageSources().mobAttack(entity), (float) damage);
-            // Empuje vertical
             e.push(0, 0.6, 0);
         }
 
@@ -151,7 +146,7 @@ public class JumpAttackGoal extends Goal {
                                 10, 0.2, 0.2, 0.2, 0.15
                         );
                         if (r == 0) {
-                            // Explosión visual en el centro
+
                             server.sendParticles(ParticleTypes.EXPLOSION,
                                     entity.getX(), entity.getY(), entity.getZ(),
                                     2, 0.5, 0.0, 0.5, 0.0);

@@ -84,14 +84,14 @@ public class BloodDirtFarmlandBlock extends FarmBlock {
     public void fallOn(Level level, BlockState blockState, BlockPos blockPos, Entity entity, float v) {
 
             if (!level.isClientSide() && blockState.getBlock() instanceof FarmBlock) {
-                // Acciones específicas para el bloque de tierra de cultivo (FarmlandBlock)
-                BlockState newState = SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState(); // Nuevo estado de bloque
-                level.setBlockAndUpdate(blockPos, newState); // Cambiar el bloque a "blood dirt block"
 
-                // Realizar otras acciones necesarias, como causar daño a la entidad
+                BlockState newState = SoilBlocks.BLOOD_DIRT_BLOCK.get().defaultBlockState();
+                level.setBlockAndUpdate(blockPos, newState);
+
+
                 entity.causeFallDamage(v, 1.0F, level.damageSources().fall());
             } else {
-                // Si no es tierra de cultivo, simplemente causar daño por la caída normalmente
+
                 entity.causeFallDamage(v, 1.0F, level.damageSources().fall());
             }
         }

@@ -9,7 +9,7 @@ public class BloodSigilParticle extends TextureSheetParticle {
 
     protected BloodSigilParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
         super(level, x, y, z);
-        this.lifetime = 20 + this.random.nextInt(10); // duración 20-30 ticks
+        this.lifetime = 20 + this.random.nextInt(10);
 
         this.xd = vx;
         this.yd = vy;

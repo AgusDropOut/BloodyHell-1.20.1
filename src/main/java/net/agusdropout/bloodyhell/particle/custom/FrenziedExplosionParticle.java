@@ -53,7 +53,6 @@ public class FrenziedExplosionParticle extends Particle {
         PoseStack poseStack = new PoseStack();
         poseStack.translate(renderX, renderY, renderZ);
         poseStack.mulPose(camera.rotation());
-        //poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180.0F));
 
         float time = ShaderTime.seconds();
         float lifeProgress = 1.0F - ((float)this.age / (float)this.lifetime);

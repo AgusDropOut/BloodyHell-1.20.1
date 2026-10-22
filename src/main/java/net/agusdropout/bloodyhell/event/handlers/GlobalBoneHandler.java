@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.event.handlers;
 
+import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.PainThroneRegistry;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TetherParticleOptions;
 import net.agusdropout.bloodyhell.util.bones.BoneManipulator;
@@ -82,8 +83,7 @@ public class GlobalBoneHandler {
         } else if (model instanceof net.minecraft.client.model.ListModel<?> listModel) {
             listModel.parts().forEach(breakableParts::add);
         } else {
-            System.out.println("WARNING: Unhandled Model Type Detected!");
-            System.out.println("Model Class: " + model.getClass().getName());
+            BloodyHell.LOGGER.warn("Unhandled model type detected: {}", model.getClass().getName());
         }
 
         breakableParts.removeIf(Objects::isNull);

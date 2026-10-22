@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModStructures {
 
-    // Registro para TIPOS DE ESTRUCTURA (La definición lógica general)
+
     public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE_TYPE, BloodyHell.MODID);
 
 
@@ -30,6 +30,6 @@ public class ModStructures {
 
     public static void register(IEventBus eventBus){
         STRUCTURES.register(eventBus);
-        PIECE_TYPES.register(eventBus); // ¡No olvides registrar el nuevo DeferredRegister!
+        PIECE_TYPES.register(eventBus);
     }
 }

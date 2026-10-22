@@ -17,7 +17,7 @@ public class SelioraDodgeGoal extends Goal {
     private int dodgeTimer;
     private final int MAX_DODGE_DURATION = 15; // 0.75 segundos
 
-    // CAMBIO: Aumentado de 1.5f a 2.3f para que recorra más distancia rápido
+
     private final float DODGE_SPEED = 2.3f;
 
     public SelioraDodgeGoal(SelioraEntity seliora) {
@@ -31,7 +31,7 @@ public class SelioraDodgeGoal extends Goal {
             return false;
         }
 
-        // A. Jugador demasiado cerca (Melee) - Aumentado rango de reacción a 5
+
         if (seliora.distanceTo(seliora.getTarget()) < 5.0D) {
             return true;
         }
@@ -68,7 +68,7 @@ public class SelioraDodgeGoal extends Goal {
         Vec3 dodgeVec;
 
         Random rand = new Random();
-        int direction = rand.nextInt(3); // 0: Izquierda, 1: Derecha, 2: Atrás
+        int direction = rand.nextInt(3);
 
         if (target != null && direction == 2) {
             Vec3 toTarget = target.position().subtract(seliora.position()).normalize();
@@ -79,22 +79,22 @@ public class SelioraDodgeGoal extends Goal {
             else dodgeVec = right;
         }
 
-        // CAMBIO: Agregado 0.4 en Y para un pequeño "salto" que reduce fricción y alarga la distancia
+
         seliora.setDeltaMovement(dodgeVec.x * DODGE_SPEED, 0, dodgeVec.z * DODGE_SPEED);
 
         if (target != null) {
             seliora.getLookControl().setLookAt(target, 30.0F, 30.0F);
         }
 
-        // Sonido de "dash" mágico
+
         seliora.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0f, 2.0f);
     }
 
     @Override
     public void tick() {
-        // CAMBIO: Mantener inercia los primeros ticks para que no frene de golpe
+
         if (dodgeTimer > 5) {
-            // Reducimos la fricción del aire artificialmente para que deslice más
+
             Vec3 current = seliora.getDeltaMovement();
             seliora.setDeltaMovement(current.x * 0.95, current.y, current.z * 0.95);
         }
@@ -104,6 +104,6 @@ public class SelioraDodgeGoal extends Goal {
     @Override
     public void stop() {
         this.seliora.setDodgeActive(false);
-        this.seliora.setDodgeCooldown(60); // 3 segundos de cooldown
+        this.seliora.setDodgeCooldown(60);
     }
 }

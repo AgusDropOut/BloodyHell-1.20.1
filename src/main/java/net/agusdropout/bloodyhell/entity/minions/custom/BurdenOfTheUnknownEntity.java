@@ -87,7 +87,6 @@ public class BurdenOfTheUnknownEntity extends AbstractMinionEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<BurdenOfTheUnknownEntity> controller = new AnimationController<>(this, "controller", 5, state -> {
            // if (this.getIsSummoning()) {
-           //     return state.setAndContinue(RawAnimation.begin().thenLoop("summon"));
            // }
             if (state.isMoving()) {
                 return state.setAndContinue(RawAnimation.begin().thenLoop("walk"));

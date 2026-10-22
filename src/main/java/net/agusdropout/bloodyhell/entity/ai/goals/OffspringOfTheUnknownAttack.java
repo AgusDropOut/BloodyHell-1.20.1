@@ -16,8 +16,8 @@ import java.util.List;
 
 public class OffspringOfTheUnknownAttack extends Goal {
     private final OffspringOfTheUnknownEntity entity;
-    private static final double JUMP_FORCE = 1.0; // Ajusta según sea necesario
-    private static final double DAMAGE_RADIUS = 1.5; // Radio de daño
+    private static final double JUMP_FORCE = 1.0;
+    private static final double DAMAGE_RADIUS = 1.5;
     private int goalTime;
 
     public OffspringOfTheUnknownAttack(OffspringOfTheUnknownEntity entity) {
@@ -38,18 +38,18 @@ public class OffspringOfTheUnknownAttack extends Goal {
 
         entity.swing(InteractionHand.MAIN_HAND);
 
-        // Calcula la dirección hacia el objetivo
+
         double dx = target.getX() - entity.getX();
         double dz = target.getZ() - entity.getZ();
         Vec3 direction = new Vec3(dx, 0, dz).normalize();
 
-        // Calcula el ángulo de rotación en yaw (horizontal) y aplica la rotación
+
         float yaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0F;
         entity.setYRot(yaw);
         entity.yBodyRot = yaw;
         entity.yHeadRot = yaw;
 
-        // Aplica el impulso en la dirección del enemigo y un poco hacia arriba
+
         entity.setDeltaMovement(direction.scale(JUMP_FORCE).add(0, 0.5, 0));
     }
 
@@ -74,10 +74,10 @@ public class OffspringOfTheUnknownAttack extends Goal {
         double dz = entity.getZ() - target.getZ();
         Vec3 retreatDirection = new Vec3(dx, 0, dz).normalize();
 
-        // Aplica el movimiento de retirada
+
         entity.setDeltaMovement(retreatDirection.scale(1.1).add(0, 0.3, 0));
 
-        // Mantiene la rotación al retirarse
+
         float yaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0F;
         entity.setYRot(yaw);
         entity.yBodyRot = yaw;
@@ -95,7 +95,7 @@ public class OffspringOfTheUnknownAttack extends Goal {
 
         for (LivingEntity e : nearbyEntities) {
             if (e != entity) {
-                e.hurt(entity.damageSources().mobAttack(entity), 5.0F); // Ajusta el daño según sea necesario
+                e.hurt(entity.damageSources().mobAttack(entity), 5.0F);
             }
         }
     }

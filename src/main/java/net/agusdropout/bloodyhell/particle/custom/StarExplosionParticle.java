@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 public class StarExplosionParticle extends Particle {
         private final ResourceLocation texture = new ResourceLocation(BloodyHell.MODID, "textures/particle/yellow.png");
         private final float baseRadius = 0.5f;
-        private final float growthRate = 0.2f; // cuanto crece por tick
+        private final float growthRate = 0.2f;
         private final int latSegments = 16; // "paralelos"
         private final int lonSegments = 32;// "meridianos"
         private final int lifetime = 100;

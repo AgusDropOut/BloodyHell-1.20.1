@@ -110,13 +110,13 @@ public class VeinRaverSlamAttackGoal extends Goal {
             Random random = new Random();
 
             if (blockNumber < 8) {
-                float velocity = 0.15f + (random.nextFloat() * 0.1f - 0.05f); // ±0.05 de variación
+                float velocity = 0.15f + (random.nextFloat() * 0.1f - 0.05f);
                 EntityFallingBlock fallingBlock = new EntityFallingBlock(ModEntityTypes.ENTITY_FALLING_BLOCK.get(),
                         this.veinraverEntity.level(), blockState, velocity);
                 fallingBlock.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
                 this.veinraverEntity.level().addFreshEntity(fallingBlock);
             } else {
-                float velocity = 0.30f + (random.nextFloat() * 0.1f - 0.05f); // ±0.05 de variación
+                float velocity = 0.30f + (random.nextFloat() * 0.1f - 0.05f);
                 EntityFallingBlock fallingBlock = new EntityFallingBlock(ModEntityTypes.ENTITY_FALLING_BLOCK.get(),
                         this.veinraverEntity.level(), blockState, velocity);
                 fallingBlock.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);

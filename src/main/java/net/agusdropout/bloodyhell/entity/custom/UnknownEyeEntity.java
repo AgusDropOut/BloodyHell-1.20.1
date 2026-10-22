@@ -152,14 +152,14 @@ public class UnknownEyeEntity extends Entity implements TraceableEntity, GeoEnti
         super.tick();
         Player closestPlayer = this.level().getNearestPlayer(this, 10);
         if (closestPlayer != null) {
-            // Obtener la dirección desde la entidad hacia el jugador
+
             Vec3 direction = closestPlayer.position().subtract(this.position()).normalize();
 
-            // Calcular los ángulos de rotación (en radianes)
+
             double yaw = Math.toDegrees(Math.atan2(direction.z, direction.x)) - 90.0;
             double pitch = Math.toDegrees(-Math.asin(direction.y));
 
-            // Almacenar los valores en la entidad
+
             this.entityData.set(LOOK_YAW, (float) yaw);
             this.entityData.set(LOOK_PITCH, (float) pitch);
         }
@@ -190,8 +190,8 @@ public class UnknownEyeEntity extends Entity implements TraceableEntity, GeoEnti
                 idlePhase = false;
             }
             if(lifeTicks == 5){
-                if (this.level().isClientSide) { // Solo ejecutar en el cliente
-                    spawnExpandingCircleParticles(this.level(), this, 1.5, 25, 0.1); // Radio 1.5, 10 partículas
+                if (this.level().isClientSide) {
+                    spawnExpandingCircleParticles(this.level(), this, 1.5, 25, 0.1);
                 }
                 level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0f, random.nextFloat() * 0.2f + 0.85f, false);
             }
@@ -261,15 +261,14 @@ public class UnknownEyeEntity extends Entity implements TraceableEntity, GeoEnti
     }
     public void spawnExpandingCircleParticles(Level level, Entity entity, double radius, int particleCount, double speed) {
         for (int i = 0; i < particleCount; i++) {
-            double angle = 2 * Math.PI * i / particleCount; // Ángulo para cada partícula
+            double angle = 2 * Math.PI * i / particleCount;
             double offsetX = radius * Math.cos(angle);
             double offsetZ = radius * Math.sin(angle);
 
             double particleX = entity.getX() + offsetX;
-            double particleY = entity.getY() + 1.0; // Un poco arriba de la entidad
+            double particleY = entity.getY() + 1.0;
             double particleZ = entity.getZ() + offsetZ;
 
-            // Velocidad radial (dirigida hacia afuera)
             double velocityX = speed * Math.cos(angle);
             double velocityZ = speed * Math.sin(angle);
 

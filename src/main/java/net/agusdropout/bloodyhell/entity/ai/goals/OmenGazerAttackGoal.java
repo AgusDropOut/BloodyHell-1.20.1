@@ -17,8 +17,8 @@ import java.util.List;
 public class OmenGazerAttackGoal extends Goal {
     private final OmenGazerEntity omenGazer;
     private Path path;
-    private static final double SPEED = 2.5; // Ajusta la velocidad de la embestida
-    private int chargeTime; // Tiempo de embestida en ticks
+    private static final double SPEED = 2.5;
+    private int chargeTime;
 
     public OmenGazerAttackGoal(OmenGazerEntity omenGazer) {
         this.omenGazer = omenGazer;
@@ -35,17 +35,17 @@ public class OmenGazerAttackGoal extends Goal {
             omenGazer.setAttackCooldown(100);
             omenGazer.setCharging(true);
             omenGazer.swing(InteractionHand.MAIN_HAND);
-            // Dirección normalizada hacia el objetivo
+
             Vec3 direction = new Vec3(
                     target.getX() - omenGazer.getX(),
                     target.getY() - omenGazer.getY(),
                     target.getZ() - omenGazer.getZ()
             ).normalize().scale(SPEED);
 
-            // Aplicar el impulso de la embestida
+
             this.omenGazer.setDeltaMovement(direction);
 
-            // Definir la duración de la embestida (por ejemplo, 20 ticks = 1 segundo)
+
             this.chargeTime = 40;
 
         }
@@ -58,7 +58,7 @@ public class OmenGazerAttackGoal extends Goal {
         if (target != null) {
             double distance = this.omenGazer.distanceTo(target);
             return distance <= 6.0 && !omenGazer.isThrowing() && omenGazer.getAttackCooldown() == 0
-                    && !omenGazer.isAboutToExplode(); // Solo embiste si el objetivo está a 10 bloques o menos
+                    && !omenGazer.isAboutToExplode();
         }
 
         return false;
@@ -66,7 +66,7 @@ public class OmenGazerAttackGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        // La embestida continúa hasta que el tiempo se acabe
+
         return chargeTime > 0;
     }
 
@@ -83,16 +83,14 @@ public class OmenGazerAttackGoal extends Goal {
             chargeTime--;
             if (omenGazer.getTarget() != null) {
                 omenGazer.getNavigation().stop();
-                //this.path = this.omenGazer.getNavigation().createPath(omenGazer.getTarget(), 0);
-                //this.omenGazer.getNavigation().moveTo(this.path, 1.5);
             }
-            // Obtener todas las entidades dentro de la bounding box
+
             AABB hitbox = this.omenGazer.getBoundingBox().inflate(1.5);
             List<Entity> entitiesHit = this.omenGazer.level().getEntities(
                     this.omenGazer, hitbox, entity -> entity instanceof LivingEntity && entity != omenGazer
             );
 
-            // Aplicar daño a cada entidad golpeada
+
             for (Entity entity : entitiesHit) {
                 entity.hurt(this.omenGazer.damageSources().mobAttack(omenGazer), (float) 5);
             }

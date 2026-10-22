@@ -36,7 +36,7 @@ public class ModBow extends BowItem {
                 if (itemstack.isEmpty()) {
                     itemstack = new ItemStack(Items.ARROW);
                 }
-                //CRASHEA POR EL STACK
+
                 float f = getPowerForTime(i);
                 if (!((double) f < 0.1)) {
                     boolean flag1 = player.getAbilities().instabuild || itemstack.getItem() instanceof ArrowItem && ((ArrowItem) itemstack.getItem()).isInfinite(itemstack, itemStack, player);

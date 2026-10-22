@@ -64,7 +64,7 @@ public class OmnitomeMenu extends BasePlayerInventoryMenu {
                         }
                     }
 
-                    if (maxRequiredTier == 0) return true; // No hay libros en slots bloqueables
+                    if (maxRequiredTier == 0) return true;
 
 
                     ItemStack cursorStack = OmnitomeMenu.this.getCarried();

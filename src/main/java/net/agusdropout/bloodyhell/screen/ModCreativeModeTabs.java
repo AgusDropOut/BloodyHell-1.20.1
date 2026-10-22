@@ -335,14 +335,12 @@ public class ModCreativeModeTabs {
                         output.accept(MiscBlocks.EYEBALLSHELL_SNAIL_GOO.get());
 
                         // --- Spawn Eggs ---
-                        //output.accept(SpawnEggItems.BLOODTHIRSTYBEAST_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.BLOOD_SEEKER_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.CRIMSON_RAVEN_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.EYESHELLSNAIL_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.BLOOD_PIG_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.SCARLETSPECKLED_FISH_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.OMEN_GAZER_ENTITY_SPAWN_EGG.get());
-                        //output.accept(SpawnEggItems.VEINRAVER_ENTITY_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.OFFSPRING_OF_THE_UNKNOWN_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.BLASPHEMOUS_MALFORMATION_SPAWN_EGG.get());
                         output.accept(SpawnEggItems.SELIORA_SPAWN_EGG.get());

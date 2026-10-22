@@ -58,7 +58,7 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(MINOR_RING_ACTIVE, false); // por defecto oculto
+        this.entityData.define(MINOR_RING_ACTIVE, false);
     }
 
     // === Owner ===
@@ -145,26 +145,25 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
 
     private void spawnAuraParticles() {
         if (level().isClientSide) {
-            int count = 16; // cuántas partículas por tick
-            double radius = 3; // radio máximo del anillo
-            double verticalSpeed = 0.02; // velocidad base en Y
+            int count = 16;
+            double radius = 3;
+            double verticalSpeed = 0.02;
 
             for (int i = 0; i < count; i++) {
-                // Ángulo y distancia radial aleatoria (mantiene distribución circular)
-                double angle = this.random.nextDouble() * 2 * Math.PI;
-                double dist = radius * (0.7 + this.random.nextDouble() * 0.3); // entre 70% y 100% del radio
 
-                // Coordenadas de spawn
+                double angle = this.random.nextDouble() * 2 * Math.PI;
+                double dist = radius * (0.7 + this.random.nextDouble() * 0.3);
+
                 double px = this.getX() + Math.cos(angle) * dist;
-                double py = this.getY() + 0.3 + this.random.nextDouble() * 3; // altura entre +0.3 y +1.5
+                double py = this.getY() + 0.3 + this.random.nextDouble() * 3;
                 double pz = this.getZ() + Math.sin(angle) * dist;
 
-                // Movimiento: solo vertical leve (puede ser hacia arriba o abajo)
+
                 double dx = 0;
                 double dz = 0;
                 double dy = (this.random.nextDouble() - 0.5) * verticalSpeed; // -0.01 a +0.01
 
-                // Spawnear partícula
+
                 this.level().addParticle(ModParticles.MAGIC_LINE_PARTICLE.get(),
                         px, py, pz,
                         dx, dy, dz);
@@ -186,20 +185,20 @@ public class BlasphemousWhirlwindEntity extends Entity implements TraceableEntit
     private boolean isValidTarget(LivingEntity candidate) {
         if (candidate == null || !candidate.isAlive()) return false;
 
-        // No atacar al owner
+
         if (candidate == getOwner()) return false;
 
-        // Si es una entidad domesticable y tiene mismo dueño, no atacarla
+
         if (candidate instanceof TamableAnimal tamable && tamable.getOwner() == this.getOwner()) {
             return false;
         }
 
-        // Si es otra entidad de tu mod que quieras excluir
+
         if (candidate instanceof BlasphemousArmEntity) {
             if(((BlasphemousArmEntity) candidate).getOwner() == this.getOwner()) return false;
         }
 
-        // Más condiciones a futuro acá
+
 
         return true;
     }

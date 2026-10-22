@@ -39,65 +39,65 @@ public class TeleportNearGoal extends Goal {
 
         boolean success = false;
 
-        // Intentamos 10 veces encontrar una posición válida
+
         for (int i = 0; i < 10; i++) {
             Vec3 targetPos = target.position();
-            // Offset aleatorio pequeño (cerca del jugador)
+
             double xOffset = (random.nextDouble() * 8.0) - 4.0; // -4 a 4
             double zOffset = (random.nextDouble() * 8.0) - 4.0;
 
             BlockPos targetBlockPos = new BlockPos((int)(targetPos.x + xOffset), (int)targetPos.y, (int)(targetPos.z + zOffset));
 
-            // Buscar suelo firme (para no aparecer en el aire o dentro de un bloque)
+
             BlockPos safePos = findGround(targetBlockPos);
 
             if (safePos != null) {
-                // RAYCAST CHECK: ¿Podemos ver el destino desde donde estamos?
-                // Esto evita atravesar paredes para salir de la arena.
+
+
                 if (canSeePosition(entity.position(), Vec3.atCenterOf(safePos))) {
                     executeTeleport(safePos);
                     success = true;
-                    break; // Éxito, salimos del bucle
+                    break;
                 }
             }
         }
 
-        // Siempre activamos el cooldown, incluso si falló, para no spamear intentos
+
         stop();
     }
 
     private boolean canSeePosition(Vec3 start, Vec3 end) {
-        // Lanza un rayo desde el origen al destino buscando bloques colisionables
+
         HitResult result = entity.level().clip(new ClipContext(
-                start.add(0, entity.getEyeHeight(), 0), // Desde los ojos
+                start.add(0, entity.getEyeHeight(), 0),
                 end,
                 ClipContext.Block.COLLIDER,
                 ClipContext.Fluid.NONE,
                 entity
         ));
-        // Si el resultado es MISS, significa que no chocó con nada -> Hay línea de visión
+
         return result.getType() == HitResult.Type.MISS;
     }
 
     private BlockPos findGround(BlockPos pos) {
-        // Ajuste vertical simple: buscar suelo hacia abajo o espacio hacia arriba
+
         BlockPos.MutableBlockPos mutable = pos.mutable();
 
-        // Si empezamos dentro de un bloque sólido, subimos hasta encontrar aire
+
         int safetyCounter = 0;
         while (entity.level().getBlockState(mutable).blocksMotion() && safetyCounter < 5) {
             mutable.move(Direction.UP);
             safetyCounter++;
         }
 
-        // Si estamos en aire, bajamos hasta encontrar suelo
+
         safetyCounter = 0;
         while (!entity.level().getBlockState(mutable.below()).blocksMotion() && mutable.getY() > entity.level().getMinBuildHeight() && safetyCounter < 5) {
             mutable.move(Direction.DOWN);
             safetyCounter++;
         }
 
-        // Verificamos espacio para la entidad (2 bloques de altura)
+
         if (!entity.level().getBlockState(mutable).blocksMotion() &&
                 !entity.level().getBlockState(mutable.above()).blocksMotion()) {
             return mutable.immutable();
@@ -108,7 +108,7 @@ public class TeleportNearGoal extends Goal {
 
     private void executeTeleport(BlockPos pos) {
         if (entity.level() instanceof ServerLevel serverLevel) {
-            // Partículas PRE teleport (origen)
+
             serverLevel.sendParticles(
                     ModParticles.BLASPHEMOUS_MAGIC_RING.get(),
                     pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5,
@@ -123,7 +123,7 @@ public class TeleportNearGoal extends Goal {
             // Teletransporte
             entity.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
 
-            // Partículas POST teleport
+
             spawnBlasphemousParticles();
             entity.level().playSound(null, entity.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 1.0F);
         }

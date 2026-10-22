@@ -19,14 +19,14 @@ import software.bernie.geckolib.core.object.PlayState;
 import java.util.function.Consumer;
 
 public class BlasphemiteArmorItem extends ArmorItem implements GeoItem {
-    // 1. Necesitas el cache OBLIGATORIAMENTE para que no crashee
+
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public BlasphemiteArmorItem(ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
     }
 
-    // 2. Esto es lo que hace que se vea el modelo 3D
+
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
@@ -44,11 +44,11 @@ public class BlasphemiteArmorItem extends ArmorItem implements GeoItem {
         });
     }
 
-    // 3. AQUÍ ESTÁ EL TRUCO: Simplemente devolvemos STOP
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, state -> {
-            // Al devolver STOP, el modelo se queda en su pose "bedrock" (la pose por defecto de Blockbench)
+
             return PlayState.STOP;
         }));
     }

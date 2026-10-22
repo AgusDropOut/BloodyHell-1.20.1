@@ -37,7 +37,7 @@ public class BloodLustEffect extends MobEffect {
 
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
-        // Devuelve true para que el efecto se aplique en cada tick
+
         return true;
     }
 }

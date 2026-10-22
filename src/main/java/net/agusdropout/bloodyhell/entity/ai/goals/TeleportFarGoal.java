@@ -43,11 +43,11 @@ public class TeleportFarGoal extends Goal {
         Vec3 awayDir = entityPos.subtract(targetPos).normalize();
         double distance = 10 + random.nextInt(5);
 
-        // Intentamos 10 veces encontrar un punto válido
+
         for (int i = 0; i < 10; i++) {
             Vec3 farPos = entityPos.add(awayDir.scale(distance));
 
-            // Variación aleatoria
+
             farPos = farPos.add(
                     (random.nextDouble() - 0.5) * 6.0,
                     0,
@@ -58,10 +58,10 @@ public class TeleportFarGoal extends Goal {
             BlockPos safePos = findSafeTeleportPos(teleportPosCandidate);
 
             if (safePos != null) {
-                // CHECK RAYCAST: Verificar paredes entre la posición actual y la futura
+
                 if (canSeePosition(entity.position(), Vec3.atCenterOf(safePos))) {
                     executeTeleport(safePos);
-                    break; // Éxito
+                    break;
                 }
             }
         }
@@ -69,7 +69,7 @@ public class TeleportFarGoal extends Goal {
         stop();
     }
 
-    // --- Nuevo Método para Raycasting ---
+
     private boolean canSeePosition(Vec3 start, Vec3 end) {
         HitResult result = entity.level().clip(new ClipContext(
                 start.add(0, entity.getEyeHeight(), 0),
@@ -98,10 +98,9 @@ public class TeleportFarGoal extends Goal {
     private BlockPos findSafeTeleportPos(BlockPos pos) {
         ServerLevel level = (ServerLevel) entity.level();
 
-        // Pequeño ajuste para no iterar demasiado si el punto base es muy malo
+
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
 
-        // Bajar hasta encontrar suelo
         while (mutable.getY() > level.getMinBuildHeight() && !level.getBlockState(mutable).blocksMotion()) {
             mutable.move(Direction.DOWN);
         }
@@ -110,15 +109,14 @@ public class TeleportFarGoal extends Goal {
         if (!ground.blocksMotion() || ground.getFluidState().is(FluidTags.WATER)) return null;
 
         boolean safe = true;
-        // Check espacio arriba
-        for (int i = 1; i <= 3 && safe; i++) { // Reduje a 3 bloques de altura requerida para ser menos estricto pero seguro
+        for (int i = 1; i <= 3 && safe; i++) {
             if (!level.isEmptyBlock(mutable.above(i))) safe = false;
         }
 
-        // Check alrededores inmediatos (para no quedar bugeado en una esquina)
+
         for (int dx = -1; dx <= 1 && safe; dx++) {
             for (int dz = -1; dz <= 1 && safe; dz++) {
-                BlockPos checkPos = mutable.offset(dx, 1, dz); // Verificar bloque donde estarán los pies
+                BlockPos checkPos = mutable.offset(dx, 1, dz);
                 if (level.getBlockState(checkPos).blocksMotion()) safe = false;
             }
         }

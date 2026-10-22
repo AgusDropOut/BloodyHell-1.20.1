@@ -2,7 +2,7 @@ package net.agusdropout.bloodyhell.entity.ai.goals;
 
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.custom.SelioraEntity;
-import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake; // Importamos tu clase
+import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.effects.EntityFallingBlock;
 import net.agusdropout.bloodyhell.sound.ModSounds;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -100,19 +100,18 @@ public class ChargeAttackGoal extends Goal {
         double radius = 2;
         double damage = 20;
 
-        // --- 1. CAMERA SHAKE RÍTMICO ---
-        // Ejecutamos cada 4 ticks para simular pisadas fuertes sin marear al jugador
+
+
         if (minimunChargeTicks % 4 == 0) {
-            // Radio: 15 | Magnitud: 0.15 (suave) | Duración: 3 | Fade: 2
+
             EntityCameraShake.cameraShake(level, entity.position(), 15.0f, 0.15f, 3, 2);
 
-            // Sonido de pisada fuerte
             level.playSound(null, entity.blockPosition(), SoundEvents.RAVAGER_STEP, SoundSource.HOSTILE, 2.0F, 0.8F);
         }
 
         BlockPos centerPos = entity.blockPosition();
 
-        // --- 2. DAÑO Y EMPUJE ---
+
         boolean hitSomeone = false;
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class,
                 entity.getBoundingBox().inflate(radius),
@@ -133,18 +132,17 @@ public class ChargeAttackGoal extends Goal {
         // --- 3. EFECTOS VISUALES ---
         if (level instanceof ServerLevel server) {
             BlockState belowBlock = level.getBlockState(centerPos.below());
-            // Partículas de tierra levantándose
+
             server.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, belowBlock),
                     entity.getX(), entity.getY() + 0.1, entity.getZ(),
                     10, 0.5, 0.2, 0.5, 0.1);
 
-            // Estela de velocidad (nubes)
             server.sendParticles(ParticleTypes.CLOUD,
                     entity.getX(), entity.getY() + 0.5, entity.getZ(),
                     2, 0.5, 0.1, 0.5, 0.05);
         }
 
-        // Falling Blocks (cada 5 ticks para no saturar)
+
         if (minimunChargeTicks % 5 == 0) {
             spawnRadialFallingBlocks(level, centerPos);
         }

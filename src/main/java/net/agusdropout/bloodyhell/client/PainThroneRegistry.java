@@ -84,10 +84,4 @@ public class PainThroneRegistry {
         return ACTIVE_JITTER_VICTIMS.containsKey(uuid);
     }
 
-    public static void printActiveVictims() {
-        System.out.println("Active Pain Throne Victims:");
-        for (Map.Entry<UUID, Long> entry : ACTIVE_JITTER_VICTIMS.entrySet()) {
-            System.out.println("Entity ID: " + entry.getKey() + ", End Time: " + entry.getValue());
-        }
-    }
 }

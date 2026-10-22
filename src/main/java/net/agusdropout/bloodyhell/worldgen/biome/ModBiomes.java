@@ -57,8 +57,6 @@ public class ModBiomes {
                      .addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModEntityTypes.BLOODPIG.get(), 5, 1, 3));
 
 
-        //BiomeDefaultFeatures.farmAnimals(spawnBuilder);
-        //BiomeDefaultFeatures.commonSpawns(spawnBuilder);
 
         BiomeGenerationSettings.Builder biomeBuilder =
                 new BiomeGenerationSettings.Builder(context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
@@ -119,8 +117,6 @@ public class ModBiomes {
                 .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntityTypes.VEIL_STALKER.get(), 2, 1, 1));
 
 
-        //BiomeDefaultFeatures.farmAnimals(spawnBuilder);
-        //BiomeDefaultFeatures.commonSpawns(spawnBuilder);
 
         BiomeGenerationSettings.Builder biomeBuilder =
                 new BiomeGenerationSettings.Builder(context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));

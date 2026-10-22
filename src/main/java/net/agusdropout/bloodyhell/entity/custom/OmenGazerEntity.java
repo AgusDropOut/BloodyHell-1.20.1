@@ -209,12 +209,12 @@ public class OmenGazerEntity extends Monster implements GeoEntity {
     public void aiStep() {
         super.aiStep();
 
-        // Hacer que la entidad mire a su objetivo
+
         if (this.getTarget() != null) {
             this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
         }
 
-        // Manejo de cooldowns y eliminación
+
         if (isAlreadyDead) {
             DeathCooldown--;
             if (DeathCooldown <= 0) {
@@ -241,9 +241,9 @@ public class OmenGazerEntity extends Monster implements GeoEntity {
 
         boolean damaged = super.hurt(source, amount);
 
-        if (!this.level().isClientSide) { // Solo en servidor
+        if (!this.level().isClientSide) {
             float healthPercentage = this.getHealth() / this.getMaxHealth();
-            if (healthPercentage < 0.2f) { // Si la vida cae por debajo del 20%
+            if (healthPercentage < 0.2f) {
                 this.setAboutToExplode(true);
             }
         }
@@ -253,19 +253,19 @@ public class OmenGazerEntity extends Monster implements GeoEntity {
     }
 
     public void abouttoexplodeparticles(){
-        // **SPAWNEAR PARTÍCULAS ALREDEDOR DE LA ENTIDAD**
-        if (this.level().isClientSide) {  // Solo en el cliente
-            for (int i = 0; i < 5; i++) {  // Número de partículas por tick
-                double offsetX = (this.random.nextDouble() - 0.5) * this.getBbWidth();  // Aleatorio en el ancho de la entidad
-                double offsetY = this.random.nextDouble() * this.getBbHeight();  // Aleatorio en la altura de la entidad
+
+        if (this.level().isClientSide) {
+            for (int i = 0; i < 5; i++) {
+                double offsetX = (this.random.nextDouble() - 0.5) * this.getBbWidth();
+                double offsetY = this.random.nextDouble() * this.getBbHeight();
                 double offsetZ = (this.random.nextDouble() - 0.5) * this.getBbWidth();
 
                 this.level().addParticle(
-                        ModParticles.VICERAL_PARTICLE.get(),  // Tipo de partícula (puedes usar un custom si lo tienes)
+                        ModParticles.VICERAL_PARTICLE.get(),
                         this.getX() + offsetX,
                         this.getY() + offsetY,
                         this.getZ() + offsetZ,
-                        0, 0.05, 0  // Velocidad (en este caso, flotando ligeramente)
+                        0, 0.05, 0
                 );
             }
         }
@@ -330,7 +330,7 @@ public class OmenGazerEntity extends Monster implements GeoEntity {
     }
 
 
-    
+
 
 
 }

@@ -215,7 +215,7 @@ public class VisceralProjectile extends Entity implements GeoEntity, TraceableEn
     @Override
     public boolean onGround() {
         Vec3 position = this.position();
-        BlockPos belowPos = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ()); // Chequea justo debajo de la entidad
+        BlockPos belowPos = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
         BlockState blockBelow = level().getBlockState(belowPos);
         return !blockBelow.isAir();
     }

@@ -109,8 +109,6 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
         return InteractionResult.PASS;
     }
 
-    // TODO: Refactor this method to reduce complexity and improve readability.
-    //  Maybe some dependency injection for the recipe checking logic and location checking logic?
 
 
     private InteractionResult getRitualInteractionResult(BlockState blockState, Level level, BlockPos blockPos, Player player, MainBlasphemousBloodAltarBlockEntity altar) {

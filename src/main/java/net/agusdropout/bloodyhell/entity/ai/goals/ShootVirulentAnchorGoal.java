@@ -52,14 +52,14 @@ public class ShootVirulentAnchorGoal extends Goal {
             attackCooldown--;
         } else {
             shootProjectile(target);
-            attackCooldown = cooldownTime; // Reiniciar el cooldown después de disparar
+            attackCooldown = cooldownTime;
         }
     }
 
     private void shootProjectile(LivingEntity target) {
         Level level = shooter.level();
         if (!level.isClientSide) {
-            Vec3 pos = shooter.position().add(0, shooter.getBbHeight() * 0.8, 0); // Posición de disparo
+            Vec3 pos = shooter.position().add(0, shooter.getBbHeight() * 0.8, 0);
             float yaw = shooter.getYRot();
             float pitch = shooter.getXRot();
 

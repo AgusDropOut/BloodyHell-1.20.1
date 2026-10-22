@@ -29,7 +29,6 @@ public class EnergyInfoArea extends InfoArea{
         final int height = area.getHeight();
         int stored = (int)(height * (energy.getEnergyStored() / (float)energy.getMaxEnergyStored()));
 
-        // Llama directamente a fill desde GuiComponent
         transform.fill( area.getX(), area.getY() + (height - stored), area.getX() + area.getWidth(), area.getY() + area.getHeight(), 0xffffc400);
     }
 

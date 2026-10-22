@@ -49,15 +49,15 @@ public class BlasphemousMagicCircleParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer consumer, Camera camera, float delta) {
-        // Hacemos que el círculo esté siempre en el plano XZ (horizontal)
-        float rotation = (age + delta) * 0.05f; // velocidad de rotación
+
+        float rotation = (age + delta) * 0.05f;
         renderParticle(consumer, camera, delta, Axis.YP.rotation(rotation));
     }
 
     private void renderParticle(VertexConsumer consumer, Camera camera, float delta, Quaternionf quaternion) {
         Vec3 camPos = camera.getPosition();
 
-        // Definimos quad plano en XZ (pegado al suelo)
+
         Vector3f[] corners = new Vector3f[]{
                 new Vector3f(-1, 0, -1),
                 new Vector3f(-1, 0,  1),
@@ -67,7 +67,7 @@ public class BlasphemousMagicCircleParticle extends TextureSheetParticle {
 
         for (int i = 0; i < 4; ++i) {
             Vector3f vec = corners[i];
-            quaternion.transform(vec); // rotamos en el plano
+            quaternion.transform(vec);
             vec.mul(getQuadSize(delta));
             float x = (float)(Mth.lerp(delta, xo, this.x) - camPos.x());
             float y = (float)(Mth.lerp(delta, yo, this.y) - camPos.y());

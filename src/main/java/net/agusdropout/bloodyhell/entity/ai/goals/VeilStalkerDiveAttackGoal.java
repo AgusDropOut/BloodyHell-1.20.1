@@ -117,7 +117,7 @@ public class VeilStalkerDiveAttackGoal extends Goal {
                 diveEnd = target.position();
             }
 
-            double t = diveProgress; // de 0 a 1
+            double t = diveProgress;
 
 
             Vec3 midXZ = new Vec3(

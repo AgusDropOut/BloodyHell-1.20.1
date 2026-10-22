@@ -203,7 +203,6 @@ public class VesperEntity extends PathfinderMob implements MenuProvider,NeutralM
         }
 
         if(this.isAttacking() && attackAnimationTimeout <= 0) {
-            System.out.println("Attacking");
             attackAnimationTimeout = 45; // Length in ticks of your animation
             attackAnimationState.start(this.tickCount);
         } else {

@@ -189,7 +189,6 @@ public class EyeParticle extends TextureSheetParticle {
         @Override
         public void begin(BufferBuilder builder, TextureManager textureManager) {
             RenderSystem.enableBlend();
-            //RenderSystem.depthMask(false);
             RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA,
                     com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
@@ -207,7 +206,6 @@ public class EyeParticle extends TextureSheetParticle {
 
             tesselator.end();
             RenderSystem.disableBlend();
-           // RenderSystem.depthMask(false);
         }
 
         @Override

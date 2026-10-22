@@ -265,7 +265,6 @@ public class BloodWorkbenchBlockEntity extends BlockEntity implements MenuProvid
 
     private boolean hasBloodBucketInFirstSlot() {
         if (this.itemHandler != null && this.itemHandler.getSlots() > 0) {
-            //return this.itemHandler.getStackInSlot(0).getItem() == ModItems.RHNULL_BLOOD_BUCKET.get();
         }
         return false;
     }

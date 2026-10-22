@@ -26,11 +26,11 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    // Identificador del dueño
+
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
             SynchedEntityData.defineId(BlasphemousTwinDaggersCloneEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    // Variables de Estado de Animación
+
     private boolean isAttacking = false;
     private int attackTimer = 0;
 
@@ -42,7 +42,7 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 100.0D) // Mucha vida para que no muera por error
+                .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.0D);
     }
 
@@ -52,7 +52,7 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
         this.entityData.define(OWNER_UUID, Optional.empty());
     }
 
-    // --- SETUP DEL DUEÑO ---
+
     public void setOwner(Player player) {
         this.entityData.set(OWNER_UUID, Optional.of(player.getUUID()));
         this.setPos(player.getX(), player.getY(), player.getZ());
@@ -63,32 +63,32 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
         return uuid.map(value -> this.level().getPlayerByUUID(value)).orElse(null);
     }
 
-    // --- CICLO DE VIDA (TICK) ---
+
     @Override
     public void tick() {
         super.tick();
 
         Player owner = getOwner();
 
-        // 1. REGLA DE VIDA: Si no hay dueño vivo o no tiene las dagas -> DESPAWN
+
         if (!this.level().isClientSide) {
             if (owner == null || !owner.isAlive() || !(owner.getMainHandItem().getItem() instanceof BlasphemousTwinDaggerItem)) {
                 this.discard();
                 return;
             }
 
-            // Gestión del Temporizador de Ataque
+
             if (isAttacking) {
                 attackTimer--;
                 if (attackTimer <= 0) {
-                    isAttacking = false; // El ataque terminó, volver a caminar/idle
+                    isAttacking = false;
                 }
             }
         }
 
-        // 2. MOVIMIENTO (Lado Cliente y Servidor para suavidad)
+
         if (owner != null) {
-            // Copiar posición exacta
+
             this.setPos(owner.getX(), owner.getY(), owner.getZ());
 
             // Copiar rotaciones (Cuerpo y Cabeza)
@@ -101,44 +101,43 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
         }
     }
 
-    // --- ACTIVADOR DE ATAQUE (Llamado desde el Item) ---
+
     public void triggerAttack(String animName, int durationTicks) {
         if (!this.level().isClientSide) {
             this.isAttacking = true;
             this.attackTimer = durationTicks;
-            // Forzamos la señal a GeckoLib para que todos los clientes la vean
+
             this.triggerAnim("controller", animName);
         }
     }
 
-    // --- MÁQUINA DE ESTADOS (ANIMACIONES) ---
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 5, state -> {
 
-                    // A. PRIORIDAD ABSOLUTA: ATAQUE
-                    // Si el timer dice que estamos atacando, no interrumpir con caminar
+
                     if (this.isAttacking) {
-                        return PlayState.CONTINUE; // Dejamos que el trigger original siga su curso
+                        return PlayState.CONTINUE;
                     }
 
                     // B. MOVIMIENTO (WALK / RUN / IDLE)
                     Player owner = getOwner();
                     if (owner != null) {
-                        // Cálculo de velocidad real (Pitágoras)
+
                         double dx = owner.getX() - owner.xo;
                         double dz = owner.getZ() - owner.zo;
                         double speed = Math.sqrt(dx * dx + dz * dz);
 
-                        // Umbral mínimo para considerar que se mueve (evita temblequeo)
+
                         if (speed > 0.005) {
 
-                            // AJUSTE DINÁMICO DE VELOCIDAD
-                            // Multiplicador 3.5: Ajusta este número si ves que patina
+
+
                             state.getController().setAnimationSpeed((float)(speed * 3.5));
 
-                            // Decisión: ¿Correr o Caminar?
-                            if (speed > 0.22) { // Umbral de sprint
+
+                            if (speed > 0.22) {
                                 return state.setAndContinue(RawAnimation.begin().thenLoop("run"));
                             } else {
                                 return state.setAndContinue(RawAnimation.begin().thenLoop("walk"));
@@ -146,12 +145,11 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
                         }
                     }
 
-                    // C. ESTADO POR DEFECTO: IDLE
-                    // Reseteamos la velocidad a normal para que el Idle no se vea lento/rápido
+
                     state.getController().setAnimationSpeed(1.0f);
                     return state.setAndContinue(RawAnimation.begin().thenLoop("idle"));
                 })
-                        // Registramos los triggers para que triggerAnim funcione
+
                         .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack"))
                         .triggerableAnim("special_attack", RawAnimation.begin().thenPlay("special_attack"))
         );
@@ -162,7 +160,6 @@ public class BlasphemousTwinDaggersCloneEntity extends PathfinderMob implements 
         return cache;
     }
 
-    // --- GUARDADO DE DATOS (NBT) ---
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);

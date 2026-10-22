@@ -25,7 +25,7 @@ import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import java.util.Map;
 import java.util.Optional;
 
-// Importa tus clases de init
+
 // import net.mcreator.bloodyhell.init.ModStructures;
 // import net.mcreator.bloodyhell.init.ModEntities;
 
@@ -38,11 +38,11 @@ public class PoolStructure extends Structure {
     private static final ResourceLocation PART_1 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_1");
     private static final ResourceLocation PART_2 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_2");
     private static final ResourceLocation PART_3 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_3");
-    private static final ResourceLocation PART_4 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_4"); // Esquina especial
+    private static final ResourceLocation PART_4 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_4");
     private static final ResourceLocation PART_5 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_5"); // Puerta
     private static final ResourceLocation PART_6 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_6");
     private static final ResourceLocation PART_7 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_7");
-    private static final ResourceLocation PART_8 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_8"); // CENTRO
+    private static final ResourceLocation PART_8 = new ResourceLocation("bloodyhell", "pyramid/pool_parte_8");
 
 
     private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
@@ -92,9 +92,7 @@ public class PoolStructure extends Structure {
         PoolStructure.start(context.structureTemplateManager(), blockpos, rotation, builder, context.random());
     }
 
-    /**
-     * AQUÍ OCURRE LA MAGIA DEL ENSAMBLAJE (STITCHING)
-     */
+
     public static void start(StructureTemplateManager templateManager, BlockPos pos, Rotation rotation, StructurePiecesBuilder pieceList, RandomSource random) {
         int x = pos.getX();
         int y = pos.getY();
@@ -113,47 +111,41 @@ public class PoolStructure extends Structure {
 
 
 
-        // Part 0 (Esquina NW): -47 X, -47 Z
         rotationOffset = new BlockPos(-armLength, 0, -armLength).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_0, finalPos, rotation));
 
-        // Part 1 (Lado N): 0 X, -47 Z
         rotationOffset = new BlockPos(0, 0, -armLength).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_1, finalPos, rotation));
 
-        // Part 2 (Esquina NE): +6 X, -47 Z (El offset X es el ancho del centro)
+
         rotationOffset = new BlockPos(centerSize, 0, -armLength).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_2, finalPos, rotation));
 
-        // --- FILA MEDIO (OESTE Y ESTE) ---
 
-        // Part 7 (Lado W): -47 X, 0 Z
+
         rotationOffset = new BlockPos(-armLength, 0, 0).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_7, finalPos, rotation));
 
-        // Part 3 (Lado E): +6 X, 0 Z
         rotationOffset = new BlockPos(centerSize, 0, 0).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_3, finalPos, rotation));
 
         // --- FILA INFERIOR (SUR / Z positivo) ---
 
-        // Part 6 (Esquina SW): -47 X, +6 Z
         rotationOffset = new BlockPos(-armLength, 0, centerSize).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_6, finalPos, rotation));
 
         // Part 5 (PUERTA - Sur): 0 X, +6 Z
-        // NOTA: Si la puerta mide 48 de ancho, se solapará. Asumimos posición standard.
+
         rotationOffset = new BlockPos(0, 0, centerSize).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_5, finalPos, rotation));
 
-        // Part 4 (Esquina SE): +6 X, +6 Z
         rotationOffset = new BlockPos(centerSize, 0, centerSize).rotate(rotation);
         finalPos = rotationOffset.offset(x, y, z);
         pieceList.addPiece(new Piece(templateManager, PART_4, finalPos, rotation));

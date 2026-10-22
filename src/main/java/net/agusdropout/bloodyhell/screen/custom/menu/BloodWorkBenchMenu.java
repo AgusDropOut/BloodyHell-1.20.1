@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.screen.custom.menu;
 
+import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import net.agusdropout.bloodyhell.block.entity.custom.BloodWorkbenchBlockEntity;
 import net.agusdropout.bloodyhell.screen.ModMenuTypes;
@@ -99,7 +100,7 @@ public class BloodWorkBenchMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
-            System.out.println("Invalid slotIndex:" + index);
+            BloodyHell.LOGGER.warn("Invalid slotIndex: {}", index);
             return ItemStack.EMPTY;
         }
 

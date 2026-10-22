@@ -27,7 +27,7 @@ public class CyclopsHaloParticle extends TextureSheetParticle {
 
 
 
-        this.rotSpeed = 1.0F; // Velocidad inicial de rotación
+        this.rotSpeed = 1.0F;
 
         this.setSpriteFromAge(spriteSet);
     }

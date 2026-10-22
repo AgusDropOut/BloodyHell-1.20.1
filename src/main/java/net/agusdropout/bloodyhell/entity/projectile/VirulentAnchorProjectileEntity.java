@@ -80,7 +80,7 @@ public class VirulentAnchorProjectileEntity extends Projectile implements GeoEnt
             this.isEmerging = false;
             if (attachedEntity != null) {
                 if (!attachedEntity.isAlive()) {
-                    this.discard(); // Si la entidad muere, el proyectil desaparece
+                    this.discard();
                     return;
                 }
                 this.setPos(attachedEntity.getX(), attachedEntity.getY() + attachedEntity.getBbHeight() / 2, attachedEntity.getZ());
@@ -116,7 +116,7 @@ public class VirulentAnchorProjectileEntity extends Projectile implements GeoEnt
                     e -> e != this.getOwner() && e.isAlive());
 
             for (LivingEntity entity : entities) {
-                attachToEntity(entity); // Se adhiere a la entidad impactada
+                attachToEntity(entity);
                 return;
             }
         }

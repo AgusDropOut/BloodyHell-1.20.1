@@ -176,8 +176,6 @@ public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem,
             }
         } else {
             if (ClientItemHooks.isFirstPerson()) {
-                // DEBUG: Print to ensure this block is reached
-                System.out.println("DEBUG: Triggering FPV Combo: " + combo + " | Trigger: " + getComboGeckoTrigger(combo));
                 ClientItemHooks.triggerGeckoAnim(player, stack, "Controller", getComboGeckoTrigger(combo));
             } else {
                 ClientItemHooks.triggerGeckoAnim(player, stack, "Controller", "idle_trigger");

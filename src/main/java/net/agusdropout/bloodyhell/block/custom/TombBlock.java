@@ -19,22 +19,22 @@ import org.jetbrains.annotations.Nullable;
 
 public class TombBlock extends BaseEntityBlock {
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
-    // 1. Añadimos la propiedad de dirección horizontal (Norte, Sur, Este, Oeste)
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public TombBlock(Properties properties) {
         super(properties);
-        // 2. Definimos el estado por defecto (Mirando al Norte y Cerrado)
+
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(OPEN, false)
                 .setValue(FACING, Direction.NORTH));
     }
 
-    // 3. Este método detecta cómo colocar el bloque según dónde mira el jugador
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        // .getOpposite() hace que la "cara" del bloque mire HACIA el jugador
+
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
@@ -44,9 +44,7 @@ public class TombBlock extends BaseEntityBlock {
         builder.add(OPEN, FACING);
     }
 
-    /* 5. (Opcional pero recomendado) Soporte para rotación y espejo
-          (útil si usas world edit o structure blocks)
-    */
+
     @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
@@ -57,7 +55,7 @@ public class TombBlock extends BaseEntityBlock {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
-    // --- El resto se mantiene igual ---
+
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;

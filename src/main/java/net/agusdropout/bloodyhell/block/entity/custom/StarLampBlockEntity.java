@@ -9,20 +9,19 @@ import java.util.Random;
 
 public class StarLampBlockEntity extends BlockEntity {
     private final float scale;
-    private final int starPoints;    // número de puntas n
-    private final float innerRatio;  // radio relativo de vértices internos
+    private final int starPoints;
+    private final float innerRatio;
 
     public StarLampBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.STAR_LAMP.get(), pos, state);
 
-        // Tamaños posibles
+
         float[] sizes = {0.2f, 0.4f, 0.6f};
         this.scale = sizes[new Random(pos.asLong()).nextInt(sizes.length)];
 
-        // Variante aleatoria de estrella
         Random r = new Random(pos.asLong());
-        this.starPoints = 1 + r.nextInt(4);            // de 5 a 8 puntas
-        this.innerRatio = 0.4f + r.nextFloat() * 0.4f; // ratio de vértices internos 0.4-0.8
+        this.starPoints = 1 + r.nextInt(4);
+        this.innerRatio = 0.4f + r.nextFloat() * 0.4f;
     }
 
     public float getScale() {
