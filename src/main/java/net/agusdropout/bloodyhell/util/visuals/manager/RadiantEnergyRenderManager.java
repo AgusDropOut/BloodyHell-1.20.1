@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.*;
 import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.util.visuals.SplineHelper;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -14,16 +13,14 @@ import java.util.List;
 
 public class RadiantEnergyRenderManager {
     private static final List<TrailData> ACTIVE_TRAILS = new ArrayList<>();
-    private static final Matrix4f savedProjection = new Matrix4f();
-    private static final Matrix4f savedModelView = new Matrix4f();
+    private static final DeferredMatrices MATRICES = new DeferredMatrices(VertexSorting.ORTHOGRAPHIC_Z);
 
     public static void addTrail(List<Vec3> history, Vec3 cameraPos, float width, float r, float g, float b, float alpha, float time) {
         if (RenderPassGuard.shouldSkipDeferred()) return;
         if (history.size() < 2) return;
 
         if (ACTIVE_TRAILS.isEmpty()) {
-            savedProjection.set(RenderSystem.getProjectionMatrix());
-            savedModelView.set(RenderSystem.getModelViewMatrix());
+            MATRICES.capture();
         }
         ACTIVE_TRAILS.add(new TrailData(new ArrayList<>(history), cameraPos, width, r, g, b, alpha, time));
     }
@@ -39,14 +36,7 @@ public class RadiantEnergyRenderManager {
                 com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
         );
 
-        Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-        PoseStack rsStack = RenderSystem.getModelViewStack();
-        rsStack.pushPose();
-
-        RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-        rsStack.setIdentity();
-        rsStack.mulPoseMatrix(savedModelView);
-        RenderSystem.applyModelViewMatrix();
+        MATRICES.apply();
 
         RenderSystem.setShader(() -> ModShaders.RADIANT_ENERGY_SHADER);
 
@@ -129,9 +119,7 @@ public class RadiantEnergyRenderManager {
         }
         tess.end();
 
-        rsStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+        MATRICES.restore();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
