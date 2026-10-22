@@ -207,8 +207,8 @@ public class ModLootTables extends LootTableProvider {
             this.dropSelf(SandstoneBlocks.FULLY_ERODED_BLASPHEMOUS_SANDSTONE.get());
             this.dropSelf(SandstoneBlocks.CRACKED_BLASPHEMOUS_SANDSTONE.get());
             this.dropSelf(MetalBlocks.BLASPHEMITE_BLOCK.get());
-            this.dropSelf(PlantBlocks.SPIKY_GRASS.get());
-            this.dropSelf(PlantBlocks.ROUNDED_GRASS.get());
+            this.createPlantsDrops(PlantBlocks.SPIKY_GRASS, PlantBlocks.SPIKY_GRASS.get().asItem());
+            this.createPlantsDrops(PlantBlocks.ROUNDED_GRASS, PlantBlocks.ROUNDED_GRASS.get().asItem());
             this.dropSelf(PlantBlocks.STING_FLOWER.get());
             this.add(MiscBlocks.DECORATED_POT_BLOCK.get(), createPotDrops(MiscBlocks.DECORATED_POT_BLOCK.get()));
             this.dropOther(MiscBlocks.SELIORA_RESTING_BLOCK.get(),PlaceableItems.SELIORA_RESTING_ITEM.get());
@@ -246,7 +246,7 @@ public class ModLootTables extends LootTableProvider {
 
             this.createPlantsDrops(PlantBlocks.BLOOD_PETALS, PlantBlocks.BLOOD_PETALS.get().asItem());
             this.createSilkTouchOrShearsDispatchTable(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get(), FoodItems.GLOW_MUSHROOM.get());
-            this.createPlantsDrops(MiscBlocks.SMALL_ROCKS, MiscBlocks.SMALL_ROCKS.get().asItem());
+            this.dropSelf(MiscBlocks.SMALL_ROCKS.get());
             this.createPlantsDrops(PlantBlocks.BLOOD_FLOWER, PlantBlocks.BLOOD_FLOWER.get().asItem());
             this.createPlantsDrops(PlantBlocks.BLOOD_BUSH, PlantBlocks.BLOOD_BUSH.get().asItem());
 

@@ -78,14 +78,7 @@ public class  ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(BlockTags.LEAVES)
                 .add(WoodBlocks.BLOOD_LEAVES.get())
                 .add(WoodBlocks.SOUL_LEAVES.get())
-                .add(PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get())
-                .add(PlantBlocks.LIGHT_MUSHROOM_BLOCK.get())
-                .add(PlantBlocks.BLOOD_GRASS.get())
-                .add(PlantBlocks.SPIKY_GRASS.get())
-                .add(PlantBlocks.ROUNDED_GRASS.get())
-                .add(PlantBlocks.BLOOD_PETALS.get())
-                .add(MiscBlocks.SMALL_ROCKS.get())
-                .add(PlantBlocks.BLOOD_FLOWER.get());
+                .add(PlantBlocks.HANGING_BLOOD_TREE_LEAVES.get());
 
         this.tag(BlockTags.PLANKS)
                 .add(WoodBlocks.BLOOD_PLANKS.get())

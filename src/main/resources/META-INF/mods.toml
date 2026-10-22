@@ -63,7 +63,7 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId = "playeranimator"
 mandatory = true
-versionRange = "[1.0,)"
+versionRange = "[1.0.2-rc1,)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -71,7 +71,7 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId = "geckolib"
 mandatory = true
-versionRange = "[1.0,)"
+versionRange = "[4.8,5)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -79,7 +79,7 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId = "patchouli"
 mandatory = true
-versionRange = "[1.0,)"
+versionRange = "[1.20.1-85,)"
 ordering = "NONE"
 side = "BOTH"
 
