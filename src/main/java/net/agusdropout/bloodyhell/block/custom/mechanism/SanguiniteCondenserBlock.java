@@ -1,4 +1,4 @@
-package net.agusdropout.bloodyhell.block.custom;
+package net.agusdropout.bloodyhell.block.custom.mechanism;
 
 import net.agusdropout.bloodyhell.block.base.AbstractCondenserBlock;
 import net.agusdropout.bloodyhell.block.entity.ModBlockEntities;
