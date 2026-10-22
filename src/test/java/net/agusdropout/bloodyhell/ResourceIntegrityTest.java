@@ -35,7 +35,7 @@ class ResourceIntegrityTest {
             Path.of("src/generated/resources/data/" + MODID));
     private static final Path KNOWN_GAPS = Path.of("src/test/resources/known-resource-gaps.txt");
 
-    private static final Pattern ITEM_REGISTER = Pattern.compile("ITEMS\\.register\\(\\s*\"([a-z0-9_]+)\"");
+    private static final Pattern ITEM_REGISTER = Pattern.compile("(?:ITEMS\\.register|registerGeckoBlockItem)\\(\\s*\"([a-z0-9_]+)\"");
     private static final Pattern BLOCK_REGISTER = Pattern.compile("BLOCKS\\.register\\(\\s*\"([a-z0-9_]+)\"");
     private static final Pattern BLOCK_WITH_ITEM = Pattern.compile("registerBlock\\(\\s*\"([a-z0-9_]+)\"");
     private static final Pattern BLOCK_WITHOUT_ITEM = Pattern.compile("registerBlockWithoutBlockItem\\(\\s*\"([a-z0-9_]+)\"");
