@@ -59,18 +59,23 @@ public class TestWorldCommand {
                 .requires(source -> source.hasPermission(2))
                 .then(Commands.literal("build").executes(context -> {
                     CommandSourceStack source = context.getSource();
-                    build(source.getLevel(), source.getLevel().getSharedSpawnPos());
+                    build(source.getLevel(), originFor(source));
                     return 1;
                 }))
                 .then(Commands.literal("clear").executes(context -> {
                     CommandSourceStack source = context.getSource();
-                    Layout layout = layoutFor(source.getLevel().getSharedSpawnPos());
+                    Layout layout = layoutFor(originFor(source));
                     int[] cleared = clearWorld(source.getLevel(), layout);
                     String summary = TAG + "cleared blocks=" + cleared[0] + " entities=" + cleared[1];
                     BloodyHell.LOGGER.info(summary);
                     source.sendSuccess(() -> Component.literal(summary), false);
                     return 1;
                 })));
+    }
+
+    private static BlockPos originFor(CommandSourceStack source) {
+        if (source.getEntity() instanceof Player player) return player.blockPosition();
+        return source.getLevel().getSharedSpawnPos();
     }
 
     private static Layout layoutFor(BlockPos origin) {
