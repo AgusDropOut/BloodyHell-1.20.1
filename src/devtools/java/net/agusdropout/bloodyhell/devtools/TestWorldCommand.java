@@ -133,6 +133,7 @@ public class TestWorldCommand {
                 + " itemChests=" + filledChests + " items=" + items.size();
         BloodyHell.LOGGER.info(summary);
         server.getPlayerList().broadcastSystemMessage(Component.literal(summary), false);
+        BlockAudit.write(level);
     }
 
     private static void runSilently(MinecraftServer server, String command) {

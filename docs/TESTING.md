@@ -14,6 +14,8 @@ Run:
 - Inside any world with cheats, `/bhtest build` builds the same layout anchored at the world spawn (not at the player, so every run reuses and clears the same area), in this order along +Z: blocks, entities (AI disabled), chests with every item.
 - The script needs JDK 17. It sets `JAVA_HOME` itself, because the system default may be a newer JDK that Gradle 8.1.1 cannot run on.
 
+Every build also writes `run/bh-block-audit.csv` (`BlockAudit`, devtools): per mod block the real hardness, blast resistance, `requiresCorrectToolForDrops`, whether a loot table exists, and the `mineable/*` and `needs_*` tags as the game resolves them.
+
 Known and accepted warnings live in `scripts/testworld-known-warnings.txt` (one regex per line). The script ignores them, so any line it prints is new. Remove a line from that file when the underlying issue is fixed.
 
 Last clean baseline: blocks=141/141, entities=75/75, itemChests=11, items=284, no ERROR lines.
