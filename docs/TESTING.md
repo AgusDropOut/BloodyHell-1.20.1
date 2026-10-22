@@ -27,6 +27,8 @@ Last clean baseline: blocks=141/141, entities=75/75, itemChests=11, items=284, n
 - `make shader-cycle` runs the test world and, once built, switches at runtime through every pack in `run/shaderpacks` and finally back to no shaders (Oculus `save()` + `reload()`, the same calls as its menu). It walks the player to the start of the blocks, entities and chests sections for each pack. A crash on a switch ends the run and the script prints the crash report path; `[BHTEST] shader cycle finished ... failures=N` reports packs that did not load. Oculus is resolved by reflection, so the mod does not depend on it.
 - Without `-PbhShaders` the dev runtime has no shader mods, so the plain run stays vanilla rendering.
 
+Test-only code (`/bhtest`, the auto test, the shader cycle and `GlStateProbe`) lives in the `devtools` source set (`src/devtools/java`). It is added to the dev run configurations only and never to the release jar. The probe is installed through `DeferredRenderRegistry.setObserver` when `-PbhGlProbe` is set. After adding a Gradle source set, refresh the Gradle project in the IDE.
+
 ## Render refactor safety net
 
 Two checks that need no mixins, used to prove that a refactor of the render managers did not change the OpenGL state calls.
