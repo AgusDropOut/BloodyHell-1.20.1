@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.effect.data.DistortionData;
 import net.minecraft.client.Minecraft;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -68,19 +69,19 @@ public class RadialDistortionRenderManager implements DeferredRenderManager {
 
         for (DistortionData data : ACTIVE_DISTORTIONS) {
             if (ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime") != null) {
-                ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime").set(data.time);
+                ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime").set(data.time());
             }
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
 
-            Quaternionf rotationToUse = (data.camRot == null) ? mc.gameRenderer.getMainCamera().rotation() : data.camRot;
+            Quaternionf rotationToUse = (data.camRot() == null) ? mc.gameRenderer.getMainCamera().rotation() : data.camRot();
 
             Vector3f[] corners = {
-                    new Vector3f(-data.size, -data.size, 0),
-                    new Vector3f(-data.size, data.size, 0),
-                    new Vector3f(data.size, data.size, 0),
-                    new Vector3f(data.size, -data.size, 0)
+                    new Vector3f(-data.size(), -data.size(), 0),
+                    new Vector3f(-data.size(), data.size(), 0),
+                    new Vector3f(data.size(), data.size(), 0),
+                    new Vector3f(data.size(), -data.size(), 0)
             };
 
             for (int i = 0; i < 4; i++) {
@@ -88,11 +89,11 @@ public class RadialDistortionRenderManager implements DeferredRenderManager {
                 posVec.rotate(rotationToUse);
 
                 Vector4f finalPos = new Vector4f(posVec.x(), posVec.y(), posVec.z(), 1.0f);
-                finalPos.mul(data.pose);
+                finalPos.mul(data.pose());
 
                 buffer.vertex(finalPos.x(), finalPos.y(), finalPos.z())
                         .uv(uvs[i][0], uvs[i][1])
-                        .color(data.color.x(), data.color.y(), data.color.z(), data.alpha)
+                        .color(data.color().x(), data.color().y(), data.color().z(), data.alpha())
                         .endVertex();
             }
             tess.end();
@@ -107,19 +108,4 @@ public class RadialDistortionRenderManager implements DeferredRenderManager {
         ACTIVE_DISTORTIONS.clear();
     }
 
-    private static class DistortionData {
-        Matrix4f pose;
-        float size, alpha, time;
-        Vector3f color;
-        Quaternionf camRot;
-
-        DistortionData(Matrix4f pose, float size, Vector3f color, float alpha, float time, Quaternionf camRot) {
-            this.pose = pose;
-            this.size = size;
-            this.color = color;
-            this.alpha = alpha;
-            this.time = time;
-            this.camRot = (camRot != null) ? new Quaternionf(camRot) : null;
-        }
-    }
 }

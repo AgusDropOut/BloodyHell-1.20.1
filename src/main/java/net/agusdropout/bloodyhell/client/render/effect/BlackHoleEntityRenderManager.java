@@ -7,6 +7,7 @@ import net.agusdropout.bloodyhell.client.shader.ModShaders;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.effect.data.BlackHoleData;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
@@ -52,20 +53,20 @@ public class BlackHoleEntityRenderManager implements DeferredRenderManager {
             BufferBuilder buffer = tess.getBuilder();
 
             for (BlackHoleData data : ACTIVE_BLACK_HOLES) {
-                float r = ((data.color >> 16) & 0xFF) / 255.0f;
-                float g = ((data.color >> 8) & 0xFF) / 255.0f;
-                float b = (data.color & 0xFF) / 255.0f;
+                float r = ((data.color() >> 16) & 0xFF) / 255.0f;
+                float g = ((data.color() >> 8) & 0xFF) / 255.0f;
+                float b = (data.color() & 0xFF) / 255.0f;
 
                 if (shader.safeGetUniform("u_color") != null) shader.safeGetUniform("u_color").set(r, g, b);
-                if (shader.safeGetUniform("u_time") != null) shader.safeGetUniform("u_time").set(data.time / 3.0f);
-                if (shader.safeGetUniform("u_alpha") != null) shader.safeGetUniform("u_alpha").set(data.alpha);
+                if (shader.safeGetUniform("u_time") != null) shader.safeGetUniform("u_time").set(data.time() / 3.0f);
+                if (shader.safeGetUniform("u_alpha") != null) shader.safeGetUniform("u_alpha").set(data.alpha());
 
                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-                buffer.vertex(data.pose, -data.radius, 0.01f, -data.radius).uv(0.0f, 0.0f).endVertex();
-                buffer.vertex(data.pose, data.radius, 0.01f, -data.radius).uv(1.0f, 0.0f).endVertex();
-                buffer.vertex(data.pose, data.radius, 0.01f, data.radius).uv(1.0f, 1.0f).endVertex();
-                buffer.vertex(data.pose, -data.radius, 0.01f, data.radius).uv(0.0f, 1.0f).endVertex();
+                buffer.vertex(data.pose(), -data.radius(), 0.01f, -data.radius()).uv(0.0f, 0.0f).endVertex();
+                buffer.vertex(data.pose(), data.radius(), 0.01f, -data.radius()).uv(1.0f, 0.0f).endVertex();
+                buffer.vertex(data.pose(), data.radius(), 0.01f, data.radius()).uv(1.0f, 1.0f).endVertex();
+                buffer.vertex(data.pose(), -data.radius(), 0.01f, data.radius()).uv(0.0f, 1.0f).endVertex();
                 tess.end();
             }
         }
@@ -79,17 +80,4 @@ public class BlackHoleEntityRenderManager implements DeferredRenderManager {
         ACTIVE_BLACK_HOLES.clear();
     }
 
-    private static class BlackHoleData {
-        Matrix4f pose;
-        float radius, time, alpha;
-        int color;
-
-        BlackHoleData(Matrix4f pose, float radius, float time, float alpha, int color) {
-            this.pose = pose;
-            this.radius = radius;
-            this.time = time;
-            this.alpha = alpha;
-            this.color = color;
-        }
-    }
 }

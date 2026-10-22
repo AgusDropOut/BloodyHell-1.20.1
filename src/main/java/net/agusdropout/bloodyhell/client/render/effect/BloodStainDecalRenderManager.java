@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.agusdropout.bloodyhell.client.render.view.ViewEffects;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
+import net.agusdropout.bloodyhell.client.render.effect.data.DecalData;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.Direction;
@@ -72,12 +73,12 @@ public class BloodStainDecalRenderManager implements DeferredRenderManager {
             for (DecalData data : ACTIVE_DECALS.values()) {
                 poseStack.pushPose();
 
-                poseStack.translate(data.x - camX, data.y - camY, data.z - camZ);
+                poseStack.translate(data.x() - camX, data.y() - camY, data.z() - camZ);
 
                 float baseOffset = 0.01f;
-                float microZ = baseOffset + (0.001f * (data.id % 50));
+                float microZ = baseOffset + (0.001f * (data.id() % 50));
 
-                switch (data.face) {
+                switch (data.face()) {
                     case UP:    poseStack.translate(0, microZ, 0); poseStack.mulPose(Axis.XP.rotationDegrees(-90)); break;
                     case DOWN:  poseStack.translate(0, 1.0f - microZ, 0); poseStack.mulPose(Axis.XP.rotationDegrees(90)); break;
                     case NORTH: poseStack.translate(0, 0.5, 1.0f - microZ); poseStack.mulPose(Axis.YP.rotationDegrees(180)); break;
@@ -86,15 +87,15 @@ public class BloodStainDecalRenderManager implements DeferredRenderManager {
                     case EAST:  poseStack.translate(microZ, 0.5, 0); poseStack.mulPose(Axis.YP.rotationDegrees(90)); break;
                 }
 
-                poseStack.mulPose(Axis.ZP.rotationDegrees(data.rot));
-                poseStack.scale(data.size, data.size, data.size);
+                poseStack.mulPose(Axis.ZP.rotationDegrees(data.rot()));
+                poseStack.scale(data.size(), data.size(), data.size());
 
                 Matrix4f pose = poseStack.last().pose();
                 float s = 0.5f;
-                buffer.vertex(pose, -s, -s, 0).color(data.r, data.g, data.b, data.a).uv(0, 1).endVertex();
-                buffer.vertex(pose, -s, s, 0).color(data.r, data.g, data.b, data.a).uv(0, 0).endVertex();
-                buffer.vertex(pose, s, s, 0).color(data.r, data.g, data.b, data.a).uv(1, 0).endVertex();
-                buffer.vertex(pose, s, -s, 0).color(data.r, data.g, data.b, data.a).uv(1, 1).endVertex();
+                buffer.vertex(pose, -s, -s, 0).color(data.r(), data.g(), data.b(), data.a()).uv(0, 1).endVertex();
+                buffer.vertex(pose, -s, s, 0).color(data.r(), data.g(), data.b(), data.a()).uv(0, 0).endVertex();
+                buffer.vertex(pose, s, s, 0).color(data.r(), data.g(), data.b(), data.a()).uv(1, 0).endVertex();
+                buffer.vertex(pose, s, -s, 0).color(data.r(), data.g(), data.b(), data.a()).uv(1, 1).endVertex();
 
                 poseStack.popPose();
             }
@@ -110,16 +111,4 @@ public class BloodStainDecalRenderManager implements DeferredRenderManager {
         ACTIVE_DECALS.clear();
     }
 
-    private static class DecalData {
-        int id;
-        double x, y, z;
-        Direction face;
-        float rot, size, r, g, b, a;
-
-        DecalData(int id, double x, double y, double z, Direction face, float rot, float size, float r, float g, float b, float a) {
-            this.id = id; this.x = x; this.y = y; this.z = z;
-            this.face = face; this.rot = rot; this.size = size;
-            this.r = r; this.g = g; this.b = b; this.a = a;
-        }
-    }
 }

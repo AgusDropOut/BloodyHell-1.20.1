@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.effect.data.RingData;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
@@ -57,19 +58,19 @@ public class MagicRingRenderManager implements DeferredRenderManager {
 
         for (RingData data : ACTIVE_RINGS) {
             PoseStack poseStack = new PoseStack();
-            poseStack.translate(data.px, data.py, data.pz);
+            poseStack.translate(data.px(), data.py(), data.pz());
             Matrix4f pose = poseStack.last().pose();
 
 
             RenderSystem.setShaderTexture(0, AURORA_NOISE);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-            RenderHelper.renderTexturedAuroraRing(buffer, pose, data.radius, data.ringHeight, 200, data.time * 0.5f, data.r, data.g, data.b, data.alpha);
+            RenderHelper.renderTexturedAuroraRing(buffer, pose, data.radius(), data.ringHeight(), 200, data.time() * 0.5f, data.r(), data.g(), data.b(), data.alpha());
             tess.end();
 
 
             RenderSystem.setShaderTexture(0, AURORA_NOISE_ALT);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-            RenderHelper.renderTexturedAuroraRing(buffer, pose, data.radius, data.ringHeight, 200, -data.time, data.r, data.g, data.b, data.alpha);
+            RenderHelper.renderTexturedAuroraRing(buffer, pose, data.radius(), data.ringHeight(), 200, -data.time(), data.r(), data.g(), data.b(), data.alpha());
             tess.end();
         }
 
@@ -82,13 +83,4 @@ public class MagicRingRenderManager implements DeferredRenderManager {
         ACTIVE_RINGS.clear();
     }
 
-    private static class RingData {
-        float px, py, pz, radius, ringHeight, time, r, g, b, alpha;
-
-        RingData(float px, float py, float pz, float radius, float ringHeight, float time, float r, float g, float b, float alpha) {
-            this.px = px; this.py = py; this.pz = pz;
-            this.radius = radius; this.ringHeight = ringHeight; this.time = time;
-            this.r = r; this.g = g; this.b = b; this.alpha = alpha;
-        }
-    }
 }

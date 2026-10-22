@@ -1,21 +1,13 @@
-﻿savedProjection.set(RenderSystem.getProjectionMatrix());
-savedModelView.set(RenderSystem.getModelViewMatrix());
-RenderSystem.disableDepthTest();
+﻿RenderSystem.disableDepthTest();
 RenderSystem.depthMask(false);
 RenderSystem.enableBlend();
 RenderSystem.defaultBlendFunc();
-Matrix4f currentProj = new Matrix4f(RenderSystem.getProjectionMatrix());
-PoseStack rsStack = RenderSystem.getModelViewStack();
-RenderSystem.setProjectionMatrix(savedProjection, VertexSorting.DISTANCE_TO_ORIGIN);
-RenderSystem.applyModelViewMatrix();
 RenderSystem.setShader(() -> ModShaders.RADIAL_DISTORTION_SHADER);
 if (ModShaders.RADIAL_DISTORTION_SHADER.getUniform("ScreenSize") != null) {
 ModShaders.RADIAL_DISTORTION_SHADER.getUniform("ScreenSize").set((float) screenW, (float) screenH);
 RenderSystem.setShaderTexture(0, mainTarget.getColorTextureId());
 if (ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime") != null) {
-ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime").set(data.time);
-RenderSystem.applyModelViewMatrix();
-RenderSystem.setProjectionMatrix(currentProj, VertexSorting.ORTHOGRAPHIC_Z);
+ModShaders.RADIAL_DISTORTION_SHADER.getUniform("GameTime").set(data.time());
 RenderSystem.depthMask(true);
 RenderSystem.enableDepthTest();
 RenderSystem.disableBlend();

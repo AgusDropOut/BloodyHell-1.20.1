@@ -8,6 +8,7 @@ import net.agusdropout.bloodyhell.client.render.RenderHelper;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.effect.data.SphereData;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
@@ -56,26 +57,26 @@ public class NoiseSphereRenderManager implements DeferredRenderManager {
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
 
         for (SphereData data : ACTIVE_SPHERES) {
-            int r = (int) (data.color.x() * 255);
-            int g = (int) (data.color.y() * 255);
-            int b = (int) (data.color.z() * 255);
-            int a = (int) (data.alpha * 255);
+            int r = (int) (data.color().x() * 255);
+            int g = (int) (data.color().y() * 255);
+            int b = (int) (data.color().z() * 255);
+            int a = (int) (data.alpha() * 255);
 
             PoseStack poseStack = new PoseStack();
-            poseStack.translate(data.px, data.py, data.pz);
+            poseStack.translate(data.px(), data.py(), data.pz());
 
 
             RenderSystem.setShaderTexture(0, OUTER_TEXTURE);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
             poseStack.pushPose();
-            RenderHelper.renderTexturedSphereNoLight(buffer, poseStack, data.radius, 24, 24, r, g, b, a, data.uOffset, data.vOffset);
+            RenderHelper.renderTexturedSphereNoLight(buffer, poseStack, data.radius(), 24, 24, r, g, b, a, data.uOffset(), data.vOffset());
             poseStack.popPose();
             tess.end();
 
             RenderSystem.setShaderTexture(0, INNER_TEXTURE);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
             poseStack.pushPose();
-            RenderHelper.renderTexturedSphereNoLight(buffer, poseStack, data.radius * 0.95f, 24, 24, r, g, b, a, -data.uOffset, -data.vOffset);
+            RenderHelper.renderTexturedSphereNoLight(buffer, poseStack, data.radius() * 0.95f, 24, 24, r, g, b, a, -data.uOffset(), -data.vOffset());
             poseStack.popPose();
             tess.end();
         }
@@ -89,14 +90,4 @@ public class NoiseSphereRenderManager implements DeferredRenderManager {
         ACTIVE_SPHERES.clear();
     }
 
-    private static class SphereData {
-        float px, py, pz, radius, alpha, uOffset, vOffset;
-        Vector3f color;
-
-        SphereData(float px, float py, float pz, float radius, Vector3f color, float alpha, float uOffset, float vOffset) {
-            this.px = px; this.py = py; this.pz = pz;
-            this.radius = radius; this.color = color;
-            this.alpha = alpha; this.uOffset = uOffset; this.vOffset = vOffset;
-        }
-    }
 }

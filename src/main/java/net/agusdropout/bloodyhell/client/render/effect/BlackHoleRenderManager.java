@@ -6,6 +6,7 @@ import net.agusdropout.bloodyhell.client.render.effect.api.ScreenSampledDraw;
 import net.agusdropout.bloodyhell.client.render.deferred.DeferredMatrices;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
+import net.agusdropout.bloodyhell.client.render.effect.data.BlackHoleRenderData;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 
@@ -46,7 +47,7 @@ public class BlackHoleRenderManager implements DeferredRenderManager {
         RenderSystem.enableDepthTest();
 
         for (BlackHoleRenderData data : ACTIVE_BLACK_HOLES) {
-            data.draw.draw(data.camera, data.partialTicks, screenTexId);
+            data.draw().draw(data.camera(), data.partialTicks(), screenTexId);
         }
 
         matrices.restore();
@@ -57,15 +58,4 @@ public class BlackHoleRenderManager implements DeferredRenderManager {
         ACTIVE_BLACK_HOLES.clear();
     }
 
-    private static class BlackHoleRenderData {
-        ScreenSampledDraw draw;
-        Camera camera;
-        float partialTicks;
-
-        BlackHoleRenderData(ScreenSampledDraw draw, Camera camera, float partialTicks) {
-            this.draw = draw;
-            this.camera = camera;
-            this.partialTicks = partialTicks;
-        }
-    }
 }
