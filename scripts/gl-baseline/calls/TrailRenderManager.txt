@@ -1,2 +1,2 @@
 ﻿RenderSystem.setShader(effect.shader());
-Uniform timeUniform = effect.timeTarget().get().getUniform("AnimTime");
+Uniform timeUniform = effect.shader().get().getUniform("AnimTime");

@@ -46,10 +46,10 @@ public final class Effects {
                     .build());
 
     public static final TrailRenderManager FRENZIED_TRAIL = new TrailRenderManager(
-            new TrailEffect("FrenziedTrail", () -> ModShaders.LINEAR_FRENZIED_FLAME_SHADER, () -> ModShaders.RADIANT_ENERGY_SHADER, EffectStates.PREMULTIPLIED));
+            new TrailEffect("FrenziedTrail", () -> ModShaders.LINEAR_FRENZIED_FLAME_SHADER, EffectStates.PREMULTIPLIED));
 
     public static final TrailRenderManager RADIANT_TRAIL = new TrailRenderManager(
-            new TrailEffect("RadiantEnergy", () -> ModShaders.RADIANT_ENERGY_SHADER, () -> ModShaders.RADIANT_ENERGY_SHADER, EffectStates.PREMULTIPLIED_NO_DEPTH_TEST));
+            new TrailEffect("RadiantEnergy", () -> ModShaders.RADIANT_ENERGY_SHADER, EffectStates.PREMULTIPLIED_NO_DEPTH_TEST));
 
     public static final OrbRenderManager BLOOD_ORB = new OrbRenderManager(
             OrbEffect.of("BloodOrb", () -> ModShaders.BLOOD_ORB_SHADER, 0.5f, EffectStates.ORB));

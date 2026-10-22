@@ -5,5 +5,5 @@ import net.minecraft.client.renderer.ShaderInstance;
 
 import java.util.function.Supplier;
 
-public record TrailEffect(String name, Supplier<ShaderInstance> shader, Supplier<ShaderInstance> timeTarget, EffectState state) {
+public record TrailEffect(String name, Supplier<ShaderInstance> shader, EffectState state) {
 }

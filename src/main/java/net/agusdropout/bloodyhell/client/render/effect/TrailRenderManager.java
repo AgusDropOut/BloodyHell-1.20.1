@@ -40,7 +40,7 @@ public class TrailRenderManager extends QueuedRenderManager<TrailData> {
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         for (TrailData data : items) {
-            Uniform timeUniform = effect.timeTarget().get().getUniform("AnimTime");
+            Uniform timeUniform = effect.shader().get().getUniform("AnimTime");
             if (timeUniform != null) {
                 timeUniform.set(data.time());
             }
