@@ -87,10 +87,12 @@ Plants and drops
 - [ ] Blood grass: shears drop the grass, the bare hand sometimes drops an eyeball seed.
 - [ ] Small rocks: a pickaxe drops them; the hand does not.
 
-Tools and tiers
-- [ ] Machines (condensers, harvester, infusor, lapidary, engine, pillar, altars, Unknown Portal) drop their item with an iron pickaxe and nothing with the hand.
-- [ ] Blasphemite ore and block need a sanguinite tool (a netherite pickaxe fails); the Rhnull block needs a blasphemite tool.
+Tools and tiers (drops and tiers of every block are checked by the harvest matrix of the test world)
 - [ ] Tool and armor feel: sanguinite, blasphemite and rhnull are in that order; blasphemite and rhnull armor no longer make you immune to knockback.
+
+Magic
+- [x] Staff tooltips and the spell books loose, with a staff and with the Omnitome (checked by the author on 2026-10-23, not every case).
+- [ ] The new recipes of the Omnitome and the three staffs are reachable and their difficulty feels right.
 
 World and systems
 - [ ] The Chalice of the Damned lights a portal frame; the portal teleports both ways.
