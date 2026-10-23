@@ -14,6 +14,9 @@ import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.agusdropout.bloodyhell.block.ModBlocks;
+import net.agusdropout.bloodyhell.entity.ModEntityTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.ItemStack;
@@ -113,5 +116,30 @@ public class MachineGameTests {
             checks.add(() -> helper.assertTrue(items.getStackInSlot(1).is(result.getItem()), "the infusor did not produce " + result.getItem()));
         }
         helper.succeedWhen(() -> checks.forEach(Runnable::run));
+    }
+
+    @GameTestGenerator
+    public static Collection<TestFunction> everyEntitySpawnsAndTicks() {
+        List<TestFunction> tests = new ArrayList<>();
+        for (RegistryObject<EntityType<?>> entry : ModEntityTypes.ENTITY_TYPES.getEntries().stream().map(e -> (RegistryObject<EntityType<?>>) (RegistryObject<?>) e).toList()) {
+            tests.add(new TestFunction("entities", "entity_" + entry.getId().getPath(), BloodyHell.MODID + ":" + TEMPLATE, 60, 0, true,
+                    helper -> spawnAndTick(helper, entry.get())));
+        }
+        return tests;
+    }
+
+    private static void spawnAndTick(GameTestHelper helper, EntityType<?> type) {
+        Entity entity = type.create(helper.getLevel());
+        if (entity == null) {
+            helper.fail("the entity type could not create an entity");
+            return;
+        }
+        BlockPos pos = helper.absolutePos(MACHINE.above());
+        entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.0F, 0.0F);
+        helper.getLevel().addFreshEntity(entity);
+        helper.runAfterDelay(30, () -> {
+            entity.discard();
+            helper.succeed();
+        });
     }
 }
