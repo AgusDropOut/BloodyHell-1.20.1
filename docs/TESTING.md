@@ -44,6 +44,7 @@ Commit messages are checked by `scripts/git-hooks/commit-msg`, which rejects Cla
 - `PortalGameTests`: the Chalice of the Damned lights a frame of sanguinite blocks when it is used on the bottom frame block, and does nothing without a frame.
 - `SproutGameTests`: the Blood Gem Sprout takes the blood of a filled flask.
 - `SpellCastGameTests`: every spell book is cast with a Forge `FakePlayer` (a real `ServerPlayer`; the mock player cannot be cast to it) through the Scarlet Cinder staff with the book in the off hand, through the staff with the Omnitome in the off hand, through the Omnitome in hand and the loose book in hand. The Crimson Veil spent is compared with the expected number of casts: sequential books fire once per charge plus cooldown cycle, thrown ones once (by the staff while charging, by the Omnitome on release) and the others once on release (44 tests, ADR 0018).
+- `CrimsonVeilHudGameTests`: the Crimson Veil HUD rule (`CrimsonVeilHelper.isHoldingConsumer`, the same one the overlay uses) is true for every spell book and the Omnitome in either hand, for every staff in the main hand and for a staff with a book, and false with empty hands or a pickaxe and a shield (29 tests). The consumer tag is filled from the registry by the data generator, so a new book is never forgotten.
 - `StaffBonusGameTests` (one batch per test, so the targets of one test are never counted by its neighbour): the Scarlet Cinder counts the targets with Blood Fire and the Incomplete Staff the ones with Bleeding, up to five; a target with another effect or out of range does not count; the count goes back to zero when the staff is not selected; an affine book gets the full bonus (damage, Crimson Veil cost) and one of another affinity 40% of it; a sequential book fires faster with a charged staff (7 tests, ADR 0018).
 - Not covered yet: sprout growth and gems, the Sanguine Lapidary, the Rhnull blood engine modes (its design is still open), the Unknown Portal machine output, the Voracious Mushroom, the portal teleport itself.
 - Optional tests (`required = false`) state a design intent that the code does not meet yet. They do not fail the run; they appear as `(optional) ... failed` in the log. Today: `exactlyTheRecipeAmountCrossesTwoPipesIntoTheCondenser` and `pushPipeNextToTheHarvesterDoesNotSendTheBloodBack` (items 44 and 45 of `docs/TECH_DEBT.md`). Remove `required = false` when the item is fixed.
@@ -109,7 +110,6 @@ Visuals
 - [ ] No jump of the shader effects after 100 seconds of play.
 
 Compatibility
-- [ ] New world, with and without Rubidium and Oculus, with a shader pack (BSL and Complementary).
+- [ ] Two separate launches with a new world each: one without Rubidium and Oculus, one with both and a shader pack (BSL and Complementary).
 - [ ] A dedicated server starts and a client joins it.
-- [ ] Save and reload with the Unknown Entity Arms active (their target persists).
 - [x] Walk the entity grid and check every model, texture and animation looks right (with and without a shader pack).

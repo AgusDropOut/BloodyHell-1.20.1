@@ -20,6 +20,9 @@ import net.agusdropout.bloodyhell.block.registry.StoneBlocks;
 import net.agusdropout.bloodyhell.block.registry.WoodBlocks;
 import com.eliotlash.mclib.math.functions.classic.Mod;
 import net.agusdropout.bloodyhell.BloodyHell;
+import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
+import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
+import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -27,7 +30,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import net.minecraftforge.registries.ForgeRegistries;
+
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagGenerator extends ItemTagsProvider {
@@ -90,25 +96,16 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(WoodBlocks.STRIPPED_BLOOD_LOG.get().asItem())
                 .add(WoodBlocks.BLOOD_LOG.get().asItem());
 
-        this.tag(ModTags.Items.CRIMSONVEIL_CONSUMER)
-                .add(SpellBookItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_SPHERE_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_NOVA_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_IMPALERS_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_ORB_EMITTER_SPELLBOOK.get())
+        var crimsonVeilConsumers = this.tag(ModTags.Items.CRIMSONVEIL_CONSUMER);
+        ForgeRegistries.ITEMS.getEntries().stream()
+                .filter(entry -> entry.getKey().location().getNamespace().equals(BloodyHell.MODID))
+                .filter(entry -> entry.getValue() instanceof BaseSpellBookItem<?> || entry.getValue() instanceof BaseStaffItem || entry.getValue() instanceof OmnitomeItem)
+                .sorted(Comparator.comparing(entry -> entry.getKey().location().getPath()))
+                .forEach(entry -> crimsonVeilConsumers.add(entry.getValue()));
+        crimsonVeilConsumers
                 .add(WeaponItems.BLASPHEMOUS_TWIN_DAGGERS.get())
                 .add(WeaponItems.BLASPHEMOUS_IMPALER.get())
-                .add(WeaponItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get())
-                .add(StaffItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get())
-                .add(StaffItems.STAFF_OF_THE_GOLDEN_SORROW.get())
-                .add(StaffItems.STAFF_OF_SCARLET_CINDER.get())
-                .add(SpellBookItems.THE_OMNITOME.get());
+                .add(WeaponItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get());
 
         this.tag(ModTags.Items.RELIQUARY_UPGRADE_ITEM)
                 .add(ReliquaryItems.ANCIENT_OCULAR_LENSE.get())

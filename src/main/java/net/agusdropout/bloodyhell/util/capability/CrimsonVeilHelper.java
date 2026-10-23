@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.util.capability;
 
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
+import net.agusdropout.bloodyhell.datagen.ModTags;
 import net.agusdropout.bloodyhell.networking.ModMessages;
 import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,6 +10,10 @@ import net.minecraft.world.entity.player.Player;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrimsonVeilHelper {
+
+    public static boolean isHoldingConsumer(Player player) {
+        return player.getMainHandItem().is(ModTags.Items.CRIMSONVEIL_CONSUMER) || player.getOffhandItem().is(ModTags.Items.CRIMSONVEIL_CONSUMER);
+    }
 
     public static boolean hasEnough(Player player, int amount) {
         AtomicBoolean hasEnough = new AtomicBoolean(false);
