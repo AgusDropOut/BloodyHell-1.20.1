@@ -21,7 +21,6 @@ creative	visceral_blood_bucket	fluid bucket, creative only
 creative	viscous_blasphemy_bucket	fluid bucket, creative only
 creative	oni_statue	decoration with noLootTable
 creative	tomb_block	decoration with noLootTable
-creative	visceral_infected_vein	spreading vein with noLootTable
 creative	droopvine	natural vine, the block drops glow_fruit
 creative	droopvine_plant	natural vine, the block drops glow_fruit
 code	aventurine_blood_gem	GemType
@@ -40,4 +39,4 @@ mob	ritekeeper	structure sanctum_of_the_unbound, template boss_room
 mob	cinder_acolyte	structure sanctum_of_the_unbound, template lab
 mob	failed_remnant	structure sanctum_of_the_unbound, template dark_pit
 mob	seliora	structure pool, template pool_parte_5
-gap	sanguine_crucible_core	only the Oni drops it, and the mausoleum with the Oni boss has no structure definition (the Oni is deprecated)
+deprecated	sanguine_crucible_core	the Oni and the mausoleum are deprecated on purpose

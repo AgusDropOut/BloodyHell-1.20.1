@@ -54,7 +54,7 @@ class ProgressionSourcesTest {
             }
             String kind = entry[0];
             String name = entry[1];
-            if (!List.of("creative", "code", "gap", "mob").contains(kind)) problems.add("unknown kind " + kind + " for " + name);
+            if (!List.of("creative", "code", "deprecated", "mob").contains(kind)) problems.add("unknown kind " + kind + " for " + name);
             if (!kind.equals("mob") && !constantOfItem.containsKey(name) && !constantOfItem.containsKey(name + "_item")) {
                 problems.add(kind + " " + name + " is not an item registered in the code");
             }

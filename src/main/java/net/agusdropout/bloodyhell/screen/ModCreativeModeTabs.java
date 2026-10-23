@@ -239,7 +239,6 @@ public class ModCreativeModeTabs {
                         output.accept(PlantBlocks.BLOOD_WALL_MUSHROOM_BLOCK.get());
                         output.accept(PlaceableItems.VORACIOUS_MUSHROOM.get());
                         output.accept(PlaceableItems.CRIMSON_LURE_MUSHROOM.get());
-                        output.accept(PlantBlocks.VISCERAL_INFECTED_VEIN.get());
 
                         output.accept(WoodBlocks.BLOOD_PLANKS.get());
                         output.accept(WoodBlocks.BLOOD_PLANKS_STAIRS.get());

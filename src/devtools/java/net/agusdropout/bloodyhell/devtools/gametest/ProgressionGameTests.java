@@ -76,8 +76,8 @@ public class ProgressionGameTests {
             String kind = declaredKind.get(path);
             String via = reached.get(item);
             boolean byData = via != null && !via.startsWith("code:");
-            if (kind != null && kind.equals("gap")) {
-                report.put(path, (byData ? "obtainable: " + via : "KNOWN GAP: " + declared.get(path)));
+            if (kind != null && kind.equals("deprecated")) {
+                report.put(path, (byData ? "obtainable: " + via : "DEPRECATED: " + declared.get(path)));
             } else if (kind != null && kind.equals("creative")) {
                 report.put(path, "creative only: " + declared.get(path) + (byData ? " (also obtainable: " + via + ")" : ""));
                 if (byData) problems.add(path + " is declared creative only but can be obtained: " + via);

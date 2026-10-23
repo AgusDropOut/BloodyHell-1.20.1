@@ -66,7 +66,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         crossBlock(MiscBlocks.BLOOD_FIRE);
         crossBlock(MiscBlocks.FRENZIED_FIRE_BLOCK);
 
-        veinBlock(PlantBlocks.VISCERAL_INFECTED_VEIN);
 
         stairsBlock(((StairBlock) StoneBlocks.BLOODY_STONE_STAIRS.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
         slabBlock(((SlabBlock) StoneBlocks.BLOODY_STONE_SLAB.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()), blockTexture(StoneBlocks.BLOODY_STONE_BLOCK.get()));
@@ -320,64 +319,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .rotationY(rotY)
                     .build();
         });
-    }
-
-    public void veinBlock(Supplier<? extends Block> blockSupplier) {
-        Block block = blockSupplier.get();
-        ResourceLocation texture = blockTexture(block);
-        String name = name(block);
-
-        ModelFile model = models().getBuilder(name)
-                .parent(models().getExistingFile(mcLoc("block/block")))
-                .texture("particle", texture)
-                .texture("vein", texture)
-                .renderType("cutout")
-                .element()
-                .from(0.0f, 0.0f, 0.0f)
-                .to(16.0f, 16.0f, 1.0f)
-                .shade(false)
-                .face(Direction.SOUTH).texture("#vein").uvs(0, 0, 16, 16).end()
-                .face(Direction.NORTH).texture("#vein").uvs(16, 0, 0, 16).end()
-                .end();
-
-        var builder = getMultipartBuilder(block);
-
-        Direction[] directions = { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP, Direction.DOWN };
-
-        for (Direction dir : directions) {
-            int rotX = 0;
-            int rotY = 0;
-            switch (dir) {
-                case NORTH: rotX = 0;   rotY = 0;   break;
-                case EAST:  rotX = 0;   rotY = 90;  break;
-                case SOUTH: rotX = 0;   rotY = 180; break;
-                case WEST:  rotX = 0;   rotY = 270; break;
-                case UP:    rotX = 270; rotY = 0;   break;
-                case DOWN:  rotX = 90;  rotY = 0;   break;
-            }
-
-            builder.part()
-                    .modelFile(model)
-                    .rotationX(rotX)
-                    .rotationY(rotY)
-                    .uvLock(true)
-                    .addModel()
-                    .condition(MultifaceBlock.getFaceProperty(dir), true);
-
-            var fallbackPart = builder.part()
-                    .modelFile(model)
-                    .rotationX(rotX)
-                    .rotationY(rotY)
-                    .uvLock(true)
-                    .addModel();
-
-            fallbackPart.condition(PipeBlock.NORTH, false)
-                    .condition(PipeBlock.EAST, false)
-                    .condition(PipeBlock.SOUTH, false)
-                    .condition(PipeBlock.WEST, false)
-                    .condition(PipeBlock.UP, false)
-                    .condition(PipeBlock.DOWN, false);
-        }
     }
 
     public void fanBlock(Supplier<? extends Block> block) {

@@ -360,7 +360,6 @@ public class ModRenderers {
         ItemBlockRenderTypes.setRenderLayer(PlantBlocks.CINDER_BLOOM_CACTUS_CON.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(PlantBlocks.CINDER_BLOOM_CACTUS_FLOWER.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(MachineBlocks.BLOOD_GEM_SPROUT.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(PlantBlocks.VISCERAL_INFECTED_VEIN.get(), RenderType.cutout());
 
 
         ItemBlockRenderTypes.setRenderLayer(PlantBlocks.BLOOD_BUSH.get(), RenderType::canConsolidateConsecutiveGeometry);

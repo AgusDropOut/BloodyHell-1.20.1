@@ -34,26 +34,25 @@ import java.util.UUID;
 public class EntityDropGameTests {
     private static final int ROLLS = 300;
     private static final java.util.concurrent.ConcurrentSkipListMap<String, String> SUMMARY = new java.util.concurrent.ConcurrentSkipListMap<>();
-    private static final Map<String, String> DROPS_NOTHING_BY_DESIGN = Map.of(
-            "bloody_soul_entity", "a soul that the blood harvester collects",
-            "corrupted_bloody_soul_entity", "a soul that the blood harvester collects",
-            "blasphemous_twin_daggers_clone", "a clone summoned by the weapon");
-    private static final Map<String, String> NO_DROPS_DESIGNED_YET = Map.ofEntries(
-            Map.entry("offspring_of_the_unknown", "empty loot table"),
-            Map.entry("grave_walker_entity", "empty loot table"),
-            Map.entry("horned_worm", "empty loot table"),
-            Map.entry("veil_stalker", "empty loot table"),
-            Map.entry("blasphemous_malformation", "empty loot table"),
-            Map.entry("vesper", "empty loot table"),
-            Map.entry("failed_son_of_the_unknown", "empty loot table"),
-            Map.entry("weeping_ocular", "empty loot table"),
-            Map.entry("unknown_lantern", "empty loot table"),
-            Map.entry("burden_of_the_unknown", "empty loot table"),
-            Map.entry("bastion_of_the_unknown", "empty loot table"),
-            Map.entry("crawling_delusion", "empty loot table"),
-            Map.entry("cyclops_entity", "no loot table"),
-            Map.entry("blasphemous_arm_entity", "no loot table"),
-            Map.entry("echo_of_the_nameless", "no loot table"));
+    private static final Map<String, String> DROPS_NOTHING_BY_DESIGN = Map.ofEntries(
+            Map.entry("bloody_soul_entity", "drops nothing on purpose"),
+            Map.entry("corrupted_bloody_soul_entity", "drops nothing on purpose"),
+            Map.entry("blasphemous_twin_daggers_clone", "drops nothing on purpose"),
+            Map.entry("offspring_of_the_unknown", "drops nothing on purpose"),
+            Map.entry("grave_walker_entity", "drops nothing on purpose"),
+            Map.entry("horned_worm", "drops nothing on purpose"),
+            Map.entry("veil_stalker", "drops nothing on purpose"),
+            Map.entry("blasphemous_malformation", "drops nothing on purpose"),
+            Map.entry("vesper", "drops nothing on purpose"),
+            Map.entry("failed_son_of_the_unknown", "drops nothing on purpose"),
+            Map.entry("weeping_ocular", "drops nothing on purpose"),
+            Map.entry("unknown_lantern", "drops nothing on purpose"),
+            Map.entry("burden_of_the_unknown", "drops nothing on purpose"),
+            Map.entry("bastion_of_the_unknown", "drops nothing on purpose"),
+            Map.entry("crawling_delusion", "drops nothing on purpose"),
+            Map.entry("cyclops_entity", "drops nothing on purpose"),
+            Map.entry("blasphemous_arm_entity", "drops nothing on purpose"),
+            Map.entry("echo_of_the_nameless", "drops nothing on purpose"));
 
     @GameTestGenerator
     public static Collection<TestFunction> everyLivingEntityDropsWhatItsTableSays() {
@@ -79,9 +78,9 @@ public class EntityDropGameTests {
         boolean drops = !dropped.isEmpty();
         SUMMARY.put(name, drops ? "drops " + dropped + " in " + ROLLS + " kills" : "drops nothing");
         writeSummary();
-        boolean excused = DROPS_NOTHING_BY_DESIGN.containsKey(name) || NO_DROPS_DESIGNED_YET.containsKey(name);
-        helper.assertTrue(!(drops && excused), name + " is on a list of entities that drop nothing but it dropped " + dropped.keySet() + "; remove it from the list");
-        helper.assertTrue(drops || excused, name + " is a living entity that never dropped anything in " + ROLLS + " kills by a player (loot table " + type.getDefaultLootTable() + ") and is on neither list of entities that drop nothing");
+        boolean excused = DROPS_NOTHING_BY_DESIGN.containsKey(name);
+        helper.assertTrue(!(drops && excused), name + " is on the list of entities that drop nothing on purpose but it dropped " + dropped.keySet() + "; remove it from the list");
+        helper.assertTrue(drops || excused, name + " is a living entity that never dropped anything in " + ROLLS + " kills by a player (loot table " + type.getDefaultLootTable() + ") and is not on the list of entities that drop nothing on purpose");
         helper.succeed();
     }
 

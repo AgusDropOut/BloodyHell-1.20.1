@@ -50,8 +50,7 @@ public final class BlockAudit {
             Map.entry("blood_portal", "portal"),
             Map.entry("blood_gem_sprout", "has no item; the gem is handed out by BaseGemSproutBlock"),
             Map.entry("oni_statue", "declared noLootTable (deprecated Oni)"),
-            Map.entry("tomb_block", "declared noLootTable"),
-            Map.entry("visceral_infected_vein", "declared noLootTable (spreading vein)"));
+            Map.entry("tomb_block", "declared noLootTable"));
 
     private BlockAudit() {}
 

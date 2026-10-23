@@ -190,7 +190,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(PlantBlocks.BLOOD_FLOWER);
         simpleBlockItemBlockTexture(PlantBlocks.BLOOD_GRASS);
 
-        simpleBlockItemBlockTexture(PlantBlocks.VISCERAL_INFECTED_VEIN);
 
         evenSimplerBlockItem(LightBlocks.GLOWING_CRYSTAL_GLASS_BLOCK);
         evenSimplerBlockItem(LightBlocks.BLOOD_GLOWING_CHAINS_BLOCK);

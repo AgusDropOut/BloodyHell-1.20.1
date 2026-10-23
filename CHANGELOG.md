@@ -37,4 +37,5 @@ A stabilization release: new magic items, a safer machine and tool progression, 
 - The blood lily drops itself when picked on the water.
 
 ### Removed
+- The visceral infected vein.
 - Blood scythe, materialized soul, blood wood chest, jumpy block, eight ball item, the mod paintings, and the dirty blood flower item and particle. Existing copies in saved worlds disappear.

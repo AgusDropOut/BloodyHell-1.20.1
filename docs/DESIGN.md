@@ -13,7 +13,8 @@ Facts about how the mod is meant to work. Code and tests follow these; if the co
 
 ## Progression facts
 - The Rhnull blood engine is the least developed system: its mechanics, how it is obtained and its recipe are still to design (planned for the 1.0 tutorial).
-- The Oni is deprecated and the dirty vena cava biome was cancelled.
+- The Oni is deprecated and the dirty vena cava biome was cancelled. The mausoleum (its structure was never defined, only the templates and a biome tag exist), the Oni statue and the Sanguine Crucible core that only the Oni drops are deprecated with it and cannot be obtained in survival on purpose.
+- Many creatures drop nothing on purpose, and some creatures with a spawn egg never appear in the world on purpose.
 
 ## Spells, books and staffs
 - Every spell book is declared once in `SpellBookItems` (id, icon, cast type, affinity Blood Fire, Blood or Rhnull, Crimson Veil cost, charge and cooldown ticks). A book never takes Crimson Veil by itself; the cast does it once (ADR 0018).

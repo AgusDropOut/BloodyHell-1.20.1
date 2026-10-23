@@ -223,7 +223,6 @@ public final class BlockToolRules {
                 PlantBlocks.GIANT_BLOOD_SAPLING,
                 PlantBlocks.VORACIOUS_MUSHROOM_BLOCK,
                 PlantBlocks.CRIMSON_LURE_MUSHROOM_BLOCK,
-                PlantBlocks.VISCERAL_INFECTED_VEIN,
                 FluidBlocks.BLOOD_FLUID_BLOCK,
                 FluidBlocks.CORRUPTED_BLOOD_BLOCK,
                 FluidBlocks.VISCOUS_BLASPHEMY_BLOCK,
