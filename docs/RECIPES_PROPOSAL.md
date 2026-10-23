@@ -2,6 +2,13 @@
 
 Proposals for the items that have no recipe yet. Nothing here is implemented: it waits for review. Delete a section when its recipe is written in `ModRecipes`.
 
+Design principle (from the author): a staff must be about 4 times harder to get than a spell book, because each staff is tied to 3 or 4 more books. The families already exist in `SpellBookItems`: Blood Fire (meteor, column, soul: 3) goes with the Scarlet Cinder, blood (scratch, sphere, nova, daggersrain: 4) with the Incomplete Staff of the Pure Blooded, rhnull (impalers, heavy sword, golden throne, orb emitter: 4) with the Golden Sorrow. The books are not consumed by the staff.
+
+Two ways to reach that difficulty, still to choose:
+- A (recommended): a chain of existing items, each one coming from its own ritual or boss, so the effort adds up with no new assets. Draft: Incomplete Staff = blood echo shard, pure blood gem, ancient gem, filled blood flask; Scarlet Cinder = ritekeeper heart, cinder acolyte fainted ember, failed remnant ashes, filled rhnull blood flask; Golden Sorrow = great ancient rhnull gem, Seliora essence, filled rhnull blood flask, gold block (all on the blood altar); Omnitome = Gaze of the Unknown, Nameless Whisper, great ancient blasphemous gem (blasphemous altar).
+- B: new intermediate parts (core, head...) each with its own ritual. Needs new textures and models.
+Open: whether the Omnitome belongs in the same scale or is a final goal apart.
+
 Constraints of the stations:
 - Blood altar ritual: exactly 4 offerings, one per altar, order does not matter, activated with a corrupted blood flask.
 - Blasphemous altar ritual: up to 3 offerings, the same set on the 4 altars, activated with a filled blood flask.
