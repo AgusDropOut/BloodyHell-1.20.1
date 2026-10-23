@@ -12,6 +12,7 @@ import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.registry.GemItems;
 import net.agusdropout.bloodyhell.item.registry.RhnullItems;
 import net.agusdropout.bloodyhell.recipe.SanguiniteInfusorRecipe;
+import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.item.Item;
@@ -167,13 +168,15 @@ public class FluidChainGameTests {
 
     @GameTest(template = TEMPLATE, batch = "chains", timeoutTicks = 600)
     public static void condenserCraftsOnePerFrameOfAStack(GameTestHelper helper) {
+        net.minecraft.world.phys.AABB area = new net.minecraft.world.phys.AABB(helper.absolutePos(net.minecraft.core.BlockPos.ZERO), helper.absolutePos(new net.minecraft.core.BlockPos(9, 6, 9))).inflate(1.0);
+        helper.getLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area, entity -> entity.getItem().is(GemItems.ANCIENT_GEM.get()))
+                .forEach(net.minecraft.world.entity.Entity::discard);
         FluidChain chain = tankToCondenser(helper, MachineBlocks.SANGUINITE_TANK, MachineBlocks.SANGUINITE_PIPE, MachineBlocks.SANGUINITE_CONDENSER);
         chain.fluids(0).fill(stack(ModFluids.BLOOD_SOURCE, 2000 + SURPLUS), IFluidHandler.FluidAction.EXECUTE);
         AbstractCondenserBlockEntity condenser = chain.entity(3, AbstractCondenserBlockEntity.class);
         condenser.getItemHandler().setStackInSlot(0, new ItemStack(GemItems.SANGUINITE_GEM_FRAME.get(), 2));
         helper.runAfterDelay(CONDENSING_TICKS * 2 + 160, () -> {
-            int gems = helper.getLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
-                            new net.minecraft.world.phys.AABB(helper.absolutePos(chain.last().above()).offset(-3, -3, -3), helper.absolutePos(chain.last().above()).offset(4, 4, 4)),
+            int gems = helper.getLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area,
                             entity -> entity.getItem().is(GemItems.ANCIENT_GEM.get()))
                     .stream().mapToInt(entity -> entity.getItem().getCount()).sum();
             helper.assertTrue(gems == 2, "a stack of 2 frames with 2000 blood made " + gems + " gems instead of 2");

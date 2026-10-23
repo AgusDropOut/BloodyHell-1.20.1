@@ -16,7 +16,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -26,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -34,6 +37,20 @@ public final class BlockAudit {
     private static final Path OUTPUT = Path.of("bh-block-audit.csv");
     private static final Set<String> UNHARVESTABLE_ON_PURPOSE = Set.of("seliora_resting_block");
     private static final Set<String> HARVEST_EXEMPT = Set.of("seliora_resting_block", "blood_leaves", "soul_leaves");
+    private static final float MAX_SANE_HARDNESS = 50.0f;
+    private static final Set<String> UNBREAKABLE_OR_HARD_ON_PURPOSE = Set.of("seliora_resting_block", "blood_portal");
+    private static final Map<String, String> DROPS_NOTHING_BY_DESIGN = Map.ofEntries(
+            Map.entry("blood_fire", "fire"),
+            Map.entry("frenzied_fire_block", "fire"),
+            Map.entry("blood_fluid_block", "fluid"),
+            Map.entry("corrupted_blood_block", "fluid"),
+            Map.entry("visceral_fluid_block", "fluid"),
+            Map.entry("viscous_blasphemy_block", "fluid"),
+            Map.entry("blood_portal", "portal"),
+            Map.entry("blood_gem_sprout", "has no item; the gem is handed out by BaseGemSproutBlock"),
+            Map.entry("oni_statue", "declared noLootTable (deprecated Oni)"),
+            Map.entry("tomb_block", "declared noLootTable"),
+            Map.entry("visceral_infected_vein", "declared noLootTable (spreading vein)"));
 
     private BlockAudit() {}
 
@@ -45,10 +62,8 @@ public final class BlockAudit {
             if (!id.getNamespace().equals(BloodyHell.MODID)) continue;
             BlockState state = block.defaultBlockState();
             float hardness = state.getDestroySpeed(level, BlockPos.ZERO);
-            ResourceLocation lootId = block.getLootTable();
-            boolean hasLoot = level.getServer().getLootData().getLootTable(lootId) != LootTable.EMPTY;
-            check(id, state, hasLoot);
-            if (hasLoot) checkHarvest(level, id, state);
+            boolean hasLoot = hasLootTable(level, block);
+            violations(level, block).forEach(message -> violation(id.getPath(), message));
             lines.add(String.join(";",
                     id.getPath(),
                     block.getClass().getSimpleName(),
@@ -67,36 +82,73 @@ public final class BlockAudit {
         }
     }
 
-    private static void check(ResourceLocation id, BlockState state, boolean hasLoot) {
+    public static List<String> violations(ServerLevel level, Block block) {
+        ResourceLocation id = ForgeRegistries.BLOCKS.getKey(block);
+        BlockState state = block.defaultBlockState();
+        List<String> found = new ArrayList<>();
+        boolean hasLoot = hasLootTable(level, block);
+        check(id, state, hasLoot, found);
+        checkLootDeclaration(level, id, block, hasLoot, found);
+        checkHardness(level, id, state, found);
+        if (hasLoot) checkHarvest(level, id, state, found);
+        return found;
+    }
+
+    private static boolean hasLootTable(ServerLevel level, Block block) {
+        return level.getServer().getLootData().getLootTable(block.getLootTable()) != LootTable.EMPTY;
+    }
+
+    private static void checkLootDeclaration(ServerLevel level, ResourceLocation id, Block block, boolean hasLoot, List<String> found) {
+        String name = id.getPath();
+        boolean declaredEmpty = block.getLootTable().equals(BuiltInLootTables.EMPTY);
+        boolean onTheList = DROPS_NOTHING_BY_DESIGN.containsKey(name);
+        if (hasLoot && onTheList) {
+            found.add("is on the list of blocks that drop nothing on purpose but has a loot table");
+        } else if (!hasLoot && !onTheList) {
+            found.add(declaredEmpty
+                    ? "declares noLootTable() but is not on the list of blocks that drop nothing on purpose"
+                    : "has no loot table file " + block.getLootTable());
+        }
+    }
+
+    private static void checkHardness(ServerLevel level, ResourceLocation id, BlockState state, List<String> found) {
+        String name = id.getPath();
+        if (UNBREAKABLE_OR_HARD_ON_PURPOSE.contains(name) || state.getBlock() instanceof LiquidBlock) return;
+        float hardness = state.getDestroySpeed(level, BlockPos.ZERO);
+        if (hardness < 0) found.add("is unbreakable (hardness " + hardness + ")");
+        if (hardness > MAX_SANE_HARDNESS) found.add("has an absurd hardness of " + hardness);
+    }
+
+    private static void check(ResourceLocation id, BlockState state, boolean hasLoot, List<String> found) {
         String name = id.getPath();
         BlockToolRules.Rule rule = BlockToolRules.ruleFor(id);
         if (rule == null) {
-            violation(name, "has no rule in BlockToolRules");
+            found.add("has no rule in BlockToolRules");
             return;
         }
         boolean requiresTool = state.requiresCorrectToolForDrops();
         if (rule.requiresTool() && !requiresTool) {
-            violation(name, "rule needs tier " + rule.tier() + " but the block does not require a correct tool");
+            found.add("rule needs tier " + rule.tier() + " but the block does not require a correct tool");
         }
         if (rule.requiresTool() && rule.tool() == BlockToolRules.Tool.NONE) {
-            violation(name, "rule has a tier but no tool");
+            found.add("rule has a tier but no tool");
         }
         if (requiresTool && hasLoot && rule.tool() == BlockToolRules.Tool.NONE && !UNHARVESTABLE_ON_PURPOSE.contains(name)) {
-            violation(name, "requires a correct tool and has a loot table, but no tool can harvest it");
+            found.add("requires a correct tool and has a loot table, but no tool can harvest it");
         }
         boolean hasToolTag = rule.tool().tag() != null && state.is(rule.tool().tag());
         if (rule.tool() != BlockToolRules.Tool.NONE && !hasToolTag) {
-            violation(name, "missing the " + rule.tool() + " tool tag");
+            found.add("missing the " + rule.tool() + " tool tag");
         }
         String actualTools = tags(state, "mineable/");
         String expectedTools = rule.tool().tag() == null ? "" : rule.tool().tag().location().toString();
         if (!actualTools.equals(expectedTools)) {
-            violation(name, "tool tags are [" + actualTools + "], the rule says [" + expectedTools + "]");
+            found.add("tool tags are [" + actualTools + "], the rule says [" + expectedTools + "]");
         }
         String actualTier = tags(state, "needs_");
         String expectedTier = rule.tier().tag() == null ? "" : rule.tier().tag().location().toString();
         if (!actualTier.equals(expectedTier)) {
-            violation(name, "tier tags are [" + actualTier + "], the rule says [" + expectedTier + "]");
+            found.add("tier tags are [" + actualTier + "], the rule says [" + expectedTier + "]");
         }
     }
 
@@ -139,7 +191,7 @@ public final class BlockAudit {
         return !state.getDrops(params).isEmpty();
     }
 
-    private static void checkHarvest(ServerLevel level, ResourceLocation id, BlockState state) {
+    private static void checkHarvest(ServerLevel level, ResourceLocation id, BlockState state, List<String> found) {
         String name = id.getPath();
         BlockToolRules.Rule rule = BlockToolRules.ruleFor(id);
         if (rule == null || HARVEST_EXEMPT.contains(name)) return;
@@ -147,21 +199,21 @@ public final class BlockAudit {
             ItemStack silk = new ItemStack(Items.WOODEN_PICKAXE);
             silk.enchant(Enchantments.SILK_TOUCH, 1);
             boolean any = harvests(level, state, ItemStack.EMPTY) || harvests(level, state, new ItemStack(Items.SHEARS)) || harvests(level, state, silk);
-            if (!any) violation(name, "drops nothing with the hand, shears or silk touch");
+            if (!any) found.add("drops nothing with the hand, shears or silk touch");
             return;
         }
         List<Supplier<Item>> tools = chain(rule.tool());
         int required = levelIndex(rule.tier());
         if (!harvests(level, state, new ItemStack(tools.get(required).get()))) {
-            violation(name, "drops nothing with the minimum " + rule.tool() + " " + rule.tier());
+            found.add("drops nothing with the minimum " + rule.tool() + " " + rule.tier());
         }
         if (rule.requiresTool()) {
             int below = required == 5 ? 4 : required - 1;
             if (harvests(level, state, new ItemStack(tools.get(below).get()))) {
-                violation(name, "drops with a " + rule.tool() + " below the required tier " + rule.tier());
+                found.add("drops with a " + rule.tool() + " below the required tier " + rule.tier());
             }
             if (harvests(level, state, ItemStack.EMPTY)) {
-                violation(name, "drops with the bare hand but requires tier " + rule.tier());
+                found.add("drops with the bare hand but requires tier " + rule.tier());
             }
         }
     }
