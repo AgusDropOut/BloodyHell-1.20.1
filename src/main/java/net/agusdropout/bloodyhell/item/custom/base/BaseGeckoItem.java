@@ -15,7 +15,7 @@ import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.function.Consumer;
 
-public abstract class BaseGeckoItem extends Item implements GeoItem {
+public abstract class BaseGeckoItem extends Item implements GeoItem, GeckoAsset {
 
     public final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -30,12 +30,12 @@ public abstract class BaseGeckoItem extends Item implements GeoItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private GenericGeckoItemRenderer renderer;
+            private GenericGeckoItemRenderer<BaseGeckoItem> renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new GenericGeckoItemRenderer(true);
+                    this.renderer = new GenericGeckoItemRenderer<>(true);
                 }
                 return this.renderer;
             }
@@ -62,5 +62,6 @@ public abstract class BaseGeckoItem extends Item implements GeoItem {
         return RenderUtils.getCurrentTick();
     }
 
+    @Override
     public abstract String getId();
 }

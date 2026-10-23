@@ -1,10 +1,8 @@
 package net.agusdropout.bloodyhell.item.custom;
 
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousImpalerEntity;
-import net.agusdropout.bloodyhell.client.render.item.custom.renderer.BlasphemousImpalerItemRenderer;
 import net.agusdropout.bloodyhell.client.ClientItemHooks;
 import net.agusdropout.bloodyhell.item.custom.base.BaseThrowableMeleeComboWeapon;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -16,14 +14,12 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BlasphemousImpalerItem extends BaseThrowableMeleeComboWeapon {
 
@@ -150,14 +146,7 @@ public class BlasphemousImpalerItem extends BaseThrowableMeleeComboWeapon {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            private BlasphemousImpalerItemRenderer renderer;
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null) this.renderer = new BlasphemousImpalerItemRenderer();
-                return this.renderer;
-            }
-        });
+    public String getId() {
+        return "blasphemous_impaler";
     }
 }

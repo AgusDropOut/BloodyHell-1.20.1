@@ -167,4 +167,9 @@ public class BlasphemousTwinDaggerItem extends BaseMeleeComboWeapon {
             }
         });
     }
+
+    @Override
+    public String getId() {
+        return "blasphemous_twin_daggers";
+    }
 }

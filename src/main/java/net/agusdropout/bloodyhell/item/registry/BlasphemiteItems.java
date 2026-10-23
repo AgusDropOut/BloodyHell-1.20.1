@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.registry;
 import net.agusdropout.bloodyhell.item.ModArmorMaterials;
 import net.agusdropout.bloodyhell.item.ModToolTiers;
 import net.agusdropout.bloodyhell.item.custom.*;
+import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoArmorItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -28,13 +29,13 @@ public final class BlasphemiteItems {
     public static final RegistryObject<Item> BLASPHEMITE_SHOVEL = ITEMS.register("blasphemite_shovel",() -> new ShovelItem(ModToolTiers.BLASPHEMITE,1,-3F,
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> BLASPHEMITE_HELMET = ITEMS.register("blasphemite_helmet",
-            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.HELMET, new Item.Properties(), BaseGeckoArmorItem.BLASPHEMITE));
     public static final RegistryObject<Item> BLASPHEMITE_CHESTPLATE = ITEMS.register("blasphemite_chestplate",
-            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.CHESTPLATE, new Item.Properties(), BaseGeckoArmorItem.BLASPHEMITE));
     public static final RegistryObject<Item> BLASPHEMITE_LEGGINGS = ITEMS.register("blasphemite_leggings",
-            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.LEGGINGS, new Item.Properties(), BaseGeckoArmorItem.BLASPHEMITE));
     public static final RegistryObject<Item> BLASPHEMITE_BOOTS = ITEMS.register("blasphemite_boots",
-            () -> new BlasphemiteArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.BLASPHEMITE, ArmorItem.Type.BOOTS, new Item.Properties(), BaseGeckoArmorItem.BLASPHEMITE));
 
     private BlasphemiteItems() {}
 

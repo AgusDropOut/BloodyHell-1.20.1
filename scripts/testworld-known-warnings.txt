@@ -12,3 +12,4 @@ Oculus/\]: (Failed to resolve uniform|The following uniforms|Error while parsing
 RuntimeException: Unknown variable
 Oculus/\]: Tried to get boolean value for unknown option
 Shader clouds could not find
+UniformHeight/\]: Empty height range

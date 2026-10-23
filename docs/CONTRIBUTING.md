@@ -19,3 +19,12 @@
 - Blocks go in a group class in `block/registry` (`StoneBlocks`, `WoodBlocks`, `PlantBlocks`, `MachineBlocks`...), items in `item/registry`. Pick the group by what the thing is; if none fits, add a group and call its `init()` from `ModBlocks.register` or `ModItems.register`.
 - Do not put anything else in `ModBlocks` or `ModItems`: no sound types, no anonymous subclasses, no helper data. Give it its own class.
 - Do not add classification comments; the group name is the classification.
+
+## GeckoLib content reuses the bases
+Anything animated with GeckoLib starts from a base class and a generic renderer, so there is one copy of the cache, the tick, the registration and the asset names. Before writing a renderer or a model class, check the generic ones below; two classes that differ only by names or numbers belong in a table or a builder, not in two files.
+- Items: `BaseGeckoItem` for plain items, `BaseGeckoArmorItem` for armor (one `Look` per set: asset name, animated, glowing), `BaseMeleeComboWeapon` for combo weapons (it extends `SwordItem`, so it implements `GeckoAsset` and uses the same generic renderer), `GeckoBlockItem` for animated blocks. The assets come from `getId()`: `geo/<id>.geo.json`, `textures/item/<id>.png` (`textures/armor/<id>.png` for armor) and `animations/<id>.animation.json`.
+- Spell books are one line of `SpellBookItems`. A staff look (model and orb effect) is one entry of `StaffRenderers`. Neither needs a renderer or a model class.
+- Block entities extend `BaseGeckoBlockEntity` and implement `getAssetPathName()`; the model is `BaseGeckoBlockModel`. The exceptions are the ones that already extend another mod base (pipes, altars) and the Seliora resting block, whose texture name does not follow the convention.
+- Entities are registered in `ModRenderers` with `ConfigurableGeoEntityRenderer.builder(...)` and `ConfigurableGeoModel`. Write an entity renderer or model class only when it holds logic: a custom animation, a shader effect or an extra layer.
+- `GeckoBaseRulesTest` fails when a new class implements `GeoItem` or `GeoBlockEntity` outside these bases, and `GeckoAssetGameTests` fails when an item has no geo, texture or animation file for its id.
+

@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.client.render.item.custom.renderer;
 
 
-import net.agusdropout.bloodyhell.client.render.item.custom.model.BlasphemousTwinDaggerModel;
+import net.agusdropout.bloodyhell.client.render.item.generic.GenericGeckoItemModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.agusdropout.bloodyhell.item.custom.BlasphemousTwinDaggerItem;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,7 +14,7 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class BlasphemousTwinDaggersRenderer extends GeoItemRenderer<BlasphemousTwinDaggerItem> {
     public BlasphemousTwinDaggersRenderer() {
-        super(new BlasphemousTwinDaggerModel());
+        super(new GenericGeckoItemModel<>());
     }
 
     @Override

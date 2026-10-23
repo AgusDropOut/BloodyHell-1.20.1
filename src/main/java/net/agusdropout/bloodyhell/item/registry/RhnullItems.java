@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.registry;
 import net.agusdropout.bloodyhell.item.ModArmorMaterials;
 import net.agusdropout.bloodyhell.item.ModToolTiers;
 import net.agusdropout.bloodyhell.item.custom.*;
+import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoArmorItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -24,13 +25,13 @@ public final class RhnullItems {
     public static final RegistryObject<Item> RHNULL_SHOVEL = ITEMS.register("rhnull_shovel",() -> new ShovelItem(ModToolTiers.RHNULL,1,-3F,
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> RHNULL_HELMET = ITEMS.register("rhnull_helmet",
-            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.HELMET, new Item.Properties(), BaseGeckoArmorItem.RHNULL));
     public static final RegistryObject<Item> RHNULL_CHESTPLATE = ITEMS.register("rhnull_chestplate",
-            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.CHESTPLATE, new Item.Properties(), BaseGeckoArmorItem.RHNULL));
     public static final RegistryObject<Item> RHNULL_LEGGINGS = ITEMS.register("rhnull_leggings",
-            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.LEGGINGS, new Item.Properties(), BaseGeckoArmorItem.RHNULL));
     public static final RegistryObject<Item> RHNULL_BOOTS = ITEMS.register("rhnull_boots",
-            () -> new RhnullArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.RHNULL, ArmorItem.Type.BOOTS, new Item.Properties(), BaseGeckoArmorItem.RHNULL));
 
     private RhnullItems() {}
 

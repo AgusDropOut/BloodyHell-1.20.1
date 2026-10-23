@@ -3,9 +3,7 @@ package net.agusdropout.bloodyhell.item.custom;
 import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.effects.EntityCameraShake;
 import net.agusdropout.bloodyhell.entity.projectile.BlasphemousSpearEntity;
-import net.agusdropout.bloodyhell.client.render.item.custom.renderer.BlasphemousHulkingMassOfIronRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseMeleeComboWeapon;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -18,14 +16,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BlasphemousHulkingMassOfIronItem extends BaseMeleeComboWeapon {
 
@@ -229,14 +225,7 @@ public class BlasphemousHulkingMassOfIronItem extends BaseMeleeComboWeapon {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            private BlasphemousHulkingMassOfIronRenderer renderer;
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null) this.renderer = new BlasphemousHulkingMassOfIronRenderer();
-                return this.renderer;
-            }
-        });
+    public String getId() {
+        return "blasphemous_hulking_mass_of_iron";
     }
 }

@@ -16,12 +16,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
+import java.util.function.Consumer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.agusdropout.bloodyhell.client.render.item.generic.GenericGeckoItemRenderer;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem, IComboWeapon {
+public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem, IComboWeapon, GeckoAsset {
 
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
@@ -34,6 +38,19 @@ public abstract class BaseMeleeComboWeapon extends SwordItem implements GeoItem,
     @Override public boolean isPerspectiveAware() { return true; }
     @Override public boolean shouldCancelStandardAttack() { return true; }
     @Override public AnimatableInstanceCache getAnimatableInstanceCache() { return this.cache; }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private GenericGeckoItemRenderer<BaseMeleeComboWeapon> renderer;
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (this.renderer == null) this.renderer = new GenericGeckoItemRenderer<>(false);
+                return this.renderer;
+            }
+        });
+    }
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
