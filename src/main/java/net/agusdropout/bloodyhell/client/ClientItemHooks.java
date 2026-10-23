@@ -38,7 +38,8 @@ public class ClientItemHooks {
 
 
     public static Entity getLocalPlayerAsEntity() {
-        return Minecraft.getInstance().player;
+        Object player = Minecraft.getInstance().player;
+        return (Entity) player;
     }
 
     public static LocalPlayer getLocalPlayer() {
