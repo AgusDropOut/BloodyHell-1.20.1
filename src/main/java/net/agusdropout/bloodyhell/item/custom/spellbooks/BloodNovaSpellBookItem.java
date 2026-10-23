@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.item.custom.spellbooks;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodNovaEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -20,18 +20,10 @@ import java.util.List;
 
 public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBookItem> {
 
-    private static final int COST = 70;
-    private static final int COOLDOWN = 50;
-    private static final int CHARGE_TIME = 30;
     private static final double SPAWN_HEIGHT_OFFSET = 5.0;
 
-    public BloodNovaSpellBookItem(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
+    public BloodNovaSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -62,7 +54,7 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
         Vec3 playerPos = player.position();
         Vec3 targetPos = playerPos.add(0, SPAWN_HEIGHT_OFFSET, 0);
-        float progress = (float) tick / CHARGE_TIME;
+        float progress = (float) tick / getMinChargeTime();
 
         if (tick % 2 == 0) {
             ParticleHelper.spawnCylinder(level,
@@ -88,7 +80,7 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
                     0, 0.1, 0);
         }
 
-        if (tick == CHARGE_TIME) {
+        if (tick == getMinChargeTime()) {
 
             ParticleHelper.spawnRing(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), playerPos, 1.0, 40, 0.5);
 
@@ -99,35 +91,11 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
     @Override
     public void playChargeSound(Level level, Player player, int tick) {
 
-        if (tick % 5 == 0 && tick < CHARGE_TIME) {
-            float pitch = 0.5f + (tick / (float)CHARGE_TIME);
+        if (tick % 5 == 0 && tick < getMinChargeTime()) {
+            float pitch = 0.5f + (tick / (float)getMinChargeTime());
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.8f, pitch);
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return CHARGE_TIME;
-    }
-
-    @Override
-    public int getCooldown() {
-        return COOLDOWN;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "blood_nova_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.CIRCLE;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "blood_nova_icon";
-    }
 }

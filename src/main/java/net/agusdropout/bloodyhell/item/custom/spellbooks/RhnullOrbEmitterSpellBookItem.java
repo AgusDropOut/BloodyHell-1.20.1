@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullOrbEmitter;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -24,11 +24,10 @@ import java.util.List;
 
 public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem<RhnullOrbEmitterSpellBookItem> {
 
-    private static final int COST = 20;
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 
-    public RhnullOrbEmitterSpellBookItem(Properties properties) {
-        super(properties);
+    public RhnullOrbEmitterSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -37,10 +36,7 @@ public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem<RhnullOrbEm
 
             List<Gem> gems = getGemsFromItemStack(itemStack);
 
-
             Vec3 lookDirection = player.getForward().normalize();
-
-
 
                 double spawnX = player.getX() + (lookDirection.x * 4.0) ;
                 double spawnY = player.getY();
@@ -59,8 +55,6 @@ public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem<RhnullOrbEm
                 level.addFreshEntity(orb);
             }
         }
-
-
 
     @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
@@ -131,33 +125,4 @@ public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem<RhnullOrbEm
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return 20;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "rhnull_orb_emitter_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.CIRCLE;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "rhnull_orb_emitter_icon";
-    }
 }

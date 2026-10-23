@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullPainThroneEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicFloorParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
@@ -24,11 +24,10 @@ import java.util.List;
 
 public class RhnullGoldenThroneSpellBookItem extends BaseSpellBookItem<RhnullGoldenThroneSpellBookItem> {
 
-    private static final int COST = 30;
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 
-    public RhnullGoldenThroneSpellBookItem(Properties properties) {
-        super(properties);
+    public RhnullGoldenThroneSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -132,33 +131,4 @@ public class RhnullGoldenThroneSpellBookItem extends BaseSpellBookItem<RhnullGol
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return 20;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "rhnull_golden_throne_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.CIRCLE;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "rhnull_golden_throne_icon";
-    }
 }

@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.item.custom.spellbooks;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
@@ -22,11 +22,10 @@ import java.util.List;
 
 public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpalersSpellBookItem> {
 
-    private static final int COST = 30;
     private static final int DEFAULT_PROJECTILE_COUNT = 3;
 
-    public RhnullImpalersSpellBookItem(Properties properties) {
-        super(properties);
+    public RhnullImpalersSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -51,23 +50,17 @@ public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpaler
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
         if (!level.isClientSide) return;
 
-
         float progress = (float) tick / getMinChargeTime();
-
 
         Vec3 center = player.position().add(0, player.getBbHeight() / 2.0 + 0.5, 0);
 
-
         double radius = Math.max(0.5, 2.0 - (progress * 1.5));
-
 
         Vector3f color1 = SpellPalette.RHNULL.getColor(0);
         Vector3f color2 = SpellPalette.RHNULL.getColor(1);
 
-
         float colorRatio = (float) Math.abs(Math.sin(tick * 0.1));
         Vector3f blendedColor = ParticleHelper.gradient3(colorRatio, color1, color2, SpellPalette.RHNULL.getColor(2));
-
 
         if (tick % 2 == 0) {
             ParticleHelper.spawnRing(
@@ -80,7 +73,6 @@ public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpaler
             );
         }
 
-
         if (tick % 4 == 0) {
             ParticleHelper.spawnRisingBurst(
                     level,
@@ -92,7 +84,6 @@ public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpaler
                     0.2 + (progress * 0.2)
             );
         }
-
 
         if (progress > 0.7f && tick % 2 == 0) {
             ParticleHelper.spawnSphereVolume(
@@ -110,13 +101,11 @@ public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpaler
     public void playChargeSound(Level level, Player player, int tick) {
         float progress = (float) tick / getMinChargeTime();
 
-
         if (tick % 5 == 0 && tick < getMinChargeTime()) {
             float pitch = 0.5f + progress;
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.5f, pitch);
         }
-
 
         if (tick == getMinChargeTime() - 10) {
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
@@ -129,33 +118,4 @@ public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpaler
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return 20;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "rhnull_impalers_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.THROW;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "rhnull_impalers_icon";
-    }
 }

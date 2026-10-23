@@ -1,16 +1,12 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
-import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSphereEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
-import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -24,17 +20,8 @@ import java.util.List;
 
 public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpellBookItem> {
 
-    private static final int COST = 10;
-    private static final int COOLDOWN = 5;
-    private static final int CHARGE_TIME = 5;
-
-    public BloodSphereSpellBookItem(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
+    public BloodSphereSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -43,19 +30,11 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
             List<Gem> gems = super.getGemsFromItemStack(itemStack);
             int projectileCount = 1 + getProjectileAdditionalFromGems(gems);
 
-            player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(provider -> {
-                if (provider.getCrimsonVeil() >= COST ) {
-                    for (int i = 0 ; i < projectileCount; i++) {
-                        int delay = i * 5;
-                        BloodSphereEntity projectile = new BloodSphereEntity(level, player, 5.0f, delay, gems);
-                        level.addFreshEntity(projectile);
-
-
-                    }
-                    provider.subCrimsomveil(COST);
-                    ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(provider.getCrimsonVeil()), ((ServerPlayer) player));
-                }
-            });
+            for (int i = 0; i < projectileCount; i++) {
+                int delay = i * 5;
+                BloodSphereEntity projectile = new BloodSphereEntity(level, player, 5.0f, delay, gems);
+                level.addFreshEntity(projectile);
+            }
         }
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -66,7 +45,7 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
 
     @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
-        float progress = (float) tick / CHARGE_TIME;
+        float progress = (float) tick / getMinChargeTime();
 
         Vec3 look = player.getLookAngle();
         Vec3 center = player.getEyePosition().add(look.scale(1.2));
@@ -94,7 +73,7 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
                     center, coreSize, 2, new Vec3(0, 0, 0));
         }
 
-        if (tick == CHARGE_TIME) {
+        if (tick == getMinChargeTime()) {
             ParticleHelper.spawnHollowSphere(level,
                     ModParticles.BLOOD_PULSE_PARTICLE.get(),
                     center, 0.8, 30, 0.05);
@@ -106,8 +85,8 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
     @Override
     public void playChargeSound(Level level, Player player, int tick) {
 
-        if (tick % 4 == 0 && tick < CHARGE_TIME) {
-            float pitch = 0.8f + (tick / (float) CHARGE_TIME);
+        if (tick % 4 == 0 && tick < getMinChargeTime()) {
+            float pitch = 0.8f + (tick / (float) getMinChargeTime());
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BREWING_STAND_BREW, SoundSource.PLAYERS, 0.5f, pitch);
 
@@ -119,31 +98,7 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
     }
 
     private float progressToPitch(int tick) {
-        return (float) tick / CHARGE_TIME;
+        return (float) tick / getMinChargeTime();
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return CHARGE_TIME;
-    }
-
-    @Override
-    public int getCooldown() {
-        return COOLDOWN;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "blood_sphere_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.SEQUENTIAL;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "blood_sphere_icon";
-    }
 }

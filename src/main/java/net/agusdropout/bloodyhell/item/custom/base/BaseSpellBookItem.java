@@ -45,9 +45,16 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public BaseSpellBookItem(Properties properties) {
+    private final SpellBookDefinition definition;
+
+    public BaseSpellBookItem(Properties properties, SpellBookDefinition definition) {
         super(properties);
+        this.definition = definition;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    public SpellBookDefinition getDefinition() {
+        return definition;
     }
 
     public CompoundTag serializeBookData(ItemStack bookStack) {
@@ -241,7 +248,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         return super.onDroppedByPlayer(item, player);
     }
 
-    public abstract int getCrimsonCost();
+    public int getCrimsonCost() { return definition.crimsonCost(); }
     @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.BOW; }
     @Override public int getUseDuration(ItemStack stack) { return 72000; }
     @Override public AnimatableInstanceCache getAnimatableInstanceCache() { return this.cache; }
@@ -286,11 +293,12 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     public abstract void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack);
     public abstract void spawnProgressiveParticles(Level level, Player player, int chargeTick);
     public abstract void playChargeSound(Level level, Player player, int chargeTick);
-    public abstract int getMinChargeTime();
-    public abstract int getCooldown();
-    public abstract String getSpellBookId();
-    public abstract StaffCastType getStaffCastType();
-    public abstract String getSpellIconName();
+    public int getMinChargeTime() { return definition.chargeTicks(); }
+    public int getCooldown() { return definition.cooldownTicks(); }
+    public String getSpellBookId() { return definition.id(); }
+    public StaffCastType getStaffCastType() { return definition.castType(); }
+    public SpellAffinity getAffinity() { return definition.affinity(); }
+    public String getSpellIconName() { return definition.icon(); }
     public ResourceLocation getSpellIconLocation() {
         return new ResourceLocation(BloodyHell.MODID, "textures/gui/" + getSpellIconName() + ".png");
     }

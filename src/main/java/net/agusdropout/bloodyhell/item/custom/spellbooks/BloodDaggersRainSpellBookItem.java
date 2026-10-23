@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodPortalEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -27,15 +27,12 @@ import java.util.List;
 
 public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDaggersRainSpellBookItem> {
 
-    private static final int COST = 40;
-    private static final int COOLDOWN = 200;
-    private static final int CHARGE_TIME = 40;
     private static final double MAX_CAST_RANGE = 20.0;
     private static final float IDEAL_PORTAL_HEIGHT = 6.0f;
     private static final int CEILING_CHECK_RADIUS = 10;
 
-    public BloodDaggersRainSpellBookItem(Properties properties) {
-        super(properties);
+    public BloodDaggersRainSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -57,13 +54,8 @@ public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDagger
     }
 
     @Override
-    public int getCrimsonCost() {
-        return COST;
-    }
-
-    @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
-        float progress = (float) tick / CHARGE_TIME;
+        float progress = (float) tick / getMinChargeTime();
 
         Vec3 targetPos = calculateTargetPosition(level, player);
         float heightOffset = calculatePortalOffset(level, targetPos);
@@ -106,7 +98,7 @@ public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDagger
                     0, -0.2, 0);
         }
 
-        if (tick == CHARGE_TIME) {
+        if (tick == getMinChargeTime()) {
             ParticleHelper.spawnDisc(level, ModParticles.BLOOD_PULSE_PARTICLE.get(), portalPos, 4.0, 50);
             ParticleHelper.spawnExplosion(level, ParticleTypes.PORTAL, portalPos, 50, 0.5, 1.0);
         }
@@ -152,35 +144,11 @@ public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDagger
 
     @Override
     public void playChargeSound(Level level, Player player, int tick) {
-        if (tick % 10 == 0 && tick < CHARGE_TIME) {
-            float pitch = 0.5f + (tick / (float)CHARGE_TIME);
+        if (tick % 10 == 0 && tick < getMinChargeTime()) {
+            float pitch = 0.5f + (tick / (float)getMinChargeTime());
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.PORTAL_AMBIENT, SoundSource.PLAYERS, 0.4f, pitch);
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return CHARGE_TIME;
-    }
-
-    @Override
-    public int getCooldown() {
-        return COOLDOWN;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "blood_daggersrain_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.CIRCLE;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "daggers_rain_icon";
-    }
 }

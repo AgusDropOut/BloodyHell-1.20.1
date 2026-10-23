@@ -35,7 +35,8 @@ class ResourceIntegrityTest {
             Path.of("src/generated/resources/data/" + MODID));
     private static final Path KNOWN_GAPS = Path.of("src/test/resources/known-resource-gaps.txt");
 
-    private static final Pattern ITEM_REGISTER = Pattern.compile("(?:ITEMS\\.register|registerGeckoBlockItem)\\(\\s*\"([a-z0-9_]+)\"");
+    private static final Pattern ITEM_REGISTER = Pattern.compile("(?:ITEMS\\.register|registerGeckoBlockItem|\\bbook)\\(\\s*\"([a-z0-9_]+)\"");
+    private static final Pattern SPELL_BOOK = Pattern.compile("\\bbook\\(\\s*\"([a-z0-9_]+)\",\\s*\"([a-z0-9_]+)\"");
     private static final Pattern BLOCK_REGISTER = Pattern.compile("BLOCKS\\.register\\(\\s*\"([a-z0-9_]+)\"");
     private static final Pattern BLOCK_WITH_ITEM = Pattern.compile("registerBlock\\(\\s*\"([a-z0-9_]+)\"");
     private static final Pattern BLOCK_WITHOUT_ITEM = Pattern.compile("registerBlockWithoutBlockItem\\(\\s*\"([a-z0-9_]+)\"");
@@ -136,6 +137,29 @@ class ResourceIntegrityTest {
             throw new AssertionError(title + " (" + unexpected.size() + "):\n  " + String.join("\n  ", unexpected)
                     + "\nFix them, or add the exact line to " + KNOWN_GAPS + " if the gap is accepted.");
         }
+    }
+
+    @Test
+    void everySpellBookHasItsAssets() throws IOException {
+        String registry = Files.readString(JAVA.resolve("net/agusdropout/bloodyhell/item/registry/SpellBookItems.java"), StandardCharsets.UTF_8);
+        Set<String> lang = new HashSet<>();
+        for (Path file : files(ASSET_ROOTS, "lang", "en_us.json")) {
+            json(file).getAsJsonObject().keySet().forEach(lang::add);
+        }
+        List<String> problems = new ArrayList<>();
+        Matcher m = SPELL_BOOK.matcher(registry);
+        int books = 0;
+        while (m.find()) {
+            books++;
+            String id = m.group(1);
+            String icon = m.group(2);
+            if (!assetExists("geo/" + id + ".geo.json")) problems.add("spell book model missing: " + id);
+            if (!assetExists("textures/item/" + id + ".png")) problems.add("spell book texture missing: " + id);
+            if (!assetExists("textures/gui/" + icon + ".png")) problems.add("spell book icon missing: " + icon + " of " + id);
+            if (!lang.contains("item." + MODID + "." + id)) problems.add("spell book name missing: " + id);
+        }
+        if (books == 0) problems.add("no spell book found in SpellBookItems");
+        report("Spell books with missing assets", problems);
     }
 
     @Test

@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireMeteorEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
@@ -25,18 +25,10 @@ import java.util.List;
 import java.util.Random;
 
 public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMeteorSpellBookItem> {
-    private static final int COST = 50;
 
-    @Override
-    public int getCrimsonCost() {
-        return COST;
+    public BloodFireMeteorSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
-
-    public BloodFireMeteorSpellBookItem(Properties properties) {
-        super(properties);
-    }
-
-
 
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
@@ -62,7 +54,6 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
             placeMeteors(player, level, meteorEntities);
         }
 
-
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0f, 0.8f);
     }
@@ -73,15 +64,12 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
         double speed = 0.2 + (tick * 0.01);
         double radius = 2.0;
 
-
         double angle = (tick * speed) % (2 * Math.PI);
-
 
         for (int i = 0; i < 3; i++) {
             double currentAngle = angle + (i * (Math.PI * 2 / 3));
             double xOffset = radius * Math.cos(currentAngle);
             double zOffset = radius * Math.sin(currentAngle);
-
 
             double yOffset = 0.1 + (tick * 0.02);
             if (yOffset > 1.5) yOffset = 0.1;
@@ -92,7 +80,6 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
                     player.getZ() + zOffset,
                     0, 0.05, 0);
         }
-
 
         if (tick == getMinChargeTime()) {
             spawnParticleCircle(level, player, ModParticles.BLOOD_SIGIL_PARTICLE.get(), 2.5, 40);
@@ -126,7 +113,6 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
         double targetHeight = 5.0;
         Vec3 end = start.add(0, targetHeight, 0);
 
-
         BlockHitResult result = level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner));
 
         double spawnY;
@@ -135,7 +121,6 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
         } else {
             spawnY = start.y + targetHeight;
         }
-
 
         if (spawnY < owner.getEyeY()) {
             spawnY = owner.getEyeY() + 0.5;
@@ -147,15 +132,12 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
 
         int count = meteorEntities.size();
 
-
         double radius = 2.0;
-
 
         float startRotation = -owner.getYRot() * ((float)Math.PI / 180F);
 
         for (int i = 0; i < count; i++) {
             BloodFireMeteorEntity meteor = meteorEntities.get(i);
-
 
             if (count == 1) {
                 meteor.setPos(owner.getX(), spawnY, owner.getZ());
@@ -164,39 +146,12 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
 
                 double angle = startRotation + (i * (Math.PI * 2 / count));
 
-
                 double offsetX = Math.sin(angle) * radius;
                 double offsetZ = Math.cos(angle) * radius;
-
 
                 meteor.setPos(owner.getX() + offsetX, spawnY, owner.getZ() + offsetZ);
             }
         }
     }
 
-
-    @Override
-    public int getMinChargeTime() {
-        return 20;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "bloodfire_meteor_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.THROW;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "blood_fire_meteor_icon";
-    }
 }

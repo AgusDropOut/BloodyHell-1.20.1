@@ -5,7 +5,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireColumnEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -29,18 +29,14 @@ import java.util.Optional;
 public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireColumnSpellBookItem> {
 
     private static final double SPELL_RADIUS = 15.0;
-    private static final int COST = 20;
 
-    public BloodFireColumnSpellBookItem(Properties properties) {
-        super(properties);
+    public BloodFireColumnSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
-
-
 
     @Override
     public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
         if (!level.isClientSide) {
-
 
             List<Gem> gems = getGemsFromItemStack(itemStack);
             int projectileCount = 1 + getProjectileAdditionalFromGems(gems);
@@ -52,7 +48,6 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
             }
 
             for (Vec3 targetPos : targetPositions) {
-
 
                     BloodFireColumnEntity column = new BloodFireColumnEntity(
                             ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(),
@@ -67,7 +62,6 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
 
             }
 
-
         }
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -76,7 +70,6 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
 
     private List<Vec3> findTargetPosition(Level level, Player player,int targetsCount) {
         List<Vec3> targetPositions = new ArrayList<>();
-
 
         AABB searchBox = player.getBoundingBox().inflate(SPELL_RADIUS, 5.0, SPELL_RADIUS);
         List<LivingEntity> potentialTargets = level.getEntitiesOfClass(LivingEntity.class, searchBox,
@@ -98,7 +91,6 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
         return targetPositions;
     }
 
-
     private Vec3 getPlayerColumnPosition(Player player,Level level){
 
         Vec3 startPos = player.getEyePosition();
@@ -113,7 +105,6 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
                 player
         ));
 
-
         if (result.getType() == HitResult.Type.BLOCK) {
             if (result instanceof net.minecraft.world.phys.BlockHitResult blockHit) {
                 if (blockHit.getDirection() == Direction.UP) {
@@ -124,7 +115,6 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
 
         double targetX = result.getLocation().x;
         double targetZ = result.getLocation().z;
-
 
         double startY = Math.max(player.getEyeY(), result.getLocation().y) + 0.5;
 
@@ -192,32 +182,4 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return 20;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "bloodfire_column_spellbook";
-    }
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.RISE;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "blood_fire_column_icon";
-    }
 }

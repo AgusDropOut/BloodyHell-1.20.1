@@ -3,7 +3,7 @@ package net.agusdropout.bloodyhell.item.custom.spellbooks;
 import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullHeavySwordEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -22,11 +22,10 @@ import java.util.List;
 
 public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavySwordSpellBookItem> {
 
-    private static final int COST = 60;
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 
-    public RhnullHeavySwordSpellBookItem(Properties properties) {
-        super(properties);
+    public RhnullHeavySwordSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -59,7 +58,6 @@ public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavy
         Vector3f color2 = SpellPalette.RHNULL.getColor(1);
         Vector3f blended = ParticleHelper.gradient3(progress, color1, color2, SpellPalette.RHNULL.getColor(2));
 
-
         if (tick % 2 == 0) {
             ParticleHelper.spawnRing(
                     level,
@@ -70,7 +68,6 @@ public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavy
                     -0.05
             );
         }
-
 
         if (tick % 3 == 0) {
             ParticleHelper.spawnRisingBurst(
@@ -89,19 +86,16 @@ public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavy
     public void playChargeSound(Level level, Player player, int tick) {
         float progress = (float) tick / getMinChargeTime();
 
-
         if (tick % 5 == 0 && tick < getMinChargeTime()) {
             float pitch = 0.5f + (progress * 0.5f);
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.8f, pitch);
         }
 
-
         if (tick == getMinChargeTime() - 5) {
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.IRON_GOLEM_REPAIR, SoundSource.PLAYERS, 1.0f, 0.6f);
         }
-
 
         if (tick == getMinChargeTime()) {
             level.playSound(player, player.getX(), player.getY(), player.getZ(),
@@ -111,33 +105,4 @@ public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavy
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return 20;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "rhnull_heavy_sword_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.RISE;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "rhnull_heavy_sword_icon";
-    }
 }

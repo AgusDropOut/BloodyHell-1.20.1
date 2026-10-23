@@ -4,7 +4,7 @@ import net.agusdropout.bloodyhell.entity.ModEntityTypes;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireSoulEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
@@ -20,16 +20,10 @@ import java.util.List;
 
 public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulSpellBookItem> {
 
-    private static final int COST = 20;
     private static final float SPREAD_DEGREES = 15.0f;
 
-    @Override
-    public int getCrimsonCost() {
-        return COST;
-    }
-
-    public BloodFireSoulSpellBookItem(Properties properties) {
-        super(properties);
+    public BloodFireSoulSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -49,14 +43,11 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
                         gems
                 );
 
-
                 if (count > 1) {
 
                     float yawOffset = (i - (count - 1) / 2.0f) * SPREAD_DEGREES;
 
-
                     Vec3 spreadDir = look.yRot((float) Math.toRadians(-yawOffset));
-
 
                     soulProjectile.setDeltaMovement(spreadDir.scale(0.55));
                 }
@@ -65,13 +56,11 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
             }
         }
 
-
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.GHAST_SHOOT, SoundSource.PLAYERS, 1.0f, 1.2f);
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0f, 0.8f);
     }
-
 
     @Override
     public void spawnProgressiveParticles(Level level, Player player, int tick) {
@@ -124,22 +113,4 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
         }
     }
 
-    @Override
-    public int getMinChargeTime() { return 20; }
-
-    @Override
-    public int getCooldown() { return 60; }
-
-    @Override
-    public String getSpellBookId() { return "bloodfire_soul_spellbook"; }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.THROW;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "blood_fire_soul_icon";
-    }
 }

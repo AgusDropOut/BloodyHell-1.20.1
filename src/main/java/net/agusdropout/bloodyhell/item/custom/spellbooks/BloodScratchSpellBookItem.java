@@ -1,16 +1,12 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
-import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSlashEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
-import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
-import net.agusdropout.bloodyhell.networking.ModMessages;
-import net.agusdropout.bloodyhell.networking.packet.CrimsonVeilDataSyncS2CPacket;
+import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -23,15 +19,9 @@ import org.joml.Vector3f;
 import java.util.List;
 
 public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpellBookItem> {
-    private static final int COST = 5;
 
-    public BloodScratchSpellBookItem(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public int getCrimsonCost() {
-        return COST;
+    public BloodScratchSpellBookItem(Properties properties, SpellBookDefinition definition) {
+        super(properties, definition);
     }
 
     @Override
@@ -41,47 +31,26 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
 
             int projectileCount = 3 + getProjectileAdditionalFromGems(gems);
 
-            player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).ifPresent(playerCrimsonVeil -> {
-                if (playerCrimsonVeil.getCrimsonVeil() >= 10) {
-                    playerCrimsonVeil.subCrimsomveil(10);
+            float yaw = player.getYRot();
+            float pitch = player.getXRot();
 
-                    float yaw = player.getYRot();
-                    float pitch = player.getXRot();
+            double radians = Math.toRadians(-yaw);
+            double xDir = Math.sin(radians);
+            double zDir = Math.cos(radians);
 
-                    double radians = Math.toRadians(-yaw);
-                    double xDir = Math.sin(radians);
-                    double zDir = Math.cos(radians);
+            double baseX = player.getX() + xDir * 1.5;
+            double baseY = player.getEyeY() - 0.4;
+            double baseZ = player.getZ() + zDir * 1.5;
 
-                    double baseX = player.getX() + xDir * 1.5;
-                    double baseY = player.getEyeY() - 0.4;
-                    double baseZ = player.getZ() + zDir * 1.5;
+            float spreadAngle = 10.0f;
 
-                    double offsetRadians = Math.toRadians(-yaw + 90);
-                    double perpX = Math.sin(offsetRadians);
-                    double perpZ = Math.cos(offsetRadians);
+            for (int i = 0; i < projectileCount; i++) {
+                float multiplier = i - (projectileCount - 1) / 2.0f;
+                float spawnYaw = yaw - (multiplier * spreadAngle);
 
-                    float spreadDistance = 1.2f;
-                    float spreadAngle = 10.0f;
-
-                    for (int i = 0; i < projectileCount; i++) {
-
-                        float multiplier = i - (projectileCount - 1) / 2.0f;
-
-                        double currentOffsetX = perpX * (multiplier * spreadDistance);
-                        double currentOffsetZ = perpZ * (multiplier * spreadDistance);
-
-                        double spawnX = baseX;
-                        double spawnZ = baseZ;
-
-                        float spawnYaw = yaw - (multiplier * spreadAngle);
-
-                        BloodSlashEntity slash = new BloodSlashEntity(level, spawnX, baseY, spawnZ, 10.0F, player, spawnYaw, pitch, gems);
-                        level.addFreshEntity(slash);
-                    }
-
-                    ModMessages.sendToPlayer(new CrimsonVeilDataSyncS2CPacket(playerCrimsonVeil.getCrimsonVeil()), ((ServerPlayer) player));
-                }
-            });
+                BloodSlashEntity slash = new BloodSlashEntity(level, baseX, baseY, baseZ, 10.0F, player, spawnYaw, pitch, gems);
+                level.addFreshEntity(slash);
+            }
         }
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -146,28 +115,4 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
         }
     }
 
-    @Override
-    public int getMinChargeTime() {
-        return 5;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 5;
-    }
-
-    @Override
-    public String getSpellBookId() {
-        return "blood_scratch_spellbook";
-    }
-
-    @Override
-    public StaffCastType getStaffCastType() {
-        return StaffCastType.SEQUENTIAL;
-    }
-
-    @Override
-    public String getSpellIconName() {
-        return "blood_scratch_icon";
-    }
 }
