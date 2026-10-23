@@ -24,3 +24,4 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0016 | Block and item registries are split in logical groups |
 | 0017 | GameTests run on a dedicated server |
 | 0018 | Spell books are defined in one table and cast by one driver |
+| 0019 | Registry ids are public to modpacks |
