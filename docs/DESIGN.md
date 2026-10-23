@@ -14,3 +14,10 @@ Facts about how the mod is meant to work. Code and tests follow these; if the co
 ## Progression facts
 - The Rhnull blood engine is the least developed system: its mechanics, how it is obtained and its recipe are still to design (planned for the 1.0 tutorial).
 - The Oni is deprecated and the dirty vena cava biome was cancelled.
+
+## Spells, books and staffs
+- Every spell book is declared once in `SpellBookItems` (id, icon, cast type, affinity Blood Fire, Blood or Rhnull, Crimson Veil cost, charge and cooldown ticks). A book never takes Crimson Veil by itself; the cast does it once (ADR 0018).
+- A book can be cast held alone in either hand, inside the Omnitome, with a staff in the main hand and the book in the off hand, or with a staff and the Omnitome in the off hand. `SpellCastGameTests` checks every book in each of those ways.
+- The Crimson Veil HUD shows whenever a spell book, a staff, the Omnitome or a Crimson Veil weapon is in either hand. The set is the `crimson_veil_consumer` tag, filled from the registry.
+- A staff has an affinity and a marker effect: the Scarlet Cinder favors Blood Fire books and counts targets with Blood Fire, the Incomplete Staff of the Pure Blooded favors Blood books and counts targets with Bleeding, the Golden Sorrow favors Rhnull books and has no marker yet.
+- The server counts the marked targets within 16 blocks every 10 ticks while the staff is selected, up to five, and keeps the count in the staff. At five, a book of the staff affinity gets +30% damage, -25% Crimson Veil cost and -25% cooldown; a book of another affinity gets 40% of that. The first guess of these numbers is in the constants of `BaseStaffItem`.

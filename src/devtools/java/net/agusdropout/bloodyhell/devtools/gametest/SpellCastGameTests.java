@@ -34,17 +34,19 @@ public class SpellCastGameTests {
     private static final int TICKS_PAST_CHARGE = 5;
 
     private enum Route {
-        STAFF_WITH_BOOK("staff_book", true),
-        STAFF_WITH_OMNITOME("staff_omnitome", true),
-        OMNITOME_IN_HAND("omnitome", false),
-        BOOK_IN_HAND("book", false);
+        STAFF_WITH_BOOK("staff_book", InteractionHand.MAIN_HAND),
+        STAFF_WITH_OMNITOME("staff_omnitome", InteractionHand.MAIN_HAND),
+        OMNITOME_IN_HAND("omnitome", InteractionHand.MAIN_HAND),
+        BOOK_IN_HAND("book", InteractionHand.MAIN_HAND),
+        OMNITOME_IN_OFF_HAND("omnitome_off_hand", InteractionHand.OFF_HAND),
+        BOOK_IN_OFF_HAND("book_off_hand", InteractionHand.OFF_HAND);
 
         private final String label;
-        private final boolean viaStaff;
+        private final InteractionHand hand;
 
-        Route(String label, boolean viaStaff) {
+        Route(String label, InteractionHand hand) {
             this.label = label;
-            this.viaStaff = viaStaff;
+            this.hand = hand;
         }
     }
 
@@ -72,7 +74,7 @@ public class SpellCastGameTests {
 
         ItemStack held = hold(player, book, route);
         int heldTicks = book.getStaffCastType() == StaffCastType.SEQUENTIAL ? SEQUENTIAL_TICKS : book.getMinChargeTime() + TICKS_PAST_CHARGE;
-        held.use(helper.getLevel(), player, InteractionHand.MAIN_HAND);
+        held.use(helper.getLevel(), player, route.hand);
         for (int used = 1; used <= heldTicks; used++) {
             held.getItem().onUseTick(helper.getLevel(), player, held, USE_DURATION - used);
         }
@@ -90,6 +92,7 @@ public class SpellCastGameTests {
         ItemStack bookStack = new ItemStack(book);
         ItemStack omnitome = new ItemStack(SpellBookItems.THE_OMNITOME.get());
         omnitome.getOrCreateTag().put(OmnitomeItem.NBT_ACTIVE_SPELL, book.serializeBookData(bookStack));
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
         player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
         switch (route) {
             case STAFF_WITH_BOOK -> {
@@ -102,8 +105,10 @@ public class SpellCastGameTests {
             }
             case OMNITOME_IN_HAND -> player.setItemInHand(InteractionHand.MAIN_HAND, omnitome);
             case BOOK_IN_HAND -> player.setItemInHand(InteractionHand.MAIN_HAND, bookStack);
+            case OMNITOME_IN_OFF_HAND -> player.setItemInHand(InteractionHand.OFF_HAND, omnitome);
+            case BOOK_IN_OFF_HAND -> player.setItemInHand(InteractionHand.OFF_HAND, bookStack);
         }
-        return player.getItemInHand(InteractionHand.MAIN_HAND);
+        return player.getItemInHand(route.hand);
     }
 
     private static int expectedCasts(BaseSpellBookItem<?> book, Route route, int heldTicks) {
