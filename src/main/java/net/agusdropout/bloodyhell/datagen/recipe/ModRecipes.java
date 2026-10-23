@@ -398,7 +398,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .define('G', Items.GOLD_INGOT)
                 .unlockedBy("has_sanguinite", has(SanguiniteItems.SANGUINITE.get()))
                 .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
-                .save(consumer, name("sanguinite_bow"));
+                .save(consumer, name("blood_bow"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, SanguiniteItems.SANGUINITE_ARROW.get(), 4)
                 .pattern(" F ")
@@ -410,7 +410,7 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_stick", has(Items.STICK))
                 .unlockedBy("has_scarlet_feather", has(DropItems.SCARLET_FEATHER.get()))
                 .unlockedBy("has_flint", has(Items.FLINT))
-                .save(consumer, name("sanguinite_arrow"));
+                .save(consumer, name("blood_arrow"));
 
         makeHelmet(SanguiniteItems.SANGUINITE_HELMET, SanguiniteItems.SANGUINITE).save(consumer);
         makeChestplate(SanguiniteItems.SANGUINITE_CHESTPLATE, SanguiniteItems.SANGUINITE).save(consumer);

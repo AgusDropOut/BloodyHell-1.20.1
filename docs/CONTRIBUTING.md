@@ -28,3 +28,7 @@ Anything animated with GeckoLib starts from a base class and a generic renderer,
 - Entities are registered in `ModRenderers` with `ConfigurableGeoEntityRenderer.builder(...)` and `ConfigurableGeoModel`. Write an entity renderer or model class only when it holds logic: a custom animation, a shader effect or an extra layer.
 - `GeckoBaseRulesTest` fails when a new class implements `GeoItem` or `GeoBlockEntity` outside these bases, and `GeckoAssetGameTests` fails when an item has no geo, texture or animation file for its id.
 
+## Registry ids
+- Do not rename a registered id (item, block, entity, fluid, effect...) to fix a name: modpacks name them in scripts, quests, recipes and tags that load before any world (ADR 0019). Change the translated name in the lang file instead.
+- Removing content is allowed; say so in `CHANGELOG.md`. Before a release run `./gradlew runGameTestServer` and `python scripts/check-modpack-ids.py --pack <pack>` for the known packs.
+

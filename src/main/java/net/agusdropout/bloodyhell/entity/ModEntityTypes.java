@@ -97,8 +97,8 @@ public class ModEntityTypes {
 
     // Changed to MobCategory.MISC so they DO NOT need attributes!
 
-    public static final RegistryObject<EntityType<SanguiniteArrowEntity>> SANGUINITE_ARROW = ENTITY_TYPES.register("sanguinite_arrow_entity",
-            () -> EntityType.Builder.<SanguiniteArrowEntity>of(SanguiniteArrowEntity::new,MobCategory.MISC).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID, "sanguinite_arrow_entity").toString()));
+    public static final RegistryObject<EntityType<SanguiniteArrowEntity>> SANGUINITE_ARROW = ENTITY_TYPES.register("blood_arrow_entity",
+            () -> EntityType.Builder.<SanguiniteArrowEntity>of(SanguiniteArrowEntity::new,MobCategory.MISC).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID, "blood_arrow_entity").toString()));
 
     public static final RegistryObject<EntityType<CrystalPillar>> CRYSTAL_PILLAR = ENTITY_TYPES.register("crystal_pillar",
             () -> EntityType.Builder.<CrystalPillar>of(CrystalPillar::new,MobCategory.MISC).sized(1.2f,1.2f).build(new ResourceLocation(BloodyHell.MODID, "crystal_pillar").toString()));
