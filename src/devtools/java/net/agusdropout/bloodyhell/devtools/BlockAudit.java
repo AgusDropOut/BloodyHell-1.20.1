@@ -152,7 +152,7 @@ public final class BlockAudit {
         }
     }
 
-    private static List<Supplier<Item>> chain(BlockToolRules.Tool tool) {
+    public static List<Supplier<Item>> chain(BlockToolRules.Tool tool) {
         List<Supplier<Item>> vanilla = switch (tool) {
             case PICKAXE -> List.of(() -> Items.WOODEN_PICKAXE, () -> Items.STONE_PICKAXE, () -> Items.IRON_PICKAXE, () -> Items.DIAMOND_PICKAXE, () -> Items.NETHERITE_PICKAXE);
             case AXE -> List.of(() -> Items.WOODEN_AXE, () -> Items.STONE_AXE, () -> Items.IRON_AXE, () -> Items.DIAMOND_AXE, () -> Items.NETHERITE_AXE);
