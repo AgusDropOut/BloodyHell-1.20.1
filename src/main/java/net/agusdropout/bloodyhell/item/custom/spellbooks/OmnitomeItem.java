@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.item.custom.spellbooks;
 import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCaster;
 import net.agusdropout.bloodyhell.item.custom.base.StaffCastType;
 import net.agusdropout.bloodyhell.screen.custom.menu.OmnitomeMenu;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -173,8 +174,8 @@ public class OmnitomeItem extends Item implements GeoItem {
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         ItemStack activeSpell = getActiveSpellBook(stack);
-        if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
-            spellBook.onUseTick(level, livingEntity, activeSpell, remainingUseDuration);
+        if (livingEntity instanceof Player player && !activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+            SpellCaster.tick(level, player, spellBook, activeSpell, player.getUsedItemHand(), spellBook.getUseDuration(activeSpell) - remainingUseDuration, false);
         }
     }
 
@@ -187,7 +188,9 @@ public class OmnitomeItem extends Item implements GeoItem {
                 stack.getOrCreateTag().put(NBT_ACTIVE_SPELL, spellBook.serializeBookData(activeSpell));
             }
 
-            spellBook.releaseUsing(activeSpell, level, entity, timeLeft, entity.getUsedItemHand());
+            if (entity instanceof Player player) {
+                SpellCaster.release(level, player, spellBook, activeSpell, player.getUsedItemHand(), spellBook.getUseDuration(activeSpell) - timeLeft, false);
+            }
         }
     }
 

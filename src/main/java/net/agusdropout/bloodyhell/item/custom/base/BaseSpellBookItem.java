@@ -78,48 +78,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         if (livingEntity instanceof Player player) {
-            int ticksUsed = getUseDuration(stack) - remainingUseDuration;
-
-
-            if (getStaffCastType() == StaffCastType.SEQUENTIAL && ticksUsed > 0) {
-                int chargeTime = Math.max(1, getMinChargeTime());
-                int cooldown = Math.max(0, getCooldown());
-                int cycleLength = chargeTime + cooldown;
-
-
-                if (ticksUsed % cycleLength == chargeTime % cycleLength) {
-                    executeCast(level, player, player.getUsedItemHand(), stack);
-                }
-            }
-
-            if (level.isClientSide) {
-                spawnProgressiveParticles(level, player, ticksUsed);
-            }
-            playChargeSound(level, player, ticksUsed);
-        }
-    }
-
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft, InteractionHand hand) {
-        if (entity instanceof Player player) {
-            int duration = getUseDuration(stack) - timeLeft;
-
-            if (duration >= getMinChargeTime()) {
-
-                if (getStaffCastType() != StaffCastType.SEQUENTIAL) {
-                    if (!level.isClientSide) {
-                        if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
-                            performSpell(level, player, hand, stack);
-                            triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) level), "controller", "attack");
-                            player.getCooldowns().addCooldown(this, getCooldown());
-                        } else {
-                            player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil")
-                                    .withStyle(ChatFormatting.DARK_RED), true);
-                        }
-                    } else {
-                        performSpell(level, player, hand, stack);
-                    }
-                }
-            }
+            SpellCaster.tick(level, player, this, stack, player.getUsedItemHand(), getUseDuration(stack) - remainingUseDuration, false);
         }
     }
 
@@ -146,8 +105,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
                 Item usedItem = living.getUseItem().getItem();
                 if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem<?> || usedItem instanceof OmnitomeItem) {
                     if (getStaffCastType() == StaffCastType.SEQUENTIAL) {
-                        int cycleLength = Math.max(1, getMinChargeTime()) + Math.max(0, getCooldown());
-                        state.getController().setAnimationSpeed(10.0f / (float) cycleLength);
+                        state.getController().setAnimationSpeed(10.0f / (float) getCycleTicks());
                         return state.setAndContinue(ATTACK_SEQ_ANIM);
                     }
                 }
@@ -295,6 +253,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     public abstract void playChargeSound(Level level, Player player, int chargeTick);
     public int getMinChargeTime() { return definition.chargeTicks(); }
     public int getCooldown() { return definition.cooldownTicks(); }
+    public int getCycleTicks() { return definition.chargeTicks() + definition.cooldownTicks(); }
     public String getSpellBookId() { return definition.id(); }
     public StaffCastType getStaffCastType() { return definition.castType(); }
     public SpellAffinity getAffinity() { return definition.affinity(); }

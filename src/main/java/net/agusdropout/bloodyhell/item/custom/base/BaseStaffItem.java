@@ -200,27 +200,8 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
             ItemStack offhandStack = player.getItemInHand(InteractionHand.OFF_HAND);
             ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
-            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
-                spellBook.onUseTick(level, player, actualSpellStack, remainingUseDuration);
-
-                int ticksUsed = getUseDuration(stack) - remainingUseDuration;
-                int chargeTime = Math.max(1, spellBook.getMinChargeTime());
-                int cooldown = Math.max(0, spellBook.getCooldown());
-                int cycleLength = chargeTime + cooldown;
-                StaffCastType castType = spellBook.getStaffCastType();
-
-                if (ticksUsed > 0) {
-                    if (castType == StaffCastType.SEQUENTIAL) {
-                        int currentCycleTick = ticksUsed % cycleLength;
-                        if (currentCycleTick == chargeTime) {
-                            spellBook.executeCast(level, player, InteractionHand.MAIN_HAND, actualSpellStack);
-                        }
-                    }
-                    else if (castType == StaffCastType.THROW && ticksUsed == chargeTime) {
-                        spellBook.executeCast(level, player, InteractionHand.MAIN_HAND, actualSpellStack);
-                        player.stopUsingItem();
-                    }
-                }
+            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+                SpellCaster.tick(level, player, spellBook, actualSpellStack, InteractionHand.MAIN_HAND, getUseDuration(stack) - remainingUseDuration, true);
                 syncSpellStackIfOmnitome(offhandStack, actualSpellStack);
             }
         }
@@ -233,11 +214,8 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
             ItemStack offhandStack = player.getItemInHand(InteractionHand.OFF_HAND);
             ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
-            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
-                StaffCastType castType = spellBook.getStaffCastType();
-                if (castType != StaffCastType.SEQUENTIAL && castType != StaffCastType.THROW) {
-                    spellBook.releaseUsing(actualSpellStack, level, player, timeLeft, InteractionHand.MAIN_HAND);
-                }
+            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+                SpellCaster.release(level, player, spellBook, actualSpellStack, InteractionHand.MAIN_HAND, getUseDuration(stack) - timeLeft, true);
                 syncSpellStackIfOmnitome(offhandStack, actualSpellStack);
             }
 
