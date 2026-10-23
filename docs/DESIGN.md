@@ -7,7 +7,7 @@ Facts about how the mod is meant to work. Code and tests follow these; if the co
 - Blasphemite blocks and ore need a sanguinite tool; the Rhnull block needs a blasphemite tool (`BlockToolRules`, ADR 0015).
 
 ## Fluids and machines
-- Sanguinite machines (pipes, tanks, harvester, infusor, condenser) cannot hold corrupted blood or viscous blasphemy: those fluids are too aggressive for the metal. Rhnull is the stronger material and its machines can hold them. Today only the data is there (`isValidFluid` of the condensers); the rule is not applied to the other machines yet (see `docs/TECH_DEBT.md`).
+- Sanguinite machines that also exist in a rhnull version (pipes, tanks, condensers) cannot handle dangerous fluids, corrupted blood and viscous blasphemy: the tanks and the condensers refuse them and a pipe that ends up holding one bursts into a corrupted blood block after 60 ticks (`SanguinitePipeBlockEntity`). The rhnull version takes every fluid, so it is the one needed to move dangerous substances. The harvester and the infusor have no rhnull version and are not restricted (the harvester has to store the corrupted blood it makes).
 - Blood, corrupted blood and visceral blood come from the blood harvester, depending on the soul type. Viscous blasphemy comes from the Unknown Portal machine.
 - Rhnull comes from the sanguinite infusor: sanguinite with blood and visceral blood.
 

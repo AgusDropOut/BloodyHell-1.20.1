@@ -16,6 +16,8 @@ public class SanguiniteTankBlockEntity extends AbstractTankBlockEntity {
     @Override
     public boolean isFluidSupported(FluidStack stack) {
         return stack.getFluid() != ModFluids.CORRUPTED_BLOOD_SOURCE.get()
-                && stack.getFluid() != ModFluids.CORRUPTED_BLOOD_FLOWING.get();
+                && stack.getFluid() != ModFluids.CORRUPTED_BLOOD_FLOWING.get()
+                && stack.getFluid() != ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()
+                && stack.getFluid() != ModFluids.VISCOUS_BLASPHEMY_FLOWING.get();
     }
 }

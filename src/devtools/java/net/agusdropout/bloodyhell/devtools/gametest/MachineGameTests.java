@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import net.minecraftforge.registries.RegistryObject;
@@ -38,18 +39,45 @@ public class MachineGameTests {
 
     @GameTest(template = TEMPLATE, batch = "machines", timeoutTicks = 300)
     public static void sanguiniteCondenserMakesItsRecipe(GameTestHelper helper) {
-        condenserMakesItsRecipe(helper, MachineBlocks.SANGUINITE_CONDENSER);
+        condenserMakesItsRecipe(helper, MachineBlocks.SANGUINITE_CONDENSER, false);
     }
 
     @GameTest(template = TEMPLATE, batch = "machines", timeoutTicks = 300)
     public static void rhnullCondenserMakesItsRecipe(GameTestHelper helper) {
-        condenserMakesItsRecipe(helper, MachineBlocks.RHNULL_CONDENSER);
+        condenserMakesItsRecipe(helper, MachineBlocks.RHNULL_CONDENSER, true);
     }
 
-    private static void condenserMakesItsRecipe(GameTestHelper helper, RegistryObject<Block> condenserBlock) {
-        List<CondenserRecipe> recipes = helper.getLevel().getRecipeManager().getAllRecipesFor(CondenserRecipe.Type.INSTANCE);
+    @GameTest(template = TEMPLATE, batch = "machines", timeoutTicks = 40)
+    public static void sanguiniteCondenserRejectsDangerousFluids(GameTestHelper helper) {
+        helper.setBlock(MACHINE, MachineBlocks.SANGUINITE_CONDENSER.get());
+        AbstractCondenserBlockEntity condenser = (AbstractCondenserBlockEntity) helper.getBlockEntity(MACHINE);
+        for (var fluid : List.of(ModFluids.VISCOUS_BLASPHEMY_SOURCE, ModFluids.CORRUPTED_BLOOD_SOURCE)) {
+            helper.assertTrue(condenser.getInputTank().fill(new FluidStack(fluid.get(), 500), IFluidHandler.FluidAction.EXECUTE) == 0,
+                    "the sanguinite condenser accepted " + fluid.get());
+        }
+        helper.assertTrue(condenser.getInputTank().fill(new FluidStack(ModFluids.BLOOD_SOURCE.get(), 500), IFluidHandler.FluidAction.EXECUTE) == 500,
+                "the sanguinite condenser rejected plain blood");
+        helper.succeed();
+    }
+
+    @GameTest(template = TEMPLATE, batch = "machines", timeoutTicks = 40)
+    public static void rhnullCondenserAcceptsDangerousFluids(GameTestHelper helper) {
+        helper.setBlock(MACHINE, MachineBlocks.RHNULL_CONDENSER.get());
+        AbstractCondenserBlockEntity condenser = (AbstractCondenserBlockEntity) helper.getBlockEntity(MACHINE);
+        helper.assertTrue(condenser.getInputTank().fill(new FluidStack(ModFluids.VISCOUS_BLASPHEMY_SOURCE.get(), 500), IFluidHandler.FluidAction.EXECUTE) == 500,
+                "the rhnull condenser rejected viscous blasphemy");
+        helper.succeed();
+    }
+
+    private static boolean dangerous(FluidStack fluid) {
+        return fluid.getFluid().isSame(ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()) || fluid.getFluid().isSame(ModFluids.CORRUPTED_BLOOD_SOURCE.get());
+    }
+
+    private static void condenserMakesItsRecipe(GameTestHelper helper, RegistryObject<Block> condenserBlock, boolean dangerousFluid) {
+        List<CondenserRecipe> recipes = helper.getLevel().getRecipeManager().getAllRecipesFor(CondenserRecipe.Type.INSTANCE).stream()
+                .filter(recipe -> dangerous(recipe.getFluidInput()) == dangerousFluid).toList();
         if (recipes.isEmpty()) {
-            helper.fail("there are no condensing recipes");
+            helper.fail("there is no condensing recipe with " + (dangerousFluid ? "a dangerous" : "a safe") + " fluid");
             return;
         }
         CondenserRecipe recipe = recipes.get(0);

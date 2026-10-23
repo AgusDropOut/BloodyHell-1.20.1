@@ -34,7 +34,6 @@ public class CatalystItem extends Item {
                                 SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1.0F, 1.0F);
                         return InteractionResult.CONSUME;
                     }
-                    else return InteractionResult.FAIL;
                 }
             }
         }

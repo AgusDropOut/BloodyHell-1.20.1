@@ -16,7 +16,7 @@ public class SanguiniteCondenserBlockEntity extends AbstractCondenserBlockEntity
 
     @Override
     protected boolean isValidFluid(FluidStack stack) {
-        return !stack.getFluid().isSame(ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()) || !stack.getFluid().isSame(ModFluids.CORRUPTED_BLOOD_SOURCE.get());
+        return !stack.getFluid().isSame(ModFluids.VISCOUS_BLASPHEMY_SOURCE.get()) && !stack.getFluid().isSame(ModFluids.CORRUPTED_BLOOD_SOURCE.get());
     }
 
 

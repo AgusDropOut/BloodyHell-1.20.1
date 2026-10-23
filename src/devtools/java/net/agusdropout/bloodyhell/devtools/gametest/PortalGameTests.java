@@ -63,14 +63,14 @@ public class PortalGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = TEMPLATE, batch = "portal", timeoutTicks = 60, required = false)
-    public static void chaliceLightsAPortalFromASideBlock(GameTestHelper helper) {
+    @GameTest(template = TEMPLATE, batch = "portal", timeoutTicks = 60)
+    public static void chaliceLightsAPortalFromTheTopFrameBlock(GameTestHelper helper) {
         buildFrame(helper);
         Player player = helper.makeMockPlayer();
         ItemStack chalice = new ItemStack(MiscItems.CHALICE_OF_THE_DAMMED.get());
         player.setItemInHand(InteractionHand.MAIN_HAND, chalice);
-        BlockPos side = helper.absolutePos(new BlockPos(2, 3, 4));
-        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(side).add(0.5, 0, 0), Direction.EAST, side, false);
+        BlockPos top = helper.absolutePos(new BlockPos(3, 5, 4));
+        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(top).add(0, 0.5, 0), Direction.UP, top, false);
         chalice.useOn(new UseOnContext(helper.getLevel(), player, InteractionHand.MAIN_HAND, chalice, hit));
         helper.assertBlockPresent(MiscBlocks.BLOOD_PORTAL.get(), new BlockPos(3, 3, 4));
         helper.succeed();

@@ -137,7 +137,7 @@ public class FluidMachineGameTests {
         });
     }
 
-    @GameTest(template = TEMPLATE, batch = "fluids-design", timeoutTicks = 40, required = false)
+    @GameTest(template = TEMPLATE, batch = "fluids", timeoutTicks = 40)
     public static void sanguiniteTankRejectsViscousBlasphemy(GameTestHelper helper) {
         helper.setBlock(HERE, MachineBlocks.SANGUINITE_TANK.get());
         helper.assertTrue(fluids(helper, HERE).fill(stack(ModFluids.VISCOUS_BLASPHEMY_SOURCE, 500), IFluidHandler.FluidAction.EXECUTE) == 0,
@@ -145,7 +145,7 @@ public class FluidMachineGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = TEMPLATE, batch = "fluids-design", timeoutTicks = 200, required = false)
+    @GameTest(template = TEMPLATE, batch = "fluids", timeoutTicks = 200)
     public static void sanguinitePipeBurstsWithViscousBlasphemy(GameTestHelper helper) {
         helper.setBlock(HERE, MachineBlocks.SANGUINITE_PIPE.get());
         AbstractPipeBlockEntity entity = (AbstractPipeBlockEntity) helper.getBlockEntity(HERE);
