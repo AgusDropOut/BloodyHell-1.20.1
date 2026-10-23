@@ -163,6 +163,15 @@ public class AltarGameTests {
                 new ItemStack(FlaskItems.FILLED_BLOOD_FLASK.get()));
     }
 
+    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 20)
+    public static void everyAltarRecipeHasATest(GameTestHelper helper) {
+        int blood = helper.getLevel().getRecipeManager().getAllRecipesFor(BloodAltarRecipe.Type.INSTANCE).size();
+        int blasphemous = helper.getLevel().getRecipeManager().getAllRecipesFor(BlasphemousBloodAltarRecipe.Type.INSTANCE).size();
+        helper.assertTrue(blood <= 16, "the blood altar has " + blood + " recipes but only 16 have a test: add bloodRitualNN");
+        helper.assertTrue(blasphemous <= 12, "the blasphemous altar has " + blasphemous + " recipes but only 12 have a test: add blasphemousRitualNN");
+        helper.succeed();
+    }
+
     @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual00(GameTestHelper h) { bloodAltarRitual(h, 0); }
     @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual01(GameTestHelper h) { bloodAltarRitual(h, 1); }
     @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual02(GameTestHelper h) { bloodAltarRitual(h, 2); }
