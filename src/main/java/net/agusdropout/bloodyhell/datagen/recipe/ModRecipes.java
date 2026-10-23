@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.datagen.recipe;
 
 import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
-import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
 import net.agusdropout.bloodyhell.item.registry.DropItems;
 import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.item.registry.FoodItems;
@@ -391,7 +390,7 @@ public class ModRecipes extends ModRecipesProvider {
         makeAxe(RhnullItems.RHNULL_AXE, RhnullItems.RHNULL).save(consumer);
         makeHoe(RhnullItems.RHNULL_HOE, RhnullItems.RHNULL).save(consumer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BloodGearItems.BLOOD_BOW.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, SanguiniteItems.SANGUINITE_BOW.get(), 1)
                 .pattern(" SG")
                 .pattern("S G")
                 .pattern(" SG")
@@ -399,9 +398,9 @@ public class ModRecipes extends ModRecipesProvider {
                 .define('G', Items.GOLD_INGOT)
                 .unlockedBy("has_sanguinite", has(SanguiniteItems.SANGUINITE.get()))
                 .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
-                .save(consumer, name("blood_bow"));
+                .save(consumer, name("sanguinite_bow"));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BloodGearItems.BLOOD_ARROW.get(), 4)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, SanguiniteItems.SANGUINITE_ARROW.get(), 4)
                 .pattern(" F ")
                 .pattern(" S ")
                 .pattern(" G ")
@@ -411,12 +410,12 @@ public class ModRecipes extends ModRecipesProvider {
                 .unlockedBy("has_stick", has(Items.STICK))
                 .unlockedBy("has_scarlet_feather", has(DropItems.SCARLET_FEATHER.get()))
                 .unlockedBy("has_flint", has(Items.FLINT))
-                .save(consumer, name("blood_arrow"));
+                .save(consumer, name("sanguinite_arrow"));
 
-        makeHelmet(BloodGearItems.BLOOD_HELMET, SanguiniteItems.SANGUINITE).save(consumer);
-        makeChestplate(BloodGearItems.BLOOD_CHESTPLATE, SanguiniteItems.SANGUINITE).save(consumer);
-        makeLeggings(BloodGearItems.BLOOD_LEGGINGS, SanguiniteItems.SANGUINITE).save(consumer);
-        makeBoots(BloodGearItems.BLOOD_BOOTS, SanguiniteItems.SANGUINITE).save(consumer);
+        makeHelmet(SanguiniteItems.SANGUINITE_HELMET, SanguiniteItems.SANGUINITE).save(consumer);
+        makeChestplate(SanguiniteItems.SANGUINITE_CHESTPLATE, SanguiniteItems.SANGUINITE).save(consumer);
+        makeLeggings(SanguiniteItems.SANGUINITE_LEGGINGS, SanguiniteItems.SANGUINITE).save(consumer);
+        makeBoots(SanguiniteItems.SANGUINITE_BOOTS, SanguiniteItems.SANGUINITE).save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MiscItems.BLOODY_SOUL_DUST.get(), 1)
                 .pattern("GP")

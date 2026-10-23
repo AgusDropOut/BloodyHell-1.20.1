@@ -2,7 +2,6 @@ package net.agusdropout.bloodyhell.item;
 
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
-import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
 import net.agusdropout.bloodyhell.item.registry.BucketItems;
 import net.agusdropout.bloodyhell.item.registry.DropItems;
 import net.agusdropout.bloodyhell.item.registry.FlaskItems;
@@ -40,7 +39,6 @@ public class ModItems {
 
     public static void register(IEventBus eventBus) {
         BlasphemiteItems.init();
-        BloodGearItems.init();
         BucketItems.init();
         DropItems.init();
         FlaskItems.init();

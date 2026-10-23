@@ -1,7 +1,7 @@
 package net.agusdropout.bloodyhell.event;
 
 import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
-import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
+import net.agusdropout.bloodyhell.item.registry.SanguiniteItems;
 import net.agusdropout.bloodyhell.item.registry.RhnullItems;
 import com.mojang.blaze3d.vertex.*;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
@@ -148,7 +148,7 @@ public class ClientEvents {
                         PlayerModel<?> model = playerRenderer.getModel();
 
                         if (player.getItemBySlot(EquipmentSlot.CHEST).is(BlasphemiteItems.BLASPHEMITE_CHESTPLATE.get()) ||
-                                player.getItemBySlot(EquipmentSlot.CHEST).is(BloodGearItems.BLOOD_CHESTPLATE.get()) ||
+                                player.getItemBySlot(EquipmentSlot.CHEST).is(SanguiniteItems.SANGUINITE_CHESTPLATE.get()) ||
                                 player.getItemBySlot(EquipmentSlot.CHEST).is(RhnullItems.RHNULL_CHESTPLATE.get())) {
 
                             model.jacket.visible = false;
@@ -157,9 +157,9 @@ public class ClientEvents {
                         }
 
                         if (player.getItemBySlot(EquipmentSlot.LEGS).is(BlasphemiteItems.BLASPHEMITE_LEGGINGS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.LEGS).is(BloodGearItems.BLOOD_LEGGINGS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.LEGS).is(SanguiniteItems.SANGUINITE_LEGGINGS.get()) ||
                                 player.getItemBySlot(EquipmentSlot.FEET).is(BlasphemiteItems.BLASPHEMITE_BOOTS.get()) ||
-                                player.getItemBySlot(EquipmentSlot.FEET).is(BloodGearItems.BLOOD_BOOTS.get()) ||
+                                player.getItemBySlot(EquipmentSlot.FEET).is(SanguiniteItems.SANGUINITE_BOOTS.get()) ||
                                 player.getItemBySlot(EquipmentSlot.LEGS).is(RhnullItems.RHNULL_LEGGINGS.get()) ||
                                 player.getItemBySlot(EquipmentSlot.FEET).is(RhnullItems.RHNULL_BOOTS.get())) {
 
@@ -168,7 +168,7 @@ public class ClientEvents {
                         }
 
                         if (player.getItemBySlot(EquipmentSlot.HEAD).is(BlasphemiteItems.BLASPHEMITE_HELMET.get()) ||
-                                player.getItemBySlot(EquipmentSlot.HEAD).is(BloodGearItems.BLOOD_HELMET.get()) ||
+                                player.getItemBySlot(EquipmentSlot.HEAD).is(SanguiniteItems.SANGUINITE_HELMET.get()) ||
                                 player.getItemBySlot(EquipmentSlot.HEAD).is(RhnullItems.RHNULL_HELMET.get())) {
 
                             model.hat.visible = false;

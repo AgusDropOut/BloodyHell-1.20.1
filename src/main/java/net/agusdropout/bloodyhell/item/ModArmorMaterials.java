@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public enum ModArmorMaterials implements ArmorMaterial {
 
 
-    BLOOD("sanguinite", 26, new int[]{ 5, 7, 5, 4 }, 25,
+    SANGUINITE("sanguinite", 26, new int[]{ 5, 7, 5, 4 }, 25,
             SoundEvents.ARMOR_EQUIP_GOLD, 1f, 0f, () -> Ingredient.of(SanguiniteItems.SANGUINITE.get())),
 
 

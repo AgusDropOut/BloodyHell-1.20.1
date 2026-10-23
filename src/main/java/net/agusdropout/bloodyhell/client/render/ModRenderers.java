@@ -192,7 +192,7 @@ public class ModRenderers {
 
 
     private static void registerProjectileRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.BLOOD_ARROW.get(), BloodArrowRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.SANGUINITE_ARROW.get(), SanguiniteArrowRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.BLOOD_PROJECTILE.get(), BloodSphereRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.VIRULENT_ANCHOR_PROJECTILE.get(), context ->
                 ConfigurableGeoEntityRenderer.<VirulentAnchorProjectileEntity>builder(context,

@@ -1,0 +1,6 @@
+{
+    "parent": "bloodyhell:item/sanguinite_bow",
+    "textures": {
+        "layer0": "bloodyhell:item/sanguinite_bow_pulling_1"
+    }
+}

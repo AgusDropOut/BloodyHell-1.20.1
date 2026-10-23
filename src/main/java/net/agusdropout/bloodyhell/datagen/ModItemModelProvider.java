@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.datagen;
 
 import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
-import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
 import net.agusdropout.bloodyhell.item.registry.BucketItems;
 import net.agusdropout.bloodyhell.item.registry.DropItems;
 import net.agusdropout.bloodyhell.item.registry.FlaskItems;
@@ -69,10 +68,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         toolItem(SanguiniteItems.SANGUINITE_AXE);
         toolItem(SanguiniteItems.SANGUINITE_SHOVEL);
         toolItem(SanguiniteItems.SANGUINITE_HOE);
-        normalItem(BloodGearItems.BLOOD_HELMET);
-        normalItem(BloodGearItems.BLOOD_CHESTPLATE);
-        normalItem(BloodGearItems.BLOOD_LEGGINGS);
-        normalItem(BloodGearItems.BLOOD_BOOTS);
+        normalItem(SanguiniteItems.SANGUINITE_HELMET);
+        normalItem(SanguiniteItems.SANGUINITE_CHESTPLATE);
+        normalItem(SanguiniteItems.SANGUINITE_LEGGINGS);
+        normalItem(SanguiniteItems.SANGUINITE_BOOTS);
         normalItem(SanguiniteItems.SANGUINITE);
         normalItem(SanguiniteItems.SANGUINITE_NUGGET);
         normalItem(SanguiniteItems.RAW_SANGUINITE);
@@ -263,7 +262,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleBlockItemBlockTexture(PlantBlocks.ROUNDED_GRASS);
         simpleBlockItemBlockTexture(PlantBlocks.STING_FLOWER);
 
-        normalItem(BloodGearItems.BLOOD_ARROW);
+        normalItem(SanguiniteItems.SANGUINITE_ARROW);
         normalItem(BlasphemiteItems.BLASPHEMITE);
         normalItem(BlasphemiteItems.BLASPHEMITE_NUGGET);
         normalItem(BlasphemiteItems.RAW_BLASPHEMITE);

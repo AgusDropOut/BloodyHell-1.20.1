@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.datagen;
 
 import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
-import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
 import net.agusdropout.bloodyhell.item.registry.BucketItems;
 import net.agusdropout.bloodyhell.item.registry.FlaskItems;
 import net.agusdropout.bloodyhell.item.registry.GemItems;
@@ -59,7 +58,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(WoodBlocks.BLOOD_PLANKS.get().asItem());
 
         this.tag(ItemTags.ARROWS)
-                .add(BloodGearItems.BLOOD_ARROW.get());
+                .add(SanguiniteItems.SANGUINITE_ARROW.get());
 
         this.tag(ItemTags.SWORDS)
                 .add(SanguiniteItems.SANGUINITE_SWORD.get())
@@ -126,12 +125,12 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(SanguiniteItems.SANGUINITE_AXE.get())
                 .add(SanguiniteItems.SANGUINITE_SHOVEL.get())
                 .add(SanguiniteItems.SANGUINITE_HOE.get())
-                .add(BloodGearItems.BLOOD_HELMET.get())
-                .add(BloodGearItems.BLOOD_CHESTPLATE.get())
-                .add(BloodGearItems.BLOOD_LEGGINGS.get())
-                .add(BloodGearItems.BLOOD_BOOTS.get())
-                .add(BloodGearItems.BLOOD_BOW.get())
-                .add(BloodGearItems.BLOOD_ARROW.get())
+                .add(SanguiniteItems.SANGUINITE_HELMET.get())
+                .add(SanguiniteItems.SANGUINITE_CHESTPLATE.get())
+                .add(SanguiniteItems.SANGUINITE_LEGGINGS.get())
+                .add(SanguiniteItems.SANGUINITE_BOOTS.get())
+                .add(SanguiniteItems.SANGUINITE_BOW.get())
+                .add(SanguiniteItems.SANGUINITE_ARROW.get())
                 .add(MetalBlocks.SANGUINITE_BLOCK.get().asItem())
                 .add(MetalBlocks.SANGUINITE_ORE.get().asItem())
                 .add(PlaceableItems.SANGUINITE_BLOOD_HARVESTER_ITEM.get())

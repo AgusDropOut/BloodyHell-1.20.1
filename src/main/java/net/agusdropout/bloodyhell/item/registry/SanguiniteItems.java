@@ -1,6 +1,10 @@
 package net.agusdropout.bloodyhell.item.registry;
 
+import net.agusdropout.bloodyhell.item.ModArmorMaterials;
 import net.agusdropout.bloodyhell.item.ModToolTiers;
+import net.agusdropout.bloodyhell.item.custom.ModBow;
+import net.agusdropout.bloodyhell.item.custom.SanguiniteArrowItem;
+import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoArmorItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -23,6 +27,19 @@ public final class SanguiniteItems {
             new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SANGUINITE_SHOVEL = ITEMS.register("sanguinite_shovel",() -> new ShovelItem(ModToolTiers.SANGUINITE,1,-3F,
             new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> SANGUINITE_BOW = ITEMS.register("sanguinite_bow", () -> new ModBow(
+            new Item.Properties().stacksTo(1).durability(500)));
+    public static final RegistryObject<Item> SANGUINITE_ARROW = ITEMS.register("sanguinite_arrow", () -> new SanguiniteArrowItem(
+            new Item.Properties()));
+    public static final RegistryObject<Item> SANGUINITE_HELMET = ITEMS.register("sanguinite_helmet",
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.SANGUINITE, ArmorItem.Type.HELMET, new Item.Properties(), BaseGeckoArmorItem.SANGUINITE));
+    public static final RegistryObject<Item> SANGUINITE_CHESTPLATE = ITEMS.register("sanguinite_chestplate",
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.SANGUINITE, ArmorItem.Type.CHESTPLATE, new Item.Properties(), BaseGeckoArmorItem.SANGUINITE));
+    public static final RegistryObject<Item> SANGUINITE_LEGGINGS = ITEMS.register("sanguinite_leggings",
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.SANGUINITE, ArmorItem.Type.LEGGINGS, new Item.Properties(), BaseGeckoArmorItem.SANGUINITE));
+    public static final RegistryObject<Item> SANGUINITE_BOOTS = ITEMS.register("sanguinite_boots",
+            () -> new BaseGeckoArmorItem(ModArmorMaterials.SANGUINITE, ArmorItem.Type.BOOTS, new Item.Properties(), BaseGeckoArmorItem.SANGUINITE));
 
     private SanguiniteItems() {}
 

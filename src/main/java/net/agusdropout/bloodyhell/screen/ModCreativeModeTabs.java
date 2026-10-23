@@ -1,7 +1,6 @@
 package net.agusdropout.bloodyhell.screen;
 
 import net.agusdropout.bloodyhell.item.registry.BlasphemiteItems;
-import net.agusdropout.bloodyhell.item.registry.BloodGearItems;
 import net.agusdropout.bloodyhell.item.registry.BucketItems;
 import net.agusdropout.bloodyhell.item.registry.DropItems;
 import net.agusdropout.bloodyhell.item.registry.FlaskItems;
@@ -79,8 +78,8 @@ public class ModCreativeModeTabs {
                         output.accept(BlasphemiteItems.BLASPHEMITE_SHOVEL.get());
                         output.accept(BlasphemiteItems.BLASPHEMITE_HOE.get());
 
-                        output.accept(BloodGearItems.BLOOD_BOW.get());
-                        output.accept(BloodGearItems.BLOOD_ARROW.get());
+                        output.accept(SanguiniteItems.SANGUINITE_BOW.get());
+                        output.accept(SanguiniteItems.SANGUINITE_ARROW.get());
                         output.accept(WeaponItems.SACRIFICIAL_DAGGER.get());
                         output.accept(WeaponItems.HERETIC_SACRIFICIAL_DAGGER.get());
 
@@ -88,10 +87,10 @@ public class ModCreativeModeTabs {
                         output.accept(WeaponItems.BLASPHEMOUS_HULKING_MASS_OF_IRON.get());
                         output.accept(WeaponItems.BLASPHEMOUS_IMPALER.get());
 
-                        output.accept(BloodGearItems.BLOOD_HELMET.get());
-                        output.accept(BloodGearItems.BLOOD_CHESTPLATE.get());
-                        output.accept(BloodGearItems.BLOOD_LEGGINGS.get());
-                        output.accept(BloodGearItems.BLOOD_BOOTS.get());
+                        output.accept(SanguiniteItems.SANGUINITE_HELMET.get());
+                        output.accept(SanguiniteItems.SANGUINITE_CHESTPLATE.get());
+                        output.accept(SanguiniteItems.SANGUINITE_LEGGINGS.get());
+                        output.accept(SanguiniteItems.SANGUINITE_BOOTS.get());
 
                         output.accept(RhnullItems.RHNULL_HELMET.get());
                         output.accept(RhnullItems.RHNULL_CHESTPLATE.get());

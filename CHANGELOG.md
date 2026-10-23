@@ -17,6 +17,7 @@ A stabilization release: new magic items, a safer machine and tool progression, 
 - Tools and armor now go sanguinite, blasphemite, rhnull, from weakest to strongest. Knockback resistance uses the vanilla scale.
 - Every block now has a declared mining tool and tier: blasphemite blocks and ore need a sanguinite tool, and the Rhnull block needs a blasphemite tool. Hardness and drops were corrected.
 - Sanguinite tanks, pipes and condensers refuse dangerous fluids (corrupted blood and viscous blasphemy), and a sanguinite pipe that ends up holding one bursts into a corrupted blood block. The rhnull versions take every fluid.
+- The Blood bow, arrow, helmet, chestplate, leggings and boots are now the Sanguinite bow, arrow and armor, because they are made of sanguinite. Existing items and arrows in saved worlds are converted automatically; recipes and scripts that name the old ids (`bloodyhell:blood_helmet`, `blood_bow`, `blood_arrow`...) must use the new ones (`sanguinite_helmet`...).
 - Plants drop like vanilla grass.
 - The Offspring of the Unknown flees when it is badly hurt.
 - Reworked visuals: the Frenzy overlay (more vanilla, less motion sickness), the blood decal and the blood blob.
