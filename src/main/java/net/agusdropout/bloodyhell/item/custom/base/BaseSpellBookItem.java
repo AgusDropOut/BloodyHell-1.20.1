@@ -83,6 +83,13 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     }
 
     @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+        if (entity instanceof Player player) {
+            SpellCaster.release(level, player, this, stack, player.getUsedItemHand(), getUseDuration(stack) - timeLeft, false);
+        }
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 5, state -> {
             ItemDisplayContext context = state.getData(DataTickets.ITEM_RENDER_PERSPECTIVE);

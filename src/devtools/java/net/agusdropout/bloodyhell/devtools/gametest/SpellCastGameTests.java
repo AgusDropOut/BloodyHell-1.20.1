@@ -54,7 +54,6 @@ public class SpellCastGameTests {
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof BaseSpellBookItem<?> book)) continue;
             for (Route route : Route.values()) {
-                if (route == Route.BOOK_IN_HAND && book.getStaffCastType() != StaffCastType.SEQUENTIAL) continue;
                 String name = "spellcast_" + route.label + "_" + book.getSpellBookId();
                 tests.add(new TestFunction("spellcast", name, BloodyHell.MODID + ":empty", 60, 0, true, helper -> cast(helper, book, route)));
             }
