@@ -6,6 +6,7 @@ import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonVeil;
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
 import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.entity.interfaces.IGemSpell;
+import net.agusdropout.bloodyhell.entity.projectile.spell.BloodPortalEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.agusdropout.bloodyhell.item.registry.SpellBookItems;
@@ -99,6 +100,37 @@ public class StaffBonusGameTests {
         helper.succeed();
     }
 
+    @GameTest(template = "empty", batch = "staffbonus_aCastRightAfterSelectingTheStaffCountsTheTargets")
+    public static void aCastRightAfterSelectingTheStaffCountsTheTargets(GameTestHelper helper) {
+        BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_NOVA_SPELLBOOK.get();
+        Cast charged = castThroughTheStaff(helper, book, 5, book.getMinChargeTime() + 5, false);
+        helper.assertTrue(charged.spent == Math.round(book.getCrimsonCost() * (1.0f - BaseStaffItem.MAX_COST_REDUCTION)), "the cast started without a refresh of the count spent " + charged.spent);
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "staffbonus_theDaggersOfTheRainGetTheDamageBonus")
+    public static void theDaggersOfTheRainGetTheDamageBonus(GameTestHelper helper) {
+        BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get();
+        Cast plain = castThroughTheStaff(helper, book, 0);
+        Cast charged = castThroughTheStaff(helper, book, 5);
+        helper.assertTrue(plain.portalMultiplier == 1.0f, "the plain portal multiplied the damage by " + plain.portalMultiplier);
+        assertRatio(helper, charged.portalMultiplier, 1.0f + BaseStaffItem.MAX_DAMAGE_BONUS, plain, charged);
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "staffbonus_aDeadTargetDoesNotCount")
+    public static void aDeadTargetDoesNotCount(GameTestHelper helper) {
+        Player player = freshPlayer(helper);
+        BaseStaffItem staff = (BaseStaffItem) StaffItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get();
+        ItemStack stack = new ItemStack(staff);
+        Pig dying = helper.spawn(EntityType.PIG, new BlockPos(1, 1, 1));
+        dying.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 6000));
+        dying.setHealth(0.0f);
+        refresh(helper, staff, stack, player, true);
+        helper.assertTrue(staff.getMarkedTargets(stack) == 0, "a dying target was counted");
+        helper.succeed();
+    }
+
     @GameTest(template = "empty", batch = "staffbonus_aSequentialBookCastsFasterAndCheaperWhenTheStaffIsCharged")
     public static void aSequentialBookCastsFasterAndCheaperWhenTheStaffIsCharged(GameTestHelper helper) {
         BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get();
@@ -113,7 +145,7 @@ public class StaffBonusGameTests {
         helper.succeed();
     }
 
-    private record Cast(int spent, float damage) {}
+    private record Cast(int spent, float damage, float portalMultiplier) {}
 
     private static void assertRatio(GameTestHelper helper, float actual, float expected, Cast plain, Cast charged) {
         helper.assertTrue(Math.abs(actual - expected) < 0.01f, "the damage changed by " + actual + " instead of " + expected + " (plain " + plain.damage + ", charged " + charged.damage + ")");
@@ -166,6 +198,10 @@ public class StaffBonusGameTests {
     }
 
     private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem<?> book, int marked, int heldTicks) {
+        return castThroughTheStaff(helper, book, marked, heldTicks, true);
+    }
+
+    private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem<?> book, int marked, int heldTicks, boolean refreshFirst) {
         Player player = freshPlayer(helper);
         Item staffItem = StaffItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get();
         BaseStaffItem staff = (BaseStaffItem) staffItem;
@@ -176,7 +212,9 @@ public class StaffBonusGameTests {
             pig.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 6000));
             targets.add(pig);
         }
-        refresh(helper, staff, staffStack, player, true);
+        if (refreshFirst) {
+            refresh(helper, staff, staffStack, player, true);
+        }
         player.setItemInHand(InteractionHand.MAIN_HAND, staffStack);
         player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(book));
         int before = veil(player).getCrimsonVeil();
@@ -188,13 +226,15 @@ public class StaffBonusGameTests {
         staffStack.releaseUsing(helper.getLevel(), player, USE_DURATION - heldTicks);
 
         float damage = 0.0f;
+        float portalMultiplier = 1.0f;
         AABB area = player.getBoundingBox().inflate(30.0);
         for (Entity entity : helper.getLevel().getEntitiesOfClass(Entity.class, area, e -> e instanceof IGemSpell)) {
             damage = ((IGemSpell) entity).getBaseDamage();
+            if (entity instanceof BloodPortalEntity portal) portalMultiplier = portal.getDamageMultiplier();
             entity.discard();
         }
         targets.forEach(Entity::discard);
         player.stopUsingItem();
-        return new Cast(before - veil(player).getCrimsonVeil(), damage);
+        return new Cast(before - veil(player).getCrimsonVeil(), damage, portalMultiplier);
     }
 }

@@ -112,7 +112,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
                 Item usedItem = living.getUseItem().getItem();
                 if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem<?> || usedItem instanceof OmnitomeItem) {
                     if (getStaffCastType() == StaffCastType.SEQUENTIAL) {
-                        state.getController().setAnimationSpeed(10.0f / (float) getCycleTicks());
+                        state.getController().setAnimationSpeed(10.0f / (float) getCycleTicks(SpellCaster.modifiersOf(living.getUseItem(), this)));
                         return state.setAndContinue(ATTACK_SEQ_ANIM);
                     }
                 }

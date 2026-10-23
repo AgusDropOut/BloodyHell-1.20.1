@@ -220,18 +220,12 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(GemItems.AMULET_OF_ANCESTRAL_BLOOD.get())
                 .add(GemItems.GREAT_AMULET_OF_ANCESTRAL_BLOOD.get());
 
-        this.tag(ModTags.Items.SPELLBOOKS)
-                .add(SpellBookItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_SPHERE_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_NOVA_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_FIRE_SOUL_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_FIRE_COLUMM_SPELLBOOK.get())
-                .add(SpellBookItems.BLOOD_FIRE_METEOR_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_IMPALERS_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_HEAVY_SWORD_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_GOLDEN_THRONE_SPELLBOOK.get())
-                .add(SpellBookItems.RHNULL_ORB_EMITTER_SPELLBOOK.get());
+        var spellBooks = this.tag(ModTags.Items.SPELLBOOKS);
+        ForgeRegistries.ITEMS.getEntries().stream()
+                .filter(entry -> entry.getKey().location().getNamespace().equals(BloodyHell.MODID))
+                .filter(entry -> entry.getValue() instanceof BaseSpellBookItem<?>)
+                .sorted(Comparator.comparing(entry -> entry.getKey().location().getPath()))
+                .forEach(entry -> spellBooks.add(entry.getValue()));
     }
 
 }

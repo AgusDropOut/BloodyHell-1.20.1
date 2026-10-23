@@ -18,7 +18,7 @@ public record SpellCastContext(Level level, Player player, BaseSpellBookItem<?> 
 
     public <T extends Entity & IGemSpell> void spawn(T spell) {
         if (modifiers.damage() != 1.0f) {
-            spell.setBaseDamage(spell.getBaseDamage() * modifiers.damage());
+            spell.scaleSpellDamage(modifiers.damage());
         }
         level.addFreshEntity(spell);
     }

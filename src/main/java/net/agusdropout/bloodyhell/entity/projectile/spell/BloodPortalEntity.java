@@ -37,6 +37,7 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
 
     @Nullable private UUID ownerUUID;
     private float damageBonus = 0.0f;
+    private float damageMultiplier = 1.0f;
 
     public BloodPortalEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -112,6 +113,7 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
             SmallCrimsonDagger dagger = new SmallCrimsonDagger(this.level(), sx, sy, sz, this.getOwner());
 
             dagger.increaseDamage(damageBonus);
+            dagger.scaleDamage(damageMultiplier);
 
             dagger.setDeltaMovement(0, -1.5, 0);
             dagger.setXRot(90f);
@@ -193,6 +195,15 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
     }
 
     @Override
+    public void scaleSpellDamage(float factor) {
+        this.damageMultiplier *= factor;
+    }
+
+    public float getDamageMultiplier() {
+        return damageMultiplier;
+    }
+
+    @Override
     public float getBaseDamage() {
         return this.damageBonus;
     }
@@ -215,6 +226,7 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
         if (tag.contains("Radius")) this.entityData.set(DATA_RADIUS, tag.getFloat("Radius"));
         if (tag.contains("Height")) this.entityData.set(DATA_HEIGHT, tag.getFloat("Height"));
         if (tag.contains("DmgBonus")) this.damageBonus = tag.getFloat("DmgBonus");
+        if (tag.contains("DmgMult")) this.damageMultiplier = tag.getFloat("DmgMult");
         if (tag.hasUUID("Owner")) ownerUUID = tag.getUUID("Owner");
     }
 
@@ -224,6 +236,7 @@ public class BloodPortalEntity extends Entity implements IGemSpell {
         tag.putFloat("Radius", getRadius());
         tag.putFloat("Height", getSpawnHeight());
         tag.putFloat("DmgBonus", damageBonus);
+        tag.putFloat("DmgMult", damageMultiplier);
         if(ownerUUID != null) tag.putUUID("Owner", ownerUUID);
     }
 

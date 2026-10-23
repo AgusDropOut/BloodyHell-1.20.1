@@ -32,6 +32,10 @@ public interface IGemSpell {
     float getBaseDamage();
     void setBaseDamage(float damage);
 
+    default void scaleSpellDamage(float factor) {
+        setBaseDamage(getBaseDamage() * factor);
+    }
+
     void increaseSpellDamage(double amount);
     void increaseSpellSize(double amount);
     void increaseSpellDuration(int amount);

@@ -249,8 +249,7 @@ public class OmnitomeItem extends Item implements GeoItem {
                 if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem<?> || usedItem instanceof OmnitomeItem) {
                     if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
                         if (spellBook.getStaffCastType() == StaffCastType.SEQUENTIAL) {
-                            int cycleLength = Math.max(1, spellBook.getMinChargeTime()) + Math.max(0, spellBook.getCooldown());
-                            state.getController().setAnimationSpeed(10.0f / (float) cycleLength);
+                            state.getController().setAnimationSpeed(10.0f / (float) spellBook.getCycleTicks(SpellCaster.modifiersOf(living.getUseItem(), spellBook)));
                             return state.setAndContinue(ATTACK_SEQ_ANIM);
                         }
                     }

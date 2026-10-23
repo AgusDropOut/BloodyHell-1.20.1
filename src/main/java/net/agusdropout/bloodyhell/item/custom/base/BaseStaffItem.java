@@ -30,6 +30,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -90,7 +91,13 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         if (!isSelected) {
             storeMarkedTargets(stack, 0);
         } else if (!player.isUsingItem() && player.tickCount % BONUS_REFRESH_TICKS == 0) {
-            storeMarkedTargets(stack, countMarkedTargets(player, marker.get()));
+            refreshMarkedTargets(stack, player);
+        }
+    }
+
+    private void refreshMarkedTargets(ItemStack staff, Player player) {
+        if (marker != null) {
+            storeMarkedTargets(staff, countMarkedTargets(player, marker.get()));
         }
     }
 
@@ -98,7 +105,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         AABB area = player.getBoundingBox().inflate(BONUS_RADIUS);
         double maxDistanceSqr = BONUS_RADIUS * BONUS_RADIUS;
         List<LivingEntity> marked = player.level().getEntitiesOfClass(LivingEntity.class, area,
-                target -> target != player && target.hasEffect(effect) && target.distanceToSqr(player) <= maxDistanceSqr);
+                target -> target != player && target.isAlive() && target.hasEffect(effect) && target.distanceToSqr(player) <= maxDistanceSqr);
         return Math.min(marked.size(), MARKED_FOR_FULL_BONUS);
     }
 
@@ -111,7 +118,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("tooltip.bloodyhell.staff.affinity", Component.translatable("spell_affinity.bloodyhell." + affinity.name().toLowerCase())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tooltip.bloodyhell.staff.affinity", Component.translatable("spell_affinity.bloodyhell." + affinity.name().toLowerCase(Locale.ROOT))).withStyle(ChatFormatting.GOLD));
         if (marker == null) return;
         tooltip.add(Component.translatable("tooltip.bloodyhell.staff.marker", marker.get().getDisplayName(), MARKED_FOR_FULL_BONUS).withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("tooltip.bloodyhell.staff.bonus", "+" + Math.round(MAX_DAMAGE_BONUS * 100) + "%", "-" + Math.round(MAX_COST_REDUCTION * 100) + "%", "-" + Math.round(MAX_COOLDOWN_REDUCTION * 100) + "%").withStyle(ChatFormatting.GRAY));
@@ -199,7 +206,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
 
             if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
                 chargeTime = Math.max(1, spellBook.getMinChargeTime());
-                cooldown = Math.max(0, spellBook.getCooldown());
+                cooldown = modifiersFor(stack, spellBook).scaleCooldown(spellBook.getCooldown());
             }
 
             switch (castType) {
@@ -255,6 +262,10 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
         if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
+            if (!level.isClientSide) {
+                refreshMarkedTargets(itemStack, player);
+            }
+
             if (!spellBook.canStartCasting(level, player, modifiersFor(itemStack, spellBook))) {
                 return InteractionResultHolder.fail(itemStack);
             }

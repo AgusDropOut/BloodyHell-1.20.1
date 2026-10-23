@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.devtools.gametest;
 
+import com.mojang.authlib.GameProfile;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonVeil;
 import net.agusdropout.bloodyhell.capability.crimsonveilPower.PlayerCrimsonveilProvider;
@@ -25,6 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @GameTestHolder(BloodyHell.MODID)
 @PrefixGameTestTemplate(false)
@@ -64,7 +66,7 @@ public class SpellCastGameTests {
     }
 
     private static void cast(GameTestHelper helper, BaseSpellBookItem<?> book, Route route) {
-        Player player = FakePlayerFactory.getMinecraft(helper.getLevel());
+        Player player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "[bloodyhell_cast]"));
         player.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(4, 1, 4))));
         player.stopUsingItem();
         PlayerCrimsonVeil veil = player.getCapability(PlayerCrimsonveilProvider.PLAYER_CRIMSONVEIL).orElseThrow(() -> new IllegalStateException("the player has no crimson veil"));
@@ -74,7 +76,7 @@ public class SpellCastGameTests {
 
         ItemStack held = hold(player, book, route);
         int heldTicks = book.getStaffCastType() == StaffCastType.SEQUENTIAL ? SEQUENTIAL_TICKS : book.getMinChargeTime() + TICKS_PAST_CHARGE;
-        held.use(helper.getLevel(), player, route.hand);
+        helper.assertTrue(held.use(helper.getLevel(), player, route.hand).getResult().consumesAction(), book.getSpellBookId() + " could not start casting " + route.label);
         for (int used = 1; used <= heldTicks; used++) {
             held.getItem().onUseTick(helper.getLevel(), player, held, USE_DURATION - used);
         }

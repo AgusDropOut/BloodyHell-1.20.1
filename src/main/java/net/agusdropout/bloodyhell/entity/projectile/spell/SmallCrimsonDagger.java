@@ -196,6 +196,10 @@ public class SmallCrimsonDagger extends Projectile {
     public void increaseDamage(float damage) {
         this.damage += damage; }
 
+    public void scaleDamage(float factor) {
+        this.damage *= factor;
+    }
+
     public Deque<Vec3> getTrailHistory() {
         return this.trailHistory;
     }
