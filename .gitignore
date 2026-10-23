@@ -47,3 +47,6 @@ forge*changelog.txt
 # Claude Code instructions (local only)
 CLAUDE.md
 docs/TODO.md
+
+# Proposals written for the author (local only)
+docs/RECIPES_PROPOSAL.md

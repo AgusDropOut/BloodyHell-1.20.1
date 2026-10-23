@@ -12,6 +12,7 @@ import net.agusdropout.bloodyhell.item.registry.ReliquaryItems;
 import net.agusdropout.bloodyhell.item.registry.RhnullItems;
 import net.agusdropout.bloodyhell.item.registry.SanguiniteItems;
 import net.agusdropout.bloodyhell.item.registry.SpellBookItems;
+import net.agusdropout.bloodyhell.item.registry.StaffItems;
 import net.agusdropout.bloodyhell.item.registry.WeaponItems;
 import net.agusdropout.bloodyhell.block.registry.LightBlocks;
 import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
@@ -211,6 +212,37 @@ public class ModRecipes extends ModRecipesProvider {
                 .requires(FlaskItems.FILLED_VISCOUS_BLASPHEMY_FLASK.get())
                 .unlockedBy("has_great_ancient_blasphemous_gem", has(GemItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get()))
                 .save(consumer, name("ritual_gaze_of_the_unknown"));
+
+        BlasphemousBloodAltarRecipeBuilder.ritual(SpellBookItems.THE_OMNITOME.get())
+                .requires(Items.BOOK)
+                .requires(GemItems.GREAT_ANCIENT_BLASPHEMOUS_GEM.get())
+                .requires(MiscItems.GAZE_OF_THE_UNKNOWN.get())
+                .unlockedBy("has_gaze_of_the_unknown", has(MiscItems.GAZE_OF_THE_UNKNOWN.get()))
+                .save(consumer, name("ritual_the_omnitome"));
+
+        BloodAltarRecipeBuilder.ritual(StaffItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get())
+                .requires(DropItems.BLOOD_ECHO_SHARD.get())
+                .requires(GemItems.PURE_BLOOD_GEM.get())
+                .requires(GemItems.ANCIENT_GEM.get())
+                .requires(FlaskItems.FILLED_BLOOD_FLASK.get())
+                .unlockedBy("has_pure_blood_gem", has(GemItems.PURE_BLOOD_GEM.get()))
+                .save(consumer, name("ritual_staff_pure_blooded"));
+
+        BloodAltarRecipeBuilder.ritual(StaffItems.STAFF_OF_SCARLET_CINDER.get())
+                .requires(StaffItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get())
+                .requires(DropItems.RITEKEEPER_HEART.get())
+                .requires(DropItems.CINDER_ACOLYTE_FAINTED_EMBER.get())
+                .requires(FlaskItems.CORRUPTED_BLOOD_FLASK.get())
+                .unlockedBy("has_ritekeeper_heart", has(DropItems.RITEKEEPER_HEART.get()))
+                .save(consumer, name("ritual_staff_scarlet_cinder"));
+
+        BloodAltarRecipeBuilder.ritual(StaffItems.STAFF_OF_THE_GOLDEN_SORROW.get())
+                .requires(GemItems.GREAT_ANCIENT_RHNULL_GEM.get())
+                .requires(RhnullItems.RHNULL_SWORD.get())
+                .requires(FlaskItems.FILLED_RHNULL_BLOOD_FLASK.get())
+                .requires(MetalBlocks.RHNULL_BLOCK.get())
+                .unlockedBy("has_great_ancient_rhnull_gem", has(GemItems.GREAT_ANCIENT_RHNULL_GEM.get()))
+                .save(consumer, name("ritual_staff_golden_sorrow"));
 
         BloodAltarRecipeBuilder.ritual(DropItems.BLOOD_ECHO_SHARD.get())
                 .requires(Items.AMETHYST_SHARD)

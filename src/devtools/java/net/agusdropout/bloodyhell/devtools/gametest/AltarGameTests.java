@@ -11,7 +11,9 @@ import net.agusdropout.bloodyhell.recipe.BloodAltarRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
+import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -28,12 +30,15 @@ import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @GameTestHolder(BloodyHell.MODID)
 @PrefixGameTestTemplate(false)
 public class AltarGameTests {
     private static final String TEMPLATE = "empty";
+    private static final int RITUAL_SLOTS = 32;
     private static final BlockPos CENTER = new BlockPos(4, 1, 4);
     private static final BlockPos[] PEDESTALS = {CENTER.north(4), CENTER.east(4), CENTER.south(4), CENTER.west(4)};
 
@@ -167,38 +172,19 @@ public class AltarGameTests {
     public static void everyAltarRecipeHasATest(GameTestHelper helper) {
         int blood = helper.getLevel().getRecipeManager().getAllRecipesFor(BloodAltarRecipe.Type.INSTANCE).size();
         int blasphemous = helper.getLevel().getRecipeManager().getAllRecipesFor(BlasphemousBloodAltarRecipe.Type.INSTANCE).size();
-        helper.assertTrue(blood <= 16, "the blood altar has " + blood + " recipes but only 16 have a test: add bloodRitualNN");
-        helper.assertTrue(blasphemous <= 12, "the blasphemous altar has " + blasphemous + " recipes but only 12 have a test: add blasphemousRitualNN");
+        helper.assertTrue(blood <= RITUAL_SLOTS, "the blood altar has " + blood + " recipes but only " + RITUAL_SLOTS + " have a test: raise RITUAL_SLOTS");
+        helper.assertTrue(blasphemous <= RITUAL_SLOTS, "the blasphemous altar has " + blasphemous + " recipes but only " + RITUAL_SLOTS + " have a test: raise RITUAL_SLOTS");
         helper.succeed();
     }
 
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual00(GameTestHelper h) { bloodAltarRitual(h, 0); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual01(GameTestHelper h) { bloodAltarRitual(h, 1); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual02(GameTestHelper h) { bloodAltarRitual(h, 2); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual03(GameTestHelper h) { bloodAltarRitual(h, 3); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual04(GameTestHelper h) { bloodAltarRitual(h, 4); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual05(GameTestHelper h) { bloodAltarRitual(h, 5); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual06(GameTestHelper h) { bloodAltarRitual(h, 6); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual07(GameTestHelper h) { bloodAltarRitual(h, 7); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual08(GameTestHelper h) { bloodAltarRitual(h, 8); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual09(GameTestHelper h) { bloodAltarRitual(h, 9); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual10(GameTestHelper h) { bloodAltarRitual(h, 10); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual11(GameTestHelper h) { bloodAltarRitual(h, 11); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual12(GameTestHelper h) { bloodAltarRitual(h, 12); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual13(GameTestHelper h) { bloodAltarRitual(h, 13); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual14(GameTestHelper h) { bloodAltarRitual(h, 14); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 100) public static void bloodRitual15(GameTestHelper h) { bloodAltarRitual(h, 15); }
-
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual00(GameTestHelper h) { blasphemousAltarRitual(h, 0); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual01(GameTestHelper h) { blasphemousAltarRitual(h, 1); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual02(GameTestHelper h) { blasphemousAltarRitual(h, 2); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual03(GameTestHelper h) { blasphemousAltarRitual(h, 3); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual04(GameTestHelper h) { blasphemousAltarRitual(h, 4); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual05(GameTestHelper h) { blasphemousAltarRitual(h, 5); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual06(GameTestHelper h) { blasphemousAltarRitual(h, 6); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual07(GameTestHelper h) { blasphemousAltarRitual(h, 7); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual08(GameTestHelper h) { blasphemousAltarRitual(h, 8); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual09(GameTestHelper h) { blasphemousAltarRitual(h, 9); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual10(GameTestHelper h) { blasphemousAltarRitual(h, 10); }
-    @GameTest(template = TEMPLATE, batch = "altars", timeoutTicks = 500) public static void blasphemousRitual11(GameTestHelper h) { blasphemousAltarRitual(h, 11); }
+    @GameTestGenerator
+    public static Collection<TestFunction> everyRitualIsTested() {
+        List<TestFunction> tests = new ArrayList<>();
+        for (int index = 0; index < RITUAL_SLOTS; index++) {
+            int slot = index;
+            tests.add(new TestFunction("altars", "blood_ritual_" + slot, BloodyHell.MODID + ":" + TEMPLATE, 100, 0, true, helper -> bloodAltarRitual(helper, slot)));
+            tests.add(new TestFunction("altars", "blasphemous_ritual_" + slot, BloodyHell.MODID + ":" + TEMPLATE, 500, 0, true, helper -> blasphemousAltarRitual(helper, slot)));
+        }
+        return tests;
+    }
 }
