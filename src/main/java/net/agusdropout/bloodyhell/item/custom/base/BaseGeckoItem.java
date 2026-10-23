@@ -13,7 +13,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.util.RenderUtils;
 
-import java.util.Properties;
 import java.util.function.Consumer;
 
 public abstract class BaseGeckoItem extends Item implements GeoItem {

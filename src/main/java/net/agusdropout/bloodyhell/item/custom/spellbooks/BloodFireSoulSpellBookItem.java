@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulSpellBookItem> {
+public class BloodFireSoulSpellBookItem extends BaseSpellBookItem {
 
     private static final float SPREAD_DEGREES = 15.0f;
 

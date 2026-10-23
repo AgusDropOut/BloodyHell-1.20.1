@@ -105,7 +105,7 @@ Visuals
 - [ ] Item displays calibrated by Mitemi in the GUI: altars, engine, pillar, condensers, pipes, harvester, portal.
 - [ ] The Seliora resting block item in the hand and in the GUI (the display is a copy of the portal one and needs calibration).
 - [ ] Omnitome closed and open, in the hand and in the GUI: the closed cover hides the pages.
-- [ ] Staff orbs on the ground; frenzied trails do not show through walls.
+- [ ] Staff orbs on the ground; frenzied trails do not show through walls. The three staffs, in hand and in the GUI, keep their own model and orb (their renderer now comes from `StaffRenderers`).
 - [ ] No jump of the shader effects after 100 seconds of play.
 
 Compatibility

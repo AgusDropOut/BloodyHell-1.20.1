@@ -1,5 +1,6 @@
 package net.agusdropout.bloodyhell.item.custom.base;
 
+import net.agusdropout.bloodyhell.client.render.item.custom.renderer.StaffRenderers;
 import net.agusdropout.bloodyhell.client.render.item.generic.GenericStaffRenderer;
 import net.agusdropout.bloodyhell.item.custom.spellbooks.OmnitomeItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -20,23 +21,17 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public abstract class BaseStaffItem extends Item implements GeoItem {
-
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+public abstract class BaseStaffItem extends BaseGeckoItem {
 
     protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     protected static final RawAnimation THROW_CASTING_ANIM = RawAnimation.begin().thenLoop("throw_casting");
@@ -64,7 +59,6 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         super(properties);
         this.affinity = affinity;
         this.marker = marker;
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     public SpellAffinity getAffinity() {
@@ -79,7 +73,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         return Math.min(getMarkedTargets(staff), MARKED_FOR_FULL_BONUS) / (float) MARKED_FOR_FULL_BONUS;
     }
 
-    public SpellModifiers modifiersFor(ItemStack staff, BaseSpellBookItem<?> book) {
+    public SpellModifiers modifiersFor(ItemStack staff, BaseSpellBookItem book) {
         float power = getBonusFill(staff) * (book.getAffinity() == affinity ? 1.0f : OFF_AFFINITY_SHARE);
         return new SpellModifiers(1.0f + MAX_DAMAGE_BONUS * power, 1.0f - MAX_COST_REDUCTION * power, 1.0f - MAX_COOLDOWN_REDUCTION * power);
     }
@@ -162,7 +156,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
             private GenericStaffRenderer renderer;
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null) this.renderer = new GenericStaffRenderer();
+                if (this.renderer == null) this.renderer = StaffRenderers.create(getId());
                 return this.renderer;
             }
         });
@@ -287,7 +281,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
             ItemStack offhandStack = player.getItemInHand(InteractionHand.OFF_HAND);
             ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
-            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
                 SpellCaster.tick(level, player, spellBook, actualSpellStack, InteractionHand.MAIN_HAND, getUseDuration(stack) - remainingUseDuration, stack);
                 syncSpellStackIfOmnitome(offhandStack, actualSpellStack);
             }
@@ -301,7 +295,7 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
             ItemStack offhandStack = player.getItemInHand(InteractionHand.OFF_HAND);
             ItemStack actualSpellStack = getActualSpellStack(offhandStack);
 
-            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+            if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
                 SpellCaster.release(level, player, spellBook, actualSpellStack, InteractionHand.MAIN_HAND, getUseDuration(stack) - timeLeft, stack);
                 syncSpellStackIfOmnitome(offhandStack, actualSpellStack);
             }
@@ -321,7 +315,4 @@ public abstract class BaseStaffItem extends Item implements GeoItem {
         triggerAnim(player, GeoItem.getId(stack), "action_controller", "inspect_" + randomInspect);
     }
 
-    @Override public AnimatableInstanceCache getAnimatableInstanceCache() { return cache; }
-    @Override public double getTick(Object itemStack) { return RenderUtils.getCurrentTick(); }
-    public abstract String getId();
 }

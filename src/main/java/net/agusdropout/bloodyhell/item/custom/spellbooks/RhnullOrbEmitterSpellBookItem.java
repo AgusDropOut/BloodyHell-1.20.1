@@ -22,7 +22,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem<RhnullOrbEmitterSpellBookItem> {
+public class RhnullOrbEmitterSpellBookItem extends BaseSpellBookItem {
 
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 

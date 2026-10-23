@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public record SpellCastContext(Level level, Player player, BaseSpellBookItem<?> book, ItemStack stack, InteractionHand hand, SpellModifiers modifiers) {
+public record SpellCastContext(Level level, Player player, BaseSpellBookItem book, ItemStack stack, InteractionHand hand, SpellModifiers modifiers) {
     public List<Gem> gems() {
         return GemType.getGemsFromWeapon(stack);
     }

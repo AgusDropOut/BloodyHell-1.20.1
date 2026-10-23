@@ -20,7 +20,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem<RhnullHeavySwordSpellBookItem> {
+public class RhnullHeavySwordSpellBookItem extends BaseSpellBookItem {
 
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 

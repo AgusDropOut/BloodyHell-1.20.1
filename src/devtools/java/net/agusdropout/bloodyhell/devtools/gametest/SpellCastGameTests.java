@@ -56,16 +56,16 @@ public class SpellCastGameTests {
     public static Collection<TestFunction> everySpellBookIsCastTheExpectedNumberOfTimes() {
         List<TestFunction> tests = new ArrayList<>();
         for (Item item : ForgeRegistries.ITEMS) {
-            if (!(item instanceof BaseSpellBookItem<?> book)) continue;
+            if (!(item instanceof BaseSpellBookItem book)) continue;
             for (Route route : Route.values()) {
-                String name = "spellcast_" + route.label + "_" + book.getSpellBookId();
+                String name = "spellcast_" + route.label + "_" + book.getId();
                 tests.add(new TestFunction("spellcast", name, BloodyHell.MODID + ":empty", 60, 0, true, helper -> cast(helper, book, route)));
             }
         }
         return tests;
     }
 
-    private static void cast(GameTestHelper helper, BaseSpellBookItem<?> book, Route route) {
+    private static void cast(GameTestHelper helper, BaseSpellBookItem book, Route route) {
         Player player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "[bloodyhell_cast]"));
         player.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(4, 1, 4))));
         player.stopUsingItem();
@@ -76,7 +76,7 @@ public class SpellCastGameTests {
 
         ItemStack held = hold(player, book, route);
         int heldTicks = book.getStaffCastType() == StaffCastType.SEQUENTIAL ? SEQUENTIAL_TICKS : book.getMinChargeTime() + TICKS_PAST_CHARGE;
-        helper.assertTrue(held.use(helper.getLevel(), player, route.hand).getResult().consumesAction(), book.getSpellBookId() + " could not start casting " + route.label);
+        helper.assertTrue(held.use(helper.getLevel(), player, route.hand).getResult().consumesAction(), book.getId() + " could not start casting " + route.label);
         for (int used = 1; used <= heldTicks; used++) {
             held.getItem().onUseTick(helper.getLevel(), player, held, USE_DURATION - used);
         }
@@ -84,13 +84,13 @@ public class SpellCastGameTests {
 
         int expected = expectedCasts(book, route, heldTicks);
         int spent = before - veil.getCrimsonVeil();
-        helper.assertTrue(spent == expected * book.getCrimsonCost(), book.getSpellBookId() + " cast " + route.label + " for " + heldTicks + " ticks spent " + spent
+        helper.assertTrue(spent == expected * book.getCrimsonCost(), book.getId() + " cast " + route.label + " for " + heldTicks + " ticks spent " + spent
                 + " crimson veil but " + expected + " casts of " + book.getCrimsonCost() + " cost " + expected * book.getCrimsonCost());
         player.stopUsingItem();
         helper.succeed();
     }
 
-    private static ItemStack hold(Player player, BaseSpellBookItem<?> book, Route route) {
+    private static ItemStack hold(Player player, BaseSpellBookItem book, Route route) {
         ItemStack bookStack = new ItemStack(book);
         ItemStack omnitome = new ItemStack(SpellBookItems.THE_OMNITOME.get());
         omnitome.getOrCreateTag().put(OmnitomeItem.NBT_ACTIVE_SPELL, book.serializeBookData(bookStack));
@@ -113,7 +113,7 @@ public class SpellCastGameTests {
         return player.getItemInHand(route.hand);
     }
 
-    private static int expectedCasts(BaseSpellBookItem<?> book, Route route, int heldTicks) {
+    private static int expectedCasts(BaseSpellBookItem book, Route route, int heldTicks) {
         StaffCastType castType = book.getStaffCastType();
         if (castType == StaffCastType.SEQUENTIAL) {
             int casts = 0;

@@ -35,7 +35,7 @@ public class CrimsonVeilHudGameTests {
     public static Collection<TestFunction> theHudShowsForEveryItemThatCanCast() {
         List<TestFunction> tests = new ArrayList<>();
         for (Item item : ForgeRegistries.ITEMS) {
-            boolean castsFromAnyHand = item instanceof BaseSpellBookItem<?> || item instanceof OmnitomeItem;
+            boolean castsFromAnyHand = item instanceof BaseSpellBookItem || item instanceof OmnitomeItem;
             if (!castsFromAnyHand && !(item instanceof BaseStaffItem)) continue;
             String name = ForgeRegistries.ITEMS.getKey(item).getPath();
             tests.add(new TestFunction("crimsonveilhud", "hud_main_hand_" + name, BloodyHell.MODID + ":empty", 20, 0, true,

@@ -80,7 +80,7 @@ public class StaffBonusGameTests {
 
     @GameTest(template = "empty", batch = "staffbonus_anAffineBookGetsTheFullBonus")
     public static void anAffineBookGetsTheFullBonus(GameTestHelper helper) {
-        BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_NOVA_SPELLBOOK.get();
+        BaseSpellBookItem book = (BaseSpellBookItem) SpellBookItems.BLOOD_NOVA_SPELLBOOK.get();
         Cast plain = castThroughTheStaff(helper, book, 0);
         Cast charged = castThroughTheStaff(helper, book, 5);
         helper.assertTrue(plain.spent == book.getCrimsonCost(), "the plain cast spent " + plain.spent);
@@ -91,7 +91,7 @@ public class StaffBonusGameTests {
 
     @GameTest(template = "empty", batch = "staffbonus_aBookOfAnotherAffinityGetsAShareOfTheBonus")
     public static void aBookOfAnotherAffinityGetsAShareOfTheBonus(GameTestHelper helper) {
-        BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_FIRE_SOUL_SPELLBOOK.get();
+        BaseSpellBookItem book = (BaseSpellBookItem) SpellBookItems.BLOOD_FIRE_SOUL_SPELLBOOK.get();
         Cast plain = castThroughTheStaff(helper, book, 0);
         Cast charged = castThroughTheStaff(helper, book, 5);
         float share = BaseStaffItem.OFF_AFFINITY_SHARE;
@@ -102,7 +102,7 @@ public class StaffBonusGameTests {
 
     @GameTest(template = "empty", batch = "staffbonus_aCastRightAfterSelectingTheStaffCountsTheTargets")
     public static void aCastRightAfterSelectingTheStaffCountsTheTargets(GameTestHelper helper) {
-        BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_NOVA_SPELLBOOK.get();
+        BaseSpellBookItem book = (BaseSpellBookItem) SpellBookItems.BLOOD_NOVA_SPELLBOOK.get();
         Cast charged = castThroughTheStaff(helper, book, 5, book.getMinChargeTime() + 5, false);
         helper.assertTrue(charged.spent == Math.round(book.getCrimsonCost() * (1.0f - BaseStaffItem.MAX_COST_REDUCTION)), "the cast started without a refresh of the count spent " + charged.spent);
         helper.succeed();
@@ -110,7 +110,7 @@ public class StaffBonusGameTests {
 
     @GameTest(template = "empty", batch = "staffbonus_theDaggersOfTheRainGetTheDamageBonus")
     public static void theDaggersOfTheRainGetTheDamageBonus(GameTestHelper helper) {
-        BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get();
+        BaseSpellBookItem book = (BaseSpellBookItem) SpellBookItems.BLOOD_DAGGERSRAIN_SPELLBOOK.get();
         Cast plain = castThroughTheStaff(helper, book, 0);
         Cast charged = castThroughTheStaff(helper, book, 5);
         helper.assertTrue(plain.portalMultiplier == 1.0f, "the plain portal multiplied the damage by " + plain.portalMultiplier);
@@ -133,7 +133,7 @@ public class StaffBonusGameTests {
 
     @GameTest(template = "empty", batch = "staffbonus_aSequentialBookCastsFasterAndCheaperWhenTheStaffIsCharged")
     public static void aSequentialBookCastsFasterAndCheaperWhenTheStaffIsCharged(GameTestHelper helper) {
-        BaseSpellBookItem<?> book = (BaseSpellBookItem<?>) SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get();
+        BaseSpellBookItem book = (BaseSpellBookItem) SpellBookItems.BLOOD_SCRATCH_SPELLBOOK.get();
         int ticks = 50;
         Cast plain = castThroughTheStaff(helper, book, 0, ticks);
         Cast charged = castThroughTheStaff(helper, book, 5, ticks);
@@ -193,15 +193,15 @@ public class StaffBonusGameTests {
         helper.succeed();
     }
 
-    private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem<?> book, int marked) {
+    private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem book, int marked) {
         return castThroughTheStaff(helper, book, marked, book.getMinChargeTime() + 5);
     }
 
-    private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem<?> book, int marked, int heldTicks) {
+    private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem book, int marked, int heldTicks) {
         return castThroughTheStaff(helper, book, marked, heldTicks, true);
     }
 
-    private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem<?> book, int marked, int heldTicks, boolean refreshFirst) {
+    private static Cast castThroughTheStaff(GameTestHelper helper, BaseSpellBookItem book, int marked, int heldTicks, boolean refreshFirst) {
         Player player = freshPlayer(helper);
         Item staffItem = StaffItems.INCOMPLETE_STAFF_OF_THE_PURE_BLOODED.get();
         BaseStaffItem staff = (BaseStaffItem) staffItem;

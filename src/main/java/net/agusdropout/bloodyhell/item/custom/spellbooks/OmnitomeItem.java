@@ -1,6 +1,7 @@
 package net.agusdropout.bloodyhell.item.custom.spellbooks;
 
 import net.agusdropout.bloodyhell.client.render.item.custom.renderer.OmnitomeRenderer;
+import net.agusdropout.bloodyhell.item.custom.base.BaseGeckoItem;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellCaster;
@@ -33,17 +34,14 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class OmnitomeItem extends Item implements GeoItem {
+public class OmnitomeItem extends BaseGeckoItem {
 
     private static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenLoop("open");
     private static final RawAnimation CLOSED_ANIM = RawAnimation.begin().thenLoop("closed");
@@ -58,11 +56,9 @@ public class OmnitomeItem extends Item implements GeoItem {
     public static final String NBT_IS_REVERTING = "IsReverting";
     public static final String NBT_PREV_SPELL = "PrevSpell";
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public OmnitomeItem(Properties properties) {
         super(properties);
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     @Override
@@ -123,7 +119,7 @@ public class OmnitomeItem extends Item implements GeoItem {
 
         ItemStack selectedBook = (selectedSlot >= 0 && selectedSlot < 8) ? handler.getStackInSlot(selectedSlot) : ItemStack.EMPTY;
 
-        if (!selectedBook.isEmpty() && selectedBook.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+        if (!selectedBook.isEmpty() && selectedBook.getItem() instanceof BaseSpellBookItem spellBook) {
             ItemStack copy = selectedBook.copy();
             copy.getOrCreateTag().putBoolean(NBT_OPEN_KEY, tag.getBoolean(NBT_OPEN_KEY));
             tag.put(NBT_ACTIVE_SPELL, spellBook.serializeBookData(copy));
@@ -157,7 +153,7 @@ public class OmnitomeItem extends Item implements GeoItem {
 
         ItemStack activeSpell = getActiveSpellBook(omnitome);
 
-        if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+        if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem spellBook) {
             if (spellBook.canStartCasting(level, player)) {
                 player.startUsingItem(hand);
                 if (!level.isClientSide) {
@@ -174,7 +170,7 @@ public class OmnitomeItem extends Item implements GeoItem {
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         ItemStack activeSpell = getActiveSpellBook(stack);
-        if (livingEntity instanceof Player player && !activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+        if (livingEntity instanceof Player player && !activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem spellBook) {
             SpellCaster.tick(level, player, spellBook, activeSpell, player.getUsedItemHand(), spellBook.getUseDuration(activeSpell) - remainingUseDuration, ItemStack.EMPTY);
         }
     }
@@ -182,7 +178,7 @@ public class OmnitomeItem extends Item implements GeoItem {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         ItemStack activeSpell = getActiveSpellBook(stack);
-        if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+        if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem spellBook) {
             if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
                 GeoItem.getOrAssignId(activeSpell, serverLevel);
                 stack.getOrCreateTag().put(NBT_ACTIVE_SPELL, spellBook.serializeBookData(activeSpell));
@@ -246,8 +242,8 @@ public class OmnitomeItem extends Item implements GeoItem {
 
             if (entity instanceof LivingEntity living && living.isUsingItem()) {
                 Item usedItem = living.getUseItem().getItem();
-                if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem<?> || usedItem instanceof OmnitomeItem) {
-                    if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+                if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem || usedItem instanceof OmnitomeItem) {
+                    if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem spellBook) {
                         if (spellBook.getStaffCastType() == StaffCastType.SEQUENTIAL) {
                             state.getController().setAnimationSpeed(10.0f / (float) spellBook.getCycleTicks(SpellCaster.modifiersOf(living.getUseItem(), spellBook)));
                             return state.setAndContinue(ATTACK_SEQ_ANIM);
@@ -261,7 +257,7 @@ public class OmnitomeItem extends Item implements GeoItem {
 
             if (isAttacking) {
                 float speed = 1.0f;
-                if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+                if (!activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem spellBook) {
                     if (spellBook.getStaffCastType() == StaffCastType.THROW || spellBook.getStaffCastType() == StaffCastType.RISE) {
                         speed = 10.0f / (float)Math.max(1, spellBook.getMinChargeTime());
                     }
@@ -288,7 +284,9 @@ public class OmnitomeItem extends Item implements GeoItem {
     public int getUseDuration(ItemStack stack) { return 72000; }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() { return this.cache; }
+    public String getId() {
+        return "the_omnitome";
+    }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {

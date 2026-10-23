@@ -6,20 +6,20 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
 
-public class GenericSpellBookModel extends GeoModel<BaseSpellBookItem<?>> {
+public class GenericSpellBookModel extends GeoModel<BaseSpellBookItem> {
 
     @Override
-    public ResourceLocation getModelResource(BaseSpellBookItem<?> animatable) {
-        return new ResourceLocation(BloodyHell.MODID, "geo/" + animatable.getSpellBookId() + ".geo.json");
+    public ResourceLocation getModelResource(BaseSpellBookItem animatable) {
+        return new ResourceLocation(BloodyHell.MODID, "geo/" + animatable.getId() + ".geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(BaseSpellBookItem<?> animatable) {
-        return new ResourceLocation(BloodyHell.MODID, "textures/item/" + animatable.getSpellBookId() + ".png");
+    public ResourceLocation getTextureResource(BaseSpellBookItem animatable) {
+        return new ResourceLocation(BloodyHell.MODID, "textures/item/" + animatable.getId() + ".png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(BaseSpellBookItem<?> animatable) {
+    public ResourceLocation getAnimationResource(BaseSpellBookItem animatable) {
         return new ResourceLocation(BloodyHell.MODID, "animations/" + animatable.getAnimationFileName() + ".animation.json");
     }
 }

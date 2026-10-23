@@ -22,7 +22,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class RhnullGoldenThroneSpellBookItem extends BaseSpellBookItem<RhnullGoldenThroneSpellBookItem> {
+public class RhnullGoldenThroneSpellBookItem extends BaseSpellBookItem {
 
     private static final int DEFAULT_PROJECTILE_COUNT = 1;
 

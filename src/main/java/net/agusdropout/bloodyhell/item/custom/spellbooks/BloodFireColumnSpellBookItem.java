@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireColumnSpellBookItem> {
+public class BloodFireColumnSpellBookItem extends BaseSpellBookItem {
 
     private static final double SPELL_RADIUS = 15.0;
 

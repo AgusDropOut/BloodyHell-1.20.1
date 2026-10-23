@@ -8,14 +8,14 @@ import net.minecraft.world.level.Level;
 public final class SpellCaster {
     private SpellCaster() {}
 
-    public static SpellModifiers modifiersOf(ItemStack staff, BaseSpellBookItem<?> book) {
+    public static SpellModifiers modifiersOf(ItemStack staff, BaseSpellBookItem book) {
         if (staff.getItem() instanceof BaseStaffItem staffItem) {
             return staffItem.modifiersFor(staff, book);
         }
         return SpellModifiers.NONE;
     }
 
-    public static void tick(Level level, Player player, BaseSpellBookItem<?> book, ItemStack bookStack, InteractionHand hand, int ticksUsed, ItemStack staff) {
+    public static void tick(Level level, Player player, BaseSpellBookItem book, ItemStack bookStack, InteractionHand hand, int ticksUsed, ItemStack staff) {
         StaffCastType castType = book.getStaffCastType();
         SpellModifiers modifiers = modifiersOf(staff, book);
         int cycle = book.getCycleTicks(modifiers);
@@ -35,7 +35,7 @@ public final class SpellCaster {
         }
     }
 
-    public static void release(Level level, Player player, BaseSpellBookItem<?> book, ItemStack bookStack, InteractionHand hand, int ticksUsed, ItemStack staff) {
+    public static void release(Level level, Player player, BaseSpellBookItem book, ItemStack bookStack, InteractionHand hand, int ticksUsed, ItemStack staff) {
         StaffCastType castType = book.getStaffCastType();
         if (castType == StaffCastType.SEQUENTIAL) return;
         if (!staff.isEmpty() && castType == StaffCastType.THROW) return;

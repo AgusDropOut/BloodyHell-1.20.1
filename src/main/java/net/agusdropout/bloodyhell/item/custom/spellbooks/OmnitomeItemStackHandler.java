@@ -45,7 +45,7 @@ public class OmnitomeItemStackHandler extends ItemStackHandler {
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
         if (slot >= 0 && slot < 8) {
-            return stack.getItem() instanceof BaseSpellBookItem<?>;
+            return stack.getItem() instanceof BaseSpellBookItem;
         }
         if (slot == UPGRADE_SLOT) {
             return stack.is(ReliquaryItems.ANCIENT_OCULAR_LENSE.get()) || stack.is(ReliquaryItems.BLASPHEMOUS_OCULAR_LENSE.get());
@@ -65,7 +65,7 @@ public class OmnitomeItemStackHandler extends ItemStackHandler {
             ItemStack slotStack = stacks.get(i);
             if (!slotStack.isEmpty()) {
                 CompoundTag itemTag;
-                if (slotStack.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+                if (slotStack.getItem() instanceof BaseSpellBookItem spellBook) {
                     itemTag = spellBook.serializeBookData(slotStack);
                 } else {
                     itemTag = new CompoundTag();

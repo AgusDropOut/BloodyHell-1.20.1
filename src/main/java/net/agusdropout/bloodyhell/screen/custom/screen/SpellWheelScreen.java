@@ -77,7 +77,7 @@ public class SpellWheelScreen extends Screen {
             for (int i = 0; i < 8; i++) {
                 this.slotUnlocked[i] = this.currentTier >= SLOT_REQUIRED_TIER[i];
                 ItemStack bookStack = handler.getStackInSlot(i);
-                if (!bookStack.isEmpty() && bookStack.getItem() instanceof BaseSpellBookItem<?> spellBook) {
+                if (!bookStack.isEmpty() && bookStack.getItem() instanceof BaseSpellBookItem spellBook) {
                     this.slotIcons[i] = spellBook.getSpellIconLocation();
                 } else {
                     this.slotIcons[i] = null;

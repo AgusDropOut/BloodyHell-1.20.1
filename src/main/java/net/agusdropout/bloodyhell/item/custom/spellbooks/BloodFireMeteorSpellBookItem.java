@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMeteorSpellBookItem> {
+public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem {
 
     public BloodFireMeteorSpellBookItem(Properties properties, SpellBookDefinition definition) {
         super(properties, definition);

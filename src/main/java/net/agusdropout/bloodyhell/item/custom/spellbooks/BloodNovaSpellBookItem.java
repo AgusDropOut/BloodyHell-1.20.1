@@ -18,7 +18,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBookItem> {
+public class BloodNovaSpellBookItem extends BaseSpellBookItem {
 
     private static final double SPAWN_HEIGHT_OFFSET = 5.0;
 

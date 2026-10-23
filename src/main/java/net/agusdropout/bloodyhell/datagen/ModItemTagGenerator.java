@@ -99,7 +99,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         var crimsonVeilConsumers = this.tag(ModTags.Items.CRIMSONVEIL_CONSUMER);
         ForgeRegistries.ITEMS.getEntries().stream()
                 .filter(entry -> entry.getKey().location().getNamespace().equals(BloodyHell.MODID))
-                .filter(entry -> entry.getValue() instanceof BaseSpellBookItem<?> || entry.getValue() instanceof BaseStaffItem || entry.getValue() instanceof OmnitomeItem)
+                .filter(entry -> entry.getValue() instanceof BaseSpellBookItem || entry.getValue() instanceof BaseStaffItem || entry.getValue() instanceof OmnitomeItem)
                 .sorted(Comparator.comparing(entry -> entry.getKey().location().getPath()))
                 .forEach(entry -> crimsonVeilConsumers.add(entry.getValue()));
         crimsonVeilConsumers
@@ -223,7 +223,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         var spellBooks = this.tag(ModTags.Items.SPELLBOOKS);
         ForgeRegistries.ITEMS.getEntries().stream()
                 .filter(entry -> entry.getKey().location().getNamespace().equals(BloodyHell.MODID))
-                .filter(entry -> entry.getValue() instanceof BaseSpellBookItem<?>)
+                .filter(entry -> entry.getValue() instanceof BaseSpellBookItem)
                 .sorted(Comparator.comparing(entry -> entry.getKey().location().getPath()))
                 .forEach(entry -> spellBooks.add(entry.getValue()));
     }

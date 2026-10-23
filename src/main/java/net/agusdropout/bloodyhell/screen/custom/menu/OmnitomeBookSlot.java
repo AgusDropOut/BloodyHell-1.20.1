@@ -20,7 +20,7 @@ public class OmnitomeBookSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(@NotNull ItemStack stack) {
-        return this.menu.getUpgradeTier() >= this.requiredTier && stack.getItem() instanceof BaseSpellBookItem<?>;
+        return this.menu.getUpgradeTier() >= this.requiredTier && stack.getItem() instanceof BaseSpellBookItem;
     }
 
     @Override

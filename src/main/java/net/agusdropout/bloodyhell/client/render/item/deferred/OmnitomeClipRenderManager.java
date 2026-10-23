@@ -30,7 +30,7 @@ public class OmnitomeClipRenderManager implements DeferredRenderManager {
     private final List<ClipTask> tasks = new ArrayList<>();
 
     public void queueClipBook(GeoItemRenderer<?> childRenderer, ItemStack stack, ItemDisplayContext transform, PoseStack poseStack, int packedLight, int packedOverlay, float morphProgress) {
-        if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseSpellBookItem<?>)) return;
+        if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseSpellBookItem)) return;
 
         if (RenderPassGuard.shouldSkipDeferred(transform)) return;
         ItemStack openStack = stack.copy();

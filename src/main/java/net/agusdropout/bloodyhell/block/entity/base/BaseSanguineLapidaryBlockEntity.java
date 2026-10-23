@@ -61,7 +61,7 @@ public abstract class BaseSanguineLapidaryBlockEntity extends BlockEntity implem
         }
 
         private boolean isWeapon(ItemStack stack) {
-            return stack.getItem() instanceof BaseSpellBookItem<?>;
+            return stack.getItem() instanceof BaseSpellBookItem;
         }
 
         private boolean isGem(ItemStack stack) {

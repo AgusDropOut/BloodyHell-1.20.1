@@ -18,7 +18,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpellBookItem> {
+public class BloodSphereSpellBookItem extends BaseSpellBookItem {
 
     public BloodSphereSpellBookItem(Properties properties, SpellBookDefinition definition) {
         super(properties, definition);

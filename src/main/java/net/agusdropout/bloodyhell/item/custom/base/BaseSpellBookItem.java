@@ -22,18 +22,15 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends Item implements GeoItem {
+public abstract class BaseSpellBookItem extends BaseGeckoItem {
 
     private static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenLoop("open");
     private static final RawAnimation CLOSED_ANIM = RawAnimation.begin().thenLoop("closed");
@@ -43,14 +40,11 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
 
     private static final String NBT_OPEN_KEY = "spellbook_is_open";
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
     private final SpellBookDefinition definition;
 
     public BaseSpellBookItem(Properties properties, SpellBookDefinition definition) {
         super(properties);
         this.definition = definition;
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     public SpellBookDefinition getDefinition() {
@@ -110,7 +104,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
 
             if (entity instanceof LivingEntity living && living.isUsingItem()) {
                 Item usedItem = living.getUseItem().getItem();
-                if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem<?> || usedItem instanceof OmnitomeItem) {
+                if (usedItem instanceof BaseStaffItem || usedItem instanceof BaseSpellBookItem || usedItem instanceof OmnitomeItem) {
                     if (getStaffCastType() == StaffCastType.SEQUENTIAL) {
                         state.getController().setAnimationSpeed(10.0f / (float) getCycleTicks(SpellCaster.modifiersOf(living.getUseItem(), this)));
                         return state.setAndContinue(ATTACK_SEQ_ANIM);
@@ -221,7 +215,6 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     public int getCrimsonCost() { return definition.crimsonCost(); }
     @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.BOW; }
     @Override public int getUseDuration(ItemStack stack) { return 72000; }
-    @Override public AnimatableInstanceCache getAnimatableInstanceCache() { return this.cache; }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
@@ -267,7 +260,7 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     public int getCooldown() { return definition.cooldownTicks(); }
     public int getCycleTicks() { return definition.chargeTicks() + definition.cooldownTicks(); }
     public int getCycleTicks(SpellModifiers modifiers) { return definition.chargeTicks() + modifiers.scaleCooldown(definition.cooldownTicks()); }
-    public String getSpellBookId() { return definition.id(); }
+    @Override public String getId() { return definition.id(); }
     public StaffCastType getStaffCastType() { return definition.castType(); }
     public SpellAffinity getAffinity() { return definition.affinity(); }
     public String getSpellIconName() { return definition.icon(); }

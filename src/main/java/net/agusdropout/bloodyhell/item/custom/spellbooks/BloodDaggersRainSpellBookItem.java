@@ -25,7 +25,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDaggersRainSpellBookItem> {
+public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem {
 
     private static final double MAX_CAST_RANGE = 20.0;
     private static final float IDEAL_PORTAL_HEIGHT = 6.0f;
