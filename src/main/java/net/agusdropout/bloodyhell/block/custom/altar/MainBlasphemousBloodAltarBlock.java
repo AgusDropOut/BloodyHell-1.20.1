@@ -117,35 +117,42 @@ public class MainBlasphemousBloodAltarBlock extends AbstractMainAltarBlock {
         List<List<Item>> itemsFromAltars = getItemsFromAltars(level, blockPos);
         if (itemsFromAltars.size() != 4) return InteractionResult.FAIL;
 
-        List<Item> referenceSet = itemsFromAltars.get(0);
-        if (!recipeUtils.isSetEqual(referenceSet, itemsFromAltars.get(1)) ||
-                !recipeUtils.isSetEqual(referenceSet, itemsFromAltars.get(2)) ||
-                !recipeUtils.isSetEqual(referenceSet, itemsFromAltars.get(3))) {
+        if (!allAltarsHoldTheSameItems(itemsFromAltars)) {
             player.sendSystemMessage(Component.literal("§cFailed ritual: All altars must contain the same set of items."));
             return InteractionResult.FAIL;
         }
 
+        Optional<BlasphemousBloodAltarRecipe> recipe = findRecipe(level, itemsFromAltars.get(0));
+        if (recipe.isEmpty()) {
+            return failRitual(level, blockPos);
+        }
+
+        ItemStack result = recipe.get().getResultItem(level.registryAccess());
+        consumeItemsFromAltars(level, blockPos);
+        super.dischargeAltars(level, blockPos);
+        return finalizeRitualServer(level, blockPos, player, blockState, altar, result);
+    }
+
+    private boolean allAltarsHoldTheSameItems(List<List<Item>> itemsFromAltars) {
+        List<Item> referenceSet = itemsFromAltars.get(0);
+        for (int i = 1; i < itemsFromAltars.size(); i++) {
+            if (!recipeUtils.isSetEqual(referenceSet, itemsFromAltars.get(i))) return false;
+        }
+        return true;
+    }
+
+    private static Optional<BlasphemousBloodAltarRecipe> findRecipe(Level level, List<Item> offerings) {
         SimpleContainer inventory = new SimpleContainer(3);
-        for (int i = 0; i < referenceSet.size(); i++) {
-            inventory.setItem(i, new ItemStack(referenceSet.get(i)));
+        for (int i = 0; i < offerings.size(); i++) {
+            inventory.setItem(i, new ItemStack(offerings.get(i)));
         }
+        return level.getRecipeManager().getRecipeFor(BlasphemousBloodAltarRecipe.Type.INSTANCE, inventory, level);
+    }
 
-        Optional<BlasphemousBloodAltarRecipe> recipe = level.getRecipeManager()
-                .getRecipeFor(BlasphemousBloodAltarRecipe.Type.INSTANCE, inventory, level);
-
-        if (recipe.isPresent()) {
-            ItemStack result = recipe.get().getResultItem(level.registryAccess());
-            Item resultItem = result.getItem();
-            consumeItemsFromAltars(level, blockPos);
-            super.dischargeAltars(level, blockPos);
-
-
-            return finalizeRitualServer(level, blockPos, player, blockState, altar, result);
-        } else {
-            level.playSound(null, blockPos, SoundEvents.BASALT_BREAK, SoundSource.BLOCKS, 0.5F, 0.5F);
-            ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.05);
-            return InteractionResult.FAIL;
-        }
+    private static InteractionResult failRitual(Level level, BlockPos blockPos) {
+        level.playSound(null, blockPos, SoundEvents.BASALT_BREAK, SoundSource.BLOCKS, 0.5F, 0.5F);
+        ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.05);
+        return InteractionResult.FAIL;
     }
 
     private static @Nullable InteractionResult delegateToControllerInteraction(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
