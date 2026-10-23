@@ -4,12 +4,12 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSlashEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,22 +25,22 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        if (!level.isClientSide) {
-            List<Gem> gems = super.getGemsFromItemStack(itemStack);
+    public void performSpell(SpellCastContext ctx) {
+        if (!ctx.level().isClientSide) {
+            List<Gem> gems = ctx.gems();
 
             int projectileCount = 3 + getProjectileAdditionalFromGems(gems);
 
-            float yaw = player.getYRot();
-            float pitch = player.getXRot();
+            float yaw = ctx.player().getYRot();
+            float pitch = ctx.player().getXRot();
 
             double radians = Math.toRadians(-yaw);
             double xDir = Math.sin(radians);
             double zDir = Math.cos(radians);
 
-            double baseX = player.getX() + xDir * 1.5;
-            double baseY = player.getEyeY() - 0.4;
-            double baseZ = player.getZ() + zDir * 1.5;
+            double baseX = ctx.player().getX() + xDir * 1.5;
+            double baseY = ctx.player().getEyeY() - 0.4;
+            double baseZ = ctx.player().getZ() + zDir * 1.5;
 
             float spreadAngle = 10.0f;
 
@@ -48,13 +48,12 @@ public class BloodScratchSpellBookItem extends BaseSpellBookItem<BloodScratchSpe
                 float multiplier = i - (projectileCount - 1) / 2.0f;
                 float spawnYaw = yaw - (multiplier * spreadAngle);
 
-                BloodSlashEntity slash = new BloodSlashEntity(level, baseX, baseY, baseZ, 10.0F, player, spawnYaw, pitch, gems);
-                level.addFreshEntity(slash);
+                BloodSlashEntity slash = new BloodSlashEntity(ctx.level(), baseX, baseY, baseZ, 10.0F, ctx.player(), spawnYaw, pitch, gems);
+                ctx.spawn(slash);
             }
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 1.0f, 1.0f);
+        ctx.playSound(SoundEvents.EVOKER_CAST_SPELL, 1.0f, 1.0f);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package net.agusdropout.bloodyhell.item.custom.staffs;
 
+import net.agusdropout.bloodyhell.effect.ModEffects;
 import net.agusdropout.bloodyhell.client.render.item.custom.renderer.IncompleteStaffOfThePureBloodedRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
+import net.agusdropout.bloodyhell.item.custom.base.SpellAffinity;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
@@ -9,7 +11,7 @@ import java.util.function.Consumer;
 
 public class IncompleteStaffOfThePureBloodedItem extends BaseStaffItem {
     public IncompleteStaffOfThePureBloodedItem(Properties properties) {
-        super(properties);
+        super(properties, SpellAffinity.BLOOD, ModEffects.BLEEDING);
     }
 
     @Override

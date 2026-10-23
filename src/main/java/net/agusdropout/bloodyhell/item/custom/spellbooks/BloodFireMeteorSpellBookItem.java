@@ -5,12 +5,12 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireMeteorEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -31,17 +31,17 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        if (!level.isClientSide) {
-            List<Gem> gems = super.getGemsFromItemStack(itemStack);
+    public void performSpell(SpellCastContext ctx) {
+        if (!ctx.level().isClientSide) {
+            List<Gem> gems = ctx.gems();
             List<BloodFireMeteorEntity> meteorEntities = new ArrayList<>();
             int projectileCount = 1 + getProjectileAdditionalFromGems(gems);
-            RandomSource random = level.random;
+            RandomSource random = ctx.level().random;
 
             for (int i = 0; i < projectileCount; i++) {
                 BloodFireMeteorEntity meteor = new BloodFireMeteorEntity(
-                        level,
-                        player,
+                        ctx.level(),
+                        ctx.player(),
                         20.0f,
                         1.5f,
                         1.5f,
@@ -49,13 +49,12 @@ public class BloodFireMeteorSpellBookItem extends BaseSpellBookItem<BloodFireMet
                         gems
                 );
                 meteorEntities.add(meteor);
-                level.addFreshEntity(meteor);
+                ctx.spawn(meteor);
             }
-            placeMeteors(player, level, meteorEntities);
+            placeMeteors(ctx.player(), ctx.level(), meteorEntities);
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0f, 0.8f);
+        ctx.playSound(SoundEvents.FIRECHARGE_USE, 1.0f, 0.8f);
     }
 
     @Override

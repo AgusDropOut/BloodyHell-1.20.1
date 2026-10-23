@@ -5,6 +5,7 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.BloodPortalEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
@@ -13,7 +14,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -36,21 +36,19 @@ public class BloodDaggersRainSpellBookItem extends BaseSpellBookItem<BloodDagger
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        List<Gem> gems = getGemsFromItemStack(itemStack);
+    public void performSpell(SpellCastContext ctx) {
+        List<Gem> gems = ctx.gems();
 
-        if (!level.isClientSide) {
-            Vec3 targetPos = calculateTargetPosition(level, player);
-            float heightOffset = calculatePortalOffset(level, targetPos);
+        if (!ctx.level().isClientSide) {
+            Vec3 targetPos = calculateTargetPosition(ctx.level(), ctx.player());
+            float heightOffset = calculatePortalOffset(ctx.level(), targetPos);
 
-            BloodPortalEntity portal = new BloodPortalEntity(level, targetPos.x, targetPos.y, targetPos.z, player, heightOffset, gems);
-            level.addFreshEntity(portal);
+            BloodPortalEntity portal = new BloodPortalEntity(ctx.level(), targetPos.x, targetPos.y, targetPos.z, ctx.player(), heightOffset, gems);
+            ctx.spawn(portal);
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.8f, 1.2f);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 0.5f, 1.5f);
+        ctx.playSound(SoundEvents.PORTAL_TRAVEL, 0.8f, 1.2f);
+        ctx.playSound(SoundEvents.WITHER_SPAWN, 0.5f, 1.5f);
     }
 
     @Override

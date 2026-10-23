@@ -78,14 +78,14 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         if (livingEntity instanceof Player player) {
-            SpellCaster.tick(level, player, this, stack, player.getUsedItemHand(), getUseDuration(stack) - remainingUseDuration, false);
+            SpellCaster.tick(level, player, this, stack, player.getUsedItemHand(), getUseDuration(stack) - remainingUseDuration, ItemStack.EMPTY);
         }
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
-            SpellCaster.release(level, player, this, stack, player.getUsedItemHand(), getUseDuration(stack) - timeLeft, false);
+            SpellCaster.release(level, player, this, stack, player.getUsedItemHand(), getUseDuration(stack) - timeLeft, ItemStack.EMPTY);
         }
     }
 
@@ -144,11 +144,15 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
     }
 
     public boolean canStartCasting(Level level, Player player) {
+        return canStartCasting(level, player, SpellModifiers.NONE);
+    }
+
+    public boolean canStartCasting(Level level, Player player, SpellModifiers modifiers) {
         if (player.getCooldowns().isOnCooldown(this)) {
             return false;
         }
 
-        if (!CrimsonVeilHelper.hasEnough(player, getCrimsonCost())) {
+        if (!CrimsonVeilHelper.hasEnough(player, modifiers.scaleCost(getCrimsonCost()))) {
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0f, 2.0f);
 
@@ -174,25 +178,26 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         return InteractionResultHolder.consume(itemstack);
     }
 
-    public void executeCast(Level level, Player player, InteractionHand hand, ItemStack stack) {
+    public void executeCast(Level level, Player player, InteractionHand hand, ItemStack stack, SpellModifiers modifiers) {
+        SpellCastContext context = new SpellCastContext(level, player, this, stack, hand, modifiers);
         if (!level.isClientSide) {
-            if (CrimsonVeilHelper.consume(player, getCrimsonCost())) {
-                performSpell(level, player, hand, stack);
-
+            if (CrimsonVeilHelper.consume(player, modifiers.scaleCost(getCrimsonCost()))) {
+                performSpell(context);
 
                 if (getStaffCastType() != StaffCastType.SEQUENTIAL) {
                     triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) level), "controller", "attack");
                 }
 
-                if (getCooldown() > 0 && getStaffCastType() != StaffCastType.SEQUENTIAL) {
-                    player.getCooldowns().addCooldown(this, getCooldown());
+                int cooldown = modifiers.scaleCooldown(getCooldown());
+                if (cooldown > 0 && getStaffCastType() != StaffCastType.SEQUENTIAL) {
+                    player.getCooldowns().addCooldown(this, cooldown);
                 }
             } else {
                 player.displayClientMessage(Component.translatable("message.bloodyhell.not_enough_veil").withStyle(ChatFormatting.DARK_RED), true);
                 player.stopUsingItem();
             }
         } else {
-            performSpell(level, player, hand, stack);
+            performSpell(context);
         }
     }
 
@@ -255,12 +260,13 @@ public abstract class BaseSpellBookItem<T extends BaseSpellBookItem<T>> extends 
         return additionalProjectiles;
     }
 
-    public abstract void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack);
+    public abstract void performSpell(SpellCastContext ctx);
     public abstract void spawnProgressiveParticles(Level level, Player player, int chargeTick);
     public abstract void playChargeSound(Level level, Player player, int chargeTick);
     public int getMinChargeTime() { return definition.chargeTicks(); }
     public int getCooldown() { return definition.cooldownTicks(); }
     public int getCycleTicks() { return definition.chargeTicks() + definition.cooldownTicks(); }
+    public int getCycleTicks(SpellModifiers modifiers) { return definition.chargeTicks() + modifiers.scaleCooldown(definition.cooldownTicks()); }
     public String getSpellBookId() { return definition.id(); }
     public StaffCastType getStaffCastType() { return definition.castType(); }
     public SpellAffinity getAffinity() { return definition.affinity(); }

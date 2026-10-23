@@ -4,6 +4,7 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.RhnullImpalerEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.GlitterParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.SmallGlitterParticleOptions;
@@ -11,7 +12,6 @@ import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.agusdropout.bloodyhell.util.visuals.SpellPalette;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -29,19 +29,19 @@ public class RhnullImpalersSpellBookItem extends BaseSpellBookItem<RhnullImpaler
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        if (!level.isClientSide) {
-            List<Gem> gems = getGemsFromItemStack(itemStack);
+    public void performSpell(SpellCastContext ctx) {
+        if (!ctx.level().isClientSide) {
+            List<Gem> gems = ctx.gems();
             int projectileCount = DEFAULT_PROJECTILE_COUNT + getProjectileAdditionalFromGems(gems);
 
             for(int i = 0; i < projectileCount; i++) {
                 RhnullImpalerEntity impaler = new RhnullImpalerEntity(
-                        level,
-                        player,
+                        ctx.level(),
+                        ctx.player(),
                         i,
                         projectileCount,gems
                 );
-                level.addFreshEntity(impaler);
+                ctx.spawn(impaler);
             }
         }
     }

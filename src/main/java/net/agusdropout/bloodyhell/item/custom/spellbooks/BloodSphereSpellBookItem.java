@@ -4,12 +4,12 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.BloodSphereEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,22 +25,20 @@ public class BloodSphereSpellBookItem extends BaseSpellBookItem<BloodSphereSpell
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        if (!level.isClientSide) {
-            List<Gem> gems = super.getGemsFromItemStack(itemStack);
+    public void performSpell(SpellCastContext ctx) {
+        if (!ctx.level().isClientSide) {
+            List<Gem> gems = ctx.gems();
             int projectileCount = 1 + getProjectileAdditionalFromGems(gems);
 
             for (int i = 0; i < projectileCount; i++) {
                 int delay = i * 5;
-                BloodSphereEntity projectile = new BloodSphereEntity(level, player, 5.0f, delay, gems);
-                level.addFreshEntity(projectile);
+                BloodSphereEntity projectile = new BloodSphereEntity(ctx.level(), ctx.player(), 5.0f, delay, gems);
+                ctx.spawn(projectile);
             }
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.BUCKET_EMPTY_LAVA, SoundSource.PLAYERS, 1.0f, 0.5f);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.PLAYERS, 1.0f, 0.5f);
+        ctx.playSound(SoundEvents.BUCKET_EMPTY_LAVA, 1.0f, 0.5f);
+        ctx.playSound(SoundEvents.PLAYER_ATTACK_STRONG, 1.0f, 0.5f);
     }
 
     @Override

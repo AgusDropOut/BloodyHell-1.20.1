@@ -6,12 +6,12 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireColumnEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -35,15 +35,15 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        if (!level.isClientSide) {
+    public void performSpell(SpellCastContext ctx) {
+        if (!ctx.level().isClientSide) {
 
-            List<Gem> gems = getGemsFromItemStack(itemStack);
+            List<Gem> gems = ctx.gems();
             int projectileCount = 1 + getProjectileAdditionalFromGems(gems);
-            List <Vec3> targetPositions = findTargetPosition(level, player,projectileCount);
+            List <Vec3> targetPositions = findTargetPosition(ctx.level(), ctx.player(),projectileCount);
 
             if(targetPositions.isEmpty()){
-                Vec3 fallbackPos = getPlayerColumnPosition(player,level);
+                Vec3 fallbackPos = getPlayerColumnPosition(ctx.player(),ctx.level());
                 targetPositions.add(fallbackPos);
             }
 
@@ -51,21 +51,20 @@ public class BloodFireColumnSpellBookItem extends BaseSpellBookItem<BloodFireCol
 
                     BloodFireColumnEntity column = new BloodFireColumnEntity(
                             ModEntityTypes.BLOOD_FIRE_COLUMN_PROJECTILE.get(),
-                            level,
-                            player,
+                            ctx.level(),
+                            ctx.player(),
                             targetPos.x,
                             targetPos.y,
                             targetPos.z,
                             gems
                     );
-                    level.addFreshEntity(column);
+                    ctx.spawn(column);
 
             }
 
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0f, 0.8f);
+        ctx.playSound(SoundEvents.FIRECHARGE_USE, 1.0f, 0.8f);
     }
 
     private List<Vec3> findTargetPosition(Level level, Player player,int targetsCount) {

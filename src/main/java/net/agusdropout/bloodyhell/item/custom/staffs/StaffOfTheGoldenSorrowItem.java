@@ -2,6 +2,7 @@ package net.agusdropout.bloodyhell.item.custom.staffs;
 
 import net.agusdropout.bloodyhell.client.render.item.custom.renderer.StaffOfTheGoldenSorrowRenderer;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
+import net.agusdropout.bloodyhell.item.custom.base.SpellAffinity;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
 public class StaffOfTheGoldenSorrowItem extends BaseStaffItem {
 
     public StaffOfTheGoldenSorrowItem(Properties properties) {
-        super(properties);
+        super(properties, SpellAffinity.RHNULL, null);
     }
 
     @Override

@@ -5,12 +5,12 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.BloodFireSoulEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -27,19 +27,19 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        if (!level.isClientSide) {
-            List<Gem> gems = super.getGemsFromItemStack(itemStack);
+    public void performSpell(SpellCastContext ctx) {
+        if (!ctx.level().isClientSide) {
+            List<Gem> gems = ctx.gems();
 
             int count = 1 + getProjectileAdditionalFromGems(gems);
 
-            Vec3 look = player.getLookAngle();
+            Vec3 look = ctx.player().getLookAngle();
 
             for (int i = 0; i < count; i++) {
                 BloodFireSoulEntity soulProjectile = new BloodFireSoulEntity(
                         ModEntityTypes.BLOOD_FIRE_SOUL.get(),
-                        level,
-                        player,
+                        ctx.level(),
+                        ctx.player(),
                         gems
                 );
 
@@ -52,14 +52,12 @@ public class BloodFireSoulSpellBookItem extends BaseSpellBookItem<BloodFireSoulS
                     soulProjectile.setDeltaMovement(spreadDir.scale(0.55));
                 }
 
-                level.addFreshEntity(soulProjectile);
+                ctx.spawn(soulProjectile);
             }
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.GHAST_SHOOT, SoundSource.PLAYERS, 1.0f, 1.2f);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0f, 0.8f);
+        ctx.playSound(SoundEvents.GHAST_SHOOT, 1.0f, 1.2f);
+        ctx.playSound(SoundEvents.BLAZE_SHOOT, 1.0f, 0.8f);
     }
 
     @Override

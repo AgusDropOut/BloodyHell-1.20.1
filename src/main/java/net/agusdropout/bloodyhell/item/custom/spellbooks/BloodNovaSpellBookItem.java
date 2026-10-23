@@ -4,12 +4,12 @@ import net.agusdropout.bloodyhell.entity.projectile.spell.BloodNovaEntity;
 import net.agusdropout.bloodyhell.item.custom.base.BaseSpellBookItem;
 import net.agusdropout.bloodyhell.item.custom.base.Gem;
 import net.agusdropout.bloodyhell.item.custom.base.SpellBookDefinition;
+import net.agusdropout.bloodyhell.item.custom.base.SpellCastContext;
 import net.agusdropout.bloodyhell.particle.ModParticles;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.MagicParticleOptions;
 import net.agusdropout.bloodyhell.util.visuals.ParticleHelper;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -27,27 +27,25 @@ public class BloodNovaSpellBookItem extends BaseSpellBookItem<BloodNovaSpellBook
     }
 
     @Override
-    public void performSpell(Level level, Player player, InteractionHand hand, ItemStack itemStack) {
-        if (!level.isClientSide) {
+    public void performSpell(SpellCastContext ctx) {
+        if (!ctx.level().isClientSide) {
 
-                    List<Gem> gems = super.getGemsFromItemStack(itemStack);
-                    float yaw = player.getYRot();
-                    float pitch = player.getXRot();
+                    List<Gem> gems = ctx.gems();
+                    float yaw = ctx.player().getYRot();
+                    float pitch = ctx.player().getXRot();
                     double radians = Math.toRadians(-yaw);
 
-                    double baseX = player.getX() + Math.sin(radians) * 1.0;
-                    double baseY = player.getY() + 0.5;
-                    double baseZ = player.getZ() + Math.cos(radians) * 1.0;
+                    double baseX = ctx.player().getX() + Math.sin(radians) * 1.0;
+                    double baseY = ctx.player().getY() + 0.5;
+                    double baseZ = ctx.player().getZ() + Math.cos(radians) * 1.0;
 
-                    BloodNovaEntity projectile = new BloodNovaEntity(level, baseX, baseY + SPAWN_HEIGHT_OFFSET, baseZ, 30.0F, player, yaw, pitch, gems);
-                    level.addFreshEntity(projectile);
+                    BloodNovaEntity projectile = new BloodNovaEntity(ctx.level(), baseX, baseY + SPAWN_HEIGHT_OFFSET, baseZ, 30.0F, ctx.player(), yaw, pitch, gems);
+                    ctx.spawn(projectile);
 
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0f, 0.5f);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 0.5f, 1.0f);
+        ctx.playSound(SoundEvents.GENERIC_EXPLODE, 1.0f, 0.5f);
+        ctx.playSound(SoundEvents.WITHER_SPAWN, 0.5f, 1.0f);
     }
 
     @Override

@@ -175,7 +175,7 @@ public class OmnitomeItem extends Item implements GeoItem {
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         ItemStack activeSpell = getActiveSpellBook(stack);
         if (livingEntity instanceof Player player && !activeSpell.isEmpty() && activeSpell.getItem() instanceof BaseSpellBookItem<?> spellBook) {
-            SpellCaster.tick(level, player, spellBook, activeSpell, player.getUsedItemHand(), spellBook.getUseDuration(activeSpell) - remainingUseDuration, false);
+            SpellCaster.tick(level, player, spellBook, activeSpell, player.getUsedItemHand(), spellBook.getUseDuration(activeSpell) - remainingUseDuration, ItemStack.EMPTY);
         }
     }
 
@@ -189,7 +189,7 @@ public class OmnitomeItem extends Item implements GeoItem {
             }
 
             if (entity instanceof Player player) {
-                SpellCaster.release(level, player, spellBook, activeSpell, player.getUsedItemHand(), spellBook.getUseDuration(activeSpell) - timeLeft, false);
+                SpellCaster.release(level, player, spellBook, activeSpell, player.getUsedItemHand(), spellBook.getUseDuration(activeSpell) - timeLeft, ItemStack.EMPTY);
             }
         }
     }
