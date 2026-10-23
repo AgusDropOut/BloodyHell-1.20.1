@@ -38,6 +38,7 @@ public final class BlockAudit {
     private static final Set<String> UNHARVESTABLE_ON_PURPOSE = Set.of("seliora_resting_block");
     private static final Set<String> HARVEST_EXEMPT = Set.of("seliora_resting_block", "blood_leaves", "soul_leaves");
     private static final float MAX_SANE_HARDNESS = 50.0f;
+    private static final float MAX_MINING_SECONDS = 20.0f;
     private static final Set<String> UNBREAKABLE_OR_HARD_ON_PURPOSE = Set.of("seliora_resting_block", "blood_portal");
     private static final Map<String, String> DROPS_NOTHING_BY_DESIGN = Map.ofEntries(
             Map.entry("blood_fire", "fire"),
@@ -204,8 +205,17 @@ public final class BlockAudit {
         }
         List<Supplier<Item>> tools = chain(rule.tool());
         int required = levelIndex(rule.tier());
-        if (!harvests(level, state, new ItemStack(tools.get(required).get()))) {
+        ItemStack minimum = new ItemStack(tools.get(required).get());
+        if (!harvests(level, state, minimum)) {
             found.add("drops nothing with the minimum " + rule.tool() + " " + rule.tier());
+        }
+        float hardness = state.getDestroySpeed(level, BlockPos.ZERO);
+        float speed = minimum.getDestroySpeed(state);
+        if (hardness > 0 && speed > 0) {
+            float seconds = hardness * 1.5f / speed;
+            if (seconds > MAX_MINING_SECONDS) {
+                found.add(String.format("takes %.1f seconds to mine with the minimum %s %s (hardness %.1f, tool speed %.1f)", seconds, rule.tool(), rule.tier(), hardness, speed));
+            }
         }
         if (rule.requiresTool()) {
             int below = required == 5 ? 4 : required - 1;

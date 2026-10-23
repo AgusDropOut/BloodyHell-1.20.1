@@ -33,6 +33,7 @@ import java.util.UUID;
 @PrefixGameTestTemplate(false)
 public class EntityDropGameTests {
     private static final int ROLLS = 300;
+    private static final java.util.concurrent.ConcurrentSkipListMap<String, String> SUMMARY = new java.util.concurrent.ConcurrentSkipListMap<>();
     private static final Map<String, String> DROPS_NOTHING_BY_DESIGN = Map.of(
             "bloody_soul_entity", "a soul that the blood harvester collects",
             "corrupted_bloody_soul_entity", "a soul that the blood harvester collects",
@@ -76,10 +77,22 @@ public class EntityDropGameTests {
         LootTable table = level.getServer().getLootData().getLootTable(type.getDefaultLootTable());
         Map<String, Integer> dropped = table == LootTable.EMPTY ? Map.of() : roll(level, table, living);
         boolean drops = !dropped.isEmpty();
+        SUMMARY.put(name, drops ? "drops " + dropped + " in " + ROLLS + " kills" : "drops nothing");
+        writeSummary();
         boolean excused = DROPS_NOTHING_BY_DESIGN.containsKey(name) || NO_DROPS_DESIGNED_YET.containsKey(name);
         helper.assertTrue(!(drops && excused), name + " is on a list of entities that drop nothing but it dropped " + dropped.keySet() + "; remove it from the list");
         helper.assertTrue(drops || excused, name + " is a living entity that never dropped anything in " + ROLLS + " kills by a player (loot table " + type.getDefaultLootTable() + ") and is on neither list of entities that drop nothing");
         helper.succeed();
+    }
+
+    private static synchronized void writeSummary() {
+        List<String> lines = new ArrayList<>();
+        SUMMARY.forEach((entity, text) -> lines.add(entity + "	" + text));
+        try {
+            java.nio.file.Files.write(java.nio.file.Path.of("bh-entity-drops.txt"), lines, java.nio.charset.StandardCharsets.UTF_8);
+        } catch (java.io.IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public static Map<String, Integer> roll(ServerLevel level, LootTable table, LivingEntity entity) {
@@ -96,6 +109,7 @@ public class EntityDropGameTests {
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.ENTITY);
             for (ItemStack stack : table.getRandomItems(params)) {
+                if (stack.isEmpty()) continue;
                 Item item = stack.getItem();
                 dropped.merge(ForgeRegistries.ITEMS.getKey(item).toString(), stack.getCount(), Integer::sum);
             }
