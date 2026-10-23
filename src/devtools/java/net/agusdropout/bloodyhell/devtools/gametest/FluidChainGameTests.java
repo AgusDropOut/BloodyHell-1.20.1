@@ -4,17 +4,21 @@ import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.block.entity.base.AbstractCondenserBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.base.AbstractPipeBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteBloodHarvesterBlockEntity;
+import net.agusdropout.bloodyhell.block.entity.custom.mechanism.SanguiniteInfusorBlockEntity;
 import net.agusdropout.bloodyhell.block.entity.custom.mechanism.UnknownPortalBlockEntity;
 import net.agusdropout.bloodyhell.block.registry.MachineBlocks;
 import net.agusdropout.bloodyhell.entity.soul.BloodSoulType;
 import net.agusdropout.bloodyhell.fluid.ModFluids;
 import net.agusdropout.bloodyhell.item.registry.GemItems;
+import net.agusdropout.bloodyhell.item.registry.RhnullItems;
+import net.agusdropout.bloodyhell.recipe.SanguiniteInfusorRecipe;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.gametest.GameTestHolder;
@@ -209,5 +213,33 @@ public class FluidChainGameTests {
             helper.assertTrue(condenser.getItemHandler().getStackInSlot(0).getCount() == 1, "the rhnull frame was consumed by plain blood");
             helper.succeed();
         });
+    }
+
+    @GameTest(template = TEMPLATE, batch = "chains", timeoutTicks = 800)
+    public static void twoHarvestersFeedTheInfusorThroughPipesAndItMakesRhnull(GameTestHelper helper) {
+        SanguiniteInfusorRecipe recipe = helper.getLevel().getRecipeManager().getAllRecipesFor(SanguiniteInfusorRecipe.Type.INSTANCE).stream()
+                .filter(candidate -> candidate.getResultItem(helper.getLevel().registryAccess()).is(RhnullItems.RHNULL.get()))
+                .findFirst().orElse(null);
+        if (recipe == null) {
+            helper.fail("there is no infusing recipe that makes rhnull");
+            return;
+        }
+        FluidChain chain = FluidChain.on(helper)
+                .then(MachineBlocks.SANGUINITE_BLOOD_HARVESTER)
+                .pull(MachineBlocks.SANGUINITE_PIPE).then(MachineBlocks.SANGUINITE_PIPE)
+                .then(MachineBlocks.SANGUINITE_INFUSOR)
+                .then(MachineBlocks.SANGUINITE_PIPE).pull(MachineBlocks.SANGUINITE_PIPE)
+                .then(MachineBlocks.SANGUINITE_BLOOD_HARVESTER)
+                .connect();
+        chain.entity(0, SanguiniteBloodHarvesterBlockEntity.class).receiveSoul(soulFor(recipe.getFluid1()), recipe.getFluid1().getAmount() + SURPLUS);
+        chain.entity(6, SanguiniteBloodHarvesterBlockEntity.class).receiveSoul(soulFor(recipe.getFluid2()), recipe.getFluid2().getAmount() + SURPLUS);
+        SanguiniteInfusorBlockEntity infusor = chain.entity(3, SanguiniteInfusorBlockEntity.class);
+        var items = infusor.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow();
+        helper.assertTrue(items.insertItem(0, recipe.getInputItem().getItems()[0].copy(), false).isEmpty(), "the infusor did not accept the sanguinite");
+        helper.succeedWhen(() -> helper.assertTrue(items.getStackInSlot(1).is(RhnullItems.RHNULL.get()), "no rhnull came out of the infusor; " + chain.describe()));
+    }
+
+    private static BloodSoulType soulFor(FluidStack fluid) {
+        return fluid.getFluid().isSame(ModFluids.VISCERAL_BLOOD_SOURCE.get()) ? BloodSoulType.INFECTED : BloodSoulType.BLOOD;
     }
 }
