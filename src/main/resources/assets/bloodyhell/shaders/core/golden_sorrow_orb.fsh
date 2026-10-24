@@ -8,7 +8,6 @@ uniform sampler2D Sampler1;
 uniform mat4 u_InvProjMat;
 uniform vec3 u_OrbViewPos;
 uniform mat3 u_OrbRotation;
-uniform float u_Time;
 uniform float u_Charge;
 uniform float u_ChargeTime;
 uniform float u_Flash;

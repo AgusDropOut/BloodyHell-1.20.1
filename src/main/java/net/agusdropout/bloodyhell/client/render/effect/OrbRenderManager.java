@@ -14,7 +14,6 @@ import net.agusdropout.bloodyhell.client.render.effect.api.OrbEffect;
 import net.agusdropout.bloodyhell.client.render.effect.data.OrbCharge;
 import net.agusdropout.bloodyhell.client.render.effect.data.OrbData;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
-import net.agusdropout.bloodyhell.client.shader.ShaderTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -73,7 +72,6 @@ public class OrbRenderManager implements DeferredRenderManager {
         VertexSorting worldSorting = RenderSystem.getVertexSorting();
 
         if(shader.safeGetUniform("u_InvProjMat") != null) shader.safeGetUniform("u_InvProjMat").set(worldInvProjMat);
-        if(shader.safeGetUniform("u_Time") != null) shader.safeGetUniform("u_Time").set(ShaderTime.seconds());
 
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
