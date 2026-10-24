@@ -106,7 +106,9 @@ float sdDrop(vec3 p) {
 }
 
 #define SPARK_COUNT 5
-#define SPARK_COLOR vec3(1.0, 0.82, 0.38)
+#define SPARK_COLOR vec3(1.0, 0.88, 0.93)
+#define HOT_COLOR vec3(1.0, 0.62, 0.7)
+#define SPARK_RIM_COLOR vec3(0.8, 0.04, 0.16)
 
 float sparksDistance(vec3 p, float time) {
     float nearest = 1e5;
@@ -267,7 +269,7 @@ void main() {
         float fresnel = 1.0 - NdotV;
 
         float redMask = smoothstep(FRESNEL_RED_START, FRESNEL_RED_END, fresnel);
-        vec3 fireColor = mix(COLOR_FIRE_RED, vec3(1.0, 0.42, 0.05), clamp(u_Charge * 0.9, 0.0, 1.0));
+        vec3 fireColor = mix(COLOR_FIRE_RED, HOT_COLOR, clamp(u_Charge * 0.9, 0.0, 1.0));
         vec3 bodyColor = mix(COLOR_CORE_BLACK, fireColor, redMask);
 
         float whiteBaseMask = 1.0 - smoothstep(GRAD_Y_MIN, GRAD_Y_MID, percentY);
@@ -287,7 +289,8 @@ void main() {
         col += COLOR_GLOW_RED * glowMask * GLOW_INTENSITY;
 
         float sparkMask = 1.0 - smoothstep(0.0, 0.05, sparksDistance(vec3(scaledP.x, scaledP.y - POS_Y, scaledP.z), u_ChargeTime));
-        col = mix(col, SPARK_COLOR, sparkMask);
+        vec3 sparkShade = mix(SPARK_COLOR, SPARK_RIM_COLOR, smoothstep(0.4, 0.9, fresnel));
+        col = mix(col, sparkShade, sparkMask);
 
         fragColor = vec4(col, 1.0);
     } else {
