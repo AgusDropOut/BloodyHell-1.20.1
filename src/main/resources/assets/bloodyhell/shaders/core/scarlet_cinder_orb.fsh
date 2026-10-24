@@ -12,6 +12,7 @@ uniform float u_Time;
 uniform float u_Charge;
 uniform float u_ChargeTime;
 uniform float u_Flash;
+uniform float u_Pulse;
 uniform float u_Pitch;
 
 out vec4 fragColor;
@@ -104,6 +105,25 @@ float sdDrop(vec3 p) {
     return d * min(1.0, taper + 0.6) * 1.5;
 }
 
+#define SPARK_COUNT 5
+#define SPARK_COLOR vec3(1.0, 0.82, 0.38)
+
+float sparksDistance(vec3 p, float time) {
+    float nearest = 1e5;
+    for (int i = 0; i < SPARK_COUNT; i++) {
+        float weight = smoothstep(0.0, 1.0, clamp(u_Charge * float(SPARK_COUNT) - float(i), 0.0, 1.0));
+        if (weight <= 0.01) continue;
+        float fi = float(i);
+        float angle = time * (1.3 + 0.17 * fi) + fi * 1.2566;
+        float rise = fract(time * 0.3 + fi * 0.2);
+        float radius = 1.0 + 0.25 * sin(fi * 2.0 + time);
+        vec3 center = vec3(cos(angle) * radius, mix(-1.0, 2.6, rise), sin(angle) * radius);
+        float size = 0.17 * weight * (0.55 + 0.45 * sin(rise * 3.1416));
+        nearest = min(nearest, length(p - center) - size);
+    }
+    return nearest;
+}
+
 float map(vec3 p, float time, vec3 worldUpLocal) {
     p /= GLOBAL_SCALE;
 
@@ -171,7 +191,7 @@ float map(vec3 p, float time, vec3 worldUpLocal) {
 
     float displacement = noise(texCoord);
 
-    return (baseDist - (displacement * NOISE_STRENGTH)) * GLOBAL_SCALE;
+    return min(baseDist - (displacement * NOISE_STRENGTH), sparksDistance(p, time)) * GLOBAL_SCALE;
 }
 
 vec3 getNormal(vec3 p, float time, vec3 worldUpLocal) {
@@ -247,7 +267,8 @@ void main() {
         float fresnel = 1.0 - NdotV;
 
         float redMask = smoothstep(FRESNEL_RED_START, FRESNEL_RED_END, fresnel);
-        vec3 bodyColor = mix(COLOR_CORE_BLACK, COLOR_FIRE_RED, redMask);
+        vec3 fireColor = mix(COLOR_FIRE_RED, vec3(1.0, 0.42, 0.05), clamp(u_Charge * 0.9, 0.0, 1.0));
+        vec3 bodyColor = mix(COLOR_CORE_BLACK, fireColor, redMask);
 
         float whiteBaseMask = 1.0 - smoothstep(GRAD_Y_MIN, GRAD_Y_MID, percentY);
         bodyColor = mix(bodyColor, COLOR_BASE_WHITE, whiteBaseMask);
@@ -257,13 +278,16 @@ void main() {
         radialGlow = pow(radialGlow, RADIAL_GLOW_FALLOFF) * RADIAL_GLOW_STRENGTH;
 
         bodyColor += vec3(1.0, 1.0, 1.0) * radialGlow;
-        bodyColor += vec3(1.0, 0.3, 0.3) * u_Flash * 0.7;
+        bodyColor += vec3(1.0, 0.3, 0.3) * max(u_Flash, u_Pulse) * 0.7;
 
         float outlineMask = 1.0 - smoothstep(OUTLINE_MIN, OUTLINE_MAX, NdotV);
         vec3 col = mix(bodyColor, COLOR_OUTLINE_BLACK, outlineMask);
 
         float glowMask = 1.0 - smoothstep(GLOW_MIN, GLOW_MAX, NdotV);
         col += COLOR_GLOW_RED * glowMask * GLOW_INTENSITY;
+
+        float sparkMask = 1.0 - smoothstep(0.0, 0.05, sparksDistance(vec3(scaledP.x, scaledP.y - POS_Y, scaledP.z), u_ChargeTime));
+        col = mix(col, SPARK_COLOR, sparkMask);
 
         fragColor = vec4(col, 1.0);
     } else {

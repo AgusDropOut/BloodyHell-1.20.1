@@ -8,11 +8,8 @@ The staff charge sounds (`staff_charge_*` in `src/main/resources/assets/bloodyhe
 | `staff_charge_cinder_loop` | [Fireplace](https://freesound.org/people/myLoop/sounds/852107/) | myLoop | CC0 |
 | `staff_charge_cinder_full` | [Fire Magic](https://freesound.org/people/qubodup/sounds/442872/) | qubodup | CC0 |
 | `staff_charge_blood_full` | [Heartbeat.mp3](https://freesound.org/people/ricniclas/sounds/451948/) | ricniclas | CC0 |
-| `staff_charge_blood_beat_lub and staff_charge_blood_beat_dub` | [heartbeat.loop.ogg](https://freesound.org/people/xUMR/sounds/488827/) | xUMR | CC0 |
+| `staff_charge_blood_beat_lub`, `staff_charge_blood_beat_dub` and `staff_charge_blood_note` (lowered) | [heartbeat.loop.ogg](https://freesound.org/people/xUMR/sounds/488827/) | xUMR | CC0 |
 | `staff_charge_golden_full` | [break01.wav](https://freesound.org/people/Johnny97/sounds/566448/) | Johnny97 | CC0 |
 | `staff_charge_golden_fade` | [Glass_Shards_Crunching_06](https://freesound.org/people/BlondPanda/sounds/778599/) | BlondPanda | CC0 |
 | `staff_charge_cinder_fade` | [Extinguishing Match (1).wav](https://freesound.org/people/juggle4ben/sounds/385170/) | juggle4ben | CC0 |
 | `staff_charge_golden_note` | [crush1.wav](https://freesound.org/people/franzzle/sounds/703115/) | franzzle | CC0 |
-| `staff_charge_blood_note_a` | [Slime 14.wav](https://freesound.org/people/Archos/sounds/433819/) | Archos | CC0 |
-| `staff_charge_blood_note_b` | [Slime 5.wav](https://freesound.org/people/Archos/sounds/433829/) | Archos | CC0 |
-| `staff_charge_blood_note_c` | [Slime 13.wav](https://freesound.org/people/Archos/sounds/433812/) | Archos | CC0 |

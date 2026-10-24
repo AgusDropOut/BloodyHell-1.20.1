@@ -12,6 +12,7 @@ uniform float u_Time;
 uniform float u_Charge;
 uniform float u_ChargeTime;
 uniform float u_Flash;
+uniform float u_Pulse;
 
 out vec4 fragColor;
 
@@ -20,7 +21,7 @@ float map(vec3 p, float time) {
     float t = time * 1.5;
     float pulse = pow(sin(fract(t) * 3.1415), 20.0) * (0.06 + 0.04 * u_Charge) +
     pow(sin(fract(t + 0.15) * 3.1415), 20.0) * (0.03 + 0.02 * u_Charge);
-    float baseRadius = 0.25 * (1.0 + 0.06 * u_Charge) + u_Flash * 0.02;
+    float baseRadius = 0.25 * (1.0 + 0.06 * u_Charge) + u_Flash * 0.02 + u_Pulse * 0.05;
 
     float angle = atan(p.x, p.z);
     float grooves = sin(angle * 6.0) * (0.03 + 0.012 * u_Charge) + sin(angle * 12.0) * 0.012 * u_Charge;
@@ -30,7 +31,7 @@ float map(vec3 p, float time) {
 
 
 float opTwist(vec3 p, float time ) {
-    float k = 5.0 + 3.0 * u_Charge;
+    float k = 5.0 + 3.0 * u_Charge + 6.0 * u_Pulse;
     float twistAngle = k * p.y + (time * 1.5);
     float c = cos(twistAngle);
     float s = sin(twistAngle);
@@ -131,7 +132,7 @@ void main() {
         vec3 baseVolume = vec3(0.08, 0.0, 0.0);
         vec3 edgeGlow = vec3(1.0, 0.1, 0.1);
 
-        vec3 finalColor = anomalyColor + (baseVolume * diff) + (edgeGlow * fresnel * (0.8 + 0.5 * u_Charge)) + (edgeGlow * u_Flash * (0.2 + 0.6 * fresnel));
+        vec3 finalColor = anomalyColor + (baseVolume * diff) + (edgeGlow * fresnel * (0.8 + 0.5 * u_Charge)) + (edgeGlow * u_Flash * (0.2 + 0.6 * fresnel)) + (edgeGlow * u_Pulse * 0.25);
 
         fragColor = vec4(finalColor, 1.0);
     } else {

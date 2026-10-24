@@ -52,7 +52,7 @@ public final class Effects {
             new TrailEffect("RadiantEnergy", () -> ModShaders.RADIANT_ENERGY_SHADER, EffectStates.PREMULTIPLIED_NO_DEPTH_TEST));
 
     public static final OrbRenderManager BLOOD_ORB = new OrbRenderManager(
-            OrbEffect.of("BloodOrb", () -> ModShaders.BLOOD_ORB_SHADER, 0.5f, EffectStates.ORB));
+            OrbEffect.of("BloodOrb", () -> ModShaders.BLOOD_ORB_SHADER, 0.8f, EffectStates.ORB));
 
     public static final OrbRenderManager GOLDEN_SORROW_ORB = new OrbRenderManager(
             OrbEffect.of("GoldenSorrowOrb", () -> ModShaders.GOLDEN_SORROW_ORB_SHADER, 0.8f, EffectStates.ORB));

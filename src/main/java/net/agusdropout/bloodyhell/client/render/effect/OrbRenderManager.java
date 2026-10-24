@@ -115,5 +115,6 @@ public class OrbRenderManager implements DeferredRenderManager {
         if (shader.safeGetUniform("u_Charge") != null) shader.safeGetUniform("u_Charge").set(charge.charge());
         if (shader.safeGetUniform("u_ChargeTime") != null) shader.safeGetUniform("u_ChargeTime").set(charge.clock());
         if (shader.safeGetUniform("u_Flash") != null) shader.safeGetUniform("u_Flash").set(charge.flash());
+        if (shader.safeGetUniform("u_Pulse") != null) shader.safeGetUniform("u_Pulse").set(charge.pulse());
     }
 }

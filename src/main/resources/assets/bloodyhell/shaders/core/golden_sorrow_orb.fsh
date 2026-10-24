@@ -12,6 +12,7 @@ uniform float u_Time;
 uniform float u_Charge;
 uniform float u_ChargeTime;
 uniform float u_Flash;
+uniform float u_Pulse;
 
 out vec4 fragColor;
 
@@ -203,7 +204,7 @@ void main() {
         vec3 col = mix(cristalRefractado * GLASS_TINT, baseOro, GOLD_OPACITY);
         col += spec * vec3(1.0, 0.95, 0.8) * (SPECULAR_INTENSITY + 1.0 * u_Charge);
         col += fresnel * ORO_CLARO * (FRESNEL_INTENSITY + 0.3 * u_Charge);
-        col += ORO_CLARO * u_Flash * 0.9;
+        col += ORO_CLARO * max(u_Flash, u_Pulse) * 0.9;
         float shardMask = 1.0 - smoothstep(0.0, 0.02, shardsDistance(alignedP + vec3(0.0, 0.15, 0.0), u_ChargeTime));
         col += vec3(1.0, 0.85, 0.45) * shardMask * 0.55;
 

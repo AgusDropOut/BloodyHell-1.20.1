@@ -26,12 +26,12 @@ import java.util.function.Supplier;
 public class StaffChargeClient {
     private record Beat(Supplier<SoundEvent> lub, Supplier<SoundEvent> dub) {}
 
-    private record Cues(Supplier<SoundEvent> note, Supplier<SoundEvent> full, Supplier<SoundEvent> fade, @Nullable Supplier<SoundEvent> loop, @Nullable Beat beat, float clockBoost) {}
+    private record Cues(Supplier<SoundEvent> note, Supplier<SoundEvent> full, Supplier<SoundEvent> fade, @Nullable Supplier<SoundEvent> loop, @Nullable Beat beat, float clockBoost, float notePitchScale, float pulsePeak, float pulseSeconds) {}
 
     private static final Map<SpellAffinity, Cues> CUES = Map.of(
-            SpellAffinity.BLOOD_FIRE, new Cues(ModSounds.STAFF_CHARGE_CINDER_NOTE, ModSounds.STAFF_CHARGE_CINDER_FULL, ModSounds.STAFF_CHARGE_CINDER_FADE, ModSounds.STAFF_CHARGE_CINDER_LOOP, null, 1.5f),
-            SpellAffinity.BLOOD, new Cues(ModSounds.STAFF_CHARGE_BLOOD_NOTE, ModSounds.STAFF_CHARGE_BLOOD_FULL, ModSounds.STAFF_CHARGE_BLOOD_FADE, null, new Beat(ModSounds.STAFF_CHARGE_BLOOD_BEAT_LUB, ModSounds.STAFF_CHARGE_BLOOD_BEAT_DUB), 0.6f),
-            SpellAffinity.RHNULL, new Cues(ModSounds.STAFF_CHARGE_GOLDEN_NOTE, ModSounds.STAFF_CHARGE_GOLDEN_FULL, ModSounds.STAFF_CHARGE_GOLDEN_FADE, null, null, 1.5f));
+            SpellAffinity.BLOOD_FIRE, new Cues(ModSounds.STAFF_CHARGE_CINDER_NOTE, ModSounds.STAFF_CHARGE_CINDER_FULL, ModSounds.STAFF_CHARGE_CINDER_FADE, ModSounds.STAFF_CHARGE_CINDER_LOOP, null, 1.5f, 1.0f, 0.75f, 0.7f),
+            SpellAffinity.BLOOD, new Cues(ModSounds.STAFF_CHARGE_BLOOD_NOTE, ModSounds.STAFF_CHARGE_BLOOD_FULL, ModSounds.STAFF_CHARGE_BLOOD_FADE, null, new Beat(ModSounds.STAFF_CHARGE_BLOOD_BEAT_LUB, ModSounds.STAFF_CHARGE_BLOOD_BEAT_DUB), 0.6f, 0.65f, 1.0f, 0.45f),
+            SpellAffinity.RHNULL, new Cues(ModSounds.STAFF_CHARGE_GOLDEN_NOTE, ModSounds.STAFF_CHARGE_GOLDEN_FULL, ModSounds.STAFF_CHARGE_GOLDEN_FADE, null, null, 1.5f, 1.0f, 0.75f, 0.7f));
 
     private static final float NOTE_VOLUME = 0.6f;
     private static final float FULL_VOLUME = 0.8f;
@@ -41,7 +41,6 @@ public class StaffChargeClient {
     private static final float LUB_VOLUME = 0.5f;
     private static final float DUB_VOLUME = 0.35f;
     private static final float FLASH_SECONDS = 0.7f;
-    private static final float KILL_PULSE = 0.75f;
     private static final float MAX_FRAME_SECONDS = 0.1f;
 
     private static BaseStaffItem heldStaff;
@@ -50,6 +49,8 @@ public class StaffChargeClient {
     private static float smoothed;
     private static float clock = ShaderTime.seconds();
     private static float flash;
+    private static float pulse;
+    private static float pulseSeconds = 0.7f;
     private static float clockBoost = DEFAULT_CLOCK_BOOST;
     private static Beat heartbeat;
     private static long lastFrameMillis = Util.getMillis();
@@ -66,7 +67,8 @@ public class StaffChargeClient {
         clock += seconds * (1.0f + clockBoost * smoothed);
         if (heartbeat != null) beat(previousClock, clock);
         flash = Math.max(0.0f, flash - seconds / FLASH_SECONDS);
-        return new OrbCharge(smoothed, clock, flash * flash);
+        pulse = Math.max(0.0f, pulse - seconds / pulseSeconds);
+        return new OrbCharge(smoothed, clock, flash * flash, pulse * pulse);
     }
 
     @SubscribeEvent
@@ -124,12 +126,13 @@ public class StaffChargeClient {
 
     private static void react(BaseStaffItem staff, int previous, int current) {
         int full = BaseStaffItem.MARKED_FOR_FULL_BONUS;
+        Cues cues = CUES.get(staff.getAffinity());
         if (current >= full && previous < full) {
             flash = 1.0f;
-        } else if (current > previous) {
-            flash = Math.max(flash, KILL_PULSE);
+        } else if (current > previous && cues != null) {
+            pulse = cues.pulsePeak();
+            pulseSeconds = cues.pulseSeconds();
         }
-        Cues cues = CUES.get(staff.getAffinity());
         if (cues == null) return;
         StaffChargeSoundPlan.between(previous, current, full).ifPresent(step -> {
             SoundEvent sound = switch (step.cue()) {
@@ -142,7 +145,8 @@ public class StaffChargeClient {
                 case FULL -> FULL_VOLUME;
                 case FADE -> FADE_VOLUME;
             };
-            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(sound, step.pitch(), volume));
+            float pitch = step.cue() == StaffChargeSoundPlan.Cue.NOTE ? step.pitch() * cues.notePitchScale() : step.pitch();
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(sound, pitch, volume));
         });
     }
 

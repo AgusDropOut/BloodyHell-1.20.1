@@ -19,6 +19,12 @@
   ],
   "uniforms": [
     {
+      "name": "u_Pulse",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
+    },
+    {
       "name": "u_Charge",
       "type": "float",
       "count": 1,
