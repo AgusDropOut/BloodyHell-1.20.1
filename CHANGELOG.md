@@ -19,6 +19,7 @@ A stabilization release: new magic items, a safer machine and tool progression, 
 - Every block now has a declared mining tool and tier: blasphemite blocks and ore need a sanguinite tool, and the Rhnull block needs a blasphemite tool. Hardness and drops were corrected.
 - Sanguinite tanks, pipes and condensers refuse dangerous fluids (corrupted blood and viscous blasphemy), and a sanguinite pipe that ends up holding one bursts into a corrupted blood block. The rhnull versions take every fluid.
 - The Blood bow, arrow and armor are shown as Sanguinite bow, arrow and armor, because they are made of sanguinite. Their ids (`bloodyhell:blood_bow`, `blood_helmet`...) do not change, so recipes, scripts and quests that name them keep working.
+- The items of the pipes, condensers, blood harvester, Unknown Portal, Seliora resting block, blood gem sprout, blood lily and ancient torch were renamed internally; worlds saved with older versions convert them, so the ones in chests and inventories are kept.
 - Plants drop like vanilla grass.
 - The Offspring of the Unknown flees when it is badly hurt.
 - Reworked visuals: the Frenzy overlay (more vanilla, less motion sickness), the blood decal and the blood blob.

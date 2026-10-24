@@ -13,7 +13,7 @@ A remap does not help anything that names an id before a world is loaded: startu
 
 ## Decision
 - Removing content is acceptable: the items and blocks disappear from old worlds and the game does not crash.
-- Renaming an id is a breaking change for modpacks. It is done only in a version that the changelog announces, with an entry in `LegacyIdRemapper` so saved worlds convert, and after running `scripts/check-modpack-ids.py` against the known packs so their authors get the list of lines to change.
+- Renaming an id is a breaking change for modpacks. It is done only in a version that the changelog announces, with an entry in `LegacyIdRemapper` (it exists, `event/handlers/LegacyIdRemapper.java`, and `LegacyIdGameTests` checks its targets) so saved worlds convert, and after running `scripts/check-modpack-ids.py` against the known packs so their authors get the list of lines to change.
 - Display names can change at any time; ids cannot be renamed for cosmetic reasons inside a stabilization release.
 - The Blood bow, arrow and armor keep their ids (`blood_bow`, `blood_arrow`, `blood_helmet`, `blood_chestplate`, `blood_leggings`, `blood_boots`) and are shown as Sanguinite in the lang file. The full rename (`sanguinite_*`, with a `MissingMappingsEvent` handler for the saved worlds and the pack lines listed by `check-modpack-ids.py`) waits for a release that the pack authors update with us. It was done and reverted on 2026-10-23.
 

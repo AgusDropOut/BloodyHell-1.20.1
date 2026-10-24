@@ -121,7 +121,7 @@ Visuals
 - [ ] No jump of the shader effects after 100 seconds of play.
 
 Compatibility
-- [ ] Load a world saved with 0.8.585 (`build/libs/bloodyhell-0.8.585.jar` is the old jar): it loads, the game logs the removed items and blocks, and Forge makes a backup of the world.
+- [x] Load a world saved with 0.8.585, 0.7.8 and 0.6.1: it loads, the game logs the removed items and blocks, and Forge makes a backup of the world (checked on 2026-10-24 on copies of four real worlds: all load and the player stays in for 400 ticks with no crash; only the removed content is lost; the items of the machines are converted by `LegacyIdRemapper`).
 - [ ] Two separate launches with a new world each: one without Rubidium and Oculus, one with both and a shader pack (BSL and Complementary).
 - [ ] A dedicated server starts and a client joins it.
 - [x] Walk the entity grid and check every model, texture and animation looks right (with and without a shader pack).
