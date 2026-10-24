@@ -58,7 +58,7 @@ public class StaffOrbLayer extends GeoRenderLayer<BaseStaffItem> {
                 Matrix3f boneRotation = new Matrix3f();
                 boneMat.get3x3(boneRotation);
 
-                sink.accept(boneMat, handProj, boneRotation, context, StaffChargeClient.view());
+                sink.accept(boneMat, handProj, boneRotation, context, StaffChargeClient.view(staffRenderer.getCurrentItemStack(), context));
 
                 poseStack.popPose();
             });

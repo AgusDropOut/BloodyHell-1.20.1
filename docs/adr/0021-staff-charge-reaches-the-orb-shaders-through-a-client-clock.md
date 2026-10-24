@@ -16,5 +16,6 @@ The orb shaders animate with `u_Time`. If the speed of an animation depends on t
 ## Consequences
 - No GUI element and no packet: the stack already syncs the marked count.
 - A new orb shader only has to declare the three uniforms in its json and use `u_ChargeTime` instead of `u_Time`.
-- The charge is only visible in first person, like the orb itself, and only for the staff in the hand of the local player.
+- The client keeps one state per hand (`StaffChargeClient`), and an orb uses the state of the hand it is drawn in: with a staff in each hand, or when switching from one staff to another, a charge never leaks from one orb to the other. A staff that is not in a first person hand (another player's, an item frame, the third person view) shows its own stored charge without smoothing, flashes or sounds. A staff that is picked up starts at its own charge instead of easing in from the previous one.
+- The orb is only drawn in first person (and in the mirrored camera), so the charge is only visible there.
 - The Golden Sorrow charges as a kill streak (`KillStreak`): the client reads the same `Charge` of the stack, so it needs nothing special.
