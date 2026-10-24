@@ -86,6 +86,8 @@ Two families:
 
 If the base grew an option to skip the matrix capture and an overridable guard, the orbs, the mini blob and the Omnitome managers could extend it too. That has not been done because it adds branches to the base for few users.
 
+The staff orbs receive the charge of the held staff as `OrbCharge` (`StaffChargeClient.view()`, smoothed on the client) and the manager sets it as the uniforms `u_Charge` (0 to 1), `u_ChargeTime` and `u_Flash`. `u_ChargeTime` is a clock that the client accumulates at a speed that grows with the charge: a shader that multiplied `u_Time` by a changing speed would jump in phase every time the speed changed.
+
 Known leftover: `OrbRenderManager` still gives the event projection back with a hardcoded `VertexSorting.ORTHOGRAPHIC_Z`, while `DeferredMatrices` and the Omnitome managers restore the previous sorting.
 
 ## Where the instances and their configuration live
@@ -156,7 +158,7 @@ client/render/
     BloodBlob, MiniBlob, BloodStainDecal                                   direct
     api/    BillboardEffect, TrailEffect, OrbEffect,
             IBloodBlobEmitter, BloodBlobEmitters, ScreenSampledDraw
-    data/   BillboardData, TrailData, OrbData, RingData, SphereData, DistortionData,
+    data/   BillboardData, TrailData, OrbData, OrbCharge, RingData, SphereData, DistortionData,
             BlackHoleData, BlackHoleRenderData, DecalData, MiniBlob
   item/deferred/
     ItemEffects, ItemPassState, OmnitomeBook / OmnitomeClip / OmnitomeVoid managers

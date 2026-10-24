@@ -9,6 +9,9 @@ uniform mat4 u_InvProjMat;
 uniform vec3 u_OrbViewPos;
 uniform mat3 u_OrbRotation;
 uniform float u_Time;
+uniform float u_Charge;
+uniform float u_ChargeTime;
+uniform float u_Flash;
 
 out vec4 fragColor;
 
@@ -55,7 +58,7 @@ out vec4 fragColor;
 #define RAY_STEP_FACTOR 0.2
 
 #define GLOBAL_SCALE 0.35
-#define SCALE (vec3(GEM_WIDTH, GEM_HEIGHT, GEM_DEPTH) * GLOBAL_SCALE)
+#define SCALE (vec3(GEM_WIDTH * (1.0 - 0.2 * u_Charge), GEM_HEIGHT * (1.0 + 0.08 * u_Charge), GEM_DEPTH * (1.0 - 0.2 * u_Charge)) * GLOBAL_SCALE)
 
 mat2 rot(float a) {
     float s = sin(a), c = cos(a);
@@ -132,7 +135,7 @@ void main() {
         vec3 localP = p - u_OrbViewPos;
         vec3 alignedP = invOrbRot * localP;
 
-        float d = map(alignedP + vec3(0.0,0.15,0.0), u_Time);
+        float d = map(alignedP + vec3(0.0,0.15,0.0), u_ChargeTime);
 
         if(d < HIT_THRESHOLD) {
             hit = true;
@@ -147,7 +150,7 @@ void main() {
     if(hit) {
         vec3 localP = p - u_OrbViewPos;
         vec3 alignedP = invOrbRot * localP;
-        vec3 nLocal = calcNormal(alignedP, u_Time);
+        vec3 nLocal = calcNormal(alignedP, u_ChargeTime);
 
         vec3 nView = u_OrbRotation * nLocal;
         vec3 viewDir = rd;
@@ -176,8 +179,9 @@ void main() {
         vec3 baseOro = mix(ORO_OSCURO, ORO_CLARO, diff * 0.75 + 0.25);
 
         vec3 col = mix(cristalRefractado * GLASS_TINT, baseOro, GOLD_OPACITY);
-        col += spec * vec3(1.0, 0.95, 0.8) * SPECULAR_INTENSITY;
-        col += fresnel * ORO_CLARO * FRESNEL_INTENSITY;
+        col += spec * vec3(1.0, 0.95, 0.8) * (SPECULAR_INTENSITY + 1.0 * u_Charge);
+        col += fresnel * ORO_CLARO * (FRESNEL_INTENSITY + 0.3 * u_Charge);
+        col += ORO_CLARO * u_Flash * 0.9;
 
         fragColor = vec4(col, 1.0);
     } else {

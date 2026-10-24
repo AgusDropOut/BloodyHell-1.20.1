@@ -16,6 +16,24 @@
   ],
   "uniforms": [
     {
+      "name": "u_Charge",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
+    },
+    {
+      "name": "u_ChargeTime",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
+    },
+    {
+      "name": "u_Flash",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
+    },
+    {
       "name": "u_ProjMat",
       "type": "matrix4x4",
       "count": 16,

@@ -3,7 +3,9 @@ package net.agusdropout.bloodyhell.client.render.item.layer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.agusdropout.bloodyhell.client.render.effect.data.OrbCharge;
 import net.agusdropout.bloodyhell.client.render.item.generic.GenericStaffRenderer;
+import net.agusdropout.bloodyhell.client.sound.StaffChargeClient;
 import net.agusdropout.bloodyhell.item.custom.base.BaseStaffItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,7 +20,7 @@ public class StaffOrbLayer extends GeoRenderLayer<BaseStaffItem> {
 
     @FunctionalInterface
     public interface OrbSink {
-        void accept(Matrix4f pose, Matrix4f projection, Matrix3f rotation, ItemDisplayContext transform);
+        void accept(Matrix4f pose, Matrix4f projection, Matrix3f rotation, ItemDisplayContext transform, OrbCharge charge);
     }
 
     private final GenericStaffRenderer staffRenderer;
@@ -56,7 +58,7 @@ public class StaffOrbLayer extends GeoRenderLayer<BaseStaffItem> {
                 Matrix3f boneRotation = new Matrix3f();
                 boneMat.get3x3(boneRotation);
 
-                sink.accept(boneMat, handProj, boneRotation, context);
+                sink.accept(boneMat, handProj, boneRotation, context, StaffChargeClient.view());
 
                 poseStack.popPose();
             });

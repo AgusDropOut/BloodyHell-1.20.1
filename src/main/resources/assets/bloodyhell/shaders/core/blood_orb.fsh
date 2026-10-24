@@ -9,25 +9,28 @@ uniform mat4 u_InvProjMat;
 uniform vec3 u_OrbViewPos;
 uniform mat3 u_OrbRotation;
 uniform float u_Time;
+uniform float u_Charge;
+uniform float u_ChargeTime;
+uniform float u_Flash;
 
 out vec4 fragColor;
 
 
 float map(vec3 p, float time) {
     float t = time * 1.5;
-    float pulse = pow(sin(fract(t) * 3.1415), 20.0) * 0.06 +
-    pow(sin(fract(t + 0.15) * 3.1415), 20.0) * 0.03;
-    float baseRadius = 0.25;
+    float pulse = pow(sin(fract(t) * 3.1415), 20.0) * (0.06 + 0.04 * u_Charge) +
+    pow(sin(fract(t + 0.15) * 3.1415), 20.0) * (0.03 + 0.02 * u_Charge);
+    float baseRadius = 0.25 * (1.0 + 0.06 * u_Charge) + u_Flash * 0.02;
 
     float angle = atan(p.x, p.z);
-    float grooves = sin(angle * 6.0) * 0.03;
+    float grooves = sin(angle * 6.0) * (0.03 + 0.012 * u_Charge) + sin(angle * 12.0) * 0.012 * u_Charge;
 
     return length(p) - (baseRadius + pulse + grooves);
 }
 
 
 float opTwist(vec3 p, float time ) {
-    const float k = 5.0;
+    float k = 5.0 + 3.0 * u_Charge;
     float twistAngle = k * p.y + (time * 1.5);
     float c = cos(twistAngle);
     float s = sin(twistAngle);
@@ -88,7 +91,7 @@ void main() {
         vec3 alignedP = invOrbRot * localP;
 
 
-        float d = opTwist(alignedP, u_Time);
+        float d = opTwist(alignedP, u_ChargeTime);
 
         if(d < 0.002) {
             hit = true;
@@ -103,7 +106,7 @@ void main() {
     if(hit) {
         vec3 localP = p - u_OrbViewPos;
         vec3 alignedP = invOrbRot * localP;
-        vec3 nLocal = calcNormal(alignedP, u_Time);
+        vec3 nLocal = calcNormal(alignedP, u_ChargeTime);
         vec2 distortedUV = vec2(0.0) ;
 
         distortedUV = v_ScreenUV + nLocal.xy * 0.15;
@@ -128,7 +131,7 @@ void main() {
         vec3 baseVolume = vec3(0.08, 0.0, 0.0);
         vec3 edgeGlow = vec3(1.0, 0.1, 0.1);
 
-        vec3 finalColor = anomalyColor + (baseVolume * diff) + (edgeGlow * fresnel * 0.8);
+        vec3 finalColor = anomalyColor + (baseVolume * diff) + (edgeGlow * fresnel * (0.8 + 0.5 * u_Charge)) + (edgeGlow * u_Flash * (0.2 + 0.6 * fresnel));
 
         fragColor = vec4(finalColor, 1.0);
     } else {

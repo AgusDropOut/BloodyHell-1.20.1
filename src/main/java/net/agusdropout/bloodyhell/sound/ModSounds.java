@@ -58,6 +58,16 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> UNKNOWN_LANTERN_AMBIENT_2 = registerSoundEvents("unknown_lantern_ambient_2");
     public static final RegistryObject<SoundEvent> UNKNOWN_LANTERN_GAZE = registerSoundEvents("unknown_lantern_gaze");
     public static final RegistryObject<SoundEvent> HARVESTER_PUMP = registerSoundEvents("harvester_pump");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_CINDER_NOTE = registerSoundEvents("staff_charge_cinder_note");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_CINDER_FULL = registerSoundEvents("staff_charge_cinder_full");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_CINDER_FADE = registerSoundEvents("staff_charge_cinder_fade");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_CINDER_LOOP = registerSoundEvents("staff_charge_cinder_loop");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_NOTE = registerSoundEvents("staff_charge_blood_note");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_FULL = registerSoundEvents("staff_charge_blood_full");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_FADE = registerSoundEvents("staff_charge_blood_fade");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_GOLDEN_NOTE = registerSoundEvents("staff_charge_golden_note");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_GOLDEN_FULL = registerSoundEvents("staff_charge_golden_full");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_GOLDEN_FADE = registerSoundEvents("staff_charge_golden_fade");
     public static final RegistryObject<SoundEvent> CONDENSER_PUMP = registerSoundEvents("condenser_pump");
     public static final RegistryObject<SoundEvent> BURDEN_SHOOT = registerSoundEvents("burden_shoot");
     public static final RegistryObject<SoundEvent> UNKNOWN_SHIELD_BOUNCE = registerSoundEvents("unknown_shield_bounce");

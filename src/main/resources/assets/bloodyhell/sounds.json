@@ -365,6 +365,85 @@
         "stream": false
       }
     ]
+  },
+  "staff_charge_cinder_note": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_cinder_note",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_cinder_full": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_cinder_full",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_cinder_fade": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_cinder_fade",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_cinder_loop": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_cinder_loop",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_blood_note": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_blood_note",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_blood_full": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_blood_full",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_blood_fade": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_blood_fade",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_golden_note": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_golden_note",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_golden_full": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_golden_full",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_golden_fade": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_golden_fade",
+        "stream": false
+      }
+    ]
   }
-
 }

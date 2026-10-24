@@ -11,6 +11,7 @@ import net.agusdropout.bloodyhell.client.render.deferred.SceneColorCopy;
 import net.agusdropout.bloodyhell.client.render.deferred.api.DeferredRenderManager;
 import net.agusdropout.bloodyhell.client.render.deferred.api.FrameContext;
 import net.agusdropout.bloodyhell.client.render.effect.api.OrbEffect;
+import net.agusdropout.bloodyhell.client.render.effect.data.OrbCharge;
 import net.agusdropout.bloodyhell.client.render.effect.data.OrbData;
 import net.agusdropout.bloodyhell.client.shader.RenderPassGuard;
 import net.agusdropout.bloodyhell.client.shader.ShaderTime;
@@ -37,11 +38,11 @@ public class OrbRenderManager implements DeferredRenderManager {
         return effect.name();
     }
 
-    public void submit(Matrix4f pose, Matrix4f projection, Matrix3f rotation, ItemDisplayContext transform) {
+    public void submit(Matrix4f pose, Matrix4f projection, Matrix3f rotation, ItemDisplayContext transform, OrbCharge charge) {
         if (RenderPassGuard.shouldSkipDeferred(transform)) return;
         float scale = rotation.getColumn(0, new Vector3f()).length();
         if (scale < 1.0e-4f) return;
-        activeOrbs.add(new OrbData(pose, projection, rotation, scale));
+        activeOrbs.add(new OrbData(pose, projection, rotation, scale, charge));
     }
 
     @Override
@@ -93,6 +94,7 @@ public class OrbRenderManager implements DeferredRenderManager {
                 shader.safeGetUniform("u_OrbRotation").set(shaderRotation);
             }
 
+            setCharge(shader, data.charge());
             effect.perOrbUniforms().accept(shader);
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
@@ -107,5 +109,11 @@ public class OrbRenderManager implements DeferredRenderManager {
         effect.state().end().run();
 
         activeOrbs.clear();
+    }
+
+    private static void setCharge(ShaderInstance shader, OrbCharge charge) {
+        if (shader.safeGetUniform("u_Charge") != null) shader.safeGetUniform("u_Charge").set(charge.charge());
+        if (shader.safeGetUniform("u_ChargeTime") != null) shader.safeGetUniform("u_ChargeTime").set(charge.clock());
+        if (shader.safeGetUniform("u_Flash") != null) shader.safeGetUniform("u_Flash").set(charge.flash());
     }
 }

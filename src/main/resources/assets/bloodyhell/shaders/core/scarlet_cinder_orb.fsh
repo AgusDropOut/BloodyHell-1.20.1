@@ -9,12 +9,15 @@ uniform mat4 u_InvProjMat;
 uniform vec3 u_OrbViewPos;
 uniform mat3 u_OrbRotation;
 uniform float u_Time;
+uniform float u_Charge;
+uniform float u_ChargeTime;
+uniform float u_Flash;
 uniform float u_Pitch;
 
 out vec4 fragColor;
 
 
-#define GLOBAL_SCALE 0.15
+#define GLOBAL_SCALE (0.15 * (1.0 + 0.18 * u_Charge))
 
 #define POS_Y 1.0
 
@@ -28,7 +31,8 @@ out vec4 fragColor;
 #define NOISE_STRENGTH 0.3
 
 
-#define SPHERE_COUNT 8
+#define SPHERE_BASE_COUNT 8
+#define SPHERE_MAX_COUNT 16
 #define SPHERE_SPEED 0.8
 #define SPHERE_MAX_RADIUS 0.28
 #define SPHERE_SIZE_VAR 0.75
@@ -107,7 +111,12 @@ float map(vec3 p, float time, vec3 worldUpLocal) {
     float baseDist = sdDrop(p);
 
     float spheresDist = 1e5;
-    for(int i = 0; i < SPHERE_COUNT; i++) {
+    for(int i = 0; i < SPHERE_MAX_COUNT; i++) {
+        float sphereWeight = 1.0;
+        if (i >= SPHERE_BASE_COUNT) {
+            sphereWeight = clamp(u_Charge * float(SPHERE_MAX_COUNT - SPHERE_BASE_COUNT) - float(i - SPHERE_BASE_COUNT), 0.0, 1.0);
+            if (sphereWeight <= 0.0) break;
+        }
         float fi = float(i);
         float t = time * SPHERE_SPEED + fi * 1.618;
 
@@ -146,7 +155,7 @@ float map(vec3 p, float time, vec3 worldUpLocal) {
         float curve = pow(progress, mix(0.6, 1.4, h1));
         float sizeLifecycle = sin(curve * 3.1415);
 
-        float r = SPHERE_MAX_RADIUS * mix(1.0 - SPHERE_SIZE_VAR, 1.0, h2) * sizeLifecycle;
+        float r = SPHERE_MAX_RADIUS * mix(1.0 - SPHERE_SIZE_VAR, 1.0, h2) * sizeLifecycle * sphereWeight;
 
         float dSphere = length(p - spherePos) - r;
 
@@ -210,7 +219,7 @@ void main() {
         vec3 localP = p - u_OrbViewPos;
         vec3 alignedP = invOrbRot * localP;
 
-        float d = map(alignedP, u_Time, worldUpLocal);
+        float d = map(alignedP, u_ChargeTime, worldUpLocal);
 
         if(d < 0.005) {
             hit = true;
@@ -228,7 +237,7 @@ void main() {
 
         vec3 scaledP = alignedP / GLOBAL_SCALE;
 
-        vec3 nLocal = getNormal(alignedP, u_Time, worldUpLocal);
+        vec3 nLocal = getNormal(alignedP, u_ChargeTime, worldUpLocal);
         vec3 localViewDir = normalize(invOrbRot * (-rd));
 
         float localY = scaledP.y - POS_Y;
@@ -248,6 +257,7 @@ void main() {
         radialGlow = pow(radialGlow, RADIAL_GLOW_FALLOFF) * RADIAL_GLOW_STRENGTH;
 
         bodyColor += vec3(1.0, 1.0, 1.0) * radialGlow;
+        bodyColor += vec3(1.0, 0.3, 0.3) * u_Flash * 0.7;
 
         float outlineMask = 1.0 - smoothstep(OUTLINE_MIN, OUTLINE_MAX, NdotV);
         vec3 col = mix(bodyColor, COLOR_OUTLINE_BLACK, outlineMask);
