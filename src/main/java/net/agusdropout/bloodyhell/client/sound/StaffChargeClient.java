@@ -24,18 +24,22 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = BloodyHell.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class StaffChargeClient {
-    private record Cues(Supplier<SoundEvent> note, Supplier<SoundEvent> full, Supplier<SoundEvent> fade, @Nullable Supplier<SoundEvent> loop) {}
+    private record Beat(Supplier<SoundEvent> lub, Supplier<SoundEvent> dub) {}
+
+    private record Cues(Supplier<SoundEvent> note, Supplier<SoundEvent> full, Supplier<SoundEvent> fade, @Nullable Supplier<SoundEvent> loop, @Nullable Beat beat, float clockBoost) {}
 
     private static final Map<SpellAffinity, Cues> CUES = Map.of(
-            SpellAffinity.BLOOD_FIRE, new Cues(ModSounds.STAFF_CHARGE_CINDER_NOTE, ModSounds.STAFF_CHARGE_CINDER_FULL, ModSounds.STAFF_CHARGE_CINDER_FADE, ModSounds.STAFF_CHARGE_CINDER_LOOP),
-            SpellAffinity.BLOOD, new Cues(ModSounds.STAFF_CHARGE_BLOOD_NOTE, ModSounds.STAFF_CHARGE_BLOOD_FULL, ModSounds.STAFF_CHARGE_BLOOD_FADE, null),
-            SpellAffinity.RHNULL, new Cues(ModSounds.STAFF_CHARGE_GOLDEN_NOTE, ModSounds.STAFF_CHARGE_GOLDEN_FULL, ModSounds.STAFF_CHARGE_GOLDEN_FADE, null));
+            SpellAffinity.BLOOD_FIRE, new Cues(ModSounds.STAFF_CHARGE_CINDER_NOTE, ModSounds.STAFF_CHARGE_CINDER_FULL, ModSounds.STAFF_CHARGE_CINDER_FADE, ModSounds.STAFF_CHARGE_CINDER_LOOP, null, 1.5f),
+            SpellAffinity.BLOOD, new Cues(ModSounds.STAFF_CHARGE_BLOOD_NOTE, ModSounds.STAFF_CHARGE_BLOOD_FULL, ModSounds.STAFF_CHARGE_BLOOD_FADE, null, new Beat(ModSounds.STAFF_CHARGE_BLOOD_BEAT_LUB, ModSounds.STAFF_CHARGE_BLOOD_BEAT_DUB), 0.6f),
+            SpellAffinity.RHNULL, new Cues(ModSounds.STAFF_CHARGE_GOLDEN_NOTE, ModSounds.STAFF_CHARGE_GOLDEN_FULL, ModSounds.STAFF_CHARGE_GOLDEN_FADE, null, null, 1.5f));
 
     private static final float NOTE_VOLUME = 0.6f;
     private static final float FULL_VOLUME = 0.8f;
     private static final float FADE_VOLUME = 0.6f;
     private static final float SMOOTHING_RATE = 6.0f;
-    private static final float CLOCK_BOOST = 1.5f;
+    private static final float DEFAULT_CLOCK_BOOST = 1.5f;
+    private static final float LUB_VOLUME = 0.5f;
+    private static final float DUB_VOLUME = 0.35f;
     private static final float FLASH_SECONDS = 0.7f;
     private static final float MAX_FRAME_SECONDS = 0.1f;
 
@@ -45,6 +49,8 @@ public class StaffChargeClient {
     private static float smoothed;
     private static float clock = ShaderTime.seconds();
     private static float flash;
+    private static float clockBoost = DEFAULT_CLOCK_BOOST;
+    private static Beat heartbeat;
     private static long lastFrameMillis = Util.getMillis();
     private static StaffEmberLoopSound loop;
 
@@ -55,7 +61,9 @@ public class StaffChargeClient {
         float seconds = Math.min((now - lastFrameMillis) / 1000.0f, MAX_FRAME_SECONDS);
         lastFrameMillis = now;
         smoothed += (target - smoothed) * (1.0f - (float) Math.exp(-seconds * SMOOTHING_RATE));
-        clock += seconds * (1.0f + CLOCK_BOOST * smoothed);
+        float previousClock = clock;
+        clock += seconds * (1.0f + clockBoost * smoothed);
+        if (heartbeat != null) beat(previousClock, clock);
         flash = Math.max(0.0f, flash - seconds / FLASH_SECONDS);
         return new OrbCharge(smoothed, clock, flash * flash);
     }
@@ -78,6 +86,9 @@ public class StaffChargeClient {
             lastCount = count;
         }
         target = staff.getBonusFill(stack);
+        Cues cues = CUES.get(staff.getAffinity());
+        clockBoost = cues == null ? DEFAULT_CLOCK_BOOST : cues.clockBoost();
+        heartbeat = cues != null && count >= BaseStaffItem.MARKED_FOR_FULL_BONUS ? cues.beat() : null;
         keepLoop(staff, count);
     }
 
@@ -86,6 +97,15 @@ public class StaffChargeClient {
         release();
         smoothed = 0.0f;
         flash = 0.0f;
+    }
+
+    private static void beat(float previousClock, float currentClock) {
+        if (OrbHeartbeat.smallBeats(previousClock, currentClock) > 0) {
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(heartbeat.dub().get(), 1.0f, DUB_VOLUME));
+        }
+        if (OrbHeartbeat.bigBeats(previousClock, currentClock) > 0) {
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(heartbeat.lub().get(), 1.0f, LUB_VOLUME));
+        }
     }
 
     private static ItemStack heldStaffStack(Player player) {
@@ -97,6 +117,8 @@ public class StaffChargeClient {
         heldStaff = null;
         lastCount = 0;
         target = 0.0f;
+        heartbeat = null;
+        clockBoost = DEFAULT_CLOCK_BOOST;
     }
 
     private static void react(BaseStaffItem staff, int previous, int current) {

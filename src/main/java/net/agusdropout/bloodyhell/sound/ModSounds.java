@@ -65,6 +65,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_NOTE = registerSoundEvents("staff_charge_blood_note");
     public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_FULL = registerSoundEvents("staff_charge_blood_full");
     public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_FADE = registerSoundEvents("staff_charge_blood_fade");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_BEAT_LUB = registerSoundEvents("staff_charge_blood_beat_lub");
+    public static final RegistryObject<SoundEvent> STAFF_CHARGE_BLOOD_BEAT_DUB = registerSoundEvents("staff_charge_blood_beat_dub");
     public static final RegistryObject<SoundEvent> STAFF_CHARGE_GOLDEN_NOTE = registerSoundEvents("staff_charge_golden_note");
     public static final RegistryObject<SoundEvent> STAFF_CHARGE_GOLDEN_FULL = registerSoundEvents("staff_charge_golden_full");
     public static final RegistryObject<SoundEvent> STAFF_CHARGE_GOLDEN_FADE = registerSoundEvents("staff_charge_golden_fade");

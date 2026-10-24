@@ -445,5 +445,21 @@
         "stream": false
       }
     ]
+  },
+  "staff_charge_blood_beat_lub": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_blood_beat_lub",
+        "stream": false
+      }
+    ]
+  },
+  "staff_charge_blood_beat_dub": {
+    "sounds": [
+      {
+        "name": "bloodyhell:staff_charge_blood_beat_dub",
+        "stream": false
+      }
+    ]
   }
 }
