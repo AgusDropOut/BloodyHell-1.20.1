@@ -257,7 +257,6 @@ public class ModRenderers {
         event.registerEntityRenderer(ModEntityTypes.BLOOD_SLASH_DECAL.get(), BloodSlashDecalRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.BLOOD_STAIN_ENTITY.get(), BloodStainRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.BLOOD_FIRE_SOUL.get(), BloodFireSoulRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.INFESTATION_DECAL.get(), InfestationDecalRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.RHNULL_PAIN_THRONE.get(), RhnullPainThroneRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.RHNULL_ORB_EMITTER_ENTITY.get(), RhnullOrbEmitterRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.BLACK_HOLE.get(), BlackHoleRenderer::new);

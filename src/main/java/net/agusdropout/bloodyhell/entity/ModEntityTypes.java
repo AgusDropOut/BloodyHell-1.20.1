@@ -193,9 +193,6 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<BloodClotProjectile>> BLOOD_CLOT_PROJECTILE = ENTITY_TYPES.register("blood_clot_projectile",
             () -> EntityType.Builder.<BloodClotProjectile>of(BloodClotProjectile::new, MobCategory.MISC).sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(10).build(new ResourceLocation(BloodyHell.MODID, "blood_clot_projectile").toString()));
 
-    public static final RegistryObject<EntityType<InfestationDecalEntity>> INFESTATION_DECAL = ENTITY_TYPES.register("infestation_decal",
-            () -> EntityType.Builder.<InfestationDecalEntity>of(InfestationDecalEntity::new, MobCategory.MISC).sized(1.0f, 1.0f).build(new ResourceLocation(BloodyHell.MODID, "infestation_decal").toString()));
-
     public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE = ENTITY_TYPES.register("black_hole_entity",
             () -> EntityType.Builder.<BlackHoleEntity>of(BlackHoleEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(new ResourceLocation(BloodyHell.MODID, "black_hole_entity").toString()));
 
