@@ -425,7 +425,15 @@
   "staff_charge_golden_note": {
     "sounds": [
       {
-        "name": "bloodyhell:staff_charge_golden_note",
+        "name": "bloodyhell:staff_charge_golden_note_d2",
+        "stream": false
+      },
+      {
+        "name": "bloodyhell:staff_charge_golden_note_d3",
+        "stream": false
+      },
+      {
+        "name": "bloodyhell:staff_charge_golden_note_s2",
         "stream": false
       }
     ]
@@ -441,7 +449,11 @@
   "staff_charge_golden_fade": {
     "sounds": [
       {
-        "name": "bloodyhell:staff_charge_golden_fade",
+        "name": "bloodyhell:staff_charge_golden_fade_b1",
+        "stream": false
+      },
+      {
+        "name": "bloodyhell:staff_charge_golden_fade_l2",
         "stream": false
       }
     ]
