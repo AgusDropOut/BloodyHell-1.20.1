@@ -26,3 +26,4 @@ Template: Title, Status, Context, Decision, Consequences.
 | 0018 | Spell books are defined in one table and cast by one driver |
 | 0019 | Registry ids are public to modpacks |
 | 0020 | Model parts are read by reflection, not by an access transformer |
+| 0021 | Staff charge reaches the orb shaders through a client clock |
