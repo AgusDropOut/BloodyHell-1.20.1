@@ -58,7 +58,12 @@ out vec4 fragColor;
 #define RAY_STEP_FACTOR 0.2
 
 #define GLOBAL_SCALE 0.35
-#define SCALE (vec3(GEM_WIDTH * (1.0 - 0.2 * u_Charge), GEM_HEIGHT * (1.0 + 0.08 * u_Charge), GEM_DEPTH * (1.0 - 0.2 * u_Charge)) * GLOBAL_SCALE)
+#define SCALE (vec3(GEM_WIDTH, GEM_HEIGHT, GEM_DEPTH) * (1.0 + 0.12 * u_Charge) * GLOBAL_SCALE)
+
+#define SHARD_COUNT 5
+#define SHARD_ORBIT_RADIUS 0.3
+#define SHARD_ORBIT_HEIGHT 0.18
+#define SHARD_SIZE vec3(0.065, 0.12, 0.065)
 
 mat2 rot(float a) {
     float s = sin(a), c = cos(a);
@@ -70,7 +75,23 @@ float sdBipyramid(vec3 p, vec3 s) {
     return (p.x/s.x + p.y/s.y + p.z/s.z - 1.0) * min(s.x, min(s.y, s.z)) * GEM_SHARPNESS;
 }
 
+float shardsDistance(vec3 p, float time) {
+    float nearest = 1e5;
+    for (int i = 0; i < SHARD_COUNT; i++) {
+        float weight = smoothstep(0.0, 1.0, clamp(u_Charge * float(SHARD_COUNT) - float(i), 0.0, 1.0));
+        if (weight <= 0.01) continue;
+        float fi = float(i);
+        float angle = time * (0.9 + 0.12 * fi) + fi * 1.2566;
+        vec3 center = vec3(cos(angle) * SHARD_ORBIT_RADIUS, sin(time * 0.9 + fi * 1.3) * SHARD_ORBIT_HEIGHT, sin(angle) * SHARD_ORBIT_RADIUS);
+        vec3 local = p - center;
+        local.xz *= rot(time * 2.0 + fi);
+        nearest = min(nearest, sdBipyramid(local, SHARD_SIZE * weight));
+    }
+    return nearest;
+}
+
 float map(vec3 p, float time) {
+    float shards = shardsDistance(p, time);
     p.xz *= rot(time * ROTATION_SPEED);
 
     float xFade = smoothstep(SCALE.x * GROOVE_FADE_START, SCALE.x * GROOVE_FADE_END, abs(p.x));
@@ -93,7 +114,7 @@ float map(vec3 p, float time) {
     float gem = sdBipyramid(p, SCALE);
     gem += swirlDisp;
 
-    return gem;
+    return min(gem, shards);
 }
 
 vec3 calcNormal(vec3 p, float time) {
@@ -177,11 +198,14 @@ void main() {
         float fresnel = pow(1.0 - max(dot(nView, -viewDir), 0.0), FRESNEL_POWER);
 
         vec3 baseOro = mix(ORO_OSCURO, ORO_CLARO, diff * 0.75 + 0.25);
+        baseOro = mix(baseOro, ORO_CLARO * 1.15, 0.25 * u_Charge);
 
         vec3 col = mix(cristalRefractado * GLASS_TINT, baseOro, GOLD_OPACITY);
         col += spec * vec3(1.0, 0.95, 0.8) * (SPECULAR_INTENSITY + 1.0 * u_Charge);
         col += fresnel * ORO_CLARO * (FRESNEL_INTENSITY + 0.3 * u_Charge);
         col += ORO_CLARO * u_Flash * 0.9;
+        float shardMask = 1.0 - smoothstep(0.0, 0.02, shardsDistance(alignedP + vec3(0.0, 0.15, 0.0), u_ChargeTime));
+        col += vec3(1.0, 0.85, 0.45) * shardMask * 0.55;
 
         fragColor = vec4(col, 1.0);
     } else {

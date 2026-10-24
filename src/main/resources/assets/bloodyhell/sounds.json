@@ -401,7 +401,15 @@
   "staff_charge_blood_note": {
     "sounds": [
       {
-        "name": "bloodyhell:staff_charge_blood_note",
+        "name": "bloodyhell:staff_charge_blood_note_a",
+        "stream": false
+      },
+      {
+        "name": "bloodyhell:staff_charge_blood_note_b",
+        "stream": false
+      },
+      {
+        "name": "bloodyhell:staff_charge_blood_note_c",
         "stream": false
       }
     ]

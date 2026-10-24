@@ -41,6 +41,7 @@ public class StaffChargeClient {
     private static final float LUB_VOLUME = 0.5f;
     private static final float DUB_VOLUME = 0.35f;
     private static final float FLASH_SECONDS = 0.7f;
+    private static final float KILL_PULSE = 0.75f;
     private static final float MAX_FRAME_SECONDS = 0.1f;
 
     private static BaseStaffItem heldStaff;
@@ -123,7 +124,11 @@ public class StaffChargeClient {
 
     private static void react(BaseStaffItem staff, int previous, int current) {
         int full = BaseStaffItem.MARKED_FOR_FULL_BONUS;
-        if (current >= full && previous < full) flash = 1.0f;
+        if (current >= full && previous < full) {
+            flash = 1.0f;
+        } else if (current > previous) {
+            flash = Math.max(flash, KILL_PULSE);
+        }
         Cues cues = CUES.get(staff.getAffinity());
         if (cues == null) return;
         StaffChargeSoundPlan.between(previous, current, full).ifPresent(step -> {
