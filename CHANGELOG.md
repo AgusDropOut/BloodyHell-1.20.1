@@ -11,7 +11,8 @@ A stabilization release: new magic items, a safer machine and tool progression, 
 - The orb of a staff shows its charge. The blood orb pulses faster and its grooves get finer, the golden orb spins faster, grows and gains one orbiting shard for each charge, and the scarlet cinder burns faster, turns from red to a white pink and gains one orbiting spark for each charge. Every orb gives a short pulse each time the charge grows (the blood orb swells and twists with a deep heartbeat) and a flash when it is full.
 - Staff sounds, heard only by the player holding the staff: a rising note for each charge, a sound when the staff is full and another when it fades, a soft ember loop on the Scarlet Cinder while it is full and a heartbeat on the Incomplete Staff that follows the pulse of its orb. They are CC0 recordings from Freesound, edited; the golden ones are synthesized.
 - Spell books can be used on their own, with a staff, with the Omnitome, or with a staff and the Omnitome.
-- Rhnull blood engine: resurrection mechanics and the tether mode (work in progress).
+- Rhnull blood engine: resurrection mechanics and the tether mode (work in progress; it has no recipe yet and is only available in creative mode).
+- Guide entries for the Omnitome and the staffs.
 - Bound blood flask.
 - Sound subtitles and the missing names for five entities.
 

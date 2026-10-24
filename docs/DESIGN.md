@@ -12,7 +12,7 @@ Facts about how the mod is meant to work. Code and tests follow these; if the co
 - Rhnull comes from the sanguinite infusor: sanguinite with blood and visceral blood.
 
 ## Progression facts
-- The Rhnull blood engine is the least developed system: its mechanics, how it is obtained and its recipe are still to design (planned for the 1.0 tutorial).
+- The Rhnull blood engine is the least developed system: its mechanics, how it is obtained and its recipe are still to design (planned for the 1.0 tutorial). Until then the engine and its pillar are creative only: the progression check counts mining a placed block as a source, so it does not see that nothing in survival gives you the first one.
 - The Oni is deprecated and the dirty vena cava biome was cancelled. The mausoleum (its structure was never defined, only the templates and a biome tag exist), the Oni statue and the Sanguine Crucible core that only the Oni drops are deprecated with it and cannot be obtained in survival on purpose.
 - Many creatures drop nothing on purpose, and some creatures with a spawn egg never appear in the world on purpose.
 

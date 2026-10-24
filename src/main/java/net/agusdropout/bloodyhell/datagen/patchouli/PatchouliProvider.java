@@ -90,6 +90,27 @@ public class PatchouliProvider implements DataProvider {
                         "If manually drinking blood becomes burdensome, you can forge these ancient amulets. " + br() + br() +
                         "When equipped, they will automatically and passively regenerate your Crimson Veil over time.");
         saveEntry(cache, crimsonVeil);
+
+        PatchouliEntryBuilder omnitome = PatchouliEntryBuilder.create("omnitome", category.getId(), "The Omnitome", "bloodyhell:the_omnitome")
+                .addSpotlightPage("bloodyhell:the_omnitome", link("The Omnitome") + br() + br() +
+                        "A tome that carries your spell books and casts the one you select. Choose the active spell on the spell wheel, then use it like any other book.")
+                .addTextPage("A " + entryLink("blood_spells", "spellbooks", "Spell Book") + " can be cast on its own, from inside the Omnitome, or with a " + entryLink("blood_spells", "staffs", "Staff") + " in your main hand and the book or the Omnitome in the other. With a staff and the Omnitome, the staff casts the spell you selected.")
+                .addTextPage("The Omnitome is forged at a " + entryLink("the_unknown", "blasphemous_altars", "Blasphemous Altar") + " with a Book, a " + blasphemous("Great Ancient Blasphemous Gem") + " and the " + madness("Gaze of the Unknown") + ".");
+        saveEntry(cache, omnitome);
+
+        PatchouliEntryBuilder staffs = PatchouliEntryBuilder.create("staffs", category.getId(), "Staffs", "bloodyhell:staff_of_scarlet_cinder")
+                .addSpotlightPage("bloodyhell:incomplete_staff_of_the_pure_blooded,bloodyhell:staff_of_scarlet_cinder,bloodyhell:staff_of_the_golden_sorrow", link("Staffs") + br() + br() +
+                        "Hold a staff in your main hand and a " + entryLink("blood_spells", "spellbooks", "Spell Book") + " or the " + entryLink("blood_spells", "omnitome", "Omnitome") + " in the other, and the staff casts it. Each staff favors the books of one affinity.")
+                .addTextPage("A staff has a charge from 0 to 5, shown in its orb. At full charge, a book of its affinity deals up to " + link("+30% damage") + ", costs " + link("25% less") + " " + entryLink("blood_spells", "crimson_veil", "Crimson Veil") + " and has a " + link("25% shorter") + " cooldown. Books of another affinity get 40% of that bonus." + br() + br() +
+                        "The orb also tells you the charge: it grows, spins faster and shines as the charge rises, and you hear a note for each step.")
+                .addTextPage(blood("Incomplete Staff of the Pure Blooded") + br() + "Favors Blood books. Every nearby target that is bleeding adds one charge." + br() + br() +
+                        "Staff of Scarlet Cinder" + br() + "Favors Blood Fire books. Every nearby target burning with Blood Fire adds one charge.")
+                .addTextPage(gold("Staff of the Golden Sorrow") + br() + "Favors Rhnull books. Every kill you make while holding it adds one charge. After 5 seconds without a kill it loses one charge every 3 seconds.")
+                .addTextPage("All three staffs are forged with a ritual at a " + entryLink("blood_mechanisms", "blood_altars", "Blood Altar") + "." + br() + br() +
+                        blood("Incomplete Staff:") + " Blood Echo Shard, Pure Blood Gem, Ancient Gem, Blood Flask." + br() + br() +
+                        "Scarlet Cinder: the Incomplete Staff, Ritekeeper Heart, Fainted Ember, Corrupted Blood Flask." + br() + br() +
+                        gold("Golden Sorrow:") + " Great Ancient Rhnull Gem, Rhnull Sword, Rhnull Blood Flask, Rhnull Block.");
+        saveEntry(cache, staffs);
     }
 
     private void generateBloodMechanisms(CachedOutput cache) {
@@ -332,7 +353,7 @@ public class PatchouliProvider implements DataProvider {
                 .addTextPage("By consuming the " + link("Nameless Whisper") + ", you force your mind into a harrowing trial. " + br() + br() +
                         "The world will go dark, and the crushing weight of the " + madness("Frenzy") + " will begin to slow your movements and distort your vision.")
                 .addTextPage("To survive, you must follow the trail of golden " + entryLink("the_unknown", "unknown_lantern", "Lamps") + " that burst from the ground." + br() + br() +
-                        "Standing near an active Lamp will temporarily cleanse your Frenzy and violently purge any " + entryLink("the_unknown", "crawling_delusion", "Crawling Delusions") + " that have latched onto you.")
+                        "Standing near an active Lamp will temporarily cleanse your Frenzy and violently purge any " + link("Crawling Delusions") + " that have latched onto you.")
                 .addTextPage("You must rush from safe zone to safe zone until you reach the end of the path. " + br() + br() +
                         "At the end, you will find the " + madness("Rift") + ". Close it, and you shall be rewarded with a massive surge of " + insight("Insight") + ", proving your mind is ready to command greater horrors.");
         saveEntry(cache, namelessTrial);

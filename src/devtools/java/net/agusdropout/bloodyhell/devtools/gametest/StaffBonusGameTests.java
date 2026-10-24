@@ -38,6 +38,7 @@ public class StaffBonusGameTests {
     private static final int USE_DURATION = 72000;
     private static final int REFRESH_TICK = BaseStaffItem.BONUS_REFRESH_TICKS;
     private static final BlockPos CENTER = new BlockPos(4, 1, 4);
+    private static final float LOOK_DOWN_DEGREES = 45.0f;
 
     @GameTest(template = "empty", batch = "staffbonus_scarletCinderCountsTheBloodFireTargetsUpToFive")
     public static void scarletCinderCountsTheBloodFireTargetsUpToFive(GameTestHelper helper) {
@@ -154,6 +155,7 @@ public class StaffBonusGameTests {
     private static Player freshPlayer(GameTestHelper helper) {
         Player player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "[bloodyhell_test]"));
         player.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(CENTER)));
+        player.setXRot(LOOK_DOWN_DEGREES);
         player.tickCount = REFRESH_TICK;
         helper.getLevel().getEntitiesOfClass(Pig.class, player.getBoundingBox().inflate(64.0)).forEach(Entity::discard);
         PlayerCrimsonVeil veil = veil(player);
