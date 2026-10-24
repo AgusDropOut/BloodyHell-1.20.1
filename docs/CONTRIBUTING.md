@@ -32,3 +32,6 @@ Anything animated with GeckoLib starts from a base class and a generic renderer,
 - Do not rename a registered id (item, block, entity, fluid, effect...) to fix a name: modpacks name them in scripts, quests, recipes and tags that load before any world (ADR 0019). Change the translated name in the lang file instead.
 - Removing content is allowed; say so in `CHANGELOG.md`. Before a release run `./gradlew runGameTestServer` and `python scripts/check-modpack-ids.py --pack <pack>` for the known packs.
 
+## Access transformers
+- Do not make a Minecraft method public with `accesstransformer.cfg` when subclasses override it: a subclass that keeps the method `protected` fails to compile ("attempting to assign weaker access privileges"), and every new vanilla model that surfaces needs one more line. This is how `AgeableListModel.headParts` and `bodyParts` broke the build, one model at a time.
+- Read such members through `ObfuscationReflectionHelper` once and cache the `Method`, as `AgeableModelParts` does. A reflective call still dispatches to the override of the concrete model.

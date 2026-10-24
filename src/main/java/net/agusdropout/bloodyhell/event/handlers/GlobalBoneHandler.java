@@ -3,6 +3,7 @@ package net.agusdropout.bloodyhell.event.handlers;
 import net.agusdropout.bloodyhell.BloodyHell;
 import net.agusdropout.bloodyhell.client.PainThroneRegistry;
 import net.agusdropout.bloodyhell.particle.ParticleOptions.TetherParticleOptions;
+import net.agusdropout.bloodyhell.util.bones.AgeableModelParts;
 import net.agusdropout.bloodyhell.util.bones.BoneManipulator;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.EntityModel;
@@ -43,8 +44,8 @@ public class GlobalBoneHandler {
         if (intensity > 0) {
             float time = entity.tickCount + event.getPartialTick();
             if (event.getRenderer().getModel() instanceof AgeableListModel<?> ageable) {
-                ageable.headParts().forEach(p -> BoneManipulator.applyVisceralTwitch(p, time, 0.2f * intensity));
-                ageable.bodyParts().forEach(p -> BoneManipulator.applyVisceralTwitch(p, time, 0.15f * intensity));
+                AgeableModelParts.head(ageable).forEach(p -> BoneManipulator.applyVisceralTwitch(p, time, 0.2f * intensity));
+                AgeableModelParts.body(ageable).forEach(p -> BoneManipulator.applyVisceralTwitch(p, time, 0.15f * intensity));
             } else if (event.getRenderer().getModel() instanceof HierarchicalModel<?> genericModel) {
                 genericModel.root().getAllParts().forEach(p -> BoneManipulator.applyVisceralTwitch(p, time, 0.1f * intensity));
             }
@@ -74,8 +75,8 @@ public class GlobalBoneHandler {
         List<ModelPart> breakableParts = new ArrayList<>();
 
         if (model instanceof AgeableListModel<?> ageable) {
-            ageable.headParts().forEach(breakableParts::add);
-            ageable.bodyParts().forEach(breakableParts::add);
+            AgeableModelParts.head(ageable).forEach(breakableParts::add);
+            AgeableModelParts.body(ageable).forEach(breakableParts::add);
         } else if (model instanceof HierarchicalModel<?> genericModel) {
             ModelPart root = genericModel.root();
             root.getAllParts().forEach(breakableParts::add);
