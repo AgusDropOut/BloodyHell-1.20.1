@@ -17,4 +17,4 @@ The orb shaders animate with `u_Time`. If the speed of an animation depends on t
 - No GUI element and no packet: the stack already syncs the marked count.
 - A new orb shader only has to declare the three uniforms in its json and use `u_ChargeTime` instead of `u_Time`.
 - The charge is only visible in first person, like the orb itself, and only for the staff in the hand of the local player.
-- The Golden Sorrow stays at charge 0 until it has a marker effect.
+- The Golden Sorrow charges as a kill streak (`KillStreak`): the client reads the same `Charge` of the stack, so it needs nothing special.

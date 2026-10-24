@@ -470,6 +470,7 @@
   "message.bloodyhell.not_enough_veil": "Not enough Crimson Veil!",
   "tooltip.bloodyhell.staff.affinity": "Affinity: %s books",
   "tooltip.bloodyhell.staff.marker": "Grows with each target near you affected by %s (full at %s)",
+  "tooltip.bloodyhell.staff.kill_streak": "Grows with each kill you make while holding it (full at %s). After %s seconds without a kill it loses one every %s seconds",
   "tooltip.bloodyhell.staff.bonus": "At full charge: %s spell damage, %s Crimson Veil cost, %s cooldown",
   "tooltip.bloodyhell.staff.off_affinity": "Books of another affinity get %s of the bonus",
   "tooltip.bloodyhell.staff.charge": "Charge: %s / %s",

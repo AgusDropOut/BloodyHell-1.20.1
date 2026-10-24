@@ -77,7 +77,7 @@ public class StaffChargeClient {
             release();
             return;
         }
-        int count = staff.getMarkedTargets(stack);
+        int count = staff.getCharge(stack);
         if (staff != heldStaff) {
             heldStaff = staff;
             lastCount = count;

@@ -49,7 +49,7 @@ public abstract class BaseStaffItem extends BaseGeckoItem {
     public static final float MAX_COST_REDUCTION = 0.25f;
     public static final float MAX_COOLDOWN_REDUCTION = 0.25f;
     public static final float OFF_AFFINITY_SHARE = 0.4f;
-    private static final String NBT_MARKED_TARGETS = "MarkedTargets";
+    private static final String NBT_CHARGE = "Charge";
 
     private final SpellAffinity affinity;
     @Nullable
@@ -65,12 +65,12 @@ public abstract class BaseStaffItem extends BaseGeckoItem {
         return affinity;
     }
 
-    public int getMarkedTargets(ItemStack staff) {
-        return staff.hasTag() ? staff.getTag().getInt(NBT_MARKED_TARGETS) : 0;
+    public int getCharge(ItemStack staff) {
+        return staff.hasTag() ? staff.getTag().getInt(NBT_CHARGE) : 0;
     }
 
     public float getBonusFill(ItemStack staff) {
-        return Math.min(getMarkedTargets(staff), MARKED_FOR_FULL_BONUS) / (float) MARKED_FOR_FULL_BONUS;
+        return Math.min(getCharge(staff), MARKED_FOR_FULL_BONUS) / (float) MARKED_FOR_FULL_BONUS;
     }
 
     public SpellModifiers modifiersFor(ItemStack staff, BaseSpellBookItem book) {
@@ -81,17 +81,22 @@ public abstract class BaseStaffItem extends BaseGeckoItem {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slot, isSelected);
-        if (level.isClientSide || marker == null || !(entity instanceof Player player)) return;
-        if (!isSelected) {
-            storeMarkedTargets(stack, 0);
+        if (level.isClientSide || !(entity instanceof Player player)) return;
+        tickCharge(stack, player, isSelected);
+    }
+
+    protected void tickCharge(ItemStack staff, Player player, boolean selected) {
+        if (marker == null) return;
+        if (!selected) {
+            storeCharge(staff, 0);
         } else if (!player.isUsingItem() && player.tickCount % BONUS_REFRESH_TICKS == 0) {
-            refreshMarkedTargets(stack, player);
+            refreshCharge(staff, player);
         }
     }
 
-    private void refreshMarkedTargets(ItemStack staff, Player player) {
+    protected void refreshCharge(ItemStack staff, Player player) {
         if (marker != null) {
-            storeMarkedTargets(staff, countMarkedTargets(player, marker.get()));
+            storeCharge(staff, countMarkedTargets(player, marker.get()));
         }
     }
 
@@ -103,21 +108,30 @@ public abstract class BaseStaffItem extends BaseGeckoItem {
         return Math.min(marked.size(), MARKED_FOR_FULL_BONUS);
     }
 
-    private void storeMarkedTargets(ItemStack staff, int count) {
-        if (getMarkedTargets(staff) != count) {
-            staff.getOrCreateTag().putInt(NBT_MARKED_TARGETS, count);
+    protected void storeCharge(ItemStack staff, int count) {
+        if (getCharge(staff) != count) {
+            staff.getOrCreateTag().putInt(NBT_CHARGE, count);
         }
+    }
+
+    protected boolean hasCharge() {
+        return marker != null;
+    }
+
+    protected void appendChargeSource(List<Component> tooltip) {
+        if (marker == null) return;
+        tooltip.add(Component.translatable("tooltip.bloodyhell.staff.marker", marker.get().getDisplayName(), MARKED_FOR_FULL_BONUS).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("tooltip.bloodyhell.staff.affinity", Component.translatable("spell_affinity.bloodyhell." + affinity.name().toLowerCase(Locale.ROOT))).withStyle(ChatFormatting.GOLD));
-        if (marker == null) return;
-        tooltip.add(Component.translatable("tooltip.bloodyhell.staff.marker", marker.get().getDisplayName(), MARKED_FOR_FULL_BONUS).withStyle(ChatFormatting.GRAY));
+        if (!hasCharge()) return;
+        appendChargeSource(tooltip);
         tooltip.add(Component.translatable("tooltip.bloodyhell.staff.bonus", "+" + Math.round(MAX_DAMAGE_BONUS * 100) + "%", "-" + Math.round(MAX_COST_REDUCTION * 100) + "%", "-" + Math.round(MAX_COOLDOWN_REDUCTION * 100) + "%").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("tooltip.bloodyhell.staff.off_affinity", Math.round(OFF_AFFINITY_SHARE * 100) + "%").withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(Component.translatable("tooltip.bloodyhell.staff.charge", Math.min(getMarkedTargets(stack), MARKED_FOR_FULL_BONUS), MARKED_FOR_FULL_BONUS).withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tooltip.bloodyhell.staff.charge", Math.min(getCharge(stack), MARKED_FOR_FULL_BONUS), MARKED_FOR_FULL_BONUS).withStyle(ChatFormatting.RED));
     }
 
     protected ItemStack getActualSpellStack(ItemStack offhandStack) {
@@ -257,7 +271,7 @@ public abstract class BaseStaffItem extends BaseGeckoItem {
 
         if (!actualSpellStack.isEmpty() && actualSpellStack.getItem() instanceof BaseSpellBookItem spellBook) {
             if (!level.isClientSide) {
-                refreshMarkedTargets(itemStack, player);
+                refreshCharge(itemStack, player);
             }
 
             if (!spellBook.canStartCasting(level, player, modifiersFor(itemStack, spellBook))) {

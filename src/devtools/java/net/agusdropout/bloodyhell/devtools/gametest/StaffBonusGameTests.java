@@ -60,7 +60,7 @@ public class StaffBonusGameTests {
         far.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 6000));
         helper.getLevel().addFreshEntity(far);
         refresh(helper, staff, stack, player, true);
-        helper.assertTrue(staff.getMarkedTargets(stack) == 0, "a target with another effect or out of range was counted: " + staff.getMarkedTargets(stack));
+        helper.assertTrue(staff.getCharge(stack) == 0, "a target with another effect or out of range was counted: " + staff.getCharge(stack));
         far.discard();
         helper.succeed();
     }
@@ -72,9 +72,9 @@ public class StaffBonusGameTests {
         ItemStack stack = new ItemStack(staff);
         mark(helper, new BlockPos(1, 1, 1), ModEffects.BLEEDING.get());
         refresh(helper, staff, stack, player, true);
-        helper.assertTrue(staff.getMarkedTargets(stack) == 1, "the target was not counted");
+        helper.assertTrue(staff.getCharge(stack) == 1, "the target was not counted");
         refresh(helper, staff, stack, player, false);
-        helper.assertTrue(staff.getMarkedTargets(stack) == 0, "the count stayed after the staff was not selected");
+        helper.assertTrue(staff.getCharge(stack) == 0, "the count stayed after the staff was not selected");
         helper.succeed();
     }
 
@@ -127,7 +127,7 @@ public class StaffBonusGameTests {
         dying.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 6000));
         dying.setHealth(0.0f);
         refresh(helper, staff, stack, player, true);
-        helper.assertTrue(staff.getMarkedTargets(stack) == 0, "a dying target was counted");
+        helper.assertTrue(staff.getCharge(stack) == 0, "a dying target was counted");
         helper.succeed();
     }
 
@@ -188,7 +188,7 @@ public class StaffBonusGameTests {
             }
             refresh(helper, staff, stack, player, true);
             int expected = Math.min(target, BaseStaffItem.MARKED_FOR_FULL_BONUS);
-            helper.assertTrue(staff.getMarkedTargets(stack) == expected, target + " marked targets counted as " + staff.getMarkedTargets(stack) + " instead of " + expected);
+            helper.assertTrue(staff.getCharge(stack) == expected, target + " marked targets counted as " + staff.getCharge(stack) + " instead of " + expected);
         }
         helper.succeed();
     }
